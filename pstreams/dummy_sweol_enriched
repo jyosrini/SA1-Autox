@@ -1,14 +1,10 @@
 {
-  "name": "dummy_sweol_enriched",
+  "name": "bcs_oi_productalerts-enriched",
   "datastore_type": "OS",
-  "read_only": false,
-  "attrs": {
-    "unique_keys": [
-      "product_id",
-      "sw_version",
-      "sw_os_type"
-    ]
-  },
+  "read_only": true,
+  "attrs": {},
   "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-912c6fcb-dummy_sweol_enriched"
+  "os_credential_name": "RDAF_Staging",
+  "default_sort_id": "_RDA_Id",
+  "index_name": "104345aa3b264c599bcd39ff79244022-stream-47e00767-bcs_oi_productalerts-enriched"
 }
