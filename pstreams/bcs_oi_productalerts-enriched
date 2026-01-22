@@ -1,0 +1,10 @@
+{
+  "name": "bcs_oi_productalerts-enriched",
+  "datastore_type": "OS",
+  "read_only": true,
+  "attrs": {},
+  "status": "Running",
+  "os_credential_name": "RDAF_Staging",
+  "default_sort_id": "_RDA_Id",
+  "index_name": "104345aa3b264c599bcd39ff79244022-stream-47e00767-bcs_oi_productalerts-enriched"
+}
