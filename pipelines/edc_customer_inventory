@@ -402,7 +402,7 @@ hwEOL_endOfSecurityVulnSupportDate = 'end_of_security_vuln_support_dt'
  ## #Temporary bypass to use already process data from dataset api-response. Above section needs to be commended out
 
  --> @c:new-block
- --> @dm:recall name='api-respose'
+ --> @dm:recall name='api-response'
  --> @dm:save name='temp-enriched-sweol-values'
  ## Process SWEoL
 
