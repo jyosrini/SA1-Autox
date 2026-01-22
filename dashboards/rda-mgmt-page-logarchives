@@ -1,44 +1,52 @@
 {
-  "name": "rda-mgmt-page-logarchives",
-  "label": "Log Archives",
-  "description": " Log Archives Management Page",
-  "enabled": true,
-  "dashboard_type": "dashboard",
+  "name": "rda-packs-view-detail",
+  "label": "View Pack Details",
+  "context_label_id": "view_detail_page_label",
+  "description": "View Pack details",
+  "enabled": false,
   "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "dashboard_filters": {
-    "time_filter": false
+  "dashboard_type": "template",
+  "template_variables": {
+    "PACK_NAME": {
+      "contextId": "sluggified_name"
+    },
+    "PACK_VERSION": {
+      "contextId": "sluggified_verion"
+    }
+  },
+  "computedContext": {
+    "sluggified_verion": {
+      "expr": "sluggify(pack_version)",
+      "defaultValue": "None"
+    },
+    "sluggified_name": {
+      "expr": "sluggify(pack_name)",
+      "defaultValue": "None"
+    }
   },
   "dashboard_sections": [
     {
-      "title": "Log Archives",
-      "show_filter": false,
+      "title": "Pack Details",
       "widgets": [
         {
-          "title": "Log Archives",
-          "widget_type": "portal_tabular",
-          "reportId": "logarchive.repos.tabular",
-          "height": 10,
-          "min_wdith": 12,
-          "paginated": true,
-          "widget_id": "118d7917"
+          "widget_type": "markdown",
+          "folder": "{{PACK_NAME}}/{{PACK_VERSION}}",
+          "objectName": "description_{{PACK_NAME}}_{{PACK_VERSION}}",
+          "widget_id": "efcf2a8a"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Log Archives",
-      "show_filter": false,
+      "title": "Pack Details",
       "widgets": [
         {
-          "title": "Log Archives",
-          "widget_type": "portal_tabular",
-          "reportId": "logarchive.repos.tabular",
-          "height": 10,
-          "min_wdith": 12,
-          "paginated": true,
-          "widget_id": "118d7917"
+          "widget_type": "markdown",
+          "folder": "{{PACK_NAME}}/{{PACK_VERSION}}",
+          "objectName": "description_{{PACK_NAME}}_{{PACK_VERSION}}",
+          "widget_id": "efcf2a8a"
         }
       ]
     }
