@@ -59,7 +59,7 @@
  --> @dm:eval serial_number=" 'Not Available' if serial_number=='Not Available'  else serial_number.split(' ')[0] if serial_number and serial_number!='Not Available' else serial_number"
  ## Normalize values for sw_version and sw_type
 
- --> @dm:eval sw_os_type=" 'Not Available' if sw_os_type in ['Not Found','Missing'] else sw_os_type"
+ --> @dm:eval sw_os_type=" null if sw_os_type in ['Not Found','Missing'] else sw_os_type"
  --> @dm:eval sw_version=" 'Not Available' if sw_version in ['Not Found','Missing'] else sw_version"
  --> @dm:fixnull columns="sw_version,sw_os_type" and value="Not Available" and apply_for_empty="yes"
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
