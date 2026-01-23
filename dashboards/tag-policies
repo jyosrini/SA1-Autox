@@ -1,7 +1,7 @@
 {
-  "name": "rda-mgmt-page-synthetics",
-  "label": "Synthetics",
-  "description": " Synthetics Management Page",
+  "name": "tag-policies",
+  "label": "Tag Policies",
+  "description": "Tag Policies",
   "enabled": true,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
@@ -11,34 +11,34 @@
   },
   "dashboard_sections": [
     {
-      "title": "Synthetics",
+      "title": "Tag Policies",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Synthetics",
+          "title": "Tag Policies",
           "widget_type": "portal_tabular",
-          "reportId": "synthetics.list.tabular",
+          "reportId": "tags.list.tabular",
           "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "47485520"
+          "widget_id": "9bbba44a"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Synthetics",
+      "title": "Tag Policies",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Synthetics",
+          "title": "Tag Policies",
           "widget_type": "portal_tabular",
-          "reportId": "synthetics.list.tabular",
+          "reportId": "tags.list.tabular",
           "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "47485520"
+          "widget_id": "9bbba44a"
         }
       ]
     }
