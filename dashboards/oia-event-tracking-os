@@ -1,595 +1,182 @@
 {
-  "name": "oia-event-tracking-os",
-  "label": "Open Search Based Events",
-  "description": "Open Search Based OIA Event Tracking",
-  "version": "24.11.11",
-  "enabled": true,
-  "stream": "oia-source-events-stream",
-  "dashboard_style": "auto",
-  "status_poller": {},
-  "dashboard_type": "template",
-  "template_variables": {
-    "PROJECT_ID": {
-      "default": [
-        "61ed50a5-8634-4464-a17e-adf6b40225b2"
-      ],
-      "contextId": "projectId"
-    }
-  },
+  "name": "rda-packs-customer-list",
+  "label": "Customer List RDA Packs",
+  "description": "RDA Packs: Customer List",
+  "dashboard_folder": "System",
+  "enabled": false,
+  "stream": "rda_system_organizations",
+  "extra_filter": "customerName is not 'cfx_rda_quarantine'",
+  "dashboard_type": "dashboard",
   "dashboard_filters": {
-    "default_time_filter_labels": [
-      "Last 24 hours"
-    ],
     "time_filter": true,
-    "default_time_filter_non_removable": true,
-    "show_default_time_filter": false,
-    "additional_datetime_column_filters": [
-      {
-        "id": "se_createdat",
-        "label": "Created At"
-      },
-      {
-        "id": "se_updatedat",
-        "label": "Updated At"
-      }
+    "default_time_filter_labels": [
+      "Last 12 months"
     ],
     "columns_filter": [
       {
-        "id": "se_customerid",
-        "label": "Customer ID",
+        "id": "customerName",
+        "label": "Name",
         "type": "TEXT"
       },
       {
-        "id": "se_status",
-        "label": "Status",
+        "id": "tag1",
+        "label": "Tag",
         "type": "TEXT"
-      },
-      {
-        "id": "se_sourcesystemname",
-        "label": "Source",
-        "type": "TEXT"
-      },
-      {
-        "id": "se_message",
-        "label": "Message",
-        "type": "TEXT"
-      },
-      {
-        "id": "se_projectid",
-        "label": "Organizations",
-        "type": "TEXT"
-      },
-      {
-        "id": "se_sourcereceivedat",
-        "label": "Received At",
-        "type": "DATETIME"
-      },
-      {
-        "id": "se_id",
-        "label": "Source Event Id",
-        "type": "TEXT"
-      },
-      {
-        "id": "se_numberofevents",
-        "label": "No. of events",
-        "type": "DOUBLE"
-      }
-    ],
-    "extra_filter": "se_projectid in {{PROJECT_ID}}",
-    "group_filters": [
-      {
-        "stream": "oia-source-events-stream",
-        "title": "Events By Source",
-        "group_by": [
-          "se_sourcesystemname"
-        ],
-        "ts_column": "se_updatedat",
-        "agg": "value_count",
-        "column": "se_id",
-        "type": "str"
-      },
-      {
-        "stream": "oia-source-events-stream",
-        "title": "Events By Status",
-        "group_by": [
-          "se_status"
-        ],
-        "ts_column": "se_updatedat",
-        "agg": "value_count",
-        "column": "se_id",
-        "type": "str"
-      },
-      {
-        "stream": "oia-source-events-stream",
-        "title": "Organizations",
-        "group_by": [
-          "project_id"
-        ],
-        "ts_column": "se_updatedat",
-        "agg": "value_count",
-        "column": "se_projectid",
-        "type": "str"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Events",
+      "title": "RDA Packs Customer List",
       "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
       "widgets": [
         {
-          "title": "Events",
+          "title": "Customer List",
           "widget_type": "tabular",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "timebased": false,
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "refreshRequired": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "se_sourcesystemname",
-            "se_status",
-            "se_message",
-            "se_projectid",
-            "se_id"
+            "customerName",
+            "tag1",
+            "customerId"
           ],
-          "max_rows": 50,
+          "sorting": [
+            {
+              "createdAt": "desc"
+            }
+          ],
+          "ts_column": "createdAt",
+          "paginated": true,
+          "height": 10,
+          "max_width": 12,
+          "min_width": 12,
+          "stream": "rda_system_organizations",
+          "extra_filter": "customerName is not 'cfx_rda_quarantine'",
           "columns": {
-            "se_id": {
-              "title": "Source Event ID",
-              "visible": false,
+            "customerName": {
+              "title": "Name",
+              "type": "TEXT",
               "key": true,
-              "defaultWidth": 150
+              "hidden": false
             },
-            "view_details_action_id": {
-              "title": "id",
-              "value": "user-dashboard-oia-event-tracking-view-alerts",
+            "tag1": {
+              "title": "Tag",
+              "type": "TEXT",
               "key": true,
-              "type": "FIXED_VALUE",
-              "hidden": true,
-              "visible": false
+              "hidden": false
             },
-            "se_projectid": {
-              "title": "project Id",
-              "visible": false,
+            "customerId": {
+              "title": "Customer ID",
+              "type": "TEXT",
               "key": true,
-              "defaultWidth": 150
-            },
-            "se_sourcereceivedat": {
-              "title": "Received At",
-              "type": "DATETIME",
-              "defaultWidth": 150
-            },
-            "se_sourcesystemname": {
-              "title": "Source",
-              "defaultWidth": 150
-            },
-            "se_status": {
-              "title": "Status",
-              "defaultWidth": 150
-            },
-            "se_numberofevents": {
-              "title": "No of Events",
-              "defaultWidth": 150
-            },
-            "se_message": {
-              "title": "Message",
-              "defaultWidth": 270
-            },
-            "se_createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            },
-            "se_updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "defaultWidth": 180
+              "hidden": false
             }
           },
           "actions": [
             {
-              "title": "View Alerts",
-              "type": "GO_TO_APP_STATE",
+              "permission": "rda:rdapacks:view",
+              "appName": "user-dashboard/rda-packs-customer-all",
+              "drillDownLinkField": "customerName",
+              "identifier": "launch.dashboard.view-pack-detail",
               "selectionType": "SINGLE",
-              "permission": "oia:event-tracking:view",
-              "identifier": "ingestion-tracker:View Alerts_GREATER_THAN_0",
-              "stateName": "app.featureapp",
-              "appName": "user-dashboard",
-              "drillDownLinkField": "se_sourcereceivedat",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "se_sourcereceivedat",
+              "title": "Manage",
               "contextParamList": {
                 "contextParams": [
                   {
-                    "paramKey": "view_details_action_id",
-                    "paramId": "id"
+                    "paramKey": "tag1",
+                    "paramId": "customer_tag"
+                  },
+                  {
+                    "paramKey": "tag1",
+                    "paramId": "customerTag"
+                  },
+                  {
+                    "paramKey": "customerId",
+                    "paramId": "customer_id"
                   }
                 ]
               },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "GREATER_THAN",
-                    "conditionValue": "0",
-                    "fieldId": "se_numberofevents"
-                  }
-                ]
-              }
-            },
-            {
-              "title": "View Source Payload",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "oia:event-tracking:downloadSourcePayload",
-              "identifier": "ingestion-tracker:com.cfx.form.view.sourceevent.payload",
-              "api-endpoint": {
-                "service-name": "ingestion-tracker",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "com.cfx.form.view.sourceevent.payload",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "title": "Download Source Payload",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "oia:event-tracking:downloadSourcePayload",
-              "identifier": "ingestion-tracker:com.cfx.form.download.sourceevent.payload",
-              "api-endpoint": {
-                "service-name": "ingestion-tracker",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "com.cfx.form.download.sourceevent.payload",
-                    "context": {}
-                  }
-                ]
-              }
+              "type": "GO_TO_APP_STATE"
             }
           ],
-          "widget_id": "94a3fc11"
-        }
-      ]
-    },
-    {
-      "title": "Event Tracking Analytics",
-      "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
-      "widgets": [
-        {
-          "title": "Total Events",
-          "widget_type": "counter",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "column": "se_id",
-          "agg": "value_count",
-          "min_width": 12,
-          "height": 2.6,
-          "max_width": 12,
-          "type": "str",
-          "widget_id": "d226be94"
-        },
-        {
-          "title": "Hourly events by source",
-          "widget_type": "timeseries",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "max_width": 12,
-          "height": 4,
-          "min_width": 12,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": "Hourly Alerts",
-            "legendLocation": "top"
-          },
-          "interval": "60Min",
-          "group_by": [
-            "se_sourcesystemname"
-          ],
-          "series_spec": [
-            {
-              "column": "se_id",
-              "agg": "value_count",
-              "type": "int"
-            }
-          ],
-          "widget_id": "c116cc1d"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Events by Source",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "column": "se_id",
-          "agg": "value_count",
-          "group_by": [
-            "se_sourcesystemname"
-          ],
-          "type": "str",
-          "widget_id": "6db87cde"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Events by Status",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "column": "se_id",
-          "agg": "value_count",
-          "group_by": [
-            "se_status"
-          ],
-          "type": "str",
-          "widget_id": "83786f14"
+          "widget_id": "e55d1d08"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Events",
+      "title": "RDA Packs Customer List",
       "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
       "widgets": [
         {
-          "title": "Events",
+          "title": "Customer List",
           "widget_type": "tabular",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "timebased": false,
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "refreshRequired": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "se_sourcesystemname",
-            "se_status",
-            "se_message",
-            "se_projectid",
-            "se_id"
+            "customerName",
+            "tag1",
+            "customerId"
           ],
-          "max_rows": 50,
+          "sorting": [
+            {
+              "createdAt": "desc"
+            }
+          ],
+          "ts_column": "createdAt",
+          "paginated": true,
+          "height": 10,
+          "max_width": 12,
+          "min_width": 12,
+          "stream": "rda_system_organizations",
+          "extra_filter": "customerName is not 'cfx_rda_quarantine'",
           "columns": {
-            "se_id": {
-              "title": "Source Event ID",
-              "visible": false,
+            "customerName": {
+              "title": "Name",
+              "type": "TEXT",
               "key": true,
-              "defaultWidth": 150
+              "hidden": false
             },
-            "view_details_action_id": {
-              "title": "id",
-              "value": "user-dashboard-oia-event-tracking-view-alerts",
+            "tag1": {
+              "title": "Tag",
+              "type": "TEXT",
               "key": true,
-              "type": "FIXED_VALUE",
-              "hidden": true,
-              "visible": false
+              "hidden": false
             },
-            "se_projectid": {
-              "title": "project Id",
-              "visible": false,
+            "customerId": {
+              "title": "Customer ID",
+              "type": "TEXT",
               "key": true,
-              "defaultWidth": 150
-            },
-            "se_sourcereceivedat": {
-              "title": "Received At",
-              "type": "DATETIME",
-              "defaultWidth": 150
-            },
-            "se_sourcesystemname": {
-              "title": "Source",
-              "defaultWidth": 150
-            },
-            "se_status": {
-              "title": "Status",
-              "defaultWidth": 150
-            },
-            "se_numberofevents": {
-              "title": "No of Events",
-              "defaultWidth": 150
-            },
-            "se_message": {
-              "title": "Message",
-              "defaultWidth": 270
-            },
-            "se_createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            },
-            "se_updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "defaultWidth": 180
+              "hidden": false
             }
           },
           "actions": [
             {
-              "title": "View Alerts",
-              "type": "GO_TO_APP_STATE",
+              "permission": "rda:rdapacks:view",
+              "appName": "user-dashboard/rda-packs-customer-all",
+              "drillDownLinkField": "customerName",
+              "identifier": "launch.dashboard.view-pack-detail",
               "selectionType": "SINGLE",
-              "permission": "oia:event-tracking:view",
-              "identifier": "ingestion-tracker:View Alerts_GREATER_THAN_0",
-              "stateName": "app.featureapp",
-              "appName": "user-dashboard",
-              "drillDownLinkField": "se_sourcereceivedat",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "se_sourcereceivedat",
+              "title": "Manage",
               "contextParamList": {
                 "contextParams": [
                   {
-                    "paramKey": "view_details_action_id",
-                    "paramId": "id"
+                    "paramKey": "tag1",
+                    "paramId": "customer_tag"
+                  },
+                  {
+                    "paramKey": "tag1",
+                    "paramId": "customerTag"
+                  },
+                  {
+                    "paramKey": "customerId",
+                    "paramId": "customer_id"
                   }
                 ]
               },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "GREATER_THAN",
-                    "conditionValue": "0",
-                    "fieldId": "se_numberofevents"
-                  }
-                ]
-              }
-            },
-            {
-              "title": "View Source Payload",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "oia:event-tracking:downloadSourcePayload",
-              "identifier": "ingestion-tracker:com.cfx.form.view.sourceevent.payload",
-              "api-endpoint": {
-                "service-name": "ingestion-tracker",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "com.cfx.form.view.sourceevent.payload",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "title": "Download Source Payload",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "oia:event-tracking:downloadSourcePayload",
-              "identifier": "ingestion-tracker:com.cfx.form.download.sourceevent.payload",
-              "api-endpoint": {
-                "service-name": "ingestion-tracker",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "com.cfx.form.download.sourceevent.payload",
-                    "context": {}
-                  }
-                ]
-              }
+              "type": "GO_TO_APP_STATE"
             }
           ],
-          "widget_id": "94a3fc11"
-        }
-      ]
-    },
-    {
-      "title": "Event Tracking Analytics",
-      "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
-      "widgets": [
-        {
-          "title": "Total Events",
-          "widget_type": "counter",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "column": "se_id",
-          "agg": "value_count",
-          "min_width": 12,
-          "height": 2.6,
-          "max_width": 12,
-          "type": "str",
-          "widget_id": "d226be94"
-        },
-        {
-          "title": "Hourly events by source",
-          "widget_type": "timeseries",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "max_width": 12,
-          "height": 4,
-          "min_width": 12,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": "Hourly Alerts",
-            "legendLocation": "top"
-          },
-          "interval": "60Min",
-          "group_by": [
-            "se_sourcesystemname"
-          ],
-          "series_spec": [
-            {
-              "column": "se_id",
-              "agg": "value_count",
-              "type": "int"
-            }
-          ],
-          "widget_id": "c116cc1d"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Events by Source",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "column": "se_id",
-          "agg": "value_count",
-          "group_by": [
-            "se_sourcesystemname"
-          ],
-          "type": "str",
-          "widget_id": "6db87cde"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Events by Status",
-          "stream": "oia-source-events-stream",
-          "ts_column": "se_updatedat",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "column": "se_id",
-          "agg": "value_count",
-          "group_by": [
-            "se_status"
-          ],
-          "type": "str",
-          "widget_id": "83786f14"
+          "widget_id": "e55d1d08"
         }
       ]
     }
