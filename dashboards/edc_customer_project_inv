@@ -220,6 +220,19 @@
       },
       {
         "stream": "edc_customer_inventory",
+        "title": "SAVM",
+        "group_by": [
+          "savm_group_name"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 200,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
         "title": "Customer",
         "group_by": [
           "customer_name"
