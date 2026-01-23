@@ -82,7 +82,7 @@
  --> @dm:to_type columns = 'product_list_price' & type  = 'int'
  --> @dm:fixnull columns="product_list_price" and value="0" and apply_for_empty="yes"
  --> @dm:fixnull columns="product_name,covered_line_status,coverage,portfolio_desc,usage_code" and value="Not Available" and apply_for_empty="yes"
- --> @dm:change-time-format columns="end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt" and from_format="datetimestr" and to_format="%Y-%m-%d"
+ --> @dm:change-time-format columns="contract_line_end_date,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt" and from_format="datetimestr" and to_format="%Y-%m-%d"
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
@@ -401,25 +401,21 @@ hwEOL_endOfSecurityVulnSupportDate = 'end_of_security_vuln_support_dt'
  --> @exec:end-function
  ## collecting the file and storing it in edc_cust_pid_sw stream, collecting the API data and adding the processed data to edc_sw_raw_data
 
+ --> @c:new-block
+ --> @dm:recall name='temp-input-dataset'
+ --> @dm:save name="temp-cust_pid_sw"
+ --> @dm:save name="customer_pid_sw"
+ --> @dm:eval source="'software'"
+ --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
+ --> @dm:save name='temp-enriched-sweol-values'
+ ## #Temporary bypass to use already process data from dataset api-response. Above section needs to be commended out
+
  ## --> @c:new-block
 
- ## --> @dm:recall name='temp-input-dataset'
-
- ## --> @dm:save name="temp-cust_pid_sw"
-
- ## --> @dm:save name="customer_pid_sw"
-
- ## --> @dm:eval source="'software'"
-
- ## --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
+ ## --> @dm:recall name='api-response'
 
  ## --> @dm:save name='temp-enriched-sweol-values'
 
- ## #Temporary bypass to use already process data from dataset api-response. Above section needs to be commended out
-
- --> @c:new-block
- --> @dm:recall name='api-response'
- --> @dm:save name='temp-enriched-sweol-values'
  ## Process SWEoL
 
  --> @c:new-block
