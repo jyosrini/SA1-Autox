@@ -50,6 +50,9 @@
  ## remove unnecessary characters from product_name
 
  --> @dm:eval product_name = "str(product_name).strip()"
+ ## Clean up Serial Numbers (i.e 'JAE07310B1C (196781738)')
+
+ --> @dm:eval serial_number=" 'Not Available' if serial_number=='Not Available'  else serial_number.split(' ')[0] if serial_number and serial_number!='Not Available' else serial_number"
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
@@ -116,6 +119,9 @@
 
  --> @c:new-block
  --> @dm:recall name="temp-contract_data"
+ ## Make sure EDW data does not have null cells
+
+ --> @dm:fixnull columns="serial_number" and value="Not Available"  and apply_for_empty="yes"
  --> @dm:enrich dict="temp-network_inv" and src_key_cols="serial_number" and dict_key_cols="serial_number" and enrich_cols="sw_version,sw_os_type,product_name" and enrich_cols_as="sw_version,sw_os_type,PID"
  --> @dm:fixnull columns='PID' and value="Not Available"  and apply_for_empty="yes"
  --> @dm:eval match_inv=" 'IB Only' if PID=='Not Available' else 'IB + In Network' "
@@ -137,12 +143,13 @@
  --> @dm:save name = "temp-contract_data" and append="yes"
  ## --> @dm:save name = "temp-device_only_network"
 
- ## concatenate both datasets
+ ## concatenate both datasets. Keep only devices part of network
 
  --> @c:new-block
  ## --> @dm:concat names="^temp-contract_data$|^temp-device_only_network$"
 
  --> @dm:recall name="temp-contract_data"
+ --> *dm:filter match_inv contains 'Network'
  --> @dm:add-missing-columns columns="sw_os_type"
  --> @dm:fixnull columns="contract_number,instance_id,serial_number,sw_version,portfolio_desc" and value="Not Available"  and apply_for_empty="yes"
  --> @dm:fixnull columns="product_list_price" and value="0" and apply_for_empty="yes"
