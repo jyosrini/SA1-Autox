@@ -47,9 +47,10 @@
  --> @dm:fixnull columns="serial_number" and value="Not Available"  and apply_for_empty="yes"
  --> @dm:explode column = "serial_number" & sep = ","
  --> @dm:rename-columns product_name="device_model"
- ## remove unnecessary characters from product_name
+ ## remove unnecessary characters from product_name and SN
 
  --> @dm:eval product_name = "str(product_name).strip()"
+ --> @dm:eval serial_number = "str(serial_number).strip()"
  ## Clean up Serial Numbers (i.e 'JAE07310B1C (196781738)')
 
  --> @dm:eval serial_number=" 'Not Available' if serial_number=='Not Available'  else serial_number.split(' ')[0] if serial_number and serial_number!='Not Available' else serial_number"
@@ -400,21 +401,25 @@ hwEOL_endOfSecurityVulnSupportDate = 'end_of_security_vuln_support_dt'
  --> @exec:end-function
  ## collecting the file and storing it in edc_cust_pid_sw stream, collecting the API data and adding the processed data to edc_sw_raw_data
 
- --> @c:new-block
- --> @dm:recall name='temp-input-dataset'
- --> @dm:save name="temp-cust_pid_sw"
- --> @dm:save name="customer_pid_sw"
- --> @dm:eval source="'software'"
- --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
- --> @dm:save name='temp-enriched-sweol-values'
- ## #Temporary bypass to use already process data from dataset api-response. Above section needs to be commended out
-
  ## --> @c:new-block
 
- ## --> @dm:recall name='api-response'
+ ## --> @dm:recall name='temp-input-dataset'
+
+ ## --> @dm:save name="temp-cust_pid_sw"
+
+ ## --> @dm:save name="customer_pid_sw"
+
+ ## --> @dm:eval source="'software'"
+
+ ## --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
 
  ## --> @dm:save name='temp-enriched-sweol-values'
 
+ ## #Temporary bypass to use already process data from dataset api-response. Above section needs to be commended out
+
+ --> @c:new-block
+ --> @dm:recall name='api-response'
+ --> @dm:save name='temp-enriched-sweol-values'
  ## Process SWEoL
 
  --> @c:new-block
