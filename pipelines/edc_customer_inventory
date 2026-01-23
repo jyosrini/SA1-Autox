@@ -38,15 +38,18 @@
 
  --> @c:data-loop columns='sw_dataset,project_name,customer,customer_name' and dataset='temp-data-input'
  --> @dm:recall name="$sw_dataset"
- ## normalize columns from customer data
+ ## normalize columns from customer data.
 
  --> @dm:rename-columns sw_version="device_fw_version"
  --> @dm:rename-columns sw_os_type="device_fw_type"
  --> @dm:rename-columns serial_number="device_serial_number"
  --> @dm:rename-columns product_name="device_model"
- --> @dm:fixnull columns="serial_number" and value="Not Available"  and apply_for_empty="yes"
+ ## Remove device w/serial number
+
+ --> *dm:filter serial_number is not null
+ ## --> @dm:fixnull columns="serial_number" and value="Not Available"  and apply_for_empty="yes"
+
  --> @dm:explode column = "serial_number" & sep = ","
- --> @dm:rename-columns product_name="device_model"
  ## remove unnecessary characters from product_name and SN
 
  --> @dm:eval product_name = "str(product_name).strip()"
@@ -54,6 +57,11 @@
  ## Clean up Serial Numbers (i.e 'JAE07310B1C (196781738)')
 
  --> @dm:eval serial_number=" 'Not Available' if serial_number=='Not Available'  else serial_number.split(' ')[0] if serial_number and serial_number!='Not Available' else serial_number"
+ ## Normalize values for sw_version and sw_type
+
+ --> @dm:eval sw_os_type=" 'Not Available' if sw_os_type in ['Not Found','Missing'] else sw_os_type"
+ --> @dm:eval sw_version=" 'Not Available' if sw_version in ['Not Found','Missing'] else sw_version"
+ --> @dm:fixnull columns="sw_version,sw_os_type" and value="Not Available" and apply_for_empty="yes"
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
