@@ -47,9 +47,10 @@
  --> @dm:fixnull columns="serial_number" and value="Not Available"  and apply_for_empty="yes"
  --> @dm:explode column = "serial_number" & sep = ","
  --> @dm:rename-columns product_name="device_model"
- ## remove unnecessary characters from product_name
+ ## remove unnecessary characters from product_name and SN
 
  --> @dm:eval product_name = "str(product_name).strip()"
+ --> @dm:eval serial_number = "str(serial_number).strip()"
  ## Clean up Serial Numbers (i.e 'JAE07310B1C (196781738)')
 
  --> @dm:eval serial_number=" 'Not Available' if serial_number=='Not Available'  else serial_number.split(' ')[0] if serial_number and serial_number!='Not Available' else serial_number"
@@ -85,7 +86,7 @@
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
- --> @dm:eval unique_key = "str(customer) + str(project_name) + str(contract_number) + str(serial_number)"
+ --> @dm:eval unique_key = "str(customer) + str(project_name) + str(serial_number)"
  --> @dm:save name = "temp-contract_data" and append="yes"
  ## Separate devices with null serial number
 
@@ -110,11 +111,14 @@
  --> @dm:sort columns="shipped_date,contract_line_end_date" and order="desc"
  --> @dm:dedup columns = 'serial_number'and keep="first"
  --> @dm:save name = "temp-contract_data"
- ## concatenate
+ ## concatenate --> NOT NEEDED. Only working with assets that have a serial number
 
- --> @c:new-block
- --> @dm:recall name="temp-contract_data_null"
- --> @dm:save name = "temp-contract_data" and append="yes"
+ ## --> @c:new-block
+
+ ## --> @dm:recall name="temp-contract_data_null"
+
+ ## --> @dm:save name = "temp-contract_data" and append="yes"
+
  ## Enrich master contract_data with SW version and OS Type from network data
 
  --> @c:new-block
@@ -182,7 +186,7 @@
  --> *dm:filter sw_os_type is not null
  --> @dm:selectcolumns include="customer|^product_id|sw_os_type|sw_version|instance_id"
  --> @dm:groupby columns ="customer,product_id,sw_os_type,sw_version"
- --> @dm:rename-columns instance_id="total"
+ --> @dm:rename-columns total="instance_id"
  --> @dm:eval unique_key = "str(product_id) + str(sw_os_type) + str(sw_version)"
  --> @dm:save name="temp-input-dataset"
  ## ################################
