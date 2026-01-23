@@ -1,1 +1,5 @@
-@oia:source-event-streams-merge duration="after -24 hours"
+@c:new-block
+ --> @dm:empty
+ --> @dm:addrow dbname='<incidents-dbname>' & table='incident' & limit = '0'
+ --> #mysql:read customerId is '$customerId'
+ --> @cfxml:regression ts_column='created' and frequency='1H' and agg_func='count' and job_name='DB Incidents'
