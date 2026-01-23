@@ -38,21 +38,30 @@
 
  --> @c:data-loop columns='sw_dataset,project_name,customer,customer_name' and dataset='temp-data-input'
  --> @dm:recall name="$sw_dataset"
- ## normalize columns from customer data
+ ## normalize columns from customer data.
 
  --> @dm:rename-columns sw_version="device_fw_version"
  --> @dm:rename-columns sw_os_type="device_fw_type"
  --> @dm:rename-columns serial_number="device_serial_number"
  --> @dm:rename-columns product_name="device_model"
- --> @dm:fixnull columns="serial_number" and value="Not Available"  and apply_for_empty="yes"
+ ## Remove device w/serial number
+
+ --> *dm:filter serial_number is not null
+ ## --> @dm:fixnull columns="serial_number" and value="Not Available"  and apply_for_empty="yes"
+
  --> @dm:explode column = "serial_number" & sep = ","
- --> @dm:rename-columns product_name="device_model"
- ## remove unnecessary characters from product_name
+ ## remove unnecessary characters from product_name and SN
 
  --> @dm:eval product_name = "str(product_name).strip()"
+ --> @dm:eval serial_number = "str(serial_number).strip()"
  ## Clean up Serial Numbers (i.e 'JAE07310B1C (196781738)')
 
  --> @dm:eval serial_number=" 'Not Available' if serial_number=='Not Available'  else serial_number.split(' ')[0] if serial_number and serial_number!='Not Available' else serial_number"
+ ## Normalize values for sw_version and sw_type
+
+ --> @dm:eval sw_os_type=" 'Not Available' if sw_os_type in ['Not Found','Missing'] else sw_os_type"
+ --> @dm:eval sw_version=" 'Not Available' if sw_version in ['Not Found','Missing'] else sw_version"
+ --> @dm:fixnull columns="sw_version,sw_os_type" and value="Not Available" and apply_for_empty="yes"
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
@@ -81,11 +90,11 @@
  --> @dm:to_type columns = 'product_list_price' & type  = 'int'
  --> @dm:fixnull columns="product_list_price" and value="0" and apply_for_empty="yes"
  --> @dm:fixnull columns="product_name,covered_line_status,coverage,portfolio_desc,usage_code" and value="Not Available" and apply_for_empty="yes"
- --> @dm:change-time-format columns="end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt" and from_format="datetimestr" and to_format="%Y-%m-%d"
+ --> @dm:change-time-format columns="contract_line_end_date,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt" and from_format="datetimestr" and to_format="%Y-%m-%d"
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
- --> @dm:eval unique_key = "str(customer) + str(project_name) + str(contract_number) + str(serial_number)"
+ --> @dm:eval unique_key = "str(customer) + str(project_name) + str(serial_number)"
  --> @dm:save name = "temp-contract_data" and append="yes"
  ## Separate devices with null serial number
 
@@ -110,11 +119,14 @@
  --> @dm:sort columns="shipped_date,contract_line_end_date" and order="desc"
  --> @dm:dedup columns = 'serial_number'and keep="first"
  --> @dm:save name = "temp-contract_data"
- ## concatenate
+ ## concatenate --> NOT NEEDED. Only working with assets that have a serial number
 
- --> @c:new-block
- --> @dm:recall name="temp-contract_data_null"
- --> @dm:save name = "temp-contract_data" and append="yes"
+ ## --> @c:new-block
+
+ ## --> @dm:recall name="temp-contract_data_null"
+
+ ## --> @dm:save name = "temp-contract_data" and append="yes"
+
  ## Enrich master contract_data with SW version and OS Type from network data
 
  --> @c:new-block
@@ -182,7 +194,7 @@
  --> *dm:filter sw_os_type is not null
  --> @dm:selectcolumns include="customer|^product_id|sw_os_type|sw_version|instance_id"
  --> @dm:groupby columns ="customer,product_id,sw_os_type,sw_version"
- --> @dm:rename-columns instance_id="total"
+ --> @dm:rename-columns total="instance_id"
  --> @dm:eval unique_key = "str(product_id) + str(sw_os_type) + str(sw_version)"
  --> @dm:save name="temp-input-dataset"
  ## ################################
@@ -397,25 +409,21 @@ hwEOL_endOfSecurityVulnSupportDate = 'end_of_security_vuln_support_dt'
  --> @exec:end-function
  ## collecting the file and storing it in edc_cust_pid_sw stream, collecting the API data and adding the processed data to edc_sw_raw_data
 
+ --> @c:new-block
+ --> @dm:recall name='temp-input-dataset'
+ --> @dm:save name="temp-cust_pid_sw"
+ --> @dm:save name="customer_pid_sw"
+ --> @dm:eval source="'software'"
+ --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
+ --> @dm:save name='temp-enriched-sweol-values'
+ ## #Temporary bypass to use already process data from dataset api-response. Above section needs to be commended out
+
  ## --> @c:new-block
 
- ## --> @dm:recall name='temp-input-dataset'
-
- ## --> @dm:save name="temp-cust_pid_sw"
-
- ## --> @dm:save name="customer_pid_sw"
-
- ## --> @dm:eval source="'software'"
-
- ## --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
+ ## --> @dm:recall name='api-response'
 
  ## --> @dm:save name='temp-enriched-sweol-values'
 
- ## #Temporary bypass to use already process data from dataset api-response. Above section needs to be commended out
-
- --> @c:new-block
- --> @dm:recall name='api-response'
- --> @dm:save name='temp-enriched-sweol-values'
  ## Process SWEoL
 
  --> @c:new-block
