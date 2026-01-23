@@ -922,6 +922,11 @@
               "visible": true,
               "key": true
             },
+            "contract_line_end_date": {
+              "title": "Contract End",
+              "type": "DATE",
+              "visible": false
+            },
             "portfolio_desc": {
               "title": "Portfolio",
               "type": "TEXT",
@@ -1521,6 +1526,11 @@
               "type": "FLOAT",
               "visible": true,
               "key": true
+            },
+            "contract_line_end_date": {
+              "title": "Contract End",
+              "type": "DATE",
+              "visible": false
             },
             "portfolio_desc": {
               "title": "Portfolio",
