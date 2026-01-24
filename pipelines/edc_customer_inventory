@@ -139,6 +139,7 @@
  --> @dm:eval match_inv=" 'IB Only' if PID=='Not Available' else 'IB + In Network' "
  --> @dm:selectcolumns exclude="^PID$"
  --> @dm:save name = "temp-contract_data_IB"
+ --> @dm:save name = "contract_data_IB"
  --> @dm:save name = "temp-contract_data"
  ## Find devices in network that are not in IB
 
