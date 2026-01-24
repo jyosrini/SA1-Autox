@@ -1,92 +1,136 @@
 {
-  "name": "node_details_app",
-  "label": "Node Details App",
-  "description": "Node Details App",
+  "name": "customer_discovery_runs_details_success",
+  "label": "Success",
+  "description": "onboarded_devices: Insights",
   "dashboard_folder": "NetworkDevicePack",
-  "context_label_id": "a_asset_name",
-  "version": "24.1.13.2",
-  "debug": true,
-  "enabled": true,
-  "custom_context": {
-    "rda-dashboard-live-edit": true
-  },
-  "context_enrichment": [
-    {
-      "stream": "cfx_rdaf_topology_nodes",
-      "stream0": "mp_nodes",
-      "enrich_columns": [
-        "node_type",
-        "host_name",
-        "node_label",
-        "device_hostname_short"
-      ],
-      "query_template0": "project_id = '$project_id' and customer_tag = '$customer_tag' and (device_ip = '$device_ip' or edge_ip is '$edge_ip')",
-      "query_template": "(device_ip = '$device_ip' or edge_ip is '$edge_ip')",
-      "defaultValues": {}
+  "version": "1.0.4",
+  "enabled": false,
+  "live_edi0t": true,
+  "dashboard_type": "template",
+  "template_variables": {
+    "CUST_ID": {
+      "contextId": "customerId"
     },
-    {
-      "stream": "rda_packs_meta",
-      "enrich_columns": [
-        "name",
-        "publisher",
-        "id",
-        "customers",
-        "status"
-      ],
-      "query_template": "id contains 'Fault' & status contains 'ACTIVATED'"
+    "PROJ_ID": {
+      "contextId": "project_id"
+    },
+    "PROJ_ID_SINGLE": {
+      "contextId": "project_id"
+    },
+    "CUST_TAG": {
+      "contextId": "customerTag"
+    },
+    "JOB_ID": {
+      "contextId": "jobid"
     }
-  ],
+  },
+  "dashboard_filters": {
+    "time_filter": true,
+    "extra_filter0": "source contains 'Run Details' and ingestion_id is '{{FILENAME}}' and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty)",
+    "default_time_filter_labels0": [
+      "Last 1 month"
+    ],
+    "columns_filter": [
+      {
+        "id": "timestamp",
+        "label": "Timestamp",
+        "type": "DATETIME"
+      }
+    ],
+    "group_filters": []
+  },
   "dashboard_sections": [
     {
-      "title": "Org Ops"
-    }
-  ],
-  "dashboard_type": "app",
-  "dashboard_groups": {
-    "from_to": {
-      "icon": "alert.svg",
-      "label": "Alerts"
-    },
-    "topo": {
-      "icon": "topology.svg",
-      "label": "Topology"
-    }
-  },
-  "dashboard_pages": [
-    {
-      "name": "device_inventory_from_alerts",
-      "label": "Inventory",
-      "icon": "alert.svg",
-      "context_filter": "node_type is 'CHASSIS'"
-    },
-    {
-      "name": "topology_geomap_dashboard",
-      "label": "Topology",
-      "icon": "stack.svg",
-      "context_filter": "node_type is 'CHASSIS'"
-    },
-    {
-      "name": "device_alerts_from_alert_fault",
-      "label": "Alerts",
-      "icon": "alert.svg",
-      "context_filter": "id contains 'Fault'"
-    },
-    {
-      "name": "device_syslog_from_alert_fault",
-      "label": "Syslogs",
-      "icon": "trace.svg",
-      "context_filter": "id contains 'Fault'"
-    },
-    {
-      "name": "device_SNMP_Traps_from_alerts_fault",
-      "label": "SNMP Traps",
-      "icon": "trace.svg",
-      "context_filter": "id contains 'Fault'"
+      "title": "Onboarded Devices",
+      "show_filter": true,
+      "widgets": [
+        {
+          "title": "Discovery Details",
+          "widget_type": "tabular",
+          "stream": "asset_inventory_collection_status_stream",
+          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname does not contains '{{CUST_TAG}}') and collection_status is 'Success' and target_type is 'DEVICE' and type_ is 'device_status' and jobid is '{{JOB_ID}}' and is_duplicate is 'false'",
+          "duration_hours": 1080,
+          "height": 4,
+          "max_width": 12,
+          "min_width": 12,
+          "columns": {
+            "asset_ip": "IP Address",
+            "collection_status": {
+              "title": "Collection Status",
+              "type": "DATETIME",
+              "visible": true
+            },
+            "collection_timestamp": {
+              "title": "Collection Timestamp",
+              "type": "DATETIME",
+              "visible": true
+            },
+            "jobname": {
+              "title": "Jobname",
+              "type": "TEXT",
+              "hidden": true
+            },
+            "jobid": {
+              "title": "Job Id",
+              "type": "TEXT",
+              "hidden": true
+            },
+            "is_duplicate": {
+              "title": "Duplicates",
+              "type": "TEXT",
+              "hidden": true
+            }
+          },
+          "widget_id": "b2c8d81c"
+        }
+      ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Org Ops"
+      "title": "Onboarded Devices",
+      "show_filter": true,
+      "widgets": [
+        {
+          "title": "Discovery Details",
+          "widget_type": "tabular",
+          "stream": "asset_inventory_collection_status_stream",
+          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname does not contains '{{CUST_TAG}}') and collection_status is 'Success' and target_type is 'DEVICE' and type_ is 'device_status' and jobid is '{{JOB_ID}}' and is_duplicate is 'false'",
+          "duration_hours": 1080,
+          "height": 4,
+          "max_width": 12,
+          "min_width": 12,
+          "columns": {
+            "asset_ip": "IP Address",
+            "collection_status": {
+              "title": "Collection Status",
+              "type": "DATETIME",
+              "visible": true
+            },
+            "collection_timestamp": {
+              "title": "Collection Timestamp",
+              "type": "DATETIME",
+              "visible": true
+            },
+            "jobname": {
+              "title": "Jobname",
+              "type": "TEXT",
+              "hidden": true
+            },
+            "jobid": {
+              "title": "Job Id",
+              "type": "TEXT",
+              "hidden": true
+            },
+            "is_duplicate": {
+              "title": "Duplicates",
+              "type": "TEXT",
+              "hidden": true
+            }
+          },
+          "widget_id": "b2c8d81c"
+        }
+      ]
     }
   ]
 }
