@@ -62,6 +62,7 @@
  --> @dm:eval sw_os_type=" 'Not Available' if sw_os_type in ['Not Found','Missing'] else sw_os_type"
  --> @dm:eval sw_version=" 'Not Available' if sw_version in ['Not Found','Missing'] else sw_version"
  --> @dm:fixnull columns="sw_version,sw_os_type" and value="Not Available" and apply_for_empty="yes"
+ --> @dm:fixnull columns="product_name" and value="No PID" and apply_for_empty="yes"
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
