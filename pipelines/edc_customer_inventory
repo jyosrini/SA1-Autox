@@ -137,8 +137,8 @@
  --> @dm:enrich dict="temp-network_inv" and src_key_cols="serial_number" and dict_key_cols="serial_number" and enrich_cols="sw_version,sw_os_type,product_name" and enrich_cols_as="sw_version,sw_os_type,PID"
  --> @dm:fixnull columns='PID' and value="Not Available"  and apply_for_empty="yes"
  --> @dm:eval match_inv=" 'IB Only' if PID=='Not Available' else 'IB + In Network' "
- --> @dm:selectcolumns exclude="^PID$"
  --> @dm:save name = "temp-contract_data_IB"
+ --> @dm:selectcolumns exclude="^PID$"
  --> @dm:save name = "contract_data_IB"
  --> @dm:save name = "temp-contract_data"
  ## Find devices in network that are not in IB
