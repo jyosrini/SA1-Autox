@@ -1,626 +1,1233 @@
 {
-  "name": "rda-dashboard-export-schedule",
-  "label": "Dashboard Export Schedules",
-  "description": "Dashboard Export Schedules",
-  "version": "24.5.29.1",
+  "name": "oia-alert-policies",
+  "label": "Oia Alert Policies",
+  "is_template": false,
+  "description": "Oia Alert Policies",
+  "live_edit": true,
+  "version": "24.07.24.1",
   "enabled": true,
   "dashboard_type": "template",
   "template_variables": {
-    "USER_ID": {
-      "contextId": "USER_ID"
+    "PROJECT_ID": {
+      "default": [
+        "61ed50a5-8634-4464-a17e-adf6b40225b2"
+      ],
+      "contextId": "projectid"
     }
   },
   "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 1 month"
-    ],
-    "extra_filter": "created_by is '{{USER_ID}}'",
-    "columns_filter": [
-      {
-        "id": "schedule_id",
-        "label": "Job ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_name",
-        "label": "Dashboard Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_title",
-        "label": "Dashboard Label",
-        "type": "TEXT"
-      },
-      {
-        "id": "filters",
-        "label": "Condition Filters",
-        "type": "TEXT"
-      },
-      {
-        "id": "name",
-        "label": "Export Filename",
-        "type": "TEXT"
-      },
-      {
-        "id": "include_csv_files",
-        "label": "Include CSV Files",
-        "type": "TEXT"
-      },
-      {
-        "id": "descr",
-        "label": "Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "email_id",
-        "label": "Send To",
-        "type": "TEXT"
-      },
-      {
-        "id": "start_time",
-        "label": "Schedule Start Time",
-        "type": "DATETIME"
-      },
-      {
-        "id": "next_run_time",
-        "label": "Next Run Time",
-        "type": "DATETIME"
-      },
-      {
-        "id": "end_time",
-        "label": "Schedule End Time",
-        "type": "DATETIME"
-      },
-      {
-        "id": "frequency",
-        "label": "Schedule Frequency",
-        "type": "TEXT"
-      },
-      {
-        "id": "created_by",
-        "label": "Created By",
-        "type": "TEXT"
-      },
-      {
-        "id": "expired",
-        "label": "Job Expired",
-        "type": "TEXT"
-      }
-    ]
+    "time_filter": true
   },
+  "dashboard_folder": "Default",
+  "dashboard_style": "tabbed",
   "dashboard_sections": [
     {
-      "title": "Dashboard Schedules",
+      "title": "Correlation Policies",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "title": "Schedule Details",
+          "title": "Correlaton Policies",
           "widget_type": "tabular",
-          "stream": "rda_dashboard_export_schedules",
-          "height": 10,
+          "stream": "oia_alertpolicy",
+          "duration_hours": 1090,
+          "ts_column": "updatedat",
           "min_width": 12,
+          "height": 12,
+          "max_width": 12,
           "paginated": true,
-          "columns": {
-            "job_id": {
-              "title": "RDA ID",
-              "key": true,
-              "hidden": true
-            },
-            "schedule_id": {
-              "title": "Job ID"
-            },
-            "created_by": {
-              "title": "Created By"
-            },
-            "dashboard_name": {
-              "title": "Dashboard Name",
-              "visible": false
-            },
-            "dashboard_title": {
-              "title": "Dashboard Label"
-            },
-            "filters": {
-              "title": "Condition Filters"
-            },
-            "name": {
-              "title": "Export Filename"
-            },
-            "include_csv_files": {
-              "title": "Include CSV Files"
-            },
-            "descr": {
-              "title": "Description"
-            },
-            "email_id": {
-              "title": "Send To"
-            },
-            "start_time": {
-              "title": "Schedule Start Time",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "next_run_time": {
-              "title": "Next Run Time",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "end_time": {
-              "title": "Schedule End Time",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "frequency": {
-              "title": "Schedule Frequency"
-            },
-            "expired": {
-              "title": "Job Expired"
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "remote_searchable_cols": [],
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "extra_filter": "policytype in ['CORRELATE_GROUP', 'CORRELATE_CATEGORY', 'CORRELATE_BURST']",
+          "sorting": [
+            {
+              "precedence": "desc"
             }
-          },
+          ],
           "custom_columns": [
             {
-              "id": "enabled",
+              "id": "enabled_string",
               "label": "Enabled",
-              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>{%endraw%}"
+              "expr": "'Yes' if enabled == 1 else 'No'",
+              "hidden": true
+            }
+          ],
+          "columns": {
+            "id": {
+              "title": "Id",
+              "key": true,
+              "visible": false,
+              "defaultWidth": 150
             },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled == 'yes' else ['#9E9E9E']",
-              "hidden": true,
+            "projectid": {
+              "key": true,
               "visible": false,
-              "sortable": false
-            }
-          ],
-          "0custom_columns": [
-            {
-              "id": "id",
-              "label": "JOB",
-              "expr": "job_id if job_id else None",
+              "title": "Project ID",
+              "defaultWidth": 150
+            },
+            "policytype": {
+              "key": true,
+              "visible": true,
+              "title": "Type",
+              "defaultWidth": 150
+            },
+            "precedence": {
+              "title": "Precedence",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "overrideprecedence": {
+              "title": "Precedence Override",
+              "key": true,
               "visible": false,
-              "key": true
+              "defaultWidth": 150
+            },
+            "name": {
+              "title": "Name",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "description": {
+              "title": "Description",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "criteriastring": {
+              "title": "Filter",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "groupby": {
+              "title": "GroupBy",
+              "key": true,
+              "visible": false,
+              "defaultWidth": 150,
+              "formatter": "ip"
+            },
+            "enabled_string": {
+              "title": "Enabled",
+              "type": "TEXT",
+              "visible": true,
+              "key": true,
+              "defaultValue": "No",
+              "uiProperties": {
+                "valueMap": {
+                  "editType": "switch",
+                  "trueValue": "Yes",
+                  "falseValue": "No",
+                  "defaultValue": "Yes",
+                  "editable": true,
+                  "showLabel": false
+                },
+                "editEndpoint": {
+                  "service-name": "alert-processor",
+                  "namespace": "io.cfx.dimensions.app",
+                  "methodName": "invokeAppApi:enableDisablePolicy",
+                  "stringified-params": true,
+                  "parse-output": false,
+                  "params": [
+                    {
+                      "is_pstream_dashboard": true,
+                      "context": {}
+                    }
+                  ]
+                }
+              }
+            },
+            "createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
             }
-          ],
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 60000
           },
           "actions": [
             {
-              "permission": "rda:schedules:view",
-              "title": "Delete",
+              "permission": "oia:groupPolicy:add",
+              "title": "Correlation Policy",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:delete-schedule",
+              "icon": "mdi mdi-plus",
+              "selectionType": "NONE",
+              "identifier": "alert-processor:cfx.correlation.policy.upsert",
               "contextParamList": {
                 "contextParams": [
                   {
-                    "paramKey": "job_id",
-                    "paramId": "id"
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
                   },
                   {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
+                    "paramKey": "id",
+                    "paramId": "policyid"
                   }
                 ]
               },
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.delete"
+                    "form_id": "cfx.correlation.policy.upsert",
+                    "is_pstream_dashboard": true,
+                    "context": {}
                   }
                 ]
               }
             },
             {
-              "permission": "rda:schedules:edit",
-              "title": "Update",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:update-schedule",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  }
-                ]
-              },
+              "permission": "oia:groupPolicy:top",
+              "title": "Top Policies",
+              "type": "POPUP_REPORT",
+              "selectionType": "NONE",
+              "identifier": "alert-processor:cfx.correlation.top.policies",
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getTopPolicies",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.update"
+                    "context": {},
+                    "filters": []
                   }
                 ]
-              },
+              }
+            },
+            {
+              "permission": "oia:groupPolicy:delete",
+              "title": "Delete Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "alert-processor:cfx.policy.delete",
               "actionCondition": {
                 "actionControl": "SHOW_IF",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
+                    "conditionValue": "0",
+                    "fieldId": "enabled"
+                  }
+                ]
+              },
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.policy.delete",
+                    "is_pstream_dashboard": true,
+                    "context": {}
                   }
                 ]
               }
             },
             {
-              "appName": "user-dashboard/rda-dashboard-view-logs",
-              "permission": "rda:schedules:view",
-              "identifier": "view_logs",
+              "permission": "oia:groupPolicy:edit",
+              "title": "Edit Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "alert-processor:cfx.correlation.policy.upsert",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.correlation.policy.upsert",
+                    "is_pstream_dashboard": true,
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:groupPolicy:alerts",
+              "title": "View Alerts",
+              "type": "GO_TO_APP_STATE",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Logs",
-              "type": "GO_TO_APP_STATE"
+              "appName": "user-dashboard/oia-view-alerts-policy-os",
+              "drillDownLinkField": "alerts",
+              "drillDownContext": "id",
+              "displayLabelColumnId": "rulename"
             },
             {
-              "permission": "rda:user_dashboard:enable",
-              "title": "Enable",
-              "type": "POPUP_FORM",
+              "permission": "oia:groupPolicy:groups",
+              "title": "View Groups",
+              "type": "GO_TO_APP_STATE",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:schedule-enable",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
-                  }
-                ]
-              },
+              "stateName": "app.featureapp",
+              "appName": "user-dashboard/oia-alert-groups-policy-os",
+              "drillDownLinkField": "groups",
+              "drillDownContext": "id",
+              "displayLabelColumnId": "rulename"
+            },
+            {
+              "permission": "oia:groupPolicy:performance",
+              "title": "View Performance",
+              "type": "POPUP_CHART",
+              "chart-type": "TIMESERIES_LINE_CHART",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getPolicyPerformanceTrend",
                 "parse-output": false,
                 "params": [
-                  {
-                    "formId": "rda.saas.dashboard.schedule.enable"
-                  }
+                  {}
                 ]
               },
               "actionCondition": {
                 "actionControl": "SHOW_IF",
                 "conditionalField": [
                   {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "enabled"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:user_dashboard:disable",
-              "title": "Disable",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:schedule-disable",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dashboard.schedule.disable"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "yes",
-                    "fieldId": "enabled"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
+                    "conditionType": "GREATER_THAN",
+                    "conditionValue": "0",
+                    "fieldId": "alerts"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "cdc398bc"
+          "widget_id": "94a3fc11"
+        }
+      ]
+    },
+    {
+      "title": "Suppression Policies",
+      "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
+      "widgets": [
+        {
+          "title": "Suppression Policies",
+          "widget_type": "tabular",
+          "stream": "oia_alertpolicy",
+          "ts_column": "createdat",
+          "duration_hours": 1090,
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "extra_filter": "policytype in ['SUPPRESS', 'SUPPRESS_FLAPPING']",
+          "sorting": [
+            {
+              "precedence": "desc"
+            }
+          ],
+          "remote_searchable_cols": [],
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "custom_columns": [
+            {
+              "id": "enabled_string",
+              "label": "Enabled",
+              "expr": "'Yes' if enabled == 1 else 'No'",
+              "hidden": true
+            }
+          ],
+          "columns": {
+            "id": {
+              "title": "id",
+              "key": true,
+              "visible": false,
+              "defaultWidth": 150
+            },
+            "projectid": {
+              "key": true,
+              "visible": false,
+              "title": "Project ID",
+              "defaultWidth": 150
+            },
+            "policytype": {
+              "key": true,
+              "visible": true,
+              "title": "Type",
+              "defaultWidth": 150
+            },
+            "precedence": {
+              "title": "Precedence",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "overrideprecedence": {
+              "title": "Precedence Override",
+              "key": true,
+              "visible": false,
+              "defaultWidth": 150
+            },
+            "name": {
+              "title": "Name",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "description": {
+              "title": "Description",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "criteriastring": {
+              "title": "Filter",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "selecteddataset": {
+              "title": "Dataset Name",
+              "type": "TEXT",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "pstreamnamestring": {
+              "title": "Pstream Name",
+              "type": "TEXT",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "enabled_string": {
+              "title": "Enabled",
+              "type": "TEXT",
+              "visible": true,
+              "key": true,
+              "defaultValue": "No",
+              "uiProperties": {
+                "valueMap": {
+                  "editType": "switch",
+                  "trueValue": "Yes",
+                  "falseValue": "No",
+                  "defaultValue": "Yes",
+                  "editable": true,
+                  "showLabel": false
+                },
+                "editEndpoint": {
+                  "service-name": "alert-processor",
+                  "namespace": "io.cfx.dimensions.app",
+                  "methodName": "invokeAppApi:enableDisablePolicy",
+                  "stringified-params": true,
+                  "parse-output": false,
+                  "params": [
+                    {
+                      "is_pstream_dashboard": true,
+                      "context": {}
+                    }
+                  ]
+                }
+              }
+            },
+            "createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            }
+          },
+          "actions": [
+            {
+              "permission": "oia:supressionPolicy:upsert",
+              "title": "Suppression Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "NONE",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "identifier": "alert-processor:cfx.suppression.policy.upsert",
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.suppression.policy.upsert",
+                    "is_pstream_dashboard": true,
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:supressionPolicy:delete",
+              "title": "Delete Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "identifier": "alert-processor:cfx.policy.delete",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "0",
+                    "fieldId": "enabled"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.policy.delete",
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:supressionPolicy:upsert",
+              "title": "Edit Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "alert-processor:cfx.suppression.policy.upsert",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.suppression.policy.upsert",
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:supressionPolicy:alerts",
+              "title": "View Alerts",
+              "type": "GO_TO_APP_STATE",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "appName": "user-dashboard/oia-view-alerts-policy-os",
+              "drillDownLinkField": "alerts",
+              "drillDownContext": "id",
+              "displayLabelColumnId": "rulename"
+            }
+          ],
+          "widget_id": "dbdd0d31"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Dashboard Schedules",
+      "title": "Correlation Policies",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "title": "Schedule Details",
+          "title": "Correlaton Policies",
           "widget_type": "tabular",
-          "stream": "rda_dashboard_export_schedules",
-          "height": 10,
+          "stream": "oia_alertpolicy",
+          "duration_hours": 1090,
+          "ts_column": "updatedat",
           "min_width": 12,
+          "height": 12,
+          "max_width": 12,
           "paginated": true,
-          "columns": {
-            "job_id": {
-              "title": "RDA ID",
-              "key": true,
-              "hidden": true
-            },
-            "schedule_id": {
-              "title": "Job ID"
-            },
-            "created_by": {
-              "title": "Created By"
-            },
-            "dashboard_name": {
-              "title": "Dashboard Name",
-              "visible": false
-            },
-            "dashboard_title": {
-              "title": "Dashboard Label"
-            },
-            "filters": {
-              "title": "Condition Filters"
-            },
-            "name": {
-              "title": "Export Filename"
-            },
-            "include_csv_files": {
-              "title": "Include CSV Files"
-            },
-            "descr": {
-              "title": "Description"
-            },
-            "email_id": {
-              "title": "Send To"
-            },
-            "start_time": {
-              "title": "Schedule Start Time",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "next_run_time": {
-              "title": "Next Run Time",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "end_time": {
-              "title": "Schedule End Time",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "frequency": {
-              "title": "Schedule Frequency"
-            },
-            "expired": {
-              "title": "Job Expired"
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "remote_searchable_cols": [],
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "extra_filter": "policytype in ['CORRELATE_GROUP', 'CORRELATE_CATEGORY', 'CORRELATE_BURST']",
+          "sorting": [
+            {
+              "precedence": "desc"
             }
-          },
+          ],
           "custom_columns": [
             {
-              "id": "enabled",
+              "id": "enabled_string",
               "label": "Enabled",
-              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>{%endraw%}"
+              "expr": "'Yes' if enabled == 1 else 'No'",
+              "hidden": true
+            }
+          ],
+          "columns": {
+            "id": {
+              "title": "Id",
+              "key": true,
+              "visible": false,
+              "defaultWidth": 150
             },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled == 'yes' else ['#9E9E9E']",
-              "hidden": true,
+            "projectid": {
+              "key": true,
               "visible": false,
-              "sortable": false
-            }
-          ],
-          "0custom_columns": [
-            {
-              "id": "id",
-              "label": "JOB",
-              "expr": "job_id if job_id else None",
+              "title": "Project ID",
+              "defaultWidth": 150
+            },
+            "policytype": {
+              "key": true,
+              "visible": true,
+              "title": "Type",
+              "defaultWidth": 150
+            },
+            "precedence": {
+              "title": "Precedence",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "overrideprecedence": {
+              "title": "Precedence Override",
+              "key": true,
               "visible": false,
-              "key": true
+              "defaultWidth": 150
+            },
+            "name": {
+              "title": "Name",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "description": {
+              "title": "Description",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "criteriastring": {
+              "title": "Filter",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "groupby": {
+              "title": "GroupBy",
+              "key": true,
+              "visible": false,
+              "defaultWidth": 150,
+              "formatter": "ip"
+            },
+            "enabled_string": {
+              "title": "Enabled",
+              "type": "TEXT",
+              "visible": true,
+              "key": true,
+              "defaultValue": "No",
+              "uiProperties": {
+                "valueMap": {
+                  "editType": "switch",
+                  "trueValue": "Yes",
+                  "falseValue": "No",
+                  "defaultValue": "Yes",
+                  "editable": true,
+                  "showLabel": false
+                },
+                "editEndpoint": {
+                  "service-name": "alert-processor",
+                  "namespace": "io.cfx.dimensions.app",
+                  "methodName": "invokeAppApi:enableDisablePolicy",
+                  "stringified-params": true,
+                  "parse-output": false,
+                  "params": [
+                    {
+                      "is_pstream_dashboard": true,
+                      "context": {}
+                    }
+                  ]
+                }
+              }
+            },
+            "createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
             }
-          ],
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 60000
           },
           "actions": [
             {
-              "permission": "rda:schedules:view",
-              "title": "Delete",
+              "permission": "oia:groupPolicy:add",
+              "title": "Correlation Policy",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:delete-schedule",
+              "icon": "mdi mdi-plus",
+              "selectionType": "NONE",
+              "identifier": "alert-processor:cfx.correlation.policy.upsert",
               "contextParamList": {
                 "contextParams": [
                   {
-                    "paramKey": "job_id",
-                    "paramId": "id"
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
                   },
                   {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
+                    "paramKey": "id",
+                    "paramId": "policyid"
                   }
                 ]
               },
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.delete"
+                    "form_id": "cfx.correlation.policy.upsert",
+                    "is_pstream_dashboard": true,
+                    "context": {}
                   }
                 ]
               }
             },
             {
-              "permission": "rda:schedules:edit",
-              "title": "Update",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:update-schedule",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  }
-                ]
-              },
+              "permission": "oia:groupPolicy:top",
+              "title": "Top Policies",
+              "type": "POPUP_REPORT",
+              "selectionType": "NONE",
+              "identifier": "alert-processor:cfx.correlation.top.policies",
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getTopPolicies",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.update"
+                    "context": {},
+                    "filters": []
                   }
                 ]
-              },
+              }
+            },
+            {
+              "permission": "oia:groupPolicy:delete",
+              "title": "Delete Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "alert-processor:cfx.policy.delete",
               "actionCondition": {
                 "actionControl": "SHOW_IF",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
+                    "conditionValue": "0",
+                    "fieldId": "enabled"
+                  }
+                ]
+              },
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.policy.delete",
+                    "is_pstream_dashboard": true,
+                    "context": {}
                   }
                 ]
               }
             },
             {
-              "appName": "user-dashboard/rda-dashboard-view-logs",
-              "permission": "rda:schedules:view",
-              "identifier": "view_logs",
+              "permission": "oia:groupPolicy:edit",
+              "title": "Edit Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "alert-processor:cfx.correlation.policy.upsert",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.correlation.policy.upsert",
+                    "is_pstream_dashboard": true,
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:groupPolicy:alerts",
+              "title": "View Alerts",
+              "type": "GO_TO_APP_STATE",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Logs",
-              "type": "GO_TO_APP_STATE"
+              "appName": "user-dashboard/oia-view-alerts-policy-os",
+              "drillDownLinkField": "alerts",
+              "drillDownContext": "id",
+              "displayLabelColumnId": "rulename"
             },
             {
-              "permission": "rda:user_dashboard:enable",
-              "title": "Enable",
-              "type": "POPUP_FORM",
+              "permission": "oia:groupPolicy:groups",
+              "title": "View Groups",
+              "type": "GO_TO_APP_STATE",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:schedule-enable",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
-                  }
-                ]
-              },
+              "stateName": "app.featureapp",
+              "appName": "user-dashboard/oia-alert-groups-policy-os",
+              "drillDownLinkField": "groups",
+              "drillDownContext": "id",
+              "displayLabelColumnId": "rulename"
+            },
+            {
+              "permission": "oia:groupPolicy:performance",
+              "title": "View Performance",
+              "type": "POPUP_CHART",
+              "chart-type": "TIMESERIES_LINE_CHART",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getPolicyPerformanceTrend",
                 "parse-output": false,
                 "params": [
-                  {
-                    "formId": "rda.saas.dashboard.schedule.enable"
-                  }
+                  {}
                 ]
               },
               "actionCondition": {
                 "actionControl": "SHOW_IF",
                 "conditionalField": [
                   {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "enabled"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:user_dashboard:disable",
-              "title": "Disable",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:schedule-disable",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dashboard.schedule.disable"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "yes",
-                    "fieldId": "enabled"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
+                    "conditionType": "GREATER_THAN",
+                    "conditionValue": "0",
+                    "fieldId": "alerts"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "cdc398bc"
+          "widget_id": "94a3fc11"
+        }
+      ]
+    },
+    {
+      "title": "Suppression Policies",
+      "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
+      "widgets": [
+        {
+          "title": "Suppression Policies",
+          "widget_type": "tabular",
+          "stream": "oia_alertpolicy",
+          "ts_column": "createdat",
+          "duration_hours": 1090,
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "extra_filter": "policytype in ['SUPPRESS', 'SUPPRESS_FLAPPING']",
+          "sorting": [
+            {
+              "precedence": "desc"
+            }
+          ],
+          "remote_searchable_cols": [],
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "custom_columns": [
+            {
+              "id": "enabled_string",
+              "label": "Enabled",
+              "expr": "'Yes' if enabled == 1 else 'No'",
+              "hidden": true
+            }
+          ],
+          "columns": {
+            "id": {
+              "title": "id",
+              "key": true,
+              "visible": false,
+              "defaultWidth": 150
+            },
+            "projectid": {
+              "key": true,
+              "visible": false,
+              "title": "Project ID",
+              "defaultWidth": 150
+            },
+            "policytype": {
+              "key": true,
+              "visible": true,
+              "title": "Type",
+              "defaultWidth": 150
+            },
+            "precedence": {
+              "title": "Precedence",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "overrideprecedence": {
+              "title": "Precedence Override",
+              "key": true,
+              "visible": false,
+              "defaultWidth": 150
+            },
+            "name": {
+              "title": "Name",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "description": {
+              "title": "Description",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "criteriastring": {
+              "title": "Filter",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "selecteddataset": {
+              "title": "Dataset Name",
+              "type": "TEXT",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "pstreamnamestring": {
+              "title": "Pstream Name",
+              "type": "TEXT",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "enabled_string": {
+              "title": "Enabled",
+              "type": "TEXT",
+              "visible": true,
+              "key": true,
+              "defaultValue": "No",
+              "uiProperties": {
+                "valueMap": {
+                  "editType": "switch",
+                  "trueValue": "Yes",
+                  "falseValue": "No",
+                  "defaultValue": "Yes",
+                  "editable": true,
+                  "showLabel": false
+                },
+                "editEndpoint": {
+                  "service-name": "alert-processor",
+                  "namespace": "io.cfx.dimensions.app",
+                  "methodName": "invokeAppApi:enableDisablePolicy",
+                  "stringified-params": true,
+                  "parse-output": false,
+                  "params": [
+                    {
+                      "is_pstream_dashboard": true,
+                      "context": {}
+                    }
+                  ]
+                }
+              }
+            },
+            "createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            }
+          },
+          "actions": [
+            {
+              "permission": "oia:supressionPolicy:upsert",
+              "title": "Suppression Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "NONE",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "identifier": "alert-processor:cfx.suppression.policy.upsert",
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.suppression.policy.upsert",
+                    "is_pstream_dashboard": true,
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:supressionPolicy:delete",
+              "title": "Delete Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "identifier": "alert-processor:cfx.policy.delete",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "0",
+                    "fieldId": "enabled"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.policy.delete",
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:supressionPolicy:upsert",
+              "title": "Edit Policy",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "alert-processor:cfx.suppression.policy.upsert",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "{{PROJECT_ID}}",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "id",
+                    "paramId": "policyid"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "alert-processor",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.suppression.policy.upsert",
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:supressionPolicy:alerts",
+              "title": "View Alerts",
+              "type": "GO_TO_APP_STATE",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "appName": "user-dashboard/oia-view-alerts-policy-os",
+              "drillDownLinkField": "alerts",
+              "drillDownContext": "id",
+              "displayLabelColumnId": "rulename"
+            }
+          ],
+          "widget_id": "dbdd0d31"
         }
       ]
     }

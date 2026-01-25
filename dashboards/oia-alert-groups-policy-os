@@ -1,188 +1,339 @@
 {
-  "name": "oia-alert-groups-policy-os",
-  "label": "Alert Group",
-  "description": "Open Search Based OIA Alert Groups Policy",
-  "version": "23.1.2",
+  "name": "incident-collaboration",
+  "description": "Incident Collaboration",
+  "label": "Incident Collaboration",
   "enabled": true,
-  "debug": true,
-  "dashboard_style": "auto",
-  "status_poller": {},
-  "stream": "oia-alerts-stream",
+  "exportable": false,
   "dashboard_type": "template",
+  "dashboard_style": "auto",
+  "version": "22.10.7.1",
   "template_variables": {
+    "STACK_NAME": {
+      "contextId": "stack_name"
+    },
     "PROJECT_ID": {
-      "default": [
-        "61ed50a5-8634-4464-a17e-adf6b40225b2"
-      ],
       "contextId": "projectId"
-    },
-    "RULE_ID": {
-      "default": "2629b6df-d57f-4f81-8465-1d70ddc8dadf",
-      "contextId": "ruleid"
-    },
-    "SOURCE_DASHBOARD_ID": {
-      "default": "user-dashboard-oia-alert-groups-policy-os",
-      "contextId": "sourceDashboardId"
     }
+  },
+  "custom_context": {
+    "alert-context": true
   },
   "dashboard_filters": {
     "time_filter": true,
-    "default_time_filter_non_removable": true,
-    "show_default_time_filter": false,
-    "additional_datetime_column_filters": [
-      {
-        "id": "a_created_ts",
-        "label": "Created At"
-      },
-      {
-        "id": "a_updated_ts",
-        "label": "Updated At"
-      }
-    ],
+    "extra_filter": "projectid in {{PROJECT_ID}}",
     "columns_filter": [
       {
-        "id": "a_id",
-        "label": "Alert Id",
+        "id": "incidentid",
+        "label": "Incident ID",
         "type": "TEXT"
       },
       {
-        "id": "a_alert_key",
-        "label": "Alert Key",
+        "id": "activity",
+        "label": "Activity",
         "type": "TEXT"
       },
       {
-        "id": "customer_id",
-        "label": "Customer ID",
+        "id": "sourcesystemname",
+        "label": "Source System",
         "type": "TEXT"
       },
       {
-        "id": "project_id",
-        "label": "Project Id",
+        "id": "target",
+        "label": "Target System",
         "type": "TEXT"
       },
       {
-        "id": "a_message",
+        "id": "content",
         "label": "Message",
         "type": "TEXT"
       },
       {
-        "id": "a_severity",
-        "label": "Severity",
+        "id": "senderid",
+        "label": "User",
         "type": "TEXT"
       },
       {
-        "id": "a_status",
-        "label": "Monitoring Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_incident_id",
-        "label": "Incident",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_ticket_id",
-        "label": "ITSM Ticket",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_raised_ts",
-        "label": "Raised At",
+        "id": "createdat",
+        "label": "Created",
         "type": "DATETIME"
       },
       {
-        "id": "a_cleared_ts",
-        "label": "Cleared At",
-        "type": "DATETIME"
-      },
-      {
-        "id": "a_rule_name",
-        "label": "Policy Name",
+        "id": "subject",
+        "label": "Subject",
         "type": "TEXT"
       },
       {
-        "id": "a_rule_type",
-        "label": "Policy Type",
+        "id": "activity",
+        "label": "Activity",
         "type": "TEXT"
-      },
-      {
-        "id": "a_cleared_by",
-        "label": "Cleared By",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_clear_message",
-        "label": "Clear Message",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_cause_notes",
-        "label": "Cause Notes",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_en_incidentAnalytics_alerts",
-        "label": "Alerts",
-        "type": "DOUBLE"
       }
     ],
     "default_time_filter_labels": [
       "Last 24 hours"
-    ],
-    "extra_filter": "a_rule_id is '{{RULE_ID}}' and a_source_systemname in 'Alert Group' and a_correlation_status not-in 'AGGREGATE' "
+    ]
   },
-  "import": [
-    {
-      "from": "oia-alert-groups-os",
-      "as": "alertgroup"
-    }
-  ],
   "dashboard_sections": [
     {
-      "title": "Alert Groups",
+      "title": "Activity",
       "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
       "widgets": [
         {
-          "extends": [
-            "alertgroup:group_tabular",
-            "alertgroup:actions_lib.group_tabular_actions"
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Activity",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "group_by": [
+            "activity"
           ],
-          "extend_vars": {
-            "group_tabular_extra_filter": "a_rule_id is '{{RULE_ID}}' and a_source_systemname in 'Alert Group' and a_correlation_status not-in 'AGGREGATE'",
-            "clear_alerts_extra_filter": "a_status is not 'CLEARED' and a_rule_id is '{{RULE_ID}}' and a_source_systemname in 'Alert Group' and a_correlation_status not-in 'AGGREGATE'"
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
           },
-          "min_width": 12,
-          "height": 12,
+          "widget_id": "6dc8340e"
+        },
+        {
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Target",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "height": 4,
+          "max_width": 6,
+          "group_by": [
+            "target"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "e36576b7"
+        },
+        {
+          "title": "Collaboration Messages",
+          "widget_type": "tabular",
           "max_width": 12,
-          "widget_id": "94a3fc11"
+          "height": 12,
+          "min_width": 6,
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "paginated": true,
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "subject",
+            "content",
+            "sendername",
+            "sourcesystemname",
+            "target",
+            "incidentid"
+          ],
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "duration_hours": 24,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
+          "columns": {
+            "subject": "Subject",
+            "content": "Message",
+            "sendername": "User",
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME"
+            },
+            "sourcesystemname": "Source",
+            "target": "Target",
+            "incidentid": {
+              "title": "Incident ID",
+              "key": true
+            }
+          },
+          "severity_columns": [
+            "severity"
+          ],
+          "actions": [
+            {
+              "title": "View Incident",
+              "type": "GO_TO_APP_STATE",
+              "stateName": "app.featureapp",
+              "appName": "user-dashboard/incident-details-app",
+              "selectionType": "SINGLE",
+              "drillDownLinkField": "incidentid",
+              "drillDownContext": "incidentid",
+              "destinationContext": "incidentid",
+              "displayLabelColumnId": "Incident ID",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "incidentid",
+                    "paramId": "incidentid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "roomid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "projectId"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "a7f6e486"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Alert Groups",
+      "title": "Activity",
       "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
       "widgets": [
         {
-          "extends": [
-            "alertgroup:group_tabular",
-            "alertgroup:actions_lib.group_tabular_actions"
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Activity",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "group_by": [
+            "activity"
           ],
-          "extend_vars": {
-            "group_tabular_extra_filter": "a_rule_id is '{{RULE_ID}}' and a_source_systemname in 'Alert Group' and a_correlation_status not-in 'AGGREGATE'",
-            "clear_alerts_extra_filter": "a_status is not 'CLEARED' and a_rule_id is '{{RULE_ID}}' and a_source_systemname in 'Alert Group' and a_correlation_status not-in 'AGGREGATE'"
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
           },
-          "min_width": 12,
-          "height": 12,
+          "widget_id": "6dc8340e"
+        },
+        {
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Target",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "height": 4,
+          "max_width": 6,
+          "group_by": [
+            "target"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "e36576b7"
+        },
+        {
+          "title": "Collaboration Messages",
+          "widget_type": "tabular",
           "max_width": 12,
-          "widget_id": "94a3fc11"
+          "height": 12,
+          "min_width": 6,
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "paginated": true,
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "subject",
+            "content",
+            "sendername",
+            "sourcesystemname",
+            "target",
+            "incidentid"
+          ],
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "duration_hours": 24,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
+          "columns": {
+            "subject": "Subject",
+            "content": "Message",
+            "sendername": "User",
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME"
+            },
+            "sourcesystemname": "Source",
+            "target": "Target",
+            "incidentid": {
+              "title": "Incident ID",
+              "key": true
+            }
+          },
+          "severity_columns": [
+            "severity"
+          ],
+          "actions": [
+            {
+              "title": "View Incident",
+              "type": "GO_TO_APP_STATE",
+              "stateName": "app.featureapp",
+              "appName": "user-dashboard/incident-details-app",
+              "selectionType": "SINGLE",
+              "drillDownLinkField": "incidentid",
+              "drillDownContext": "incidentid",
+              "destinationContext": "incidentid",
+              "displayLabelColumnId": "Incident ID",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "incidentid",
+                    "paramId": "incidentid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "roomid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "projectId"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "a7f6e486"
         }
       ]
     }

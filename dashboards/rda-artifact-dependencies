@@ -1,188 +1,82 @@
 {
-  "name": "rda-artifact-dependencies",
-  "label": "Artifact Dependencies",
-  "description": "RDA Artifact Dependencies",
+  "name": "network_discovery_main_app",
+  "label": "Network discovery Main App",
+  "description": "Network discovery App",
+  "dashboard_folder": "NetworkDevicePack",
+  "version": "4.0.0",
   "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
-  "stream": "rda_artifact_dependencies",
+  "dashboard_type": "app",
+  "enable_storyboard": false,
+  "live_edit": true,
+  "custom_context": {
+    "rda-dashboard-live-edit": true
+  },
   "dashboard_filters": {
-    "time_filter": false,
-    "group_filters": [
-      {
-        "stream": "rda_artifact_dependencies",
-        "title": "To Type",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "to_artifact_type"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_artifact_dependencies",
-        "title": "To Artifact",
-        "duration_hours": 87600,
-        "limit": 200,
-        "group_by": [
-          "to_artifact_name"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_artifact_dependencies",
-        "title": "From Type",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "from_artifact_type"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_artifact_dependencies",
-        "title": "From Artifact",
-        "duration_hours": 87600,
-        "limit": 200,
-        "group_by": [
-          "from_artifact_name"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      }
-    ],
-    "columns_filter": [
-      {
-        "id": "to_artifact_type",
-        "label": "To Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "to_artifact_name",
-        "label": "To Artifact",
-        "type": "TEXT"
-      },
-      {
-        "id": "from_artifact_type",
-        "label": "From Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "from_artifact_name",
-        "label": "From Artifact",
-        "type": "TEXT"
-      },
-      {
-        "id": "_RDA_Id",
-        "label": "_RDA_ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "count_",
-        "label": "Count_",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      }
+    "time_filter": true,
+    "default_time_filter_labels": [
+      "All Time"
     ]
   },
-  "dashboard_sections": [
+  "context_enrichment": [
     {
-      "title": "Artifact Dependencies",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Artifact Dependencies",
-          "widget_type": "tabular",
-          "stream": "rda_artifact_dependencies",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "to_artifact_type",
-            "to_artifact_name",
-            "from_artifact_type",
-            "from_artifact_name"
-          ],
-          "ts_column": "timestamp",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "columns": {
-            "from_artifact_type": {
-              "title": "From Type"
-            },
-            "from_artifact_name": {
-              "title": "From Artifact"
-            },
-            "to_artifact_type": {
-              "title": "To Type"
-            },
-            "to_artifact_name": {
-              "title": "To Artifact"
-            }
-          },
-          "actions": [],
-          "widget_id": "01dc3a55"
-        }
-      ]
+      "stream": "rda_packs_meta",
+      "enrich_columns": [
+        "name"
+      ],
+      "rename_columns": {
+        "name": "pack_name1"
+      },
+      "query_template": "(name is 'Performance Management') & single_tenant_status is 'ACTIVATED'"
     }
   ],
-  "pstream_dashboards": [
+  "dashboard_groups": {
+    "groupViewData": {
+      "icon": "asset.svg",
+      "label": "Inventory"
+    }
+  },
+  "dashboard_pages": [
     {
-      "title": "Artifact Dependencies",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Artifact Dependencies",
-          "widget_type": "tabular",
-          "stream": "rda_artifact_dependencies",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "to_artifact_type",
-            "to_artifact_name",
-            "from_artifact_type",
-            "from_artifact_name"
-          ],
-          "ts_column": "timestamp",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "columns": {
-            "from_artifact_type": {
-              "title": "From Type"
-            },
-            "from_artifact_name": {
-              "title": "From Artifact"
-            },
-            "to_artifact_type": {
-              "title": "To Type"
-            },
-            "to_artifact_name": {
-              "title": "To Artifact"
-            }
-          },
-          "actions": [],
-          "widget_id": "01dc3a55"
-        }
-      ]
+      "name": "network_configure_and_manage",
+      "label": "Configure and Manage",
+      "icon": "settings.svg"
+    },
+    {
+      "name": "network_collection_and_access_status",
+      "label": "Status",
+      "icon": "history.svg"
+    },
+    {
+      "name": "network_device",
+      "label": "Network Devices",
+      "icon": "hardware.svg",
+      "group": "groupViewData"
+    },
+    {
+      "name": "network_assets_inventory",
+      "label": "Network Assets",
+      "icon": "hardware.svg",
+      "group": "groupViewData"
+    },
+    {
+      "name": "customer_topology",
+      "label": "Topology",
+      "icon": "Analytics.svg"
+    },
+    {
+      "name": "customer_asset_navigator",
+      "label": "Asset Navigator",
+      "icon": "stack.svg"
+    },
+    {
+      "name": "kpi-workbench",
+      "label": "Metrics Workbench",
+      "custom_context": {
+        "formEndpoint": "dynamic_form.preview_kpi_dashboard",
+        "previewEndpoint": "preview_kpi_dashboard"
+      },
+      "icon": "insights.svg",
+      "context_filter": "pack_name1 contains 'Performance Management'"
     }
   ]
 }
