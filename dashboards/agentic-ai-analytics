@@ -1,1127 +1,1036 @@
 {
-  "name": "agentic-ai-analytics",
-  "label": "Agentic AI",
-  "description": "Agentic AI",
-  "enabled": true,
+  "name": "oia-mapping-endpoint",
+  "label": "Oia Mapping And Endpoint Dashboards",
+  "is_template": false,
+  "description": "Oia Mapping And Endpoint Dashboards",
   "live_edit": true,
-  "version": "25.3.10.1",
-  "dashboard_type": "template",
-  "dashboard_filters": {
-    "time_filter": false,
-    "group_filters": [
-      {
-        "stream": "rda_agentic_ai_agents",
-        "title": "Agents",
-        "group_by": [
-          "agent_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 999999,
-        "agg": "value_count",
-        "column": "_id",
-        "type": "int",
-        "show_counts": false
-      }
-    ]
-  },
+  "version": "24.07.24.2",
+  "enabled": true,
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "Default",
+  "dashboard_style": "tabbed",
   "dashboard_sections": [
     {
-      "title": "Agents",
+      "title": "Alert Endpoints",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "title": "Agents",
+          "title": "Alert Endpoints",
           "widget_type": "tabular",
+          "stream": "oia_alertendpoints",
+          "ts_column": "createdat",
           "min_width": 12,
-          "height": 6,
+          "height": 12,
           "max_width": 12,
+          "paginated": true,
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "sorting1": [
+            {
+              "precedence": "desc"
+            }
+          ],
+          "remote_searchable_cols": [],
+          "refreshRequired": true,
           "timebased": false,
-          "timestamp": "timestamp",
-          "stream": "rda_agentic_ai_agents",
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
+          "max_rows": 50,
           "columns": {
-            "agent_id": {
-              "title": "Agent ID",
-              "key": true,
-              "hidden": true
-            },
-            "agent_name": {
+            "name": {
               "title": "Name",
-              "defaultWidth": 150,
-              "key": true
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
             },
             "description": {
-              "title": "Agent Task",
-              "key": true
+              "key": true,
+              "visible": true,
+              "title": "Description",
+              "defaultWidth": 150
             },
-            "status_color": {
-              "type": "COLOR-MAP",
-              "source-column": "status",
-              "color-map": {
-                "CREATED": "#4CAF50",
-                "CREATING": "#FF5722",
-                "FAILED": "#B71C1C"
+            "type": {
+              "key": true,
+              "visible": true,
+              "title": "Endpoint Type",
+              "defaultWidth": 150
+            },
+            "role": {
+              "title": "Endpoint Role",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "category": {
+              "title": "Event Category",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "eventtype": {
+              "title": "Event Type",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "enabled": {
+              "title": "Enable/Disable",
+              "type": "TEXT",
+              "visible": true,
+              "key": true,
+              "defaultValue": "yes",
+              "uiProperties": {
+                "valueMap": {
+                  "editType": "switch",
+                  "trueValue": "yes",
+                  "falseValue": "no",
+                  "defaultValue": "yes",
+                  "editable": true,
+                  "showLabel": false
+                },
+                "editEndpoint": {
+                  "service-name": "configuration-service",
+                  "namespace": "io.cfx.dimensions.app",
+                  "methodName": "invokeAppApi:enableDisableEndpoint",
+                  "stringified-params": true,
+                  "useReportContext": true,
+                  "parse-output": false,
+                  "params": [
+                    {
+                      "context": {}
+                    }
+                  ]
+                }
               }
-            },
-            "status": {
-              "title": "Status",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.status_color }}'}}' > {{'{{ row.status }}'}} </span>"
-            },
-            "message": {
-              "title": "Message",
-              "key": false,
-              "formatter": "truncate"
             }
           },
-          "widget_id": "2630645f",
           "actions": [
             {
-              "permission": "rda:github:view",
-              "title": "Add Agent",
+              "permission": "oia:eventEndPoint:add",
+              "title": "Add",
               "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
               "selectionType": "NONE",
-              "identifier": "saas-service-action:agenticai-add-agent",
+              "identifier": "configuration-service:cfx.eventendpoint.upsert",
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.agenticai.add.agent"
+                    "form_id": "cfx.eventendpoint.upsert",
+                    "context": {},
+                    "eventCategory": "eventCategory"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:github:view",
-              "title": "Edit Task Graph",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:agenticai-edit-task-graph",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.agenticai.edit.task.graph"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard/agentic-ai-agents-app",
-              "identifier": "launch.dashboard.agent.dashboard",
-              "drillDownLinkField": "agent_name",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "agent_name",
-                    "paramId": "agent"
-                  }
-                ]
-              },
-              "selectionType": "SINGLE",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission1": "rda:github:view",
-              "title": "Execute Agent",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:agenticai-execute",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Execute"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Are you sure you want to execute the agent?",
-                          "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "Are you sure you want to execute the agent?",
-                          "hidden": false,
-                          "fieldId": "name"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:github:view",
+              "permission": "oia:eventEndPoint:delete",
               "title": "Delete",
               "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+              "identifier": "configuration-service:cfx.eventendpoint.delete",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
                   {
-                    "formId": "rda.saas.dynamic.form",
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Are you sure you want to delete the agent?",
-                          "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "Are you sure you want to delete the agent?",
-                          "hidden": false,
-                          "fieldId": "name"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "UPDATE_PSTREAM",
-                        "pstreamName": "rda_agentic_ai_agents",
-                        "operation": "DELETE",
-                        "cfxql_query": "{% raw %}agent_id is '{{agent_id}}' and agent_name is '{{agent_name}}'{% endraw %}"
-                      }
-                    ],
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "actionLabel": "Delete",
-                          "type": "SUBMIT",
-                          "identifier": "Submit"
-                        }
-                      ]
-                    }
+                    "conditionType": "NOT_EQUAL",
+                    "conditionValue": "System",
+                    "fieldId": "createdby"
                   }
                 ]
               },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATING",
-                    "fieldId": "status"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "FAILED",
-                    "fieldId": "status"
+                    "form_id": "cfx.eventendpoint.delete",
+                    "context": {}
                   }
                 ]
               }
             },
             {
-              "permission": "rda:github:view",
-              "title": "Run Test",
+              "permission": "oia:eventEndPoint:edit",
+              "title": "Edit",
               "type": "POPUP_FORM",
-              "contextParamList": {
-                "contextParams": [
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "configuration-service:cfx.eventendpoint.upsert",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
                   {
-                    "paramKey": "agent_id",
-                    "paramId": "agent_id"
+                    "conditionType": "NOT_EQUAL",
+                    "conditionValue": "System",
+                    "fieldId": "createdby"
                   }
                 ]
               },
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Run"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "fieldId": "run_name",
-                          "label": "Run Name",
-                          "help": "This will let the user add the name to the Test",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "Select the LLM to use.",
-                          "dataType": "string",
-                          "controlType": "COMBO_BOX",
-                          "required": true,
-                          "editable": true,
-                          "label": "LLM",
-                          "hidden": false,
-                          "fieldId": "llm",
-                          "lovSourceType": "pstream",
-                          "lovSourceParams": {
-                            "name": "rda_secrets_meta",
-                            "valueColumn": "name",
-                            "labelColumn": "name",
-                            "query": "type is llm"
-                          },
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "TestName",
-                          "dataType": "string",
-                          "required": false,
-                          "editable": true,
-                          "hidden": false,
-                          "fieldId": "selected_test",
-                          "controlType": "SELECTOR_TABLE",
-                          "controlPropertyList": [
-                            {
-                              "attribute": "column-key",
-                              "value": "test_name"
-                            },
-                            {
-                              "attribute": "selection",
-                              "value": "MULTIPLE"
-                            }
-                          ],
-                          "widget": {
-                            "title": "Tests",
-                            "timebased": false,
-                            "max_width": 12,
-                            "height": 8,
-                            "min_width": 12,
-                            "stream": "rda_agentic_ai_tests",
-                            "ts_column": "timestamp",
-                            "extra_filter": "agent_id is '$agent_id'",
-                            "sorting": [],
-                            "columns": {
-                              "test_name": {
-                                "title": "Test Name",
-                                "key": true
-                              },
-                              "test_description": {
-                                "title": "Test Description",
-                                "key": false
-                              },
-                              "test_id": {
-                                "title": "Test ID",
-                                "key": true
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "show_submission_prompt": true,
-                        "submission_title": "Executing Test Run",
-                        "submission_message": "The test run has been initiated and is currently executing in the background. Please check the Test Runs page in Test Details.",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
+                    "form_id": "cfx.eventendpoint.upsert",
+                    "context": {}
                   }
                 ]
               }
             },
             {
-              "permission": "rda:github:view",
-              "title": "Execute Agent",
+              "permission": "oia:eventEndPoint:webhook",
+              "title": "Webhook URL",
               "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Execute"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "fieldId": "run_name",
-                          "label": "Run Name",
-                          "help": "This will let the user add the name to the Test",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "Select the LLM to use.",
-                          "dataType": "string",
-                          "controlType": "COMBO_BOX",
-                          "required": true,
-                          "editable": true,
-                          "label": "LLM",
-                          "hidden": false,
-                          "fieldId": "llm",
-                          "lovSourceType": "pstream",
-                          "lovSourceParams": {
-                            "name": "rda_secrets_meta",
-                            "valueColumn": "name",
-                            "labelColumn": "name",
-                            "query": "type is llm"
-                          },
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "fieldId": "capture_mode",
-                          "label": "Capture Mode",
-                          "description": "Capture mode will download the stream query outputs and prepare a zip file so that it can be used for other tests.",
-                          "required": false,
-                          "default": false,
-                          "dataType": "boolean",
-                          "hidden": false,
-                          "fieldControlPropertyList": [
-                            {
-                              "fieldId": "download_label",
-                              "controlActions": [
-                                "ShowField"
-                              ],
-                              "condition": {
-                                "selectionValue": "true"
-                              }
-                            }
-                          ],
-                          "editable": true,
-                          "controlType": "BOOLEAN_FIELD"
-                        },
-                        {
-                          "help": "The output file will be availabe in My Downloads.",
-                          "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "The output file will be availabe in My Downloads.",
-                          "hidden": true,
-                          "fieldId": "download_label"
-                        },
-                        {
-                          "fieldId": "dryrun_mode",
-                          "label": "Dry Run",
-                          "description": "",
-                          "help": "In dry run mode all the steps of type write_stream and run_pipeline will be skipped",
-                          "required": false,
-                          "default": false,
-                          "dataType": "boolean",
-                          "hidden": false,
-                          "editable": true,
-                          "controlType": "BOOLEAN_FIELD"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "show_submission_prompt": true,
-                        "submission_title": "Agent Execution in Progress",
-                        "submission_message": "The agent is currently executing in the background. If capture is enabled, the captured data will be available in MyDownloads upon completion.",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              },
               "actionCondition": {
                 "actionControl": "SHOW_IF",
-                "operator": "OR",
+                "operator": "AND",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
+                    "conditionValue": "source",
+                    "fieldId": "role"
+                  },
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "webhook-basic",
+                    "fieldId": "type"
+                  }
+                ]
+              },
+              "identifier": "configuration-service:cfx.eventendpoint.view",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.eventendpoint.view",
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventEndPoint:webhook",
+              "title": "Kafka Details",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "operator": "AND",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "source",
+                    "fieldId": "role"
+                  },
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "kafka",
+                    "fieldId": "type"
+                  }
+                ]
+              },
+              "identifier": "configuration-service:cfx.eventendpoint.viewkafka",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.eventendpoint.viewkafka",
+                    "context": {}
                   }
                 ]
               }
             }
-          ]
+          ],
+          "widget_id": "94a3fc11"
         }
+      ]
+    },
+    {
+      "title": "Alert Mappings",
+      "show_filter": true,
+      "projects": [
+        "ACME"
       ],
-      "saved_time": "2024-11-19T07:28:36.803725"
+      "widgets": [
+        {
+          "title": "Alert Mappings",
+          "widget_type": "tabular",
+          "stream": "oia_eventmapping",
+          "ts_column": "updated",
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "remote_searchable_cols": [],
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "sorting1": [
+            {
+              "precedence": "desc"
+            }
+          ],
+          "columns": {
+            "mappingid": {
+              "title": "Mapping Id",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "description": {
+              "title": "Description",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "sourcename": {
+              "key": true,
+              "visible": true,
+              "title": "Source Endpoint",
+              "defaultWidth": 150
+            },
+            "targetname": {
+              "key": true,
+              "visible": true,
+              "title": "Target Endpoint",
+              "defaultWidth": 150
+            },
+            "sourceendpointtype": {
+              "title": "Source Endpoint Type",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "targetendpointtype": {
+              "title": "Target Endpoint Type",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "sourcemapper": {
+              "title": "Source Mapper",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "sourcepipeline": {
+              "title": "Source Pipeline",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "sourcebundle": {
+              "title": "Source Bundle",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "enabled": {
+              "title": "Enable/Disable",
+              "type": "TEXT",
+              "visible": true,
+              "key": true,
+              "defaultValue": "yes",
+              "uiProperties": {
+                "valueMap": {
+                  "editType": "switch",
+                  "trueValue": "yes",
+                  "falseValue": "no",
+                  "defaultValue": "yes",
+                  "editable": true,
+                  "showLabel": false
+                },
+                "editEndpoint": {
+                  "service-name": "saas-reports",
+                  "namespace": "io.cfx.dimensions.app",
+                  "methodName": "getForm",
+                  "stringified-params": true,
+                  "parse-output": true,
+                  "params": [
+                    {}
+                  ]
+                }
+              }
+            },
+            "createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            }
+          },
+          "actions": [
+            {
+              "permission": "oia:eventMapping:edit",
+              "title": "View Mapping Logic",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.view",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.eventmapping.view",
+                    "action": "view",
+                    "eventCategory": "eventCategory"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventMapping:add",
+              "title": "Add",
+              "type": "POPUP_WIZARD",
+              "icon": "mdi mdi-plus",
+              "selectionType": "NONE",
+              "identifier": "configuration-service:cfx.eventmapping.wizard",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getWizard",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "wizard_id": "cfx.eventmapping.wizard",
+                    "wizardData": {},
+                    "context": {},
+                    "action": "add",
+                    "eventCategory": "eventCategory"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventMapping:edit",
+              "title": "Edit",
+              "type": "POPUP_WIZARD",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.wizard",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getWizard",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "wizard_id": "cfx.eventmapping.wizard",
+                    "wizardData": {},
+                    "context": {},
+                    "action": "edit",
+                    "eventCategory": "eventCategory"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventMapping:edit",
+              "title": "Clone",
+              "type": "POPUP_WIZARD",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.wizard",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getWizard",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "wizard_id": "cfx.eventmapping.wizard",
+                    "wizardData": {},
+                    "context": {},
+                    "action": "clone",
+                    "eventCategory": "eventCategory"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventMapping:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "configuration-service:cfx.eventmapping.delete",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.eventmapping.delete",
+                    "context": {}
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "a803750d"
+        }
+      ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Agents",
+      "title": "Alert Endpoints",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "title": "Agents",
+          "title": "Alert Endpoints",
           "widget_type": "tabular",
+          "stream": "oia_alertendpoints",
+          "ts_column": "createdat",
           "min_width": 12,
-          "height": 6,
+          "height": 12,
           "max_width": 12,
+          "paginated": true,
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "sorting1": [
+            {
+              "precedence": "desc"
+            }
+          ],
+          "remote_searchable_cols": [],
+          "refreshRequired": true,
           "timebased": false,
-          "timestamp": "timestamp",
-          "stream": "rda_agentic_ai_agents",
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
+          "max_rows": 50,
           "columns": {
-            "agent_id": {
-              "title": "Agent ID",
-              "key": true,
-              "hidden": true
-            },
-            "agent_name": {
+            "name": {
               "title": "Name",
-              "defaultWidth": 150,
-              "key": true
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
             },
             "description": {
-              "title": "Agent Task",
-              "key": true
+              "key": true,
+              "visible": true,
+              "title": "Description",
+              "defaultWidth": 150
             },
-            "status_color": {
-              "type": "COLOR-MAP",
-              "source-column": "status",
-              "color-map": {
-                "CREATED": "#4CAF50",
-                "CREATING": "#FF5722",
-                "FAILED": "#B71C1C"
+            "type": {
+              "key": true,
+              "visible": true,
+              "title": "Endpoint Type",
+              "defaultWidth": 150
+            },
+            "role": {
+              "title": "Endpoint Role",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "category": {
+              "title": "Event Category",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "eventtype": {
+              "title": "Event Type",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "enabled": {
+              "title": "Enable/Disable",
+              "type": "TEXT",
+              "visible": true,
+              "key": true,
+              "defaultValue": "yes",
+              "uiProperties": {
+                "valueMap": {
+                  "editType": "switch",
+                  "trueValue": "yes",
+                  "falseValue": "no",
+                  "defaultValue": "yes",
+                  "editable": true,
+                  "showLabel": false
+                },
+                "editEndpoint": {
+                  "service-name": "configuration-service",
+                  "namespace": "io.cfx.dimensions.app",
+                  "methodName": "invokeAppApi:enableDisableEndpoint",
+                  "stringified-params": true,
+                  "useReportContext": true,
+                  "parse-output": false,
+                  "params": [
+                    {
+                      "context": {}
+                    }
+                  ]
+                }
               }
-            },
-            "status": {
-              "title": "Status",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.status_color }}'}}' > {{'{{ row.status }}'}} </span>"
-            },
-            "message": {
-              "title": "Message",
-              "key": false,
-              "formatter": "truncate"
             }
           },
-          "widget_id": "2630645f",
           "actions": [
             {
-              "permission": "rda:github:view",
-              "title": "Add Agent",
+              "permission": "oia:eventEndPoint:add",
+              "title": "Add",
               "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
               "selectionType": "NONE",
-              "identifier": "saas-service-action:agenticai-add-agent",
+              "identifier": "configuration-service:cfx.eventendpoint.upsert",
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.agenticai.add.agent"
+                    "form_id": "cfx.eventendpoint.upsert",
+                    "context": {},
+                    "eventCategory": "eventCategory"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:github:view",
-              "title": "Edit Task Graph",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:agenticai-edit-task-graph",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.agenticai.edit.task.graph"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard/agentic-ai-agents-app",
-              "identifier": "launch.dashboard.agent.dashboard",
-              "drillDownLinkField": "agent_name",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "agent_name",
-                    "paramId": "agent"
-                  }
-                ]
-              },
-              "selectionType": "SINGLE",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission1": "rda:github:view",
-              "title": "Execute Agent",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:agenticai-execute",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Execute"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Are you sure you want to execute the agent?",
-                          "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "Are you sure you want to execute the agent?",
-                          "hidden": false,
-                          "fieldId": "name"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:github:view",
+              "permission": "oia:eventEndPoint:delete",
               "title": "Delete",
               "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+              "identifier": "configuration-service:cfx.eventendpoint.delete",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
                   {
-                    "formId": "rda.saas.dynamic.form",
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Are you sure you want to delete the agent?",
-                          "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "Are you sure you want to delete the agent?",
-                          "hidden": false,
-                          "fieldId": "name"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "UPDATE_PSTREAM",
-                        "pstreamName": "rda_agentic_ai_agents",
-                        "operation": "DELETE",
-                        "cfxql_query": "{% raw %}agent_id is '{{agent_id}}' and agent_name is '{{agent_name}}'{% endraw %}"
-                      }
-                    ],
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "actionLabel": "Delete",
-                          "type": "SUBMIT",
-                          "identifier": "Submit"
-                        }
-                      ]
-                    }
+                    "conditionType": "NOT_EQUAL",
+                    "conditionValue": "System",
+                    "fieldId": "createdby"
                   }
                 ]
               },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATING",
-                    "fieldId": "status"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "FAILED",
-                    "fieldId": "status"
+                    "form_id": "cfx.eventendpoint.delete",
+                    "context": {}
                   }
                 ]
               }
             },
             {
-              "permission": "rda:github:view",
-              "title": "Run Test",
+              "permission": "oia:eventEndPoint:edit",
+              "title": "Edit",
               "type": "POPUP_FORM",
-              "contextParamList": {
-                "contextParams": [
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "configuration-service:cfx.eventendpoint.upsert",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
                   {
-                    "paramKey": "agent_id",
-                    "paramId": "agent_id"
+                    "conditionType": "NOT_EQUAL",
+                    "conditionValue": "System",
+                    "fieldId": "createdby"
                   }
                 ]
               },
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Run"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "fieldId": "run_name",
-                          "label": "Run Name",
-                          "help": "This will let the user add the name to the Test",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "Select the LLM to use.",
-                          "dataType": "string",
-                          "controlType": "COMBO_BOX",
-                          "required": true,
-                          "editable": true,
-                          "label": "LLM",
-                          "hidden": false,
-                          "fieldId": "llm",
-                          "lovSourceType": "pstream",
-                          "lovSourceParams": {
-                            "name": "rda_secrets_meta",
-                            "valueColumn": "name",
-                            "labelColumn": "name",
-                            "query": "type is llm"
-                          },
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "TestName",
-                          "dataType": "string",
-                          "required": false,
-                          "editable": true,
-                          "hidden": false,
-                          "fieldId": "selected_test",
-                          "controlType": "SELECTOR_TABLE",
-                          "controlPropertyList": [
-                            {
-                              "attribute": "column-key",
-                              "value": "test_name"
-                            },
-                            {
-                              "attribute": "selection",
-                              "value": "MULTIPLE"
-                            }
-                          ],
-                          "widget": {
-                            "title": "Tests",
-                            "timebased": false,
-                            "max_width": 12,
-                            "height": 8,
-                            "min_width": 12,
-                            "stream": "rda_agentic_ai_tests",
-                            "ts_column": "timestamp",
-                            "extra_filter": "agent_id is '$agent_id'",
-                            "sorting": [],
-                            "columns": {
-                              "test_name": {
-                                "title": "Test Name",
-                                "key": true
-                              },
-                              "test_description": {
-                                "title": "Test Description",
-                                "key": false
-                              },
-                              "test_id": {
-                                "title": "Test ID",
-                                "key": true
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "show_submission_prompt": true,
-                        "submission_title": "Executing Test Run",
-                        "submission_message": "The test run has been initiated and is currently executing in the background. Please check the Test Runs page in Test Details.",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
+                    "form_id": "cfx.eventendpoint.upsert",
+                    "context": {}
                   }
                 ]
               }
             },
             {
-              "permission": "rda:github:view",
-              "title": "Execute Agent",
+              "permission": "oia:eventEndPoint:webhook",
+              "title": "Webhook URL",
               "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Execute"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "fieldId": "run_name",
-                          "label": "Run Name",
-                          "help": "This will let the user add the name to the Test",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "Select the LLM to use.",
-                          "dataType": "string",
-                          "controlType": "COMBO_BOX",
-                          "required": true,
-                          "editable": true,
-                          "label": "LLM",
-                          "hidden": false,
-                          "fieldId": "llm",
-                          "lovSourceType": "pstream",
-                          "lovSourceParams": {
-                            "name": "rda_secrets_meta",
-                            "valueColumn": "name",
-                            "labelColumn": "name",
-                            "query": "type is llm"
-                          },
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "fieldId": "capture_mode",
-                          "label": "Capture Mode",
-                          "description": "Capture mode will download the stream query outputs and prepare a zip file so that it can be used for other tests.",
-                          "required": false,
-                          "default": false,
-                          "dataType": "boolean",
-                          "hidden": false,
-                          "fieldControlPropertyList": [
-                            {
-                              "fieldId": "download_label",
-                              "controlActions": [
-                                "ShowField"
-                              ],
-                              "condition": {
-                                "selectionValue": "true"
-                              }
-                            }
-                          ],
-                          "editable": true,
-                          "controlType": "BOOLEAN_FIELD"
-                        },
-                        {
-                          "help": "The output file will be availabe in My Downloads.",
-                          "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "The output file will be availabe in My Downloads.",
-                          "hidden": true,
-                          "fieldId": "download_label"
-                        },
-                        {
-                          "fieldId": "dryrun_mode",
-                          "label": "Dry Run",
-                          "description": "",
-                          "help": "In dry run mode all the steps of type write_stream and run_pipeline will be skipped",
-                          "required": false,
-                          "default": false,
-                          "dataType": "boolean",
-                          "hidden": false,
-                          "editable": true,
-                          "controlType": "BOOLEAN_FIELD"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "show_submission_prompt": true,
-                        "submission_title": "Agent Execution in Progress",
-                        "submission_message": "The agent is currently executing in the background. If capture is enabled, the captured data will be available in MyDownloads upon completion.",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              },
               "actionCondition": {
                 "actionControl": "SHOW_IF",
-                "operator": "OR",
+                "operator": "AND",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
+                    "conditionValue": "source",
+                    "fieldId": "role"
+                  },
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "webhook-basic",
+                    "fieldId": "type"
+                  }
+                ]
+              },
+              "identifier": "configuration-service:cfx.eventendpoint.view",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.eventendpoint.view",
+                    "context": {}
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventEndPoint:webhook",
+              "title": "Kafka Details",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "operator": "AND",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "source",
+                    "fieldId": "role"
+                  },
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "kafka",
+                    "fieldId": "type"
+                  }
+                ]
+              },
+              "identifier": "configuration-service:cfx.eventendpoint.viewkafka",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.eventendpoint.viewkafka",
+                    "context": {}
                   }
                 ]
               }
             }
-          ]
+          ],
+          "widget_id": "94a3fc11"
         }
+      ]
+    },
+    {
+      "title": "Alert Mappings",
+      "show_filter": true,
+      "projects": [
+        "ACME"
       ],
-      "saved_time": "2024-11-19T07:28:36.803725"
+      "widgets": [
+        {
+          "title": "Alert Mappings",
+          "widget_type": "tabular",
+          "stream": "oia_eventmapping",
+          "ts_column": "updated",
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "remote_searchable_cols": [],
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "sorting1": [
+            {
+              "precedence": "desc"
+            }
+          ],
+          "columns": {
+            "mappingid": {
+              "title": "Mapping Id",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "description": {
+              "title": "Description",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "sourcename": {
+              "key": true,
+              "visible": true,
+              "title": "Source Endpoint",
+              "defaultWidth": 150
+            },
+            "targetname": {
+              "key": true,
+              "visible": true,
+              "title": "Target Endpoint",
+              "defaultWidth": 150
+            },
+            "sourceendpointtype": {
+              "title": "Source Endpoint Type",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "targetendpointtype": {
+              "title": "Target Endpoint Type",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "sourcemapper": {
+              "title": "Source Mapper",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "sourcepipeline": {
+              "title": "Source Pipeline",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "sourcebundle": {
+              "title": "Source Bundle",
+              "key": true,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "enabled": {
+              "title": "Enable/Disable",
+              "type": "TEXT",
+              "visible": true,
+              "key": true,
+              "defaultValue": "yes",
+              "uiProperties": {
+                "valueMap": {
+                  "editType": "switch",
+                  "trueValue": "yes",
+                  "falseValue": "no",
+                  "defaultValue": "yes",
+                  "editable": true,
+                  "showLabel": false
+                },
+                "editEndpoint": {
+                  "service-name": "saas-reports",
+                  "namespace": "io.cfx.dimensions.app",
+                  "methodName": "getForm",
+                  "stringified-params": true,
+                  "parse-output": true,
+                  "params": [
+                    {}
+                  ]
+                }
+              }
+            },
+            "createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            },
+            "updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "key": false,
+              "visible": true,
+              "defaultWidth": 150
+            }
+          },
+          "actions": [
+            {
+              "permission": "oia:eventMapping:edit",
+              "title": "View Mapping Logic",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.view",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.eventmapping.view",
+                    "action": "view",
+                    "eventCategory": "eventCategory"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventMapping:add",
+              "title": "Add",
+              "type": "POPUP_WIZARD",
+              "icon": "mdi mdi-plus",
+              "selectionType": "NONE",
+              "identifier": "configuration-service:cfx.eventmapping.wizard",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getWizard",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "wizard_id": "cfx.eventmapping.wizard",
+                    "wizardData": {},
+                    "context": {},
+                    "action": "add",
+                    "eventCategory": "eventCategory"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventMapping:edit",
+              "title": "Edit",
+              "type": "POPUP_WIZARD",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.wizard",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getWizard",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "wizard_id": "cfx.eventmapping.wizard",
+                    "wizardData": {},
+                    "context": {},
+                    "action": "edit",
+                    "eventCategory": "eventCategory"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventMapping:edit",
+              "title": "Clone",
+              "type": "POPUP_WIZARD",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.wizard",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getWizard",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "wizard_id": "cfx.eventmapping.wizard",
+                    "wizardData": {},
+                    "context": {},
+                    "action": "clone",
+                    "eventCategory": "eventCategory"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "oia:eventMapping:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "icon": "mdi mdi-plus",
+              "selectionType": "SINGLE",
+              "identifier": "configuration-service:cfx.eventmapping.delete",
+              "api-endpoint": {
+                "service-name": "configuration-service",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
+                "stringified-params": true,
+                "useReportContext": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "form_id": "cfx.eventmapping.delete",
+                    "context": {}
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "a803750d"
+        }
+      ]
     }
   ]
 }
