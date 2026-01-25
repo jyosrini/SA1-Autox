@@ -1,58 +1,68 @@
-@dm:empty
+@c:new-block
+ --> @dm:empty
+ ## Get submitted form fields
+
  --> @exec:get-input
- --> @dm:save name="temp-dataset"
- --> @c:new-block
- --> @dm:recall name="temp-dataset"
- --> @dm:check_columns must_contain = 'customer' &action ='skip-block'
- ## --> @dm:save name="test-del-dataset"
+ ## Exclude label as it contains unneeded info that should not be written to stream later
 
- --> @dm:save name="temp-del-dataset"
- --> @c:new-block
- --> @dm:empty
- --> @dm:save name='edc_status'
- ## delete enriched stream
-
- --> @c:data-loop columns='customer' and dataset='temp-del-dataset' and return_empty='yes'
- ## --> @dm:recall name="temp-row-del-dataset"
-
- ## --> @dm:check_columns must_contain = 'customer' &action ='skip-block'
-
- ## --> *dm:filter customer_name = '$customer_name'
-
- --> @dm:recall name='edc_status' and return_empty = 'yes'
- --> @dm:addrow dummy='key'
- --> @dm:add-missing-columns columns='customer_name' and  value="$customer"
- --> @dm:manipulate-string to="status" and func="eval" and value="'Starting to delete the data'"
- --> @rn:write-stream name ='edc_update_status'
- --> @dm:empty
- --> @dm:addrow name = "edc_oi_inventory_grouped" & conflicts = "proceed" & timeout = 1200
- --> #dm:pstream-delete-data-by-query customer_name=="$customer"
- --> @dm:empty
- --> @dm:addrow name = "edc_oi_inventory_enriched" & conflicts = "proceed" & timeout = 1200
- --> #dm:pstream-delete-data-by-query customer_name=="$customer"
- --> @dm:sleep seconds = 5
- --> @dm:recall name='edc_status' and return_empty = 'yes'
- --> @dm:addrow dummy='key'
- --> @dm:add-missing-columns columns='customer_name' and  value="$customer"
- --> @dm:manipulate-string to="status" and func="eval" and value="'Completed data deletion'"
- --> @rn:write-stream name ='edc_update_status'
- --> @c:new-block
- --> @dm:recall name="temp-del-dataset"  and return_empty='yes'
- --> @dm:check_columns must_not_contain = 'customer' &action ='skip-block'
- --> @dm:recall name='edc_status' and return_empty = 'yes'
- --> @dm:addrow dummy='key'
- --> @dm:add-missing-columns columns='customer_name' and  value="$customer"
- --> @dm:manipulate-string to="status" and func="eval" and value="'Starting to delete data for all customers'"
- --> @rn:write-stream name ='edc_update_status'
- --> @dm:empty
- --> @dm:addrow name = "edc_oi_inventory_grouped" & conflicts = "proceed" & timeout = 1200
- --> #dm:pstream-delete-data-by-query count_ is 1
- --> @dm:empty
- --> @dm:addrow name = "edc_oi_inventory_enriched" & conflicts = "proceed" & timeout = 1200
- --> #dm:pstream-delete-data-by-query count_ is 1
- --> @dm:sleep seconds = 5
- --> @dm:recall name='edc_status' and return_empty = 'yes'
- --> @dm:addrow dummy='key'
- --> @dm:add-missing-columns columns='customer_name' and  value="$customer"
- --> @dm:manipulate-string to="status" and func="eval" and value="'Data deleted for all customers'"
- --> @rn:write-stream name ='edc_update_status'
+ --> @dm:selectcolumns exclude='.*_label'
+ --> @dm:save name='temp-input_data'
+ --> @dm:save name='check-input_data'
+ --> @dm:recall name="temp-input_data"
+ --> @dm:add-missing-columns columns = 'hweox_csv,sweox_csv,secadv_csv,swlicenses_details_csv1,swlicenses_details_csv2' &
+value = 'False'
+ --> @dm:save name='false_data'
+ --> *exec:if-condition hweox_csv !='False'
+ --> @dm:selectcolumns include="hweox_csv"
+ --> @dm:explode-json column="hweox_csv"
+ --> @dm:save name="temp-input0-dataset"
+ --> @dm:save name="input11-dataset"
+ --> @dm:recall name="temp-input0-dataset"
+ --> @dm:get-from-location path="{{row.bucketName}}/{{row.objectName}}"
+ --> @dm:save name="temp-uploaded-file-data"
+ --> @dm:save name="uploaded-data"
+ --> @rn:write-stream name="test0-stream-input"
+ --> @exec:end-if
+ --> *exec:if-condition sweox_csv !='False'
+ --> @dm:selectcolumns include="sweox_csv"
+ --> @dm:explode-json column="sweox_csv"
+ --> @dm:save name="temp-input0-dataset"
+ --> @dm:save name="input12-dataset"
+ --> @dm:recall name="temp-input0-dataset"
+ --> @dm:get-from-location path="{{row.bucketName}}/{{row.objectName}}"
+ --> @dm:save name="temp-uploaded-file-data"
+ --> @dm:save name="uploaded-data"
+ --> @rn:write-stream name="test1-stream-input"
+ --> @exec:end-if
+ --> *exec:if-condition secadv_csv !='False'
+ --> @dm:selectcolumns include="secadv_csv"
+ --> @dm:explode-json column="secadv_csv"
+ --> @dm:save name="temp-input0-dataset"
+ --> @dm:save name="input13-dataset"
+ --> @dm:recall name="temp-input0-dataset"
+ --> @dm:get-from-location path="{{row.bucketName}}/{{row.objectName}}"
+ --> @dm:save name="temp-uploaded-file-data"
+ --> @dm:save name="uploaded-data"
+ --> @rn:write-stream name="test2-stream-input"
+ --> @exec:end-if
+ --> *exec:if-condition swlicenses_details_csv1 !='False' and swlicenses_details_csv2 !='False'
+ --> @dm:selectcolumns include="swlicenses_details_csv1"
+ --> @dm:explode-json column="swlicenses_details_csv1"
+ --> @dm:save name="temp-input0-dataset"
+ --> @dm:save name="input14-dataset"
+ --> @dm:recall name="temp-input0-dataset"
+ --> @dm:get-from-location path="{{row.bucketName}}/{{row.objectName}}"
+ --> @dm:save name="temp-uploaded-file-data"
+ --> @dm:save name="uploaded-data"
+ --> @rn:write-stream name="test3-stream-input"
+ --> @dm:recall name="temp-input_data"
+ --> @dm:selectcolumns include="swlicenses_details_csv2"
+ --> @dm:explode-json column="swlicenses_details_csv2"
+ --> @dm:save name="temp-input0-dataset"
+ --> @dm:save name="input15-dataset"
+ --> @dm:recall name="temp-input0-dataset"
+ --> @dm:get-from-location path="{{row.bucketName}}/{{row.objectName}}"
+ --> @dm:save name="temp-uploaded-file-data"
+ --> @dm:save name="uploaded-data"
+ --> @rn:write-stream name="test4-stream-input"
+ --> @exec:end-if
