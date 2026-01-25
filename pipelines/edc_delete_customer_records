@@ -1,16 +1,6 @@
-
- ## Get row input
 @c:new-block
  --> @dm:empty
- --> @exec:get-input
- ## --> @dm:selectcolumns include='device_hostname|device_identifier|device_controller_id'
-
- --> @dm:save name='temp-form-data'
- --> @c:data-loop columns="customer_name" and dataset="temp-form-data"
- --> @dm:empty
- --> @dm:addrow name = "edc_oi_inventory_grouped" & conflicts = "proceed" & timeout = 1200
- --> #dm:pstream-delete-data-by-query customer_name=="$customer_name"
- --> @c:data-loop columns="customer_name" and dataset="temp-form-data"
- --> @dm:empty
- --> @dm:addrow name = "edc_oi_inventory_enriched" & conflicts = "proceed" & timeout = 1200
- --> #dm:pstream-delete-data-by-query customer_name=="$customer_name"
+ --> #dm:query-persistent-stream status is "Failed" and pipeline_name is "edc_get_customer_data" with-input name="rda_system_job_tracker"
+ --> @dm:sort columns = 'created' and order = "desc"
+ --> @dm:head n = 1
+ --> @dm:save name= 'failed_edc_get_customer_data'
