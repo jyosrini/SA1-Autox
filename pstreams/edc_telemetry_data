@@ -1,13 +1,12 @@
 {
-  "name": "test0-stream-input",
+  "name": "edc_telemetry_data",
   "datastore_type": "OS",
   "read_only": false,
   "attrs": {
     "unique_keys": [
       "unique_key"
-    ],
-    "retention_days": 14
+    ]
   },
   "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-d24a8cf3-test0-stream-input"
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-b8745b05-edc_telemetry_data"
 }
