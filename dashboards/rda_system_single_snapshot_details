@@ -1,14 +1,14 @@
 {
-  "name": "rda_system_single_snapshot_details",
-  "label": "Snapshot Details",
-  "description": "Snapshot Details",
+  "name": "rda_system_snapshots_details",
+  "label": "Snapshots Details",
+  "description": "Snapshots Details",
   "dashboard_folder": "System",
   "version": "1.0.2",
-  "live_edit": true,
   "enabled": false,
+  "live_edit": true,
   "stream": "rda_system_snapshots_details",
-  "dashboard_type": "template",
-  "template_variables": {
+  "dashboard_type": "dashboard",
+  "template_variables0": {
     "SNAPSHOT_NAME": {
       "contextId": "snapshot_name"
     }
@@ -18,7 +18,7 @@
     "default_time_filter_labels": [
       "All Time"
     ],
-    "extra_filter": "snapshot_name is '{{SNAPSHOT_NAME}}'",
+    "extra_filter0": "snapshot_name is '{{SNAPSHOT_NAME}}'",
     "columns_filter": [
       {
         "id": "artifact_name",
@@ -67,7 +67,7 @@
         "title": "Artifact Type",
         "duration_hours": 87600,
         "limit": 200,
-        "extra_filter": "snapshot_name is '{{SNAPSHOT_NAME}}'",
+        "extra_filter": null,
         "group_by": [
           "artifact_type"
         ],
@@ -81,9 +81,37 @@
         "title": "Artifact Checksum In Snapshot Repo",
         "duration_hours": 87600,
         "limit": 200,
-        "extra_filter": "snapshot_name is '{{SNAPSHOT_NAME}}'",
+        "extra_filter": null,
         "group_by": [
           "artifact_version_visibility"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_system_snapshots_details",
+        "title": "Snapshot Name",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "snapshot_name"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_system_snapshots_details",
+        "title": "Snapshot Type",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "snapshot_type"
         ],
         "ts_column": "timestamp",
         "agg": "sum",
@@ -98,39 +126,11 @@
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "label": "{% raw %}<div><div style='color: #00aa00; font-size: 20px;'>Changes Since Last Snapshot: {{new_count|int}}</div><div style='color: #888888; font-size: 20px;'>Unchanged: {{unchanged_count|int}}</div></div>{% endraw %}",
-          "segments": [
-            {
-              "stream": "rda_system_snapshots_details",
-              "variable": "new_count",
-              "ts_column": "timestamp",
-              "extra_filter": "artifact_version_visibility == 'new' AND snapshot_name is '{{SNAPSHOT_NAME}}'",
-              "agg": "sum",
-              "group_by0": "artifact_version_visibility",
-              "column": "count_"
-            },
-            {
-              "stream": "rda_system_snapshots_details",
-              "variable": "unchanged_count",
-              "ts_column": "timestamp",
-              "extra_filter": "artifact_version_visibility == 'unchanged' AND snapshot_name is '{{SNAPSHOT_NAME}}'",
-              "agg": "sum",
-              "group_by0": "artifact_version_visibility",
-              "column": "count_"
-            }
-          ],
-          "widget_id": "23af24fa"
-        },
-        {
           "widget_type": "pie_chart",
           "title": "Artifact Type",
           "stream": "rda_system_snapshots_details",
           "ts_column": "timestamp",
-          "extra_filter": "snapshot_name is '{{SNAPSHOT_NAME}}'",
+          "extra_filter": null,
           "column": "count_",
           "agg": "sum",
           "group_by": [
@@ -143,16 +143,49 @@
           "widget_id": "cc2794c5"
         },
         {
+          "widget_type": "pie_chart",
+          "title": "Snapshot Name",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "snapshot_name"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "4dee4aec"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Snapshot Type",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "snapshot_type"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "6f0e550a"
+        },
+        {
           "title": "Snapshot Manifest",
           "widget_type": "tabular",
-          "duration_hours": 87600,
           "max_width": 12,
           "height": 8,
           "min_width": 12,
           "paginated": true,
           "stream": "rda_system_snapshots_details",
           "ts_column": "timestamp",
-          "extra_filter": "snapshot_name is '{{SNAPSHOT_NAME}}'",
+          "extra_filter": null,
           "columns": {
             "snapshot_type": {
               "title": "Snapshot Type",
@@ -167,14 +200,12 @@
             "artifact_type": {
               "title": "Artifact Type",
               "type": "TEXT",
-              "hidden": false,
-              "key": true
+              "hidden": false
             },
             "artifact_name": {
               "title": "Artifact Name",
               "type": "TEXT",
-              "hidden": false,
-              "key": true
+              "hidden": false
             },
             "artifact_version_visibility": {
               "title": "Artifact Checksum In Snapshot Repo",
@@ -223,49 +254,6 @@
             }
           ],
           "widget_id": "7089a9ae"
-        },
-        {
-          "title": "Snapshot Errors",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "paginated": true,
-          "stream": "rda_system_snapshots_errors",
-          "ts_column": "timestamp",
-          "extra_filter0": "snapshot_name is '{{SNAPSHOT_NAME}}'",
-          "columns": {
-            "snapshot_type": {
-              "title": "Snapshot Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "snapshot_name": {
-              "title": "Snapshot Name",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "artifact_type": {
-              "title": "Artifact Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "artifact_name": {
-              "title": "Artifact Name",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "message": {
-              "title": "Message",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME"
-            }
-          },
-          "widget_id": "53447b4f"
         }
       ]
     }
@@ -276,39 +264,11 @@
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "label": "{% raw %}<div><div style='color: #00aa00; font-size: 20px;'>Changes Since Last Snapshot: {{new_count|int}}</div><div style='color: #888888; font-size: 20px;'>Unchanged: {{unchanged_count|int}}</div></div>{% endraw %}",
-          "segments": [
-            {
-              "stream": "rda_system_snapshots_details",
-              "variable": "new_count",
-              "ts_column": "timestamp",
-              "extra_filter": "artifact_version_visibility == 'new' AND snapshot_name is '{{SNAPSHOT_NAME}}'",
-              "agg": "sum",
-              "group_by0": "artifact_version_visibility",
-              "column": "count_"
-            },
-            {
-              "stream": "rda_system_snapshots_details",
-              "variable": "unchanged_count",
-              "ts_column": "timestamp",
-              "extra_filter": "artifact_version_visibility == 'unchanged' AND snapshot_name is '{{SNAPSHOT_NAME}}'",
-              "agg": "sum",
-              "group_by0": "artifact_version_visibility",
-              "column": "count_"
-            }
-          ],
-          "widget_id": "23af24fa"
-        },
-        {
           "widget_type": "pie_chart",
           "title": "Artifact Type",
           "stream": "rda_system_snapshots_details",
           "ts_column": "timestamp",
-          "extra_filter": "snapshot_name is '{{SNAPSHOT_NAME}}'",
+          "extra_filter": null,
           "column": "count_",
           "agg": "sum",
           "group_by": [
@@ -321,16 +281,49 @@
           "widget_id": "cc2794c5"
         },
         {
+          "widget_type": "pie_chart",
+          "title": "Snapshot Name",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "snapshot_name"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "4dee4aec"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Snapshot Type",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "snapshot_type"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "6f0e550a"
+        },
+        {
           "title": "Snapshot Manifest",
           "widget_type": "tabular",
-          "duration_hours": 87600,
           "max_width": 12,
           "height": 8,
           "min_width": 12,
           "paginated": true,
           "stream": "rda_system_snapshots_details",
           "ts_column": "timestamp",
-          "extra_filter": "snapshot_name is '{{SNAPSHOT_NAME}}'",
+          "extra_filter": null,
           "columns": {
             "snapshot_type": {
               "title": "Snapshot Type",
@@ -345,14 +338,12 @@
             "artifact_type": {
               "title": "Artifact Type",
               "type": "TEXT",
-              "hidden": false,
-              "key": true
+              "hidden": false
             },
             "artifact_name": {
               "title": "Artifact Name",
               "type": "TEXT",
-              "hidden": false,
-              "key": true
+              "hidden": false
             },
             "artifact_version_visibility": {
               "title": "Artifact Checksum In Snapshot Repo",
@@ -401,49 +392,6 @@
             }
           ],
           "widget_id": "7089a9ae"
-        },
-        {
-          "title": "Snapshot Errors",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "paginated": true,
-          "stream": "rda_system_snapshots_errors",
-          "ts_column": "timestamp",
-          "extra_filter0": "snapshot_name is '{{SNAPSHOT_NAME}}'",
-          "columns": {
-            "snapshot_type": {
-              "title": "Snapshot Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "snapshot_name": {
-              "title": "Snapshot Name",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "artifact_type": {
-              "title": "Artifact Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "artifact_name": {
-              "title": "Artifact Name",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "message": {
-              "title": "Message",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME"
-            }
-          },
-          "widget_id": "53447b4f"
         }
       ]
     }
