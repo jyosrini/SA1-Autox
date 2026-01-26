@@ -1,27 +1,25 @@
 {
-  "name": "oia-alert-analytics-os",
-  "label": "OIA Alert Analytics",
-  "description": "Open Search Based OIA Alerts and Tracking Analytics",
-  "version": "23.1.2",
+  "name": "msp-management-app",
+  "label": "MSP Management",
+  "description": "MSP Management",
+  "version": "24.7.20.1",
   "enabled": true,
   "status_poller": {},
-  "dashboard_filters": {
-    "time_filter": true,
-    "show_default_time_filter": false,
-    "default_time_filter_non_removable": true,
-    "additional_datetime_column_filters": [
-      {
-        "id": "a_created_ts",
-        "label": "Created At"
+  "context_enrichment": [
+    {
+      "rda_service": [
+        "configuration-service"
+      ],
+      "set_context": {
+        "OIA": "enabled"
       },
-      {
-        "id": "a_updated_ts",
-        "label": "Updated At"
+      "defaultValues": {
+        "OIA": "disabled"
       }
-    ],
-    "default_time_filter_labels": [
-      "Last 24 hours"
-    ],
+    }
+  ],
+  "dashboard_filters": {
+    "time_filter": false,
     "columns_filter": [],
     "group_filters": []
   },
@@ -31,45 +29,72 @@
     }
   ],
   "dashboard_type": "app",
-  "dashboard_groups": {
-    "alerts": {
-      "icon": "alert.svg",
-      "label": "Alerts",
-      "pageName": "Alerts"
-    },
-    "tracking": {
-      "icon": "alert.svg",
-      "label": "Tracking",
-      "pageName": "Tracking"
-    }
-  },
   "dashboard_pages": [
     {
-      "name": "oia-alerts-os",
-      "label": "Alerts",
-      "icon": "alert.svg",
-      "group": "alerts"
+      "name": "msp-users",
+      "label": "Users",
+      "icon": "credentials.svg"
     },
     {
-      "name": "oia-alert-groups-os",
-      "label": "Alert Groups",
-      "icon": "alert.svg",
-      "group": "alerts"
+      "name": "organizations",
+      "label": "Organizations",
+      "icon": "team.svg"
     },
     {
-      "name": "oia-event-tracking-os",
-      "label": "Events",
-      "icon": "alert.svg",
-      "group": "tracking"
+      "name": "Authentication Servers",
+      "label": "Authentication Servers",
+      "icon": "security.svg",
+      "context_filter": "ENV_APP_TYPE == 'onprem'"
     },
     {
-      "name": "oia-alert-tracking-os",
-      "label": "Alerts",
-      "icon": "alert.svg",
-      "group": "tracking"
+      "name": "tenant-info",
+      "label": "MSP Details",
+      "icon": "detail.svg"
+    },
+    {
+      "name": "license",
+      "label": "License",
+      "icon": "license.svg"
+    },
+    {
+      "name": "white-labeling",
+      "label": "White Labeling",
+      "icon": "white_label.svg"
+    },
+    {
+      "name": "icon-library",
+      "label": "Image Library",
+      "icon": "library.svg"
+    },
+    {
+      "name": "chatbot-policies",
+      "label": "Chatbot Policies",
+      "icon": "contract.svg"
+    },
+    {
+      "name": "data-access-policies",
+      "label": "Data Access Policies",
+      "icon": "contract.svg"
+    },
+    {
+      "name": "tag-policies",
+      "label": "Tag Management",
+      "icon": "contract.svg"
+    },
+    {
+      "name": "global-configs",
+      "label": "Configurations",
+      "icon": "remedial.svg",
+      "context_filter": "OIA == 'enabled'"
+    },
+    {
+      "name": "global-service-configs",
+      "label": "Service Configurations",
+      "icon": "remedial.svg",
+      "context_filter": "OIA == 'enabled'"
     }
   ],
-  "dashboard_folder": "Default",
+  "dashboard_folder": "System",
   "pstream_dashboards": [
     {
       "title": "new dashboard"
