@@ -1,103 +1,45 @@
 {
-  "name": "msp-management-app",
-  "label": "MSP Management",
-  "description": "MSP Management",
-  "version": "24.7.20.1",
+  "name": "chat-app",
+  "label": "Generative AI Assistant",
+  "description": "Generative AI Assistant",
   "enabled": true,
-  "status_poller": {},
-  "context_enrichment": [
-    {
-      "rda_service": [
-        "configuration-service"
-      ],
-      "set_context": {
-        "OIA": "enabled"
-      },
-      "defaultValues": {
-        "OIA": "disabled"
-      }
-    }
-  ],
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "Generative AI",
   "dashboard_filters": {
-    "time_filter": false,
-    "columns_filter": [],
-    "group_filters": []
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "new dashboard"
+      "title": "Chat AI",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Chat AI",
+          "widget_type": "portal_html",
+          "widget_template": "app-rda/chat-app",
+          "reportId": "user_dashboards.active.tabular",
+          "height": 12,
+          "min_wdith": 12,
+          "widget_id": "1232637c"
+        }
+      ]
     }
   ],
-  "dashboard_type": "app",
-  "dashboard_pages": [
-    {
-      "name": "msp-users",
-      "label": "Users",
-      "icon": "credentials.svg"
-    },
-    {
-      "name": "organizations",
-      "label": "Organizations",
-      "icon": "team.svg"
-    },
-    {
-      "name": "Authentication Servers",
-      "label": "Authentication Servers",
-      "icon": "security.svg",
-      "context_filter": "ENV_APP_TYPE == 'onprem'"
-    },
-    {
-      "name": "tenant-info",
-      "label": "MSP Details",
-      "icon": "detail.svg"
-    },
-    {
-      "name": "license",
-      "label": "License",
-      "icon": "license.svg"
-    },
-    {
-      "name": "white-labeling",
-      "label": "White Labeling",
-      "icon": "white_label.svg"
-    },
-    {
-      "name": "icon-library",
-      "label": "Image Library",
-      "icon": "library.svg"
-    },
-    {
-      "name": "chatbot-policies",
-      "label": "Chatbot Policies",
-      "icon": "contract.svg"
-    },
-    {
-      "name": "data-access-policies",
-      "label": "Data Access Policies",
-      "icon": "contract.svg"
-    },
-    {
-      "name": "tag-policies",
-      "label": "Tag Management",
-      "icon": "contract.svg"
-    },
-    {
-      "name": "global-configs",
-      "label": "Configurations",
-      "icon": "remedial.svg",
-      "context_filter": "OIA == 'enabled'"
-    },
-    {
-      "name": "global-service-configs",
-      "label": "Service Configurations",
-      "icon": "remedial.svg",
-      "context_filter": "OIA == 'enabled'"
-    }
-  ],
-  "dashboard_folder": "System",
   "pstream_dashboards": [
     {
-      "title": "new dashboard"
+      "title": "Chat AI",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Chat AI",
+          "widget_type": "portal_html",
+          "widget_template": "app-rda/chat-app",
+          "reportId": "user_dashboards.active.tabular",
+          "height": 12,
+          "min_wdith": 12,
+          "widget_id": "1232637c"
+        }
+      ]
     }
   ]
 }
