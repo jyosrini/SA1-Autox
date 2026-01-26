@@ -1,43 +1,43 @@
 {
-  "name": "white-labeling",
-  "label": "White Labeling",
-  "description": " White Labeling Information",
-  "enabled": true,
+  "name": "rda-dashboards-active",
+  "label": "Dashboards",
+  "description": " User Dashboard Management Page",
+  "enabled": false,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "dashboard_style": "auto",
-  "exportable": false,
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "White Labeling",
+      "title": "Dashboards",
       "show_filter": false,
       "widgets": [
         {
-          "title": "White Labeling",
-          "widget_type": "portal_html",
-          "widget_template": "saas/white-label-settings",
+          "title": "Dashboards",
+          "widget_type": "portal_card",
+          "widget_template": "saas/dashboards-deployed",
+          "reportId": "user_dashboards.active.tabular",
           "height": 10,
           "min_wdith": 12,
-          "widget_id": "c61ce67c"
+          "widget_id": "574e5bf8"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "White Labeling",
+      "title": "Dashboards",
       "show_filter": false,
       "widgets": [
         {
-          "title": "White Labeling",
-          "widget_type": "portal_html",
-          "widget_template": "saas/white-label-settings",
+          "title": "Dashboards",
+          "widget_type": "portal_card",
+          "widget_template": "saas/dashboards-deployed",
+          "reportId": "user_dashboards.active.tabular",
           "height": 10,
           "min_wdith": 12,
-          "widget_id": "c61ce67c"
+          "widget_id": "574e5bf8"
         }
       ]
     }
