@@ -1,5 +1,5 @@
 {
-  "name": "topology-details-with-static-first-column-and-graphdb",
+  "name": "topology-details-app-with-fixed-tree",
   "label": "Components",
   "description": "Components",
   "dashboard_folder": "Default",
@@ -72,7 +72,7 @@
           "max_width": 8,
           "height": 12,
           "min_width": 12,
-          "widget_id": "5deec9ad"
+          "widget_id": "bdbe4aae"
         }
       ]
     },
@@ -86,7 +86,7 @@
           "reportId": "rda.saas.stack.view.topo",
           "height": 10,
           "min_wdith": 12,
-          "widget_id": "8558cebd"
+          "widget_id": "f8fa0cc5"
         }
       ]
     },
@@ -101,7 +101,7 @@
           "connected_neighbors_alerts": true,
           "height": 10,
           "min_wdith": 12,
-          "widget_id": "89e5217e"
+          "widget_id": "7df74ff9"
         }
       ]
     }
@@ -136,7 +136,7 @@
           "max_width": 8,
           "height": 12,
           "min_width": 12,
-          "widget_id": "5deec9ad"
+          "widget_id": "bdbe4aae"
         }
       ]
     },
@@ -150,7 +150,7 @@
           "reportId": "rda.saas.stack.view.topo",
           "height": 10,
           "min_wdith": 12,
-          "widget_id": "8558cebd"
+          "widget_id": "f8fa0cc5"
         }
       ]
     },
@@ -165,7 +165,7 @@
           "connected_neighbors_alerts": true,
           "height": 10,
           "min_wdith": 12,
-          "widget_id": "89e5217e"
+          "widget_id": "7df74ff9"
         }
       ]
     }
