@@ -1,92 +1,117 @@
 {
-  "name": "incident-details-recommendation",
-  "description": "Summary and Recommendation",
-  "label": "Summary and Recommendation",
-  "enabled": true,
-  "dashboard_folder": "Default",
+  "name": "Upgrade_Steps",
+  "label": "Upgrade Steps",
+  "description": "Dashboard for Upgrade Steps",
+  "version": "1.0.0",
+  "enabled": false,
   "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "template_variables": {
-    "INCIDENT_ID": {
-      "default": null,
-      "contextId": "incident_id"
-    }
-  },
-  "custom_context": {
-    "alert-context": true
+  "dataset": "router-history-view",
+  "dashboard_type": "dashboard",
+  "live_edit": true,
+  "dashboard_filters": {
+    "time_filter": true,
+    "default_time_filter_labels": [
+      ""
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Summary and Recommendation",
-      "show_filter": false,
+      "title": "Upgrade Steps",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Incident Summary",
+          "widget_type": "label",
+          "max_width": 12,
+          "height": 0.5,
           "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/incident-summary",
-          "widget_id": "784726f6"
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' > UPGRADE STEPS</a></h1></div>",
+          "widget_id": "33317e49"
         },
         {
-          "widget_type": "label",
-          "min_width": 12,
-          "height": 10,
+          "title": "Upgrade Steps",
+          "widget_type": "tabular",
           "max_width": 12,
-          "stream": "oia-incidents-stream",
-          "folder": "widget_labels",
-          "objectName": "recommendations",
-          "segments": [
-            {
-              "stream": "oia-incidents-stream",
-              "variable": "recommendations",
-              "columns": [
-                "i_recommendation"
-              ],
-              "type": "tabular",
-              "extra_filter": "incident_id is '{{INCIDENT_ID}}'",
-              "duration_hours": 100000
+          "min_width": 12,
+          "height": 7,
+          "resizableColumns": true,
+          "remote_searchable": true,
+          "paginated": true,
+          "showRowSummary": true,
+          "dataset": "Router-upgrade-steps",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "columns": {
+            "Steps": {
+              "title": "Steps",
+              "type": "integer",
+              "hidden": false,
+              "key": true
+            },
+            "Milestone": {
+              "title": "Milestone",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            },
+            "Status": {
+              "title": "Status",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
             }
-          ],
-          "widget_id": "03430956"
+          },
+          "widget_id": "f1ac1d16"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Summary and Recommendation",
-      "show_filter": false,
+      "title": "Upgrade Steps",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Incident Summary",
+          "widget_type": "label",
+          "max_width": 12,
+          "height": 0.5,
           "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/incident-summary",
-          "widget_id": "784726f6"
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' > UPGRADE STEPS</a></h1></div>",
+          "widget_id": "33317e49"
         },
         {
-          "widget_type": "label",
-          "min_width": 12,
-          "height": 10,
+          "title": "Upgrade Steps",
+          "widget_type": "tabular",
           "max_width": 12,
-          "stream": "oia-incidents-stream",
-          "folder": "widget_labels",
-          "objectName": "recommendations",
-          "segments": [
-            {
-              "stream": "oia-incidents-stream",
-              "variable": "recommendations",
-              "columns": [
-                "i_recommendation"
-              ],
-              "type": "tabular",
-              "extra_filter": "incident_id is '{{INCIDENT_ID}}'",
-              "duration_hours": 100000
+          "min_width": 12,
+          "height": 7,
+          "resizableColumns": true,
+          "remote_searchable": true,
+          "paginated": true,
+          "showRowSummary": true,
+          "dataset": "Router-upgrade-steps",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "columns": {
+            "Steps": {
+              "title": "Steps",
+              "type": "integer",
+              "hidden": false,
+              "key": true
+            },
+            "Milestone": {
+              "title": "Milestone",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            },
+            "Status": {
+              "title": "Status",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
             }
-          ],
-          "widget_id": "03430956"
+          },
+          "widget_id": "f1ac1d16"
         }
       ]
     }
