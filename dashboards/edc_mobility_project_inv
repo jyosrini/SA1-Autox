@@ -779,7 +779,6 @@
           },
           "style": {
             "color-map": {
-              "Not Vulnerable": "#00BB00",
               "Potentially Vulnerable": "#F6C309",
               "Vulnerable": "#BB0000"
             }
@@ -1446,7 +1445,6 @@
           },
           "style": {
             "color-map": {
-              "Not Vulnerable": "#00BB00",
               "Potentially Vulnerable": "#F6C309",
               "Vulnerable": "#BB0000"
             }
