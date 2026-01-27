@@ -117,7 +117,8 @@
             },
             "secAdv_bulletinMappingCaveat": {
               "title": "Caveat",
-              "type": "TEXT"
+              "type": "TEXT",
+              "visible": false
             }
           },
           "widget_id": "8f645323"
@@ -224,7 +225,8 @@
             },
             "secAdv_bulletinMappingCaveat": {
               "title": "Caveat",
-              "type": "TEXT"
+              "type": "TEXT",
+              "visible": false
             }
           },
           "widget_id": "8f645323"
