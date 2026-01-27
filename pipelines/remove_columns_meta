@@ -1,6 +1,17 @@
-@c:new-block
- --> @dm:empty
- --> #dm:query-persistent-stream status is "Failed" and pipeline_name is "edc_get_customer_data" with-input name="rda_system_job_tracker"
- --> @dm:sort columns = 'created' and order = "desc"
- --> @dm:head n = 1
- --> @dm:save name= 'failed_edc_get_customer_data'
+folder: Default
+name: remove_columns
+description: test pipeline
+data_path: pipelines/data/remove_columns/2025_06_18_01/data.json
+usecase: ''
+category: ''
+sources:
+  rn:
+    name: rn
+    type: rn
+artifacts:
+- artifact_type: rda-network-stream
+  artifact_name: edc_oi_inventory_enriched
+  access: write
+version: '2025_06_18_01'
+file_type: json
+checksum: fe962199
