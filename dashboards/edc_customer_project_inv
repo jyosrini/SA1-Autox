@@ -1077,7 +1077,7 @@
               "identifier": "serial_number",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Details",
+              "title": "Security Advisories",
               "type": "GO_TO_APP_STATE"
             }
           ],
@@ -1729,7 +1729,7 @@
               "identifier": "serial_number",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Details",
+              "title": "Security Advisories",
               "type": "GO_TO_APP_STATE"
             }
           ],
