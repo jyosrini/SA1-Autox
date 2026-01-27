@@ -1,7 +1,16 @@
 @dm:empty
- --> @dm:addrow name="edc_customer_names" and limit=0
- --> #dm:query-persistent-stream *
- --> *dm:filter customer=="ATT"
- --> @snowflake:native-query dbname is "CX_DB" and warehouse is "CX_DMP_RPT_WH" and query is "SELECT * FROM CX_DB.CX_DMP_EBV.BV_ASSET WHERE PRODUCT_NAME = 'CRS-16-LCC-B' AND SAVM_SALES_LEVEL_4_NAME = 'STR_ASP ATT';"
- --> @dm:eval timestamp = "utc_time_now_as_isoformat()"
- --> @dm:add-missing-columns columns="execution_status"
+ --> @dm:addrow name='edc_cust_pid_sw' and limit=0
+ --> #dm:query-persistent-stream
+ --> @dm:dedup columns='product_id,sw_os_type,sw_version'
+ --> @dm:save name='temp-pid'
+ --> @c:new-block
+ --> @dm:empty
+ --> @dm:addrow name='edc_oi_inventory_enriched' and limit=0
+ --> #dm:query-persistent-stream customer_name equals 'ATT'
+ --> @dm:save name='temp-source'
+ --> @c:new-block
+ --> @dm:recall name='temp-source'
+ --> @dm:enrich dict='temp-pid' and src_key_cols='product_name,contract_number,customer_name' and dict_key_cols='product_id,contract_number,customer' and enrich_cols='_id'
+ --> @dm:save name='before-output'
+ --> @dm:dedup columns='product_name,contract_number,customer_name'
+ --> @dm:save name='after-output'
