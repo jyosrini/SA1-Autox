@@ -28,11 +28,11 @@
  --> @dm:sort columns='secAdv_confidence_score,secAdv_impact_score' and order='descending'
  --> @dm:dedup columns='serial_number'
  --> @dm:save name="temp-pa-sec_adv-device-dedups"
- ## Merging Inventory with Security Advisories Dataset
+ ## Merging Inventory with Security Advisories Dataset. Also enrich specific Moblity network attrs
 
  --> @c:new-block
  --> @dm:recall name='temp-customer_inventory'
- --> @dm:enrich dict="temp-pa-sec_adv-device-dedups" and src_key_cols="serial_number" and dict_key_cols="serial_number" and enrich_cols="secAdv_match_confidence,secAdv_securityImpactRating"
+ --> @dm:enrich dict="temp-pa-sec_adv-device-dedups" and src_key_cols="serial_number" and dict_key_cols="serial_number" and enrich_cols="secAdv_match_confidence,secAdv_securityImpactRating,edge_device"
  --> @dm:add-missing-columns columns="secAdv_match_confidence,secAdv_securityImpactRating"
  --> @dm:fixnull columns="secAdv_match_confidence,secAdv_securityImpactRating" and value="Not Available" and apply_for_empty="yes"
  --> @dm:gc
