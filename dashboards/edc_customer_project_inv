@@ -371,6 +371,19 @@
       },
       {
         "stream": "edc_customer_inventory",
+        "title": "Security Advisory Severity",
+        "group_by": [
+          "secAdv_securityImpactRating"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 200,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
         "title": "HW Status",
         "group_by": [
           "hw_status"
@@ -980,6 +993,27 @@
               "visible": false,
               "key": true
             },
+            "secAdv_confidence_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_match_confidence",
+              "visible": false,
+              "color-map": {
+                "Not Vulnerable": "#00BB00",
+                "Vulnerable": "#BB0000",
+                "Potentially Vulnerable": "#F6C309"
+              }
+            },
+            "secAdv_match_confidence": {
+              "title": "Security Advisories Status",
+              "type": "TEXT",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>",
+              "visible": true
+            },
+            "secAdv_securityImpactRating": {
+              "title": "Security Advisory Severity",
+              "type": "TEXT",
+              "visible": false
+            },
             "hw_status_color": {
               "type": "COLOR-MAP",
               "source-column": "hw_status",
@@ -1584,6 +1618,27 @@
               },
               "visible": false,
               "key": true
+            },
+            "secAdv_confidence_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_match_confidence",
+              "visible": false,
+              "color-map": {
+                "Not Vulnerable": "#00BB00",
+                "Vulnerable": "#BB0000",
+                "Potentially Vulnerable": "#F6C309"
+              }
+            },
+            "secAdv_match_confidence": {
+              "title": "Security Advisories Status",
+              "type": "TEXT",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>",
+              "visible": true
+            },
+            "secAdv_securityImpactRating": {
+              "title": "Security Advisory Severity",
+              "type": "TEXT",
+              "visible": false
             },
             "hw_status_color": {
               "type": "COLOR-MAP",
