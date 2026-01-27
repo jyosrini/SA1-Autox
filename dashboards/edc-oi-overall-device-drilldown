@@ -1,17 +1,237 @@
 {
-  "name": "snow-inventory",
-  "label": "Inventory-SNOW",
-  "description": "Inventory from SNOW",
-  "version": "23.1.2",
-  "enabled": true,
-  "stream": "snowinventory",
+  "name": "edc-oi-overall-device-drilldown",
+  "label": "Device Details",
+  "description": "EDC Device Drilldown Details",
+  "version": "2026-01-26-01",
+  "enabled": false,
+  "context_label_id": "serial_number",
+  "dashboard_folder": "OI",
   "dashboard_style": "auto",
+  "live_edit": true,
   "dashboard_type": "template",
+  "dashboard_pages": [],
   "dashboard_filters": {
+    "time_filter": false,
     "default_time_filter_labels": [
-      "Last 24 hours"
+      "Last 12 months"
     ],
-    "time_filter": true
+    "columns_filter": [],
+    "group_filters": []
   },
-  "dashboard_folder": "Default"
+  "dashboard_sections": [
+    {
+      "title": "Device Details",
+      "show_filter": true,
+      "widgets": [
+        {
+          "title": "Security Advisories",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 6,
+          "min_width": 12,
+          "stream": "edc_customer_productAlerts",
+          "include_context_in_query": true,
+          "include_context_keys": [
+            "serial_number"
+          ],
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "extra_filter1": "(source in 'securityAdvisories')",
+          "columns": {
+            "secAdv_psirtColdId": {
+              "title": "Security Advisory Col ID",
+              "type": "DOUBLE"
+            },
+            "secAdv_psirtAdvisoryId": {
+              "title": "Security Advisory ID",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.secAdv_bulletinUrl}}\" target='_blank'>{{row.secAdv_psirtAdvisoryId}}</a>{% endraw %}"
+            },
+            "secAdv_bulletinTitle": "Title",
+            "secAdv_confidence_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_match_confidence",
+              "color-map": {
+                "Not Vulnerable": "#00BB00",
+                "Vulnerable": "#BB0000",
+                "Potentially Vulnerable": "#F6C309"
+              }
+            },
+            "secAdv_match_confidence": {
+              "title": "Confidence",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>{% endraw %}",
+              "visible": true
+            },
+            "secAdv_impact_rating_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_securityImpactRating",
+              "color-map": {
+                "Critical": "#8B0000",
+                "High": "#FF4500",
+                "Medium": "#ff8b11",
+                "Low": "#f3ce20"
+              }
+            },
+            "secAdv_securityImpactRating": {
+              "title": "Impact Rating",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
+              "visible": true
+            },
+            "product_name": "Product ID",
+            "serial_number": "Serial Number",
+            "product_family": "Product Family",
+            "sw_version": "SW Version",
+            "productType": {
+              "title": "Product Type",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_ciscoBugIds": {
+              "title": "Bug IDs",
+              "type": "TEXT"
+            },
+            "secAdv_cveId": {
+              "title": "CVE IDs",
+              "type": "TEXT"
+            },
+            "secAdv_match_confidence_reason": "Confidence Reason",
+            "secAdv_bulletinLastUpdated": {
+              "title": "Published",
+              "type": "DATETIME"
+            },
+            "secAdv_bulletinVersion": {
+              "title": "Version",
+              "type": "TEXT"
+            },
+            "secAdv_bulletinUrl": {
+              "title": "URL",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinSummary": {
+              "title": "Summary",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinMappingCaveat": {
+              "title": "Caveat",
+              "type": "TEXT",
+              "visible": false
+            }
+          },
+          "widget_id": "8f645323"
+        }
+      ]
+    }
+  ],
+  "pstream_dashboards": [
+    {
+      "title": "Device Details",
+      "show_filter": true,
+      "widgets": [
+        {
+          "title": "Security Advisories",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 6,
+          "min_width": 12,
+          "stream": "edc_customer_productAlerts",
+          "include_context_in_query": true,
+          "include_context_keys": [
+            "serial_number"
+          ],
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "extra_filter1": "(source in 'securityAdvisories')",
+          "columns": {
+            "secAdv_psirtColdId": {
+              "title": "Security Advisory Col ID",
+              "type": "DOUBLE"
+            },
+            "secAdv_psirtAdvisoryId": {
+              "title": "Security Advisory ID",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.secAdv_bulletinUrl}}\" target='_blank'>{{row.secAdv_psirtAdvisoryId}}</a>{% endraw %}"
+            },
+            "secAdv_bulletinTitle": "Title",
+            "secAdv_confidence_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_match_confidence",
+              "color-map": {
+                "Not Vulnerable": "#00BB00",
+                "Vulnerable": "#BB0000",
+                "Potentially Vulnerable": "#F6C309"
+              }
+            },
+            "secAdv_match_confidence": {
+              "title": "Confidence",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>{% endraw %}",
+              "visible": true
+            },
+            "secAdv_impact_rating_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_securityImpactRating",
+              "color-map": {
+                "Critical": "#8B0000",
+                "High": "#FF4500",
+                "Medium": "#ff8b11",
+                "Low": "#f3ce20"
+              }
+            },
+            "secAdv_securityImpactRating": {
+              "title": "Impact Rating",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
+              "visible": true
+            },
+            "product_name": "Product ID",
+            "serial_number": "Serial Number",
+            "product_family": "Product Family",
+            "sw_version": "SW Version",
+            "productType": {
+              "title": "Product Type",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_ciscoBugIds": {
+              "title": "Bug IDs",
+              "type": "TEXT"
+            },
+            "secAdv_cveId": {
+              "title": "CVE IDs",
+              "type": "TEXT"
+            },
+            "secAdv_match_confidence_reason": "Confidence Reason",
+            "secAdv_bulletinLastUpdated": {
+              "title": "Published",
+              "type": "DATETIME"
+            },
+            "secAdv_bulletinVersion": {
+              "title": "Version",
+              "type": "TEXT"
+            },
+            "secAdv_bulletinUrl": {
+              "title": "URL",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinSummary": {
+              "title": "Summary",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinMappingCaveat": {
+              "title": "Caveat",
+              "type": "TEXT",
+              "visible": false
+            }
+          },
+          "widget_id": "8f645323"
+        }
+      ]
+    }
+  ]
 }
