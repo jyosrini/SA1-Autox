@@ -371,6 +371,19 @@
       },
       {
         "stream": "edc_customer_inventory",
+        "title": "Edge Device",
+        "group_by": [
+          "edge_device"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 200,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
         "title": "Security Advisory Severity",
         "group_by": [
           "secAdv_securityImpactRating"
@@ -997,6 +1010,11 @@
               },
               "visible": false,
               "key": true
+            },
+            "edge_device": {
+              "title": "Edge Device",
+              "type": "TEXT",
+              "visible": true
             },
             "secAdv_confidence_color": {
               "type": "COLOR-MAP",
@@ -1649,6 +1667,11 @@
               },
               "visible": false,
               "key": true
+            },
+            "edge_device": {
+              "title": "Edge Device",
+              "type": "TEXT",
+              "visible": true
             },
             "secAdv_confidence_color": {
               "type": "COLOR-MAP",
