@@ -891,7 +891,12 @@
               "type": "TEXT",
               "key": true
             },
-            "serial_number": "Serial Number",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "key": true,
+              "visible": false
+            },
             "match_inv": {
               "title": "Overlay",
               "type": "TEXT",
@@ -1053,8 +1058,29 @@
               "title": "Timestamp",
               "type": "DATETIME",
               "visible": false
+            },
+            "id": {
+              "title": "ID",
+              "value": "user-dashboard-edc-oi-overall-device-drilldown",
+              "key": true,
+              "type": "FIXED_VALUE",
+              "hidden": true,
+              "visible": false
             }
           },
+          "actions": [
+            {
+              "appName": "user-dashboard",
+              "permission": "aia:page:view",
+              "drillDownContext": "id",
+              "drillDownLinkField": "serial_number",
+              "identifier": "serial_number",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "View Details",
+              "type": "GO_TO_APP_STATE"
+            }
+          ],
           "widget_id": "f5221fe7"
         },
         {
@@ -1517,7 +1543,12 @@
               "type": "TEXT",
               "key": true
             },
-            "serial_number": "Serial Number",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "key": true,
+              "visible": false
+            },
             "match_inv": {
               "title": "Overlay",
               "type": "TEXT",
@@ -1679,8 +1710,29 @@
               "title": "Timestamp",
               "type": "DATETIME",
               "visible": false
+            },
+            "id": {
+              "title": "ID",
+              "value": "user-dashboard-edc-oi-overall-device-drilldown",
+              "key": true,
+              "type": "FIXED_VALUE",
+              "hidden": true,
+              "visible": false
             }
           },
+          "actions": [
+            {
+              "appName": "user-dashboard",
+              "permission": "aia:page:view",
+              "drillDownContext": "id",
+              "drillDownLinkField": "serial_number",
+              "identifier": "serial_number",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "View Details",
+              "type": "GO_TO_APP_STATE"
+            }
+          ],
           "widget_id": "f5221fe7"
         },
         {
