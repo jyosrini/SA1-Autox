@@ -759,7 +759,7 @@
         },
         {
           "title": "Product List Count per BE",
-          "widget_type": "pie_chart",
+          "widget_type1": "pie_chart",
           "duration_hours": 1080,
           "stream": "edc_customer_inventory",
           "ts_column": "timestamp",
@@ -781,6 +781,41 @@
           "column": "count_",
           "agg": "value_count",
           "widget_id": "55e4bcd6"
+        },
+        {
+          "title": "Assets by Security Status",
+          "widget_type": "multi_bar_chart",
+          "duration_hours": 1080,
+          "stream": "edc_customer_inventory",
+          "ts_column": "timestamp",
+          "extra_filter1": "source in 'inventory'",
+          "min_width": 3.5,
+          "height": 4,
+          "max_width": 3.5,
+          "limit": 10,
+          "chartProperties": {
+            "xAxisLabel": "Count",
+            "stacked": false,
+            "legendLocation": "bottom",
+            "orientation": "horizontal"
+          },
+          "formatting": {
+            "notation": "compact"
+          },
+          "style": {
+            "color-map": {
+              "Not Vulnerable": "#00BB00",
+              "Potentially Vulnerable": "#F6C309",
+              "Vulnerable": "#BB0000"
+            }
+          },
+          "group_by": [
+            "secAdv_match_confidence",
+            "secAdv_securityImpactRating"
+          ],
+          "column": "count_",
+          "agg": "sum",
+          "widget_id": "0dc9"
         },
         {
           "title": "Assets by Coverage Status",
@@ -829,7 +864,7 @@
           ],
           "column": "count_",
           "agg": "sum",
-          "widget_id": "0dc9"
+          "widget_id": "f78b15b7"
         },
         {
           "title": "Asset Details",
@@ -1416,7 +1451,7 @@
         },
         {
           "title": "Product List Count per BE",
-          "widget_type": "pie_chart",
+          "widget_type1": "pie_chart",
           "duration_hours": 1080,
           "stream": "edc_customer_inventory",
           "ts_column": "timestamp",
@@ -1438,6 +1473,41 @@
           "column": "count_",
           "agg": "value_count",
           "widget_id": "55e4bcd6"
+        },
+        {
+          "title": "Assets by Security Status",
+          "widget_type": "multi_bar_chart",
+          "duration_hours": 1080,
+          "stream": "edc_customer_inventory",
+          "ts_column": "timestamp",
+          "extra_filter1": "source in 'inventory'",
+          "min_width": 3.5,
+          "height": 4,
+          "max_width": 3.5,
+          "limit": 10,
+          "chartProperties": {
+            "xAxisLabel": "Count",
+            "stacked": false,
+            "legendLocation": "bottom",
+            "orientation": "horizontal"
+          },
+          "formatting": {
+            "notation": "compact"
+          },
+          "style": {
+            "color-map": {
+              "Not Vulnerable": "#00BB00",
+              "Potentially Vulnerable": "#F6C309",
+              "Vulnerable": "#BB0000"
+            }
+          },
+          "group_by": [
+            "secAdv_match_confidence",
+            "secAdv_securityImpactRating"
+          ],
+          "column": "count_",
+          "agg": "sum",
+          "widget_id": "0dc9"
         },
         {
           "title": "Assets by Coverage Status",
@@ -1486,7 +1556,7 @@
           ],
           "column": "count_",
           "agg": "sum",
-          "widget_id": "0dc9"
+          "widget_id": "f78b15b7"
         },
         {
           "title": "Asset Details",
