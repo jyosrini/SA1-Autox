@@ -217,19 +217,24 @@
         "type": "TEXT"
       },
       {
-        "id": "unique_key",
-        "label": "Unique Key",
+        "id": "sw_version",
+        "label": "SW Version",
         "type": "TEXT"
       },
       {
-        "id": "attempt_count",
-        "label": "Attempt Count",
-        "type": "DOUBLE"
+        "id": "serial_number",
+        "label": "SERIAL NUMBER",
+        "type": "TEXT"
       },
       {
-        "id": "combination_count_sum",
-        "label": "Combination Count",
-        "type": "DOUBLE"
+        "id": "sw_os_type",
+        "label": "OS Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "match_inv",
+        "label": "Overlay",
+        "type": "TEXT"
       }
     ],
     "group_filters": [
