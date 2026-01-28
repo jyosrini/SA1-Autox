@@ -106,7 +106,7 @@
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
  --> @dm:eval unique_key = "str(customer) + str(project_name) + str(serial_number)"
  --> @dm:save name = "temp-contract_data" and append="yes"
- ## Separate devices with null serial number
+ ## Separate devices with null serial number. These are not been used
 
  --> @c:new-block
  --> @dm:recall name="temp-contract_data"
@@ -148,6 +148,13 @@
  --> @dm:fixnull columns='PID' and value="Not Available"  and apply_for_empty="yes"
  --> @dm:eval match_inv=" 'IB Only' if PID=='Not Available' else 'IB + In Network' "
  --> @dm:selectcolumns exclude="^PID$"
+ ## new column product_id to simplify product is during sw scan
+
+ --> @dm:copy-columns from="product_name" and to="product_id"
+ --> @dm:eval product_id = "product_id.replace('=', '')"
+ --> @dm:eval tokens = "product_id.rsplit('-', 1)"
+ --> @dm:eval product_id = "tokens[0] if len(tokens) > 1 and tokens[1] in ['RF'] else product_id"
+ --> @dm:selectcolumns exclude = "tokens"
  --> @dm:save name = "temp-contract_data_IB"
  --> @dm:save name = "temp-contract_data"
  ## Find devices in network that are not in IB
@@ -157,15 +164,62 @@
  --> @dm:selectcolumns include="^product_name|serial_number|sw_version|sw_os_type|customer|customer_name|project_name"
  --> @dm:enrich dict="temp-contract_data" and src_key_cols="serial_number" and dict_key_cols="serial_number" and enrich_cols="contract_number,instance_id"
  --> *dm:filter instance_id is null
+ ## new column product_id to simplify product is during sw scan
+
+ --> @dm:copy-columns from="product_name" and to="product_id"
+ --> @dm:eval product_id = "product_id.replace('=', '')"
+ --> @dm:eval tokens = "product_id.rsplit('-', 1)"
+ --> @dm:eval product_id = "tokens[0] if len(tokens) > 1 and tokens[1] in ['RF'] else product_id"
+ --> @dm:selectcolumns exclude = "tokens"
  ## enrich hwEOL for devices in-network only
 
- --> @dm:enrich dict="temp-contract_data" and src_key_cols="product_name" and dict_key_cols="product_name" and enrich_cols="bk_end_of_life_request_num,bk_eol_bulletin_product_typ_cd,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,eol_product_name,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt,product_description,product_family,product_family_description,product_type,item_type"
+ --> @dm:enrich dict="temp-contract_data" and src_key_cols="product_id" and dict_key_cols="product_id" and enrich_cols="business_entity,business_sub_entity,bk_end_of_life_request_num,bk_eol_bulletin_product_typ_cd,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,eol_product_name,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt,product_description,product_family,product_family_description,product_type,item_type,product_list_price"
  --> @dm:manipulate-string to="match_inv" and func="eval" and value="'Only in Network'"
  --> @dm:eval unique_key = "str(customer) + str(project_name) + str(serial_number)"
- --> @dm:save name = "temp-contract_data" and append="yes"
- ## --> @dm:save name = "temp-device_only_network"
+ --> @dm:save name = "temp-contract_data_network_only"
+ ## Section to get HW data from device only-in-network.
 
- ## concatenate both datasets. Keep only devices part of network
+ ## This has to be reviewed. Concat all values in a single cell can exceed size limit. If expected large number of products in-network only
+
+ --> @c:new-block
+ --> @dm:recall name="temp-contract_data_network_only"
+ ## Separate what could not be matched yet
+
+ --> *dm:filter item_type is NULL
+ --> @dm:skip-block-if-shape row_count = 0
+ --> @dm:selectcolumns include="product_name|product_id"
+ --> @dm:dedup columns = "product_id"
+ --> @dm:map from = "product_id" & to = "product_id_new" & func = "concat" & prefix = "'" & suffix = "'"
+ --> @dm:selectcolumns include="product_id_new"
+ --> @dm:save name = "temp-contract_data_network_only_pids"
+ --> @c:data-loop columns='product_id_new' and dataset="temp-contract_data_network_only_pids"
+ --> @snowflake:native-query dbname is "CX_DB" and warehouse is "CX_DMP_RPT_WH" and query is "SELECT PRODUCT_NAME, COVERAGE, BUSINESS_ENTITY, BUSINESS_SUB_ENTITY, BK_END_OF_LIFE_REQUEST_NUM, BK_EOL_BULLETIN_PRODUCT_TYP_CD, END_OF_NEW_SVC_ATTACHMENT_DT, END_OF_ROUTINE_FAIL_ANLYSYS_DT, END_OF_SOFTWARE_MAINTENANCE_DT, END_OF_SVC_CONTRACT_RNWL_DT, EOL_EXTERNAL_ANNOUNCE_DT, END_OF_SECURITY_VULN_SUPPORT_DT, EOL_PRODUCT_NAME, ITEM_TYPE, LAST_DATE_OF_SALE, LAST_DATE_OF_SUPPORT, PRODUCT_DESCRIPTION, PRODUCT_FAMILY, PRODUCT_FAMILY_DESCRIPTION, PRODUCT_TYPE, PRODUCT_LIST_PRICE FROM CX_DB.CX_DMP_EBV.BV_ASSET WHERE PRODUCT_NAME IN ($product_id_new) LIMIT 1;"
+ --> @dm:add-missing-columns columns="execution_status"
+ --> *dm:filter execution_status =="Success"
+ --> @dm:skip-block-if-shape column_count = 3
+ --> @dm:selectcolumns exclude = "execution_reason|execution_status"
+ ## new column product_id to simplify product is during sw scan
+
+ --> @dm:copy-columns from="product_name" and to="product_id"
+ --> @dm:eval product_id = "product_id.replace('=', '')"
+ --> @dm:eval tokens = "product_id.rsplit('-', 1)"
+ --> @dm:eval product_id = "tokens[0] if len(tokens) > 1 and tokens[1] in ['RF'] else product_id"
+ --> @dm:selectcolumns exclude = "tokens"
+ --> @dm:save name="temp-inv_only_hw_data" and append='yes'
+ ## Enrich the devices were missing HW eol data
+
+ --> @c:new-block
+ --> @dm:recall name="temp-contract_data_network_only"
+ ## Separate what could not be matched yet
+
+ --> *dm:filter item_type is NULL
+ --> @dm:enrich dict="temp-inv_only_hw_data" and src_key_cols="product_id" and dict_key_cols="product_id" and enrich_cols="business_entity,business_sub_entity,bk_end_of_life_request_num,bk_eol_bulletin_product_typ_cd,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,eol_product_name,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt,product_description,product_family,product_family_description,product_type,item_type,product_list_price"
+ --> @dm:save name = "temp-contract_data"
+ --> @c:new-block
+ --> @dm:recall name="temp-contract_data"
+ --> *dm:filter item_type is not NULL
+ --> @dm:save name = "temp-contract_data" and append='yes'
+ ## Keep only devices part of network
 
  --> @c:new-block
  ## --> @dm:concat names="^temp-contract_data$|^temp-device_only_network$"
@@ -188,13 +242,6 @@
  --> @dm:eval sw_version = "sw_version.replace('Copyright', '') if sw_version else sw_version"
  --> @dm:eval sw_version = "sw_version.replace('[Default]', '') if sw_version else sw_version"
  --> @dm:eval sw_version = "str(sw_version).strip()"
- ## new column product_id to simplify product is during sw scan
-
- --> @dm:copy-columns from="product_name" and to="product_id"
- --> @dm:eval product_id = "product_id.replace('=', '')"
- --> @dm:eval tokens = "product_id.rsplit('-', 1)"
- --> @dm:eval product_id = "tokens[0] if len(tokens) > 1 and tokens[1] in ['RF'] else product_id"
- --> @dm:selectcolumns exclude = "tokens"
  --> @dm:save name = "temp-contract_data"
  ## Generate unique list of PID-SW version to process
 
