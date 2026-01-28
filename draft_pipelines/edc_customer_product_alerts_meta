@@ -2,7 +2,7 @@ folder: OI
 name: edc_customer_product_alerts
 description: test pipeline
 data_path: draft-pipelines/data/edc_customer_product_alerts/2026-01-26_1/data.json
-usecase: ''
+usecase: Input PSIRT data from NP to enrich customer_inv
 category: ''
 sources:
   rn:
