@@ -1030,7 +1030,7 @@
               "title": "Security Advisories Status",
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>",
-              "visible": true
+              "visible": false
             },
             "secAdv_securityImpactRating": {
               "title": "Security Advisory Severity",
@@ -1687,7 +1687,7 @@
               "title": "Security Advisories Status",
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>",
-              "visible": true
+              "visible": false
             },
             "secAdv_securityImpactRating": {
               "title": "Security Advisory Severity",
