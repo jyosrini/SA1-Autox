@@ -16,6 +16,15 @@
  --> @c:new-block
  --> @dm:empty
  --> @dm:save name="temp-recommended_release"
+ ## To fix incorrect SW EOL data provided by Ironbank and NP
+
+ --> @c:new-block
+ --> @dm:empty
+ --> @dm:addrow rule_id = "A1" & rule = "sw_version contains '12\.2\(18\)SXF' " & sw_status_f="Expired"
+ --> @dm:addrow rule_id = "A2" & rule = "sw_version contains '6\.2\(' and sw_os_type is 'NX-OS' " & sw_status_f="Expired"
+ --> @dm:addrow rule_id = "A3" & rule = "sw_version contains '15\.1\(1\)S'" & sw_status_f="Expired"
+ --> @dm:addrow rule_id = "A4" & rule = "sw_version contains '12\.2\(14\)Z'" & sw_status_f="Expired"
+ --> @dm:save name='temp-sweox-errs-dict'
  ## --> @c:new-block
 
  ## --> @dm:recall name='att-mobility-project'
@@ -476,5 +485,11 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
 
  ## --> @dm:save name='test-contract_data'
 
+ ## To fix incorrect SW EOL data provided by Ironbank and NP
+
+ --> @dm:enrich-using-rule-dict dict = "temp-sweox-errs-dict" & enrich_columns = "sw_status_f" and cache="no"
+ --> @cfxaia:conditional-statement condition_column="sw_status_f" and return_if="sw_status_f" and return_else="sw_status"
+ --> @dm:copy-columns from="sw_status_f" and to="sw_status"
+ --> @dm:selectcolumns exclude="sw_status_f"
  --> @dm:save name = "contract_data_IB"
  --> @rn:write-stream name='edc_customer_inventory' and direct_to_opensearch="yes"
