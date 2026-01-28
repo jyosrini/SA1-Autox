@@ -177,19 +177,27 @@
  --> @dm:manipulate-string to="match_inv" and func="eval" and value="'Only in Network'"
  --> @dm:eval unique_key = "str(customer) + str(project_name) + str(serial_number)"
  --> @dm:save name = "temp-contract_data_network_only"
- --> @dm:save name = "temp-contract_data" and append="yes"
+ ## --> @dm:save name = "temp-contract_data" and append="yes"
+
  ## Section to get HW data from device only-in-network.
 
  ## This has to be reviewed. Concat all values in a single cell can exceed size limit. If expected large number of products in-network only
 
  --> @c:new-block
  --> @dm:recall name="temp-contract_data_network_only"
+ --> @dm:skip-block-if-shape row_count = 0
  --> @dm:selectcolumns include="product_name|product_id"
  --> @dm:dedup columns = "product_id"
  --> @dm:map from = "product_id" & to = "product_id_new" & func = "concat" & prefix = "'" & suffix = "'"
  --> @dm:selectcolumns include="product_id_new"
+ --> @dm:save name = "temp-contract_data_network_only_pids"
+ --> @exec:for-loop num_rows=50
  --> @dm:eval dummy="'dummy'"
  --> @dm:implode key_columns='dummy' & merge_columns='product_id_new' & merge_sep = ','
+ --> @snowflake:native-query dbname is "CX_DB" and warehouse is "CX_DMP_RPT_WH" and query is "SELECT PRODUCT_NAME, COVERAGE, BUSINESS_ENTITY, BUSINESS_SUB_ENTITY, BK_END_OF_LIFE_REQUEST_NUM, BK_EOL_BULLETIN_PRODUCT_TYP_CD, END_OF_NEW_SVC_ATTACHMENT_DT, END_OF_ROUTINE_FAIL_ANLYSYS_DT, END_OF_SOFTWARE_MAINTENANCE_DT, END_OF_SVC_CONTRACT_RNWL_DT, EOL_EXTERNAL_ANNOUNCE_DT, END_OF_SECURITY_VULN_SUPPORT_DT, EOL_PRODUCT_NAME, ITEM_TYPE, LAST_DATE_OF_SALE, LAST_DATE_OF_SUPPORT, PRODUCT_DESCRIPTION, PRODUCT_FAMILY, PRODUCT_FAMILY_DESCRIPTION, PRODUCT_TYPE, PRODUCT_LIST_PRICE FROM CX_DB.CX_DMP_EBV.BV_ASSET WHERE product_name IN ('$product_id_new') LIMIT 1;"
+ --> @dm:selectcolumns exclude="dummy"
+ --> @dm:save name="temp-inv_only_hw_data" and append='yes'
+ --> @exec:end-loop
  ## --> @dm:save name = "temp-device_only_network"
 
  ## concatenate both datasets. Keep only devices part of network
