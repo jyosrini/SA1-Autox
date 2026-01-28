@@ -859,6 +859,10 @@
             }
           ],
           "remote_searchable": true,
+          "remote_searchable_cols": [
+            "serial_number",
+            "product_name"
+          ],
           "extra_filter": null,
           "columns": {
             "customer_name": {
@@ -1526,6 +1530,10 @@
             }
           ],
           "remote_searchable": true,
+          "remote_searchable_cols": [
+            "serial_number",
+            "product_name"
+          ],
           "extra_filter": null,
           "columns": {
             "customer_name": {
