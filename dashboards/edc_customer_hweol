@@ -139,9 +139,24 @@
         "type": "TEXT"
       },
       {
-        "id": "combination_count",
-        "label": "Combination Count",
-        "type": "DOUBLE"
+        "id": "sw_version",
+        "label": "SW Version",
+        "type": "TEXT"
+      },
+      {
+        "id": "serial_number",
+        "label": "SERIAL NUMBER",
+        "type": "TEXT"
+      },
+      {
+        "id": "sw_os_type",
+        "label": "OS Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "match_inv",
+        "label": "Overlay",
+        "type": "TEXT"
       }
     ],
     "group_filters": [
