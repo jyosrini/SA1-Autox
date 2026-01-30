@@ -213,7 +213,7 @@
  ## Separate what could not be matched yet
 
  --> *dm:filter item_type is NULL
- --> @dm:enrich dict="temp-inv_only_hw_data" and src_key_cols="product_id" and dict_key_cols="product_id" and enrich_cols="business_entity,business_sub_entity,bk_end_of_life_request_num,bk_eol_bulletin_product_typ_cd,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,eol_product_name,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt,product_description,product_family,product_family_description,product_type,item_type,product_list_price" and replace_values='yes'
+ --> @dm:enrich dict="temp-inv_only_hw_data" and src_key_cols="product_id" and dict_key_cols="product_id" and enrich_cols="product_name,business_entity,business_sub_entity,bk_end_of_life_request_num,bk_eol_bulletin_product_typ_cd,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,eol_product_name,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt,product_description,product_family,product_family_description,product_type,item_type,product_list_price" and replace_values='yes'
  --> @dm:save name = "temp-contract_data" and append='yes'
  --> @c:new-block
  --> @dm:recall name="temp-contract_data_network_only"
@@ -225,8 +225,7 @@
  ## --> @dm:concat names="^temp-contract_data$|^temp-device_only_network$"
 
  --> @dm:recall name="temp-contract_data"
- ## --> *dm:filter match_inv contains 'Network'
-
+ --> *dm:filter match_inv contains 'Network'
  --> @dm:add-missing-columns columns="portfolio_desc,instance_id,contract_number,gu_name,coverage,covered_line_status.sw_os_type"
  --> @dm:fixnull columns="contract_number,instance_id,serial_number,sw_version,portfolio_desc" and value="Not Available"  and apply_for_empty="yes"
  --> @dm:fixnull columns="product_list_price" and value="0" and apply_for_empty="yes"
@@ -250,6 +249,7 @@
  --> @dm:recall name="temp-contract_data"
  --> *dm:filter sw_version!='Not Available'
  --> *dm:filter sw_os_type is not null
+ --> *dm:filter product_name is not in ['null','Unknown']
  --> @dm:selectcolumns include="customer|^product_id|sw_os_type|sw_version|instance_id"
  --> @dm:groupby columns ="customer,product_id,sw_os_type,sw_version"
  --> @dm:rename-columns total="instance_id"
