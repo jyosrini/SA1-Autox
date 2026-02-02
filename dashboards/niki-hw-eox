@@ -161,20 +161,6 @@
       },
       {
         "stream": "edc_oi_inventory_enriched",
-        "title": "GU Name",
-        "extra_filter1": null,
-        "group_by": [
-          "gu_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 350,
-        "agg": "sum",
-        "column": "combination_count",
-        "type": "int"
-      },
-      {
-        "stream": "edc_oi_inventory_enriched",
         "title": "Contract",
         "group_by": [
           "contract_number"
