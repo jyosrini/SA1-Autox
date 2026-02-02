@@ -39,6 +39,16 @@
         "type": "DATETIME"
       },
       {
+        "id": "hwEOL_endOfRoutineFailureAnalysisDate",
+        "label": "HW End Of Routine Fail Anlysys Dt",
+        "type": "DATETIME"
+      },
+      {
+        "id": "hwEOL_endOfSoftwareMaintenanceReleasesDate",
+        "label": "HW End Of Software Maintenance Dt",
+        "type": "DATETIME"
+      },
+      {
         "id": "hwEOL_lastDayOfSupportDate",
         "label": "HW Last Date Of Support",
         "type": "DATETIME"
@@ -701,6 +711,14 @@
           "ts_column": "timestamp",
           "columns": {
             "product_id": "Product ID",
+            "total_rma_24": {
+              "title": "RMA 2024",
+              "type": "DOUBLE"
+            },
+            "total_rma_25": {
+              "title": "RMA 2025",
+              "type": "DOUBLE"
+            },
             "hw_status": {
               "title": "HW Status",
               "type": "TEXT",
@@ -719,19 +737,22 @@
             "hwEOL_endOfRoutineFailureAnalysisDate": {
               "title": "HW End Of Routine Failure Analysis",
               "type": "DATE",
-              "visible": true
+              "visible": false
             },
             "hwEOL_endOfNewServiceAttachmentDate": {
               "title": "HW End Of New Service Attachment",
-              "type": "DATE"
+              "type": "DATE",
+              "visible": false
             },
             "hwEOL_endOfServiceContractRenewalDate": {
               "title": "HW End Of Service Contract Renewal",
-              "type": "DATE"
+              "type": "DATE",
+              "visible": false
             },
             "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
               "title": "HW End Of Software Maintenance Releases",
-              "type": "DATE"
+              "type": "DATE",
+              "visible": false
             },
             "hwEOL_lastDayOfSupportDate": {
               "title": "HW Last Day of Support",
@@ -1505,6 +1526,14 @@
           "ts_column": "timestamp",
           "columns": {
             "product_id": "Product ID",
+            "total_rma_24": {
+              "title": "RMA 2024",
+              "type": "DOUBLE"
+            },
+            "total_rma_25": {
+              "title": "RMA 2025",
+              "type": "DOUBLE"
+            },
             "hw_status": {
               "title": "HW Status",
               "type": "TEXT",
@@ -1523,19 +1552,22 @@
             "hwEOL_endOfRoutineFailureAnalysisDate": {
               "title": "HW End Of Routine Failure Analysis",
               "type": "DATE",
-              "visible": true
+              "visible": false
             },
             "hwEOL_endOfNewServiceAttachmentDate": {
               "title": "HW End Of New Service Attachment",
-              "type": "DATE"
+              "type": "DATE",
+              "visible": false
             },
             "hwEOL_endOfServiceContractRenewalDate": {
               "title": "HW End Of Service Contract Renewal",
-              "type": "DATE"
+              "type": "DATE",
+              "visible": false
             },
             "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
               "title": "HW End Of Software Maintenance Releases",
-              "type": "DATE"
+              "type": "DATE",
+              "visible": false
             },
             "hwEOL_lastDayOfSupportDate": {
               "title": "HW Last Day of Support",
