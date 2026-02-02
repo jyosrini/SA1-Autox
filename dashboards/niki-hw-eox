@@ -701,7 +701,7 @@
           "widget_id": "9f150b67"
         },
         {
-          "title": "HW EOL RMA",
+          "title": "Assets with RMA Data",
           "widget_type": "tabular",
           "max_width": 12,
           "height": 8,
@@ -1524,7 +1524,7 @@
           "widget_id": "9f150b67"
         },
         {
-          "title": "HW EOL RMA",
+          "title": "Assets with RMA Data",
           "widget_type": "tabular",
           "max_width": 12,
           "height": 8,
