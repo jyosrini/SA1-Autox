@@ -709,14 +709,20 @@
           "stream": "edc_oi_inventory_enriched",
           "duration_hours": 1080,
           "ts_column": "timestamp",
+          "sorting": [
+            {
+              "total_rma_25": "desc",
+              "total_rma_24": "desc"
+            }
+          ],
           "columns": {
             "product_id": "Product ID",
-            "total_rma_24": {
-              "title": "RMA 2024",
-              "type": "DOUBLE"
-            },
             "total_rma_25": {
               "title": "RMA 2025",
+              "type": "DOUBLE"
+            },
+            "total_rma_24": {
+              "title": "RMA 2024",
               "type": "DOUBLE"
             },
             "hw_status": {
@@ -1526,14 +1532,20 @@
           "stream": "edc_oi_inventory_enriched",
           "duration_hours": 1080,
           "ts_column": "timestamp",
+          "sorting": [
+            {
+              "total_rma_25": "desc",
+              "total_rma_24": "desc"
+            }
+          ],
           "columns": {
             "product_id": "Product ID",
-            "total_rma_24": {
-              "title": "RMA 2024",
-              "type": "DOUBLE"
-            },
             "total_rma_25": {
               "title": "RMA 2025",
+              "type": "DOUBLE"
+            },
+            "total_rma_24": {
+              "title": "RMA 2024",
               "type": "DOUBLE"
             },
             "hw_status": {
