@@ -775,6 +775,8 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
+              "total_rma_24",
+              "total_rma_25",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
@@ -1590,6 +1592,8 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
+              "total_rma_24",
+              "total_rma_25",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
