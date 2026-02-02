@@ -1048,6 +1048,41 @@
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>",
               "visible": true
             },
+            "hwEOL_endOfLifeAnnouncementDate": {
+              "title": "HW EOL Announcement",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfSaleDate": {
+              "title": "HW End Of Sale",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfRoutineFailureAnalysisDate": {
+              "title": "HW End Of Routine Failure Analysis",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfNewServiceAttachmentDate": {
+              "title": "HW End Of New Service Attachment",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfServiceContractRenewalDate": {
+              "title": "HW End Of Service Contract Renewal",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
+              "title": "HW End Of Software Maintenance Releases",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_lastDayOfSupportDate": {
+              "title": "HW Last Day of Support",
+              "type": "TEXT",
+              "visible": false
+            },
             "timestamp": {
               "title": "Timestamp",
               "type": "DATETIME",
@@ -1718,6 +1753,41 @@
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>",
               "visible": true
+            },
+            "hwEOL_endOfLifeAnnouncementDate": {
+              "title": "HW EOL Announcement",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfSaleDate": {
+              "title": "HW End Of Sale",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfRoutineFailureAnalysisDate": {
+              "title": "HW End Of Routine Failure Analysis",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfNewServiceAttachmentDate": {
+              "title": "HW End Of New Service Attachment",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfServiceContractRenewalDate": {
+              "title": "HW End Of Service Contract Renewal",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
+              "title": "HW End Of Software Maintenance Releases",
+              "type": "TEXT",
+              "visible": false
+            },
+            "hwEOL_lastDayOfSupportDate": {
+              "title": "HW Last Day of Support",
+              "type": "TEXT",
+              "visible": false
             },
             "timestamp": {
               "title": "Timestamp",
