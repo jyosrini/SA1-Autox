@@ -705,6 +705,52 @@
           "widget_id": "9f150b67"
         },
         {
+          "title": "HW EOL RMA",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 8,
+          "min_width": 12,
+          "stream": "test_rma_mobility",
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "columns": {
+            "product_id": "Product ID",
+            "hw_status": {
+              "title": "HW Status",
+              "type": "TEXT",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.hw_status_color }}' > {{ row.hw_status }} </span>",
+              "visible": true
+            },
+            "hwEOL_lastDayOfSupportDate": {
+              "title": "HW Last Day of Support",
+              "type": "TEXT"
+            },
+            "total_rma_24": {
+              "title": "Total RMAs 2024",
+              "type": "DATE",
+              "visible": false
+            },
+            "total_rma_25": {
+              "title": "Total RMAs 2025",
+              "type": "DATE",
+              "visible": false
+            },
+            "hw_status_color": {
+              "type": "COLOR-MAP",
+              "source-column": "hw_status",
+              "color-map": {
+                "Expired": "#BB0000",
+                "Expiring in a Quarter": "#F6C309",
+                "Expiring in 4 Quarters": "#FF9800",
+                "Expiring in 8 Quarters": "#1ECBE1",
+                "Expiring after 8 Quarters": "#009688",
+                "No EOL": "#00BB00"
+              }
+            }
+          },
+          "widget_id": "3c9cfa9a"
+        },
+        {
           "title": "Assets HW EOLs",
           "widget_type": "tabular",
           "max_width": 12,
@@ -1423,6 +1469,52 @@
             "yAxisLabel": "Count"
           },
           "widget_id": "9f150b67"
+        },
+        {
+          "title": "HW EOL RMA",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 8,
+          "min_width": 12,
+          "stream": "test_rma_mobility",
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "columns": {
+            "product_id": "Product ID",
+            "hw_status": {
+              "title": "HW Status",
+              "type": "TEXT",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.hw_status_color }}' > {{ row.hw_status }} </span>",
+              "visible": true
+            },
+            "hwEOL_lastDayOfSupportDate": {
+              "title": "HW Last Day of Support",
+              "type": "TEXT"
+            },
+            "total_rma_24": {
+              "title": "Total RMAs 2024",
+              "type": "DATE",
+              "visible": false
+            },
+            "total_rma_25": {
+              "title": "Total RMAs 2025",
+              "type": "DATE",
+              "visible": false
+            },
+            "hw_status_color": {
+              "type": "COLOR-MAP",
+              "source-column": "hw_status",
+              "color-map": {
+                "Expired": "#BB0000",
+                "Expiring in a Quarter": "#F6C309",
+                "Expiring in 4 Quarters": "#FF9800",
+                "Expiring in 8 Quarters": "#1ECBE1",
+                "Expiring after 8 Quarters": "#009688",
+                "No EOL": "#00BB00"
+              }
+            }
+          },
+          "widget_id": "3c9cfa9a"
         },
         {
           "title": "Assets HW EOLs",
