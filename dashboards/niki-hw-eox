@@ -710,30 +710,56 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "test_rma_mobility",
+          "stream": "edc_oi_inventory_enriched",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "columns": {
             "product_id": "Product ID",
+            "coverage": {
+              "title": "Coverage",
+              "type": "TEXT",
+              "visible": false
+            },
+            "customer_name": {
+              "title": "Customer Name",
+              "type": "TEXT",
+              "visible": false
+            },
             "hw_status": {
               "title": "HW Status",
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.hw_status_color }}' > {{ row.hw_status }} </span>",
               "visible": true
             },
+            "hwEOL_endOfLifeAnnouncementDate": {
+              "title": "HW EOL Announcement",
+              "type": "TEXT"
+            },
+            "hwEOL_endOfSaleDate": {
+              "title": "HW End Of Sale",
+              "type": "TEXT",
+              "visible": true
+            },
+            "hwEOL_endOfRoutineFailureAnalysisDate": {
+              "title": "HW End Of Routine Failure Analysis",
+              "type": "TEXT",
+              "visible": true
+            },
+            "hwEOL_endOfNewServiceAttachmentDate": {
+              "title": "HW End Of New Service Attachment",
+              "type": "TEXT"
+            },
+            "hwEOL_endOfServiceContractRenewalDate": {
+              "title": "HW End Of Service Contract Renewal",
+              "type": "TEXT"
+            },
+            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
+              "title": "HW End Of Software Maintenance Releases",
+              "type": "TEXT"
+            },
             "hwEOL_lastDayOfSupportDate": {
               "title": "HW Last Day of Support",
               "type": "TEXT"
-            },
-            "total_rma_24": {
-              "title": "Total RMAs 2024",
-              "type": "DATE",
-              "visible": false
-            },
-            "total_rma_25": {
-              "title": "Total RMAs 2025",
-              "type": "DATE",
-              "visible": false
             },
             "hw_status_color": {
               "type": "COLOR-MAP",
@@ -747,6 +773,30 @@
                 "No EOL": "#00BB00"
               }
             }
+          },
+          "pivot": {
+            "pivot_type": "advanced",
+            "group_by": [
+              "product_id",
+              "coverage",
+              "customer_name",
+              "hw_status",
+              "hwEOL_endOfLifeAnnouncementDate",
+              "hwEOL_endOfSaleDate",
+              "hwEOL_endOfRoutineFailureAnalysisDate",
+              "hwEOL_endOfNewServiceAttachmentDate",
+              "hwEOL_endOfServiceContractRenewalDate",
+              "hwEOL_endOfSoftwareMaintenanceReleasesDate",
+              "hwEOL_lastDayOfSupportDate"
+            ],
+            "series": [
+              {
+                "column": "combination_count",
+                "agg": "sum",
+                "type": "int",
+                "label": "Impacted Device Count"
+              }
+            ]
           },
           "widget_id": "3c9cfa9a"
         },
@@ -1476,30 +1526,56 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "test_rma_mobility",
+          "stream": "edc_oi_inventory_enriched",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "columns": {
             "product_id": "Product ID",
+            "coverage": {
+              "title": "Coverage",
+              "type": "TEXT",
+              "visible": false
+            },
+            "customer_name": {
+              "title": "Customer Name",
+              "type": "TEXT",
+              "visible": false
+            },
             "hw_status": {
               "title": "HW Status",
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.hw_status_color }}' > {{ row.hw_status }} </span>",
               "visible": true
             },
+            "hwEOL_endOfLifeAnnouncementDate": {
+              "title": "HW EOL Announcement",
+              "type": "TEXT"
+            },
+            "hwEOL_endOfSaleDate": {
+              "title": "HW End Of Sale",
+              "type": "TEXT",
+              "visible": true
+            },
+            "hwEOL_endOfRoutineFailureAnalysisDate": {
+              "title": "HW End Of Routine Failure Analysis",
+              "type": "TEXT",
+              "visible": true
+            },
+            "hwEOL_endOfNewServiceAttachmentDate": {
+              "title": "HW End Of New Service Attachment",
+              "type": "TEXT"
+            },
+            "hwEOL_endOfServiceContractRenewalDate": {
+              "title": "HW End Of Service Contract Renewal",
+              "type": "TEXT"
+            },
+            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
+              "title": "HW End Of Software Maintenance Releases",
+              "type": "TEXT"
+            },
             "hwEOL_lastDayOfSupportDate": {
               "title": "HW Last Day of Support",
               "type": "TEXT"
-            },
-            "total_rma_24": {
-              "title": "Total RMAs 2024",
-              "type": "DATE",
-              "visible": false
-            },
-            "total_rma_25": {
-              "title": "Total RMAs 2025",
-              "type": "DATE",
-              "visible": false
             },
             "hw_status_color": {
               "type": "COLOR-MAP",
@@ -1513,6 +1589,30 @@
                 "No EOL": "#00BB00"
               }
             }
+          },
+          "pivot": {
+            "pivot_type": "advanced",
+            "group_by": [
+              "product_id",
+              "coverage",
+              "customer_name",
+              "hw_status",
+              "hwEOL_endOfLifeAnnouncementDate",
+              "hwEOL_endOfSaleDate",
+              "hwEOL_endOfRoutineFailureAnalysisDate",
+              "hwEOL_endOfNewServiceAttachmentDate",
+              "hwEOL_endOfServiceContractRenewalDate",
+              "hwEOL_endOfSoftwareMaintenanceReleasesDate",
+              "hwEOL_lastDayOfSupportDate"
+            ],
+            "series": [
+              {
+                "column": "combination_count",
+                "agg": "sum",
+                "type": "int",
+                "label": "Impacted Device Count"
+              }
+            ]
           },
           "widget_id": "3c9cfa9a"
         },
