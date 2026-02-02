@@ -133,6 +133,11 @@
         "type": "TEXT"
       },
       {
+        "id": "product_id",
+        "label": "Product ID",
+        "type": "TEXT"
+      },
+      {
         "id": "product_type",
         "label": "Product Type",
         "type": "TEXT"
@@ -326,6 +331,7 @@
           "stream": "edc_oi_inventory_enriched",
           "duration_hours": 1080,
           "ts_column": "timestamp",
+          "remote_searchable": true,
           "columns": {
             "product_id": "Product ID",
             "hw_status": {
@@ -342,23 +348,6 @@
               "type": "DATE",
               "visible": true
             },
-            "hwEOL_endOfRoutineFailureAnalysisDate": {
-              "title": "HW End Of Routine Failure Analysis",
-              "type": "DATE",
-              "visible": true
-            },
-            "hwEOL_endOfNewServiceAttachmentDate": {
-              "title": "HW End Of New Service Attachment",
-              "type": "DATE"
-            },
-            "hwEOL_endOfServiceContractRenewalDate": {
-              "title": "HW End Of Service Contract Renewal",
-              "type": "DATE"
-            },
-            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
-              "title": "HW End Of Software Maintenance Releases",
-              "type": "DATE"
-            },
             "hwEOL_lastDayOfSupportDate": {
               "title": "HW Last Day of Support",
               "type": "DATE"
@@ -368,13 +357,11 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
+              "coverage",
+              "customer_name",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
-              "hwEOL_endOfRoutineFailureAnalysisDate",
-              "hwEOL_endOfNewServiceAttachmentDate",
-              "hwEOL_endOfServiceContractRenewalDate",
-              "hwEOL_endOfSoftwareMaintenanceReleasesDate",
               "hwEOL_lastDayOfSupportDate"
             ],
             "series": [
@@ -567,6 +554,7 @@
           "stream": "edc_oi_inventory_enriched",
           "duration_hours": 1080,
           "ts_column": "timestamp",
+          "remote_searchable": true,
           "columns": {
             "product_id": "Product ID",
             "hw_status": {
@@ -583,23 +571,6 @@
               "type": "DATE",
               "visible": true
             },
-            "hwEOL_endOfRoutineFailureAnalysisDate": {
-              "title": "HW End Of Routine Failure Analysis",
-              "type": "DATE",
-              "visible": true
-            },
-            "hwEOL_endOfNewServiceAttachmentDate": {
-              "title": "HW End Of New Service Attachment",
-              "type": "DATE"
-            },
-            "hwEOL_endOfServiceContractRenewalDate": {
-              "title": "HW End Of Service Contract Renewal",
-              "type": "DATE"
-            },
-            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
-              "title": "HW End Of Software Maintenance Releases",
-              "type": "DATE"
-            },
             "hwEOL_lastDayOfSupportDate": {
               "title": "HW Last Day of Support",
               "type": "DATE"
@@ -609,13 +580,11 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
+              "coverage",
+              "customer_name",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
-              "hwEOL_endOfRoutineFailureAnalysisDate",
-              "hwEOL_endOfNewServiceAttachmentDate",
-              "hwEOL_endOfServiceContractRenewalDate",
-              "hwEOL_endOfSoftwareMaintenanceReleasesDate",
               "hwEOL_lastDayOfSupportDate"
             ],
             "series": [
