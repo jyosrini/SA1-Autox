@@ -715,16 +715,6 @@
           "ts_column": "timestamp",
           "columns": {
             "product_id": "Product ID",
-            "coverage": {
-              "title": "Coverage",
-              "type": "TEXT",
-              "visible": false
-            },
-            "customer_name": {
-              "title": "Customer Name",
-              "type": "TEXT",
-              "visible": false
-            },
             "hw_status": {
               "title": "HW Status",
               "type": "TEXT",
@@ -733,33 +723,33 @@
             },
             "hwEOL_endOfLifeAnnouncementDate": {
               "title": "HW EOL Announcement",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hwEOL_endOfSaleDate": {
               "title": "HW End Of Sale",
-              "type": "TEXT",
+              "type": "DATE",
               "visible": true
             },
             "hwEOL_endOfRoutineFailureAnalysisDate": {
               "title": "HW End Of Routine Failure Analysis",
-              "type": "TEXT",
+              "type": "DATE",
               "visible": true
             },
             "hwEOL_endOfNewServiceAttachmentDate": {
               "title": "HW End Of New Service Attachment",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hwEOL_endOfServiceContractRenewalDate": {
               "title": "HW End Of Service Contract Renewal",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
               "title": "HW End Of Software Maintenance Releases",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hwEOL_lastDayOfSupportDate": {
               "title": "HW Last Day of Support",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hw_status_color": {
               "type": "COLOR-MAP",
@@ -778,8 +768,6 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
-              "coverage",
-              "customer_name",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
@@ -1531,16 +1519,6 @@
           "ts_column": "timestamp",
           "columns": {
             "product_id": "Product ID",
-            "coverage": {
-              "title": "Coverage",
-              "type": "TEXT",
-              "visible": false
-            },
-            "customer_name": {
-              "title": "Customer Name",
-              "type": "TEXT",
-              "visible": false
-            },
             "hw_status": {
               "title": "HW Status",
               "type": "TEXT",
@@ -1549,33 +1527,33 @@
             },
             "hwEOL_endOfLifeAnnouncementDate": {
               "title": "HW EOL Announcement",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hwEOL_endOfSaleDate": {
               "title": "HW End Of Sale",
-              "type": "TEXT",
+              "type": "DATE",
               "visible": true
             },
             "hwEOL_endOfRoutineFailureAnalysisDate": {
               "title": "HW End Of Routine Failure Analysis",
-              "type": "TEXT",
+              "type": "DATE",
               "visible": true
             },
             "hwEOL_endOfNewServiceAttachmentDate": {
               "title": "HW End Of New Service Attachment",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hwEOL_endOfServiceContractRenewalDate": {
               "title": "HW End Of Service Contract Renewal",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
               "title": "HW End Of Software Maintenance Releases",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hwEOL_lastDayOfSupportDate": {
               "title": "HW Last Day of Support",
-              "type": "TEXT"
+              "type": "DATE"
             },
             "hw_status_color": {
               "type": "COLOR-MAP",
@@ -1594,8 +1572,6 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
-              "coverage",
-              "customer_name",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
