@@ -882,11 +882,6 @@
           "remote_searchable": true,
           "extra_filter": "(hw_status not in \"No EOL\")",
           "columns": {
-            "combination_count": {
-              "title": "Qty",
-              "type": "DOUBLE",
-              "visible": true
-            },
             "customer_name": {
               "title": "Customer Name",
               "type": "TEXT",
@@ -1596,11 +1591,6 @@
           "remote_searchable": true,
           "extra_filter": "(hw_status not in \"No EOL\")",
           "columns": {
-            "combination_count": {
-              "title": "Qty",
-              "type": "DOUBLE",
-              "visible": true
-            },
             "customer_name": {
               "title": "Customer Name",
               "type": "TEXT",
