@@ -295,6 +295,19 @@
         "agg": "sum",
         "column": "count_",
         "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
+        "title": "Overlay",
+        "group_by": [
+          "match_inv"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 10,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
       }
     ]
   },
