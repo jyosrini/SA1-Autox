@@ -225,7 +225,8 @@
  ## --> @dm:concat names="^temp-contract_data$|^temp-device_only_network$"
 
  --> @dm:recall name="temp-contract_data"
- --> *dm:filter match_inv contains 'Network'
+ ## --> *dm:filter match_inv contains 'Network'
+
  --> @dm:add-missing-columns columns="portfolio_desc,instance_id,contract_number,gu_name,coverage,covered_line_status.sw_os_type"
  --> @dm:fixnull columns="contract_number,instance_id,serial_number,sw_version,portfolio_desc" and value="Not Available"  and apply_for_empty="yes"
  --> @dm:fixnull columns="product_list_price" and value="0" and apply_for_empty="yes"
