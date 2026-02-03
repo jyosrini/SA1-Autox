@@ -399,31 +399,6 @@
           "widget_id": "ebecd631"
         },
         {
-          "title": "Total List Price ($)",
-          "widget_type1": "custom_counter",
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "column": "total_product_list_price",
-          "style": {
-            "color-list": [
-              "#90CAF9"
-            ]
-          },
-          "formatter": {
-            "notation": "compact",
-            "locale": "en-US",
-            "style": "currency",
-            "currency": "USD",
-            "minimumFractionDigits": 2
-          },
-          "agg": "sum",
-          "type": "int",
-          "min_width": 2,
-          "height": 3,
-          "max_width": 2,
-          "widget_id": "de97a4e2"
-        },
-        {
           "title": "Assets HW EOL Status",
           "widget_type1": "counter",
           "duration_hours": 1080,
@@ -486,7 +461,7 @@
             "barThickness": 100
           },
           "limit": 15,
-          "column": "total_product_list_price",
+          "column": "product_list_price",
           "agg": "sum",
           "type": "int",
           "widget_id": "7d1c4f04"
@@ -1221,31 +1196,6 @@
           "widget_id": "ebecd631"
         },
         {
-          "title": "Total List Price ($)",
-          "widget_type1": "custom_counter",
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "column": "total_product_list_price",
-          "style": {
-            "color-list": [
-              "#90CAF9"
-            ]
-          },
-          "formatter": {
-            "notation": "compact",
-            "locale": "en-US",
-            "style": "currency",
-            "currency": "USD",
-            "minimumFractionDigits": 2
-          },
-          "agg": "sum",
-          "type": "int",
-          "min_width": 2,
-          "height": 3,
-          "max_width": 2,
-          "widget_id": "de97a4e2"
-        },
-        {
           "title": "Assets HW EOL Status",
           "widget_type1": "counter",
           "duration_hours": 1080,
@@ -1308,7 +1258,7 @@
             "barThickness": 100
           },
           "limit": 15,
-          "column": "total_product_list_price",
+          "column": "product_list_price",
           "agg": "sum",
           "type": "int",
           "widget_id": "7d1c4f04"
