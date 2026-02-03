@@ -321,7 +321,7 @@
           "max_width": 12,
           "height": 1,
           "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> AT&T HW EOX </a></h1></div>",
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> AT&T HW EOX (for Covered devices)</a></h1></div>",
           "widget_id": "33317e49"
         },
         {
@@ -652,7 +652,7 @@
             "hwEOL_endOfServiceContractRenewalDate": {
               "title": "HW End Of Service Contract Renewal",
               "type": "TEXT",
-              "visible": false
+              "visible": true
             },
             "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
               "title": "HW End Of Software Maintenance Releases",
@@ -1030,7 +1030,7 @@
           "max_width": 12,
           "height": 1,
           "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> AT&T HW EOX </a></h1></div>",
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> AT&T HW EOX (for Covered devices)</a></h1></div>",
           "widget_id": "33317e49"
         },
         {
@@ -1361,7 +1361,7 @@
             "hwEOL_endOfServiceContractRenewalDate": {
               "title": "HW End Of Service Contract Renewal",
               "type": "TEXT",
-              "visible": false
+              "visible": true
             },
             "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
               "title": "HW End Of Software Maintenance Releases",
