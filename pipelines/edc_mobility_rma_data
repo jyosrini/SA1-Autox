@@ -1,0 +1,26 @@
+@dm:empty
+ --> @dm:recall name='att_mobility_rma'
+ --> @dm:fixcolumns
+ --> @dm:to-type columns="RMA_Total_Quantity_Shipped" and type="int"
+ --> @dm:selectcolumns include="Item_Shipped|RMA_Total_Quantity_Shipped|RMA_Year"
+ --> @dm:groupby columns ="Item_Shipped,RMA_Year" and agg = 'sum'
+ --> @dm:rename-columns product_id="Item_Shipped"
+ --> @dm:save name="temp-rma-devices"
+ --> @dm:recall name='temp-rma-devices'
+ --> *dm:filter RMA_Year==2024
+ --> @dm:rename-columns total_rma_24="RMA_Total_Quantity_Shipped"
+ --> @dm:save name="temp-rma-devices-24"
+ --> @dm:recall name='temp-rma-devices'
+ --> *dm:filter RMA_Year==2025
+ --> @dm:rename-columns total_rma_25="RMA_Total_Quantity_Shipped"
+ --> @dm:enrich dict="temp-rma-devices-24" and src_key_cols="product_id" and dict_key_cols="product_id" and enrich_cols="total_rma_24"
+ --> @dm:fixnull columns="total_rma_24,total_rma_25" and value=0 and apply_for_empty="yes"
+ --> @dm:save name="temp-rma-devices"
+ --> @c:new-block
+ --> @dm:empty
+ --> @dm:addrow name="edc_customer_inventory" & limit = '0' and sort_by_col='timestamp' and sort_type='desc'
+ --> #dm:query-persistent-stream project_name = 'ATT-Mobility'
+ --> @dm:enrich dict="temp-rma-devices" and src_key_cols="product_id" and dict_key_cols="product_id" and enrich_cols="total_rma_24,total_rma_25" and case_insensitive="yes"
+ --> @dm:fixnull columns="total_rma_24,total_rma_25" and value=0 and apply_for_empty="yes"
+ --> @dm:save name="temp-devices"
+ --> @rn:write-stream name='edc_customer_inventory' and direct_to_opensearch="yes"
