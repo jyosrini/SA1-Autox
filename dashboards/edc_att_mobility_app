@@ -38,14 +38,8 @@
       "icon": "overall.svg"
     },
     {
-      "name": "edc_customer_hweol",
+      "name": "edc-att-hweol",
       "label": "HW EOL",
-      "icon": "hardware.svg",
-      "group": "eox"
-    },
-    {
-      "name": "edc_customer_sweol",
-      "label": "SW EOL",
       "icon": "hardware.svg",
       "group": "eox"
     },
