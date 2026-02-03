@@ -7,7 +7,8 @@
   "enabled": true,
   "dashboard_filters": {
     "time_filter": false,
-    "columns_filter": []
+    "columns_filter": [],
+    "extra_filter": "project_name = 'ATT-Mobility'"
   },
   "custom_context": {
     "rda-dashboard-live-edit": true
