@@ -37,11 +37,6 @@
       "icon": "overall.svg"
     },
     {
-      "name": "edc_mobility_project_inv",
-      "label": "Inventory-ATT-Mobility",
-      "icon": "overall.svg"
-    },
-    {
       "name": "edc_customer_hweol",
       "label": "HW EOL",
       "icon": "hardware.svg",
