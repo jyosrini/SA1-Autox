@@ -3,7 +3,7 @@
   "label": "ASP Inventory per Project",
   "description": "Inv with customer data",
   "version": "2025-09-22-1",
-  "stream": "edc_customer_inventory",
+  "stream": "edc_conexus_inventory",
   "enabled": false,
   "dashboard_folder": "OI-C",
   "dashboard_style": "auto",
@@ -207,7 +207,7 @@
     ],
     "group_filters": [
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "SAVM",
         "group_by": [
           "savm_group_name"
@@ -220,7 +220,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Customer",
         "group_by": [
           "customer_name"
@@ -233,7 +233,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Contract",
         "group_by": [
           "contract_number"
@@ -246,7 +246,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Portfolio",
         "group_by": [
           "portfolio_desc"
@@ -259,7 +259,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Product Name",
         "extra_filter1": "source in 'inventory'",
         "group_by": [
@@ -273,7 +273,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Product Family",
         "extra_filter1": "source in 'inventory'",
         "group_by": [
@@ -287,7 +287,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Product Description",
         "extra_filter1": "source in 'inventory'",
         "show_counts": false,
@@ -302,7 +302,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Equipment Type",
         "extra_filter1": "source in 'inventory'",
         "group_by": [
@@ -316,7 +316,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Product Type",
         "extra_filter1": "source in 'inventory'",
         "group_by": [
@@ -330,7 +330,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Coverage",
         "extra_filter1": "source in 'inventory'",
         "group_by": [
@@ -344,7 +344,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Coverage Status",
         "extra_filter1": "source in 'inventory'",
         "group_by": [
@@ -358,7 +358,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Edge Device",
         "group_by": [
           "edge_device"
@@ -371,7 +371,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Security Advisory Severity",
         "group_by": [
           "secAdv_securityImpactRating"
@@ -384,7 +384,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "HW Status",
         "group_by": [
           "hw_status"
@@ -397,7 +397,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "SW Status",
         "group_by": [
           "sw_status"
@@ -410,7 +410,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "SW Version",
         "group_by": [
           "sw_version"
@@ -423,7 +423,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "OS Type",
         "group_by": [
           "sw_os_type"
@@ -436,7 +436,7 @@
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_conexus_inventory",
         "title": "Overlay",
         "group_by": [
           "match_inv"
@@ -465,7 +465,7 @@
           "label2": "<div style='text-align:center;width:100%;'><h1>{% if latest_end_time %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Assets Inventory</a></h1></div>\"}}{% else %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#B22222;' target='_blank'>Data is on the way. Work in progress!</a></h1></div>\"}}{% endif %}</h1></div>",
           "segments": [
             {
-              "stream": "edc_customer_inventory",
+              "stream": "edc_conexus_inventory",
               "variable": "latest_end_time",
               "ts_column": "timestamp",
               "duration_hours": 1080,
@@ -480,7 +480,7 @@
           "title": "Network vs IB Data",
           "widget_type": "pie_chart",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "min_width": 3,
           "height": 4,
@@ -506,7 +506,7 @@
         {
           "title": "By Family",
           "widget_type": "pie_chart",
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "extra_filter": null,
           "column": "count_",
           "ts_column": "timestamp",
@@ -545,7 +545,7 @@
           "label0": "{% set prime_latest_data = {} %}{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}{% set last_updated_time = latest.get(\"label\") %}{% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}{% endfor %}<span style='color: black; font-size: 20px;'>Last Collected at: <strong style='font-size: 24px;'>{{prime_latest_data.get(\"latest\")}} (UTC)</strong></span> <span><a style='text-decoration:none;color:#000000; font-size: 18px;' target='_blank'><i><b>***</b> Current data showcases assets shipped from 2017 onwards. Data from before 2017 will be available soon</i></a></span>",
           "segments": [
             {
-              "stream": "edc_customer_inventory",
+              "stream": "edc_conexus_inventory",
               "variable": "latest_end_time",
               "ts_column": "timestamp",
               "extra_filter1": "portfolio_desc is not null",
@@ -560,7 +560,7 @@
         {
           "title": "Product Family OS Versions",
           "widget_type": "multi_bar_chart",
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "duration_hours": 1080,
           "min_width": 6,
@@ -601,7 +601,7 @@
           "formatting": {
             "notation": "compact"
           },
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
           "min_width": 6,
@@ -640,7 +640,7 @@
           "widget_type": "bar_chart",
           "title": "HW Expiry by QTR and Year",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "extra_filter": "hw_expiring_qtr  is not 'Not Available' and hw_expiring_qtr  does not contain '199' and  hw_expiring_qtr  does not contain '200' and hw_expiring_qtr  does not contain '201' and hw_expiring_qtr  does not contain '2020' and hw_expiring_qtr  does not contain '2021'  and hw_expiring_qtr  does not contain '2022' and hw_expiring_qtr  does not contain '2023' and hw_expiring_qtr  does not contain '2024' and hw_expiring_qtr  does not contain '2025'",
           "description": "HW expiration on earlier date, has been ommited of graph",
           "ts_column": "timestamp",
@@ -688,7 +688,7 @@
           "formatting": {
             "notation": "compact"
           },
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
           "min_width": 6,
@@ -727,7 +727,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by QTR and Year",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "extra_filter": "sw_expiring_qtr is not 'Not Available' and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024' and sw_expiring_qtr does not contain '2025' ",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -761,7 +761,7 @@
           "title": "Assets by Security Status",
           "widget_type": "multi_bar_chart",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
           "min_width": 6,
@@ -796,7 +796,7 @@
           "title": "Assets by Coverage Status",
           "widget_type": "multi_bar_chart",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
           "min_width": 6,
@@ -847,7 +847,7 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "duration_hours": 1080,
           "preview_dashboard": "oi-inventory-template",
@@ -1117,7 +1117,7 @@
           "context_filter": "show_pid_grp is 'yes'",
           "title": "Devices by SW Recommendation",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "min_width": 4,
           "height": 6,
@@ -1163,7 +1163,7 @@
           "label2": "<div style='text-align:center;width:100%;'><h1>{% if latest_end_time %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Assets Inventory</a></h1></div>\"}}{% else %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#B22222;' target='_blank'>Data is on the way. Work in progress!</a></h1></div>\"}}{% endif %}</h1></div>",
           "segments": [
             {
-              "stream": "edc_customer_inventory",
+              "stream": "edc_conexus_inventory",
               "variable": "latest_end_time",
               "ts_column": "timestamp",
               "duration_hours": 1080,
@@ -1178,7 +1178,7 @@
           "title": "Network vs IB Data",
           "widget_type": "pie_chart",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "min_width": 3,
           "height": 4,
@@ -1204,7 +1204,7 @@
         {
           "title": "By Family",
           "widget_type": "pie_chart",
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "extra_filter": null,
           "column": "count_",
           "ts_column": "timestamp",
@@ -1243,7 +1243,7 @@
           "label0": "{% set prime_latest_data = {} %}{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}{% set last_updated_time = latest.get(\"label\") %}{% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}{% endfor %}<span style='color: black; font-size: 20px;'>Last Collected at: <strong style='font-size: 24px;'>{{prime_latest_data.get(\"latest\")}} (UTC)</strong></span> <span><a style='text-decoration:none;color:#000000; font-size: 18px;' target='_blank'><i><b>***</b> Current data showcases assets shipped from 2017 onwards. Data from before 2017 will be available soon</i></a></span>",
           "segments": [
             {
-              "stream": "edc_customer_inventory",
+              "stream": "edc_conexus_inventory",
               "variable": "latest_end_time",
               "ts_column": "timestamp",
               "extra_filter1": "portfolio_desc is not null",
@@ -1258,7 +1258,7 @@
         {
           "title": "Product Family OS Versions",
           "widget_type": "multi_bar_chart",
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "duration_hours": 1080,
           "min_width": 6,
@@ -1299,7 +1299,7 @@
           "formatting": {
             "notation": "compact"
           },
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
           "min_width": 6,
@@ -1338,7 +1338,7 @@
           "widget_type": "bar_chart",
           "title": "HW Expiry by QTR and Year",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "extra_filter": "hw_expiring_qtr  is not 'Not Available' and hw_expiring_qtr  does not contain '199' and  hw_expiring_qtr  does not contain '200' and hw_expiring_qtr  does not contain '201' and hw_expiring_qtr  does not contain '2020' and hw_expiring_qtr  does not contain '2021'  and hw_expiring_qtr  does not contain '2022' and hw_expiring_qtr  does not contain '2023' and hw_expiring_qtr  does not contain '2024' and hw_expiring_qtr  does not contain '2025'",
           "description": "HW expiration on earlier date, has been ommited of graph",
           "ts_column": "timestamp",
@@ -1386,7 +1386,7 @@
           "formatting": {
             "notation": "compact"
           },
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
           "min_width": 6,
@@ -1425,7 +1425,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by QTR and Year",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "extra_filter": "sw_expiring_qtr is not 'Not Available' and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024' and sw_expiring_qtr does not contain '2025' ",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -1459,7 +1459,7 @@
           "title": "Assets by Security Status",
           "widget_type": "multi_bar_chart",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
           "min_width": 6,
@@ -1494,7 +1494,7 @@
           "title": "Assets by Coverage Status",
           "widget_type": "multi_bar_chart",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
           "min_width": 6,
@@ -1545,7 +1545,7 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "duration_hours": 1080,
           "preview_dashboard": "oi-inventory-template",
@@ -1815,7 +1815,7 @@
           "context_filter": "show_pid_grp is 'yes'",
           "title": "Devices by SW Recommendation",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
           "min_width": 4,
           "height": 6,
