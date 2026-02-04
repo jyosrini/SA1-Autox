@@ -203,6 +203,11 @@
         "id": "match_inv",
         "label": "Overlay",
         "type": "TEXT"
+      },
+      {
+        "id": "device_model",
+        "label": "Device Model",
+        "type": "TEXT"
       }
     ],
     "group_filters": [
