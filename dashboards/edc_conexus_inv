@@ -67,7 +67,7 @@
       "6M",
       "12M"
     ],
-    "extra_filter": "(  project_name is 'ATT-Mobility') ",
+    "extra_filter1": "(  project_name is 'ATT-Mobility') ",
     "columns_filter": [
       {
         "id": "hwEOL_endOfNewServiceAttachmentDate",
