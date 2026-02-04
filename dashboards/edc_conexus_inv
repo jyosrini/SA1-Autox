@@ -827,8 +827,8 @@
           "widget_id": "eefc044c"
         },
         {
-          "title": "Product List Count per BE",
-          "widget_type": "pie_chart",
+          "title": "Assets by Security Status",
+          "widget_type": "multi_bar_chart",
           "duration_hours": 1080,
           "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
@@ -836,20 +836,30 @@
           "min_width": 6,
           "height": 4,
           "max_width": 6,
-          "limit": 15,
-          "group_by": [
-            "business_entity"
-          ],
+          "limit": 10,
+          "chartProperties": {
+            "xAxisLabel": "Count",
+            "stacked": false,
+            "legendLocation": "bottom",
+            "orientation": "vertical"
+          },
+          "formatting": {
+            "notation": "compact"
+          },
           "style": {
             "color-map": {
-              "Enterprise Routing": "#2A5FF6",
-              "Enterprise swithching": "#FF007F",
-              "Internet Infrastructure": "#FF9000"
+              "Potentially Vulnerable": "#F6C309",
+              "Vulnerable": "#BB0000",
+              "Not Available": "#808080"
             }
           },
+          "group_by": [
+            "secAdv_match_confidence",
+            "secAdv_securityImpactRating"
+          ],
           "column": "count_",
-          "agg": "value_count",
-          "widget_id": "55e4bcd6"
+          "agg": "sum",
+          "widget_id": "0dc9"
         },
         {
           "title": "Assets by Coverage Status",
@@ -1520,8 +1530,8 @@
           "widget_id": "eefc044c"
         },
         {
-          "title": "Product List Count per BE",
-          "widget_type": "pie_chart",
+          "title": "Assets by Security Status",
+          "widget_type": "multi_bar_chart",
           "duration_hours": 1080,
           "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
@@ -1529,20 +1539,30 @@
           "min_width": 6,
           "height": 4,
           "max_width": 6,
-          "limit": 15,
-          "group_by": [
-            "business_entity"
-          ],
+          "limit": 10,
+          "chartProperties": {
+            "xAxisLabel": "Count",
+            "stacked": false,
+            "legendLocation": "bottom",
+            "orientation": "vertical"
+          },
+          "formatting": {
+            "notation": "compact"
+          },
           "style": {
             "color-map": {
-              "Enterprise Routing": "#2A5FF6",
-              "Enterprise swithching": "#FF007F",
-              "Internet Infrastructure": "#FF9000"
+              "Potentially Vulnerable": "#F6C309",
+              "Vulnerable": "#BB0000",
+              "Not Available": "#808080"
             }
           },
+          "group_by": [
+            "secAdv_match_confidence",
+            "secAdv_securityImpactRating"
+          ],
           "column": "count_",
-          "agg": "value_count",
-          "widget_id": "55e4bcd6"
+          "agg": "sum",
+          "widget_id": "0dc9"
         },
         {
           "title": "Assets by Coverage Status",
