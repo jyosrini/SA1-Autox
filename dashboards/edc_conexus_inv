@@ -943,7 +943,7 @@
               "title": "Serial Number",
               "type": "TEXT",
               "key": true,
-              "visible": false
+              "visible": true
             },
             "match_inv": {
               "title": "Overlay",
@@ -1636,7 +1636,7 @@
               "title": "Serial Number",
               "type": "TEXT",
               "key": true,
-              "visible": false
+              "visible": true
             },
             "match_inv": {
               "title": "Overlay",
