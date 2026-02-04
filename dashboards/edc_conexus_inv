@@ -208,19 +208,6 @@
     "group_filters": [
       {
         "stream": "edc_conexus_inventory",
-        "title": "SAVM",
-        "group_by": [
-          "savm_group_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_conexus_inventory",
         "title": "Customer",
         "group_by": [
           "customer_name"
@@ -359,22 +346,99 @@
       },
       {
         "stream": "edc_conexus_inventory",
-        "title": "Edge Device",
-        "group_by": [
-          "edge_device"
-        ],
-        "ts_column": "timestamp",
+        "title": "Source",
         "duration_hours": 1080,
         "limit": 200,
-        "agg": "sum",
+        "group_by": [
+          "source"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "count_"
+      },
+      {
+        "stream": "edc_conexus_inventory",
+        "title": "Controller Name",
+        "duration_hours": 1080,
+        "limit": 200,
+        "group_by": [
+          "controller_name"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
         "column": "count_",
         "type": "int"
       },
       {
         "stream": "edc_conexus_inventory",
-        "title": "Security Advisory Severity",
+        "title": "Controller",
+        "duration_hours": 1080,
+        "limit": 200,
         "group_by": [
-          "secAdv_securityImpactRating"
+          "controller_type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_conexus_inventory",
+        "title": "Category",
+        "duration_hours": 1080,
+        "limit": 200,
+        "group_by": [
+          "network_category"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_conexus_inventory",
+        "title": "CLLI",
+        "duration_hours": 1080,
+        "limit": 200,
+        "group_by": [
+          "clli_code"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_conexus_inventory",
+        "title": "Device Group",
+        "duration_hours": 1080,
+        "limit": 200,
+        "group_by": [
+          "device_family"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_conexus_inventory",
+        "title": "Device Type",
+        "duration_hours": 1080,
+        "limit": 200,
+        "group_by": [
+          "device_type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_conexus_inventory",
+        "title": "Network",
+        "group_by": [
+          "network"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
@@ -758,8 +822,8 @@
           "widget_id": "eefc044c"
         },
         {
-          "title": "Assets by Security Status",
-          "widget_type": "multi_bar_chart",
+          "title": "Product List Count per BE",
+          "widget_type": "pie_chart",
           "duration_hours": 1080,
           "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
@@ -767,30 +831,20 @@
           "min_width": 6,
           "height": 4,
           "max_width": 6,
-          "limit": 10,
-          "chartProperties": {
-            "xAxisLabel": "Count",
-            "stacked": false,
-            "legendLocation": "bottom",
-            "orientation": "vertical"
-          },
-          "formatting": {
-            "notation": "compact"
-          },
+          "limit": 15,
+          "group_by": [
+            "business_entity"
+          ],
           "style": {
             "color-map": {
-              "Potentially Vulnerable": "#F6C309",
-              "Vulnerable": "#BB0000",
-              "Not Available": "#808080"
+              "Enterprise Routing": "#2A5FF6",
+              "Enterprise swithching": "#FF007F",
+              "Internet Infrastructure": "#FF9000"
             }
           },
-          "group_by": [
-            "secAdv_match_confidence",
-            "secAdv_securityImpactRating"
-          ],
           "column": "count_",
-          "agg": "sum",
-          "widget_id": "0dc9"
+          "agg": "value_count",
+          "widget_id": "55e4bcd6"
         },
         {
           "title": "Assets by Coverage Status",
@@ -875,6 +929,11 @@
               "type": "TEXT",
               "hidden": true
             },
+            "device_model": {
+              "title": "Product Name",
+              "type": "TEXT",
+              "key": true
+            },
             "product_name": {
               "title": "Product ID",
               "type": "TEXT",
@@ -896,12 +955,12 @@
             "recommended_sw_version": {
               "title": "SW Recommended",
               "type": "TEXT",
-              "visible": false
+              "hidden": true
             },
             "sw_release_compliance": {
               "title": "SW Compliance",
               "type": "TEXT",
-              "visible": false
+              "hidden": true
             },
             "product_family": "Product Family",
             "product_description": {
@@ -990,7 +1049,7 @@
             "edge_device": {
               "title": "Edge Device",
               "type": "TEXT",
-              "visible": true
+              "hidden": true
             },
             "secAdv_confidence_color": {
               "type": "COLOR-MAP",
@@ -1006,12 +1065,12 @@
               "title": "Security Advisories Status",
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>",
-              "visible": true
+              "hidden": true
             },
             "secAdv_securityImpactRating": {
               "title": "Security Advisory Severity",
               "type": "TEXT",
-              "visible": false
+              "hidden": true
             },
             "hw_status_color": {
               "type": "COLOR-MAP",
@@ -1456,8 +1515,8 @@
           "widget_id": "eefc044c"
         },
         {
-          "title": "Assets by Security Status",
-          "widget_type": "multi_bar_chart",
+          "title": "Product List Count per BE",
+          "widget_type": "pie_chart",
           "duration_hours": 1080,
           "stream": "edc_conexus_inventory",
           "ts_column": "timestamp",
@@ -1465,30 +1524,20 @@
           "min_width": 6,
           "height": 4,
           "max_width": 6,
-          "limit": 10,
-          "chartProperties": {
-            "xAxisLabel": "Count",
-            "stacked": false,
-            "legendLocation": "bottom",
-            "orientation": "vertical"
-          },
-          "formatting": {
-            "notation": "compact"
-          },
+          "limit": 15,
+          "group_by": [
+            "business_entity"
+          ],
           "style": {
             "color-map": {
-              "Potentially Vulnerable": "#F6C309",
-              "Vulnerable": "#BB0000",
-              "Not Available": "#808080"
+              "Enterprise Routing": "#2A5FF6",
+              "Enterprise swithching": "#FF007F",
+              "Internet Infrastructure": "#FF9000"
             }
           },
-          "group_by": [
-            "secAdv_match_confidence",
-            "secAdv_securityImpactRating"
-          ],
           "column": "count_",
-          "agg": "sum",
-          "widget_id": "0dc9"
+          "agg": "value_count",
+          "widget_id": "55e4bcd6"
         },
         {
           "title": "Assets by Coverage Status",
@@ -1573,6 +1622,11 @@
               "type": "TEXT",
               "hidden": true
             },
+            "device_model": {
+              "title": "Product Name",
+              "type": "TEXT",
+              "key": true
+            },
             "product_name": {
               "title": "Product ID",
               "type": "TEXT",
@@ -1594,12 +1648,12 @@
             "recommended_sw_version": {
               "title": "SW Recommended",
               "type": "TEXT",
-              "visible": false
+              "hidden": true
             },
             "sw_release_compliance": {
               "title": "SW Compliance",
               "type": "TEXT",
-              "visible": false
+              "hidden": true
             },
             "product_family": "Product Family",
             "product_description": {
@@ -1688,7 +1742,7 @@
             "edge_device": {
               "title": "Edge Device",
               "type": "TEXT",
-              "visible": true
+              "hidden": true
             },
             "secAdv_confidence_color": {
               "type": "COLOR-MAP",
@@ -1704,12 +1758,12 @@
               "title": "Security Advisories Status",
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>",
-              "visible": true
+              "hidden": true
             },
             "secAdv_securityImpactRating": {
               "title": "Security Advisory Severity",
               "type": "TEXT",
-              "visible": false
+              "hidden": true
             },
             "hw_status_color": {
               "type": "COLOR-MAP",
