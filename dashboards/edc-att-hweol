@@ -715,6 +715,17 @@
           "ts_column": "timestamp",
           "columns": {
             "product_name": "Product Name",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "key": true,
+              "visible": false
+            },
+            "match_inv": {
+              "title": "Overlay",
+              "type": "TEXT",
+              "visible": false
+            },
             "product_family": "Product Family",
             "product_family_description": {
               "title": "Product Family Description",
@@ -750,6 +761,11 @@
               "type": "TEXT",
               "visible": false
             },
+            "contract_line_end_date": {
+              "title": "Contract End",
+              "type": "TEXT",
+              "visible": false
+            },
             "coverage": {
               "title": "Coverage",
               "type": "TEXT",
@@ -767,11 +783,6 @@
             },
             "gu_name": {
               "title": "GU Name",
-              "type": "TEXT",
-              "visible": false
-            },
-            "match_inv": {
-              "title": "Overlay",
               "type": "TEXT",
               "visible": false
             },
@@ -1429,6 +1440,17 @@
           "ts_column": "timestamp",
           "columns": {
             "product_name": "Product Name",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "key": true,
+              "visible": false
+            },
+            "match_inv": {
+              "title": "Overlay",
+              "type": "TEXT",
+              "visible": false
+            },
             "product_family": "Product Family",
             "product_family_description": {
               "title": "Product Family Description",
@@ -1464,6 +1486,11 @@
               "type": "TEXT",
               "visible": false
             },
+            "contract_line_end_date": {
+              "title": "Contract End",
+              "type": "TEXT",
+              "visible": false
+            },
             "coverage": {
               "title": "Coverage",
               "type": "TEXT",
@@ -1481,11 +1508,6 @@
             },
             "gu_name": {
               "title": "GU Name",
-              "type": "TEXT",
-              "visible": false
-            },
-            "match_inv": {
-              "title": "Overlay",
               "type": "TEXT",
               "visible": false
             },
