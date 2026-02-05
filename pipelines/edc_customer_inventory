@@ -535,5 +535,9 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
  --> @cfxaia:conditional-statement condition_column="sw_status_f" and return_if="sw_status_f" and return_else="sw_status"
  --> @dm:copy-columns from="sw_status_f" and to="sw_status"
  --> @dm:selectcolumns exclude="sw_status_f"
+ ## Re-evaluate product_id to be able to keep '-RF'
+
+ --> @dm:copy-columns from="product_name" and to="product_id"
+ --> @dm:eval product_id = "product_id.replace('=', '')"
  --> @dm:save name = "contract_data_IB"
  --> @rn:write-stream name='edc_customer_inventory' and direct_to_opensearch="yes"
