@@ -13,7 +13,9 @@
   "custom_context": {
     "rda-dashboard-live-edit": true
   },
-  "project_name": "ATT-Mobility",
+  "context_enrichment": {
+    "project_name": "ATT-Mobility"
+  },
   "dashboard_sections": [
     {
       "title": "Example"
