@@ -23,15 +23,4 @@
  --> @c:new-block
  --> @dm:recall name='temp-enriched-secadv-values'
  --> @dm:save name='temp-secadv-data'
- ## creates a list of unique customers
-
- --> @c:new-block
- --> @dm:recall name='temp-secadv-data'
- --> @dm:groupby columns='customer'
- --> @dm:save name='temp-unique-cust-name'
- ## Queries data for the customer from edc_customer inventory
-
- --> @c:data-loop dataset='temp-unique-cust-name' and columns='customer'
- --> @dm:recall name='temp-contract_data'
- --> *dm:filter customer == '$customer'
- --> @dm:save name='test-sec-adv-details' and append='yes'
+ --> @dm:save name='test-sec-adv-details'
