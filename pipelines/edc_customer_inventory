@@ -58,18 +58,6 @@
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
  --> @dm:save name ="temp-network_inv"
- ## Use this dict to normalize device_model from conexus i.e wsc1900sysID to WS-C1900
-
- --> @c:new-block
- --> @dm:recall name="edc_network_pid_fix"
- --> @dm:save name='temp-product_name_fix'
- --> @c:new-block
- --> @dm:recall name="temp-network_inv"
- --> @dm:enrich dict="temp-product_name_fix" and src_key_cols="product_name" and dict_key_cols="product_name" and enrich_cols="new_product_name"
- --> @cfxaia:conditional-statement condition_column="new_product_name" and return_if="new_product_name" and return_else="product_name"
- --> @dm:copy-columns from="new_product_name" and to="product_name"
- --> @dm:selectcolumns exclude="^new_product_name$"
- --> @dm:save name ="temp-network_inv"
  ## Enrich with SW Type
 
  --> @c:new-block
@@ -88,6 +76,18 @@
  --> @dm:eval sw_version = "sw_version.replace('[Default]', '') if sw_version else sw_version"
  --> @dm:eval sw_version = "str(sw_version).strip()"
  --> @dm:save name = "temp-network_inv"
+ ## Use this dict to normalize device_model from conexus i.e wsc1900sysID to WS-C1900
+
+ --> @c:new-block
+ --> @dm:recall name="edc_network_pid_fix"
+ --> @dm:save name='temp-product_name_fix'
+ --> @c:new-block
+ --> @dm:recall name="temp-network_inv"
+ --> @dm:enrich dict="temp-product_name_fix" and src_key_cols="product_name" and dict_key_cols="product_name" and enrich_cols="new_product_name"
+ --> @cfxaia:conditional-statement condition_column="new_product_name" and return_if="new_product_name" and return_else="product_name"
+ --> @dm:copy-columns from="new_product_name" and to="product_name"
+ --> @dm:selectcolumns exclude="^new_product_name$"
+ --> @dm:save name ="temp-network_inv"
  ## If SW recommended is neeed. Add if condition if requested in input form
 
  ## --> @c:new-block
