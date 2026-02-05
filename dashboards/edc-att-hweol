@@ -770,6 +770,11 @@
               "type": "TEXT",
               "visible": false
             },
+            "match_inv": {
+              "title": "Overlay",
+              "type": "TEXT",
+              "visible": false
+            },
             "business_entity": {
               "title": "Business Entity",
               "type": "TEXT",
@@ -1476,6 +1481,11 @@
             },
             "gu_name": {
               "title": "GU Name",
+              "type": "TEXT",
+              "visible": false
+            },
+            "match_inv": {
+              "title": "Overlay",
               "type": "TEXT",
               "visible": false
             },
