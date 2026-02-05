@@ -25,24 +25,6 @@
  --> @dm:addrow rule_id = "A3" & rule = "sw_version contains '15\.1\(1\)S'" & sw_status_f="Expired"
  --> @dm:addrow rule_id = "A4" & rule = "sw_version contains '12\.2\(14\)Z'" & sw_status_f="Expired"
  --> @dm:save name='temp-sweox-errs-dict'
- ## --> @c:new-block
-
- ## --> @dm:recall name='att-mobility-project'
-
- ## --> @dm:eval sw_dataset="'att-mobility-inventory'"
-
- ## --> @dm:save name = "temp-data-input"
-
- ## --> @c:new-block
-
- ## --> @dm:empty
-
- ## --> @dm:addrow name='cnc_device_inventory' and limit=0
-
- ## --> #dm:query-persistent-stream item_type is 'CHASSIS'
-
- ## --> @dm:save name='cnc_device_inventory'
-
  ## Normalize network data - Explode serial number column (RDAF inv have comma separated for WLC)
 
  --> @c:data-loop columns='sw_dataset,project_name,customer,customer_name' and dataset='temp-data-input'
@@ -75,6 +57,18 @@
  --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
+ --> @dm:save name ="temp-network_inv"
+ ## Use this dict to normalize device_model from conexus i.e wsc1900sysID to WS-C1900
+
+ --> @c:new-block
+ --> @dm:recall name="edc_network_pid_fix"
+ --> @dm:save name='temp-product_name_fix'
+ --> @c:new-block
+ --> @dm:recall name="temp-network_inv"
+ --> @dm:enrich dict="temp-product_name_fix" and src_key_cols="product_name" and dict_key_cols="product_name" and enrich_cols="new_product_name"
+ --> @cfxaia:conditional-statement condition_column="new_product_name" and return_if="new_product_name" and return_else="product_name"
+ --> @dm:copy-columns from="new_product_name" and to="product_name"
+ --> @dm:selectcolumns exclude="^new_product_name$"
  --> @dm:save name ="temp-network_inv"
  --> @c:new-block
  --> @dm:recall name="edc_pid_ostype_dict"
@@ -225,7 +219,8 @@
  ## --> @dm:concat names="^temp-contract_data$|^temp-device_only_network$"
 
  --> @dm:recall name="temp-contract_data"
- --> *dm:filter match_inv contains 'Network'
+ ## --> *dm:filter match_inv contains 'Network'
+
  --> @dm:add-missing-columns columns="portfolio_desc,instance_id,contract_number,gu_name,coverage,covered_line_status.sw_os_type"
  --> @dm:fixnull columns="contract_number,instance_id,serial_number,sw_version,portfolio_desc" and value="Not Available"  and apply_for_empty="yes"
  --> @dm:fixnull columns="product_list_price" and value="0" and apply_for_empty="yes"
