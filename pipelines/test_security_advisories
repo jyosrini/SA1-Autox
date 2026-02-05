@@ -1,0 +1,37 @@
+@c:new-block
+ --> @dm:empty
+ --> @exec:define-function name="define_child_pipelines"
+ --> @exec:run-pipeline name ="edc_oi_get_product_alerts" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_oi_product_alerts_run_scan" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_oi_generate_token" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_oi_process_sw_data" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_oi_get_sweol_data" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_oi_get_security_advisories_data" & ignore_failures = "no"
+ --> @exec:end-function
+ ## collecting the file and storing it in edc_cust_pid_sw stream, collecting the API data and adding the processed data to edc_sw_raw_data
+
+ --> @c:new-block
+ --> @dm:recall name='customer_pid_sw'
+ --> *dm:filter product_id in ['CISCO1841-HSEC/K9','CISCO2501','N9K-C93180YC-FX']
+ --> @dm:save name="temp-cust_pid_sec"
+ --> @dm:eval source="'security_advisory'"
+ --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
+ --> @dm:save name='temp-enriched-secadv-values'
+ ## Process SecAdv
+
+ --> @c:new-block
+ --> @dm:recall name='temp-enriched-secadv-values'
+ --> @dm:save name='temp-secadv-data'
+ ## creates a list of unique customers
+
+ --> @c:new-block
+ --> @dm:recall name='temp-secadv-data'
+ --> @dm:groupby columns='customer'
+ --> @dm:save name='temp-unique-cust-name'
+ ## Queries data for the customer from edc_customer inventory
+
+ --> @c:data-loop dataset='temp-unique-cust-name' and columns='customer'
+ --> @dm:recall name='temp-contract_data'
+ --> *dm:filter customer == '$customer'
+ --> @dm:save name='test-sec-adv-details' and append='yes'
