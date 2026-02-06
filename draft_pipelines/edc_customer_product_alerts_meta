@@ -1,7 +1,7 @@
 folder: OI
 name: edc_customer_product_alerts
 description: test pipeline
-data_path: draft-pipelines/data/edc_customer_product_alerts/2026-01-26_1/data.json
+data_path: draft-pipelines/data/edc_customer_product_alerts/2026-02-05-1/data.json
 usecase: Input PSIRT data from NP to enrich customer_inv
 category: ''
 sources:
@@ -18,6 +18,6 @@ artifacts:
 - artifact_type: rda-network-stream
   artifact_name: edc_customer_inventory
   access: write
-version: 2026-01-26_1
+version: 2026-02-05-1
 file_type: json
-checksum: 345b2f27
+checksum: 76a3c148
