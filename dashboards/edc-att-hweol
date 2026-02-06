@@ -487,11 +487,11 @@
           "extra_filter2": "source in 'inventory'",
           "ts_column": "timestamp",
           "min_width": 6,
-          "height": 6,
+          "height": 4,
           "max_width": 6,
           "group_by": [
             "hw_status",
-            "contract_name"
+            "contract_number"
           ],
           "groups_meta": {
             "type": "custom",
@@ -531,7 +531,7 @@
           "extra_filter2": "source in 'inventory'",
           "ts_column": "timestamp",
           "min_width": 6,
-          "height": 6,
+          "height": 4,
           "max_width": 6,
           "group_by": [
             "hw_status",
@@ -1258,11 +1258,11 @@
           "extra_filter2": "source in 'inventory'",
           "ts_column": "timestamp",
           "min_width": 6,
-          "height": 6,
+          "height": 4,
           "max_width": 6,
           "group_by": [
             "hw_status",
-            "contract_name"
+            "contract_number"
           ],
           "groups_meta": {
             "type": "custom",
@@ -1302,7 +1302,7 @@
           "extra_filter2": "source in 'inventory'",
           "ts_column": "timestamp",
           "min_width": 6,
-          "height": 6,
+          "height": 4,
           "max_width": 6,
           "group_by": [
             "hw_status",
