@@ -562,6 +562,21 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
  ## --> @dm:save name='test-contract_data'
 
  --> @dm:save name='temp-contract_data'
+ ## #####################
+
+ ## #Enrich contract_names from dataet edc_customer_contract_names' with columns: contract_number, contract_name
+
+ --> @c:new-block
+ --> @dm:recall name='edc_customer_contract_names'
+ --> @dm:to-type columns="contract_number" and type="str"
+ --> @dm:save name='temp-customer_contract_names'
+ --> @c:new-block
+ --> @dm:recall name='temp-contract_data'
+ --> @dm:enrich dict="temp-customer_contract_names" and src_key_cols="contract_number" and dict_key_cols="contract_number" and enrich_cols="contract_name" and replace_values="yes"
+ --> @dm:add-missing-columns columns="contract_name"
+ --> @dm:fixnull columns="contract_name" and value="Not Available" and apply_for_empty="yes"
+ --> @dm:gc
+ --> @dm:save name='temp-contract_data'
  ## Enrich with sw recommendation and evaluate compliance
 
  --> @c:new-block
