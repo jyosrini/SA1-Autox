@@ -32,7 +32,7 @@
 
  --> @c:new-block
  --> @dm:recall name='temp-customer_inventory'
- --> @dm:enrich dict="temp-pa-sec_adv-device-dedups" and src_key_cols="serial_number" and dict_key_cols="serial_number" and enrich_cols="secAdv_match_confidence,secAdv_securityImpactRating,edge_device" and replace_values="yes"
+ --> @dm:enrich dict="temp-pa-sec_adv-device-dedups" and src_key_cols="serial_number" and dict_key_cols="serial_number" and enrich_cols="secAdv_match_confidence,secAdv_securityImpactRating" and replace_values="yes"
  --> @dm:add-missing-columns columns="secAdv_match_confidence,secAdv_securityImpactRating"
  --> @dm:fixnull columns="secAdv_match_confidence,secAdv_securityImpactRating" and value="Not Available" and apply_for_empty="yes"
  --> @dm:gc
