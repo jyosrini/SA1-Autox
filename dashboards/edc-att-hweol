@@ -672,7 +672,7 @@
             }
           ],
           "columns": {
-            "product_name": "Product Name",
+            "product_id": "Product ID",
             "contract_number": "Contract",
             "total_rma_25": {
               "title": "RMA 2025",
@@ -1443,7 +1443,7 @@
             }
           ],
           "columns": {
-            "product_name": "Product Name",
+            "product_id": "Product ID",
             "contract_number": "Contract",
             "total_rma_25": {
               "title": "RMA 2025",
