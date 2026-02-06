@@ -1,14 +1,4 @@
-
- ## get the minio path for the uploaded file
-@exec:get-input
- --> @dm:save name='temp-sw-input'
- --> @dm:eval fileUpload="json_dumps(fileUpload)"
- --> @dm:explode-json column="fileUpload"
- --> @dm:eval location="bucketName+'/'+objectName"
- --> @dm:save name="temp-input-dataset"
- ## declaring child pipelines
-
- --> @c:new-block
+@c:new-block
  --> @dm:empty
  --> @exec:define-function name="define_child_pipelines"
  --> @exec:run-pipeline name ="edc_oi_get_product_alerts" & ignore_failures = "no"
@@ -21,31 +11,16 @@
  --> @exec:end-function
  ## collecting the file and storing it in edc_cust_pid_sw stream, collecting the API data and adding the processed data to edc_sw_raw_data
 
- --> @c:data-loop dataset="temp-input-dataset" and columns="objectName,location"
- --> @dm:empty
- --> @dm:get-from-location path='$location'
- --> @dm:rename-columns customer='Customer' and sw_version='SW_Version' and sw_os_type='SW_OS_Type' and product_id='Product_ID' and contract_number='Contract_Number' and product_name='Product_Name'
- --> @dm:save name='temp-uploaded-file'
  --> @c:new-block
- --> @dm:recall name="temp-uploaded-file"
- --> @dm:check_columns must_contain = 'product_name' & action ='skip-block'
- --> @dm:recall name="temp-uploaded-file"
- --> @dm:to-type columns='contract_number,customer,product_id,sw_version,sw_os_type,product_name' and type='str'
- --> @dm:map from = 'contract_number,customer,product_id,sw_version,sw_os_type,product_name' & to = 'unique_key' & func = 'join' & sep = '_'
- --> @dm:save name='temp-user-uploaded-input'
- --> @c:new-block
- --> @dm:recall name="temp-uploaded-file"
- --> @dm:to-type columns='contract_number,customer,product_id,sw_version,sw_os_type' and type='str'
- --> @dm:map from = 'contract_number,customer,product_id,sw_version,sw_os_type' & to = 'unique_key' & func = 'join' & sep = '_'
- --> @dm:save name='temp-user-uploaded-input'
- --> @c:new-block
- --> @dm:recall name='temp-user-uploaded-input'
- --> @rn:write-stream name='edc_cust_pid_sw'
- --> @c:new-block
- --> @dm:recall name='temp-user-uploaded-input'
- --> @dm:eval source="'software'"
- --> @exec:run-pipeline name='edc_oi_get_product_alerts' and ignore_failures = "no"
- --> @c:new-block
- --> @dm:recall name='temp-user-uploaded-input'
+ --> @dm:recall name='customer_pid_sw'
+ --> *dm:filter product_id in ['CISCO1841-HSEC/K9','CISCO2501','N9K-C93180YC-FX']
+ --> @dm:save name="temp-cust_pid_sec"
  --> @dm:eval source="'security_advisory'"
- --> @exec:run-pipeline name='edc_oi_get_product_alerts' and ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_oi_product_alerts_raw" & ignore_failures = "no"
+ --> @dm:save name='temp-enriched-secadv-values'
+ ## Process SecAdv
+
+ --> @c:new-block
+ --> @dm:recall name='temp-enriched-secadv-values'
+ --> @dm:save name='temp-secadv-data'
+ --> @dm:save name='test-sec-adv-details'
