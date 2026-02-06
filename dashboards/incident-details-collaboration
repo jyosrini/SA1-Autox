@@ -1,140 +1,117 @@
 {
-  "name": "incident-details-collaboration",
-  "description": "Incident Collaboration Details",
-  "label": "Incident Collaboration Details",
+  "name": "rda-mgmt-page-botlibrary",
+  "label": "Pipelines",
+  "description": " Pipelines Management Page",
   "enabled": true,
-  "exportable": false,
-  "dashboard_type": "template",
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "version": "22.10.7.1",
-  "template_variables": {
-    "INCIDENT_ID": {
-      "contextId": "incident_id"
-    },
-    "PROJECT_ID": {
-      "contextId": "project_id"
-    }
-  },
-  "custom_context": {
-    "alert-context": true
-  },
+  "exportable": false,
   "dashboard_filters": {
-    "time_filter": false
+    "time_filter": true,
+    "columns_filter": [
+      {
+        "id": "source",
+        "label": "Integration",
+        "type": "TEXT"
+      },
+      {
+        "id": "source_type",
+        "label": "Integration Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "tmpl",
+        "label": "Bot Capabilities",
+        "type": "TEXT"
+      },
+      {
+        "id": "bot_name",
+        "label": "Bot Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "bot_description",
+        "label": "Description",
+        "type": "TEXT"
+      },
+      {
+        "id": "flags",
+        "label": "Flags",
+        "type": "TEXT"
+      },
+      {
+        "id": "input_type",
+        "label": "Input Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "api_model",
+        "label": "API Model",
+        "type": "TEXT"
+      },
+      {
+        "id": "is_block",
+        "label": "Is Block",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "is_source",
+        "label": "Is Source",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "is_sink",
+        "label": "Is Sink",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "formDefinition",
+        "label": "Form Definition",
+        "type": "TEXT"
+      },
+      {
+        "id": "bot_url",
+        "label": "Bot URL",
+        "type": "TEXT"
+      },
+      {
+        "id": "saved_time",
+        "label": "Saved Time",
+        "type": "DATETIME"
+      }
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Collaboration",
+      "title": "Bot Library",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Teams",
-          "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/collaboration-teams",
-          "reportId": "dummy-report-id",
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-collaboration",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getIRTeams",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "url": "uri:///inline-report/cfxdimensions-app-collaboration/Teams",
-                "filters": []
-              }
-            ]
-          },
-          "widget_id": "6e67b2f1"
-        },
-        {
-          "title": "Collaboration Activity",
-          "widget_type": "portal_list",
-          "widget_template": "cfx-oia/collaboration",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
+          "title": "Bot Library",
+          "widget_type": "portal_tabular",
+          "reportId": "bots.list",
           "paginated": true,
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 100,
-          "exportSupported": false,
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-collaboration",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getIncidentMessageHistory",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "url": "uri:///inline-report/cfxdimensions-app-collaboration/Collaboration-Activity",
-                "filters": []
-              }
-            ]
-          },
-          "widget_id": "6e69b2f1"
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182287d1"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Collaboration",
+      "title": "Bot Library",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Teams",
-          "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/collaboration-teams",
-          "reportId": "dummy-report-id",
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-collaboration",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getIRTeams",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "url": "uri:///inline-report/cfxdimensions-app-collaboration/Teams",
-                "filters": []
-              }
-            ]
-          },
-          "widget_id": "6e67b2f1"
-        },
-        {
-          "title": "Collaboration Activity",
-          "widget_type": "portal_list",
-          "widget_template": "cfx-oia/collaboration",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
+          "title": "Bot Library",
+          "widget_type": "portal_tabular",
+          "reportId": "bots.list",
           "paginated": true,
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 100,
-          "exportSupported": false,
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-collaboration",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getIncidentMessageHistory",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "url": "uri:///inline-report/cfxdimensions-app-collaboration/Collaboration-Activity",
-                "filters": []
-              }
-            ]
-          },
-          "widget_id": "6e69b2f1"
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182287d1"
         }
       ]
     }

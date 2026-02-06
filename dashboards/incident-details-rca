@@ -1,27 +1,30 @@
 {
-  "name": "incident-details-rca",
-  "description": "RCA",
-  "label": "RCA",
+  "name": "edc-license-grouping-app",
+  "label": "OI Smart License",
+  "description": "Smart License",
+  "dashboard_folder": "OI",
+  "version": "23.8.1.1",
   "enabled": true,
-  "exportable": false,
-  "dashboard_type": "service-dashboard",
-  "dashboard_folder": "Default",
-  "api-endpoint": {
-    "service-name": "cfxdimensions-app-irm_service",
-    "namespace": "io.cfx.dimensions.app",
-    "version": "*",
-    "methodName": "invokeAppApi:getIncidentRCADashboard",
-    "useReportContext": true,
-    "stringified-params": true,
-    "parse-output": true,
-    "params": [
-      {
-        "metrics_regression_stream": "oia-ml-metrics-regression-output",
-        "logs_regression_stream": "oia-logs-regression-output",
-        "logs_stream": "filebeat_event_stream",
-        "change_requests_stream": "change_requests_stream"
-      }
-    ]
+  "dashboard_filters": {
+    "time_filter": false,
+    "columns_filter": []
   },
-  "dashboard_sections": []
+  "dashboard_type": "app",
+  "dashboard_sections": [
+    {
+      "title": "Example"
+    }
+  ],
+  "dashboard_pages": [
+    {
+      "name": "edc-smart-licence-summary",
+      "label": "License Summary",
+      "icon": "status.svg"
+    }
+  ],
+  "pstream_dashboards": [
+    {
+      "title": "Example"
+    }
+  ]
 }
