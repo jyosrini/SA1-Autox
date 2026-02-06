@@ -5,6 +5,7 @@
   "dashboard_folder": "OI-C",
   "version": "2025-09-03_1",
   "enabled": true,
+  "debug": true,
   "dashboard_filters": {
     "time_filter": false,
     "columns_filter": [],
@@ -14,7 +15,14 @@
     "rda-dashboard-live-edit": true
   },
   "context_enrichment": {
-    "project_name": "ATT-Mobility"
+    "dataset": "edc_customer_names",
+    "enrich_columns": [
+      "customer"
+    ],
+    "query_template": "savm_level = 'dummy'  ",
+    "defaultValues": {
+      "customer": "ATT-Mobility"
+    }
   },
   "dashboard_sections": [
     {
