@@ -182,7 +182,7 @@
         "limit": 1000,
         "agg": "sum",
         "column": "count_",
-        "type": "int"
+        "type": "str"
       },
       {
         "stream": "edc_customer_inventory",
