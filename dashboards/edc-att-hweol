@@ -737,7 +737,7 @@
           "pivot": {
             "pivot_type": "advanced",
             "group_by": [
-              "product_name",
+              "product_id",
               "contract_number",
               "total_rma_24",
               "total_rma_25",
@@ -1508,7 +1508,7 @@
           "pivot": {
             "pivot_type": "advanced",
             "group_by": [
-              "product_name",
+              "product_id",
               "contract_number",
               "total_rma_24",
               "total_rma_25",
