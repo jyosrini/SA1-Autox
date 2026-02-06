@@ -73,6 +73,11 @@
         "type": "TEXT"
       },
       {
+        "id": "contract_name",
+        "label": "Contract Name",
+        "type": "TEXT"
+      },
+      {
         "id": "coverage",
         "label": "Coverage",
         "type": "TEXT"
@@ -138,8 +143,8 @@
         "type": "TEXT"
       },
       {
-        "id": "combination_count",
-        "label": "Combination Count",
+        "id": "serial_number",
+        "label": "Serial Number",
         "type": "DOUBLE"
       }
     ],
