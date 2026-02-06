@@ -452,7 +452,7 @@
         },
         {
           "title": "Product List Price per Family",
-          "widget_type": "bar_chart",
+          "widget_type1": "bar_chart",
           "stream": "edc_customer_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
@@ -478,6 +478,50 @@
           "agg": "sum",
           "type": "int",
           "widget_id": "7d1c4f04"
+        },
+        {
+          "widget_type": "multi_bar_chart",
+          "title": "HW Status by Contract",
+          "duration_hours": 10800,
+          "stream": "edc_customer_inventory",
+          "extra_filter2": "source in 'inventory'",
+          "ts_column": "timestamp",
+          "min_width": 6,
+          "height": 6,
+          "max_width": 6,
+          "group_by": [
+            "hw_status",
+            "contract_name"
+          ],
+          "groups_meta": {
+            "type": "custom",
+            "order": [
+              "Expired",
+              "Expiring in a Quarter",
+              "Expiring in 4 Quarters",
+              "Expiring in 8 Quarters",
+              "Expiring after 8 Quarters"
+            ]
+          },
+          "style": {
+            "color-map": {
+              "Expired": "#BB0000",
+              "Expiring in a Quarter": "#F6C309",
+              "Expiring in 4 Quarters": "#FF9800",
+              "Expiring in 8 Quarters": "#1ECBE1",
+              "Expiring after 8 Quarters": "#009688",
+              "No EOL": "#00BB00"
+            }
+          },
+          "column": "count_",
+          "agg": "sum",
+          "chartProperties": {
+            "legendLocation": "top",
+            "stacked": true,
+            "xAxisLabel": "Contract Name",
+            "yAxisLabel": "Count"
+          },
+          "widget_id": "093b12ca"
         },
         {
           "widget_type": "multi_bar_chart",
@@ -521,7 +565,7 @@
             "xAxisLabel": "Equipment Type",
             "yAxisLabel": "Count"
           },
-          "widget_id": "093b12ca"
+          "widget_id": "e811d5f7"
         },
         {
           "widget_type": "bar_chart",
@@ -1179,7 +1223,7 @@
         },
         {
           "title": "Product List Price per Family",
-          "widget_type": "bar_chart",
+          "widget_type1": "bar_chart",
           "stream": "edc_customer_inventory",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'inventory'",
@@ -1205,6 +1249,50 @@
           "agg": "sum",
           "type": "int",
           "widget_id": "7d1c4f04"
+        },
+        {
+          "widget_type": "multi_bar_chart",
+          "title": "HW Status by Contract",
+          "duration_hours": 10800,
+          "stream": "edc_customer_inventory",
+          "extra_filter2": "source in 'inventory'",
+          "ts_column": "timestamp",
+          "min_width": 6,
+          "height": 6,
+          "max_width": 6,
+          "group_by": [
+            "hw_status",
+            "contract_name"
+          ],
+          "groups_meta": {
+            "type": "custom",
+            "order": [
+              "Expired",
+              "Expiring in a Quarter",
+              "Expiring in 4 Quarters",
+              "Expiring in 8 Quarters",
+              "Expiring after 8 Quarters"
+            ]
+          },
+          "style": {
+            "color-map": {
+              "Expired": "#BB0000",
+              "Expiring in a Quarter": "#F6C309",
+              "Expiring in 4 Quarters": "#FF9800",
+              "Expiring in 8 Quarters": "#1ECBE1",
+              "Expiring after 8 Quarters": "#009688",
+              "No EOL": "#00BB00"
+            }
+          },
+          "column": "count_",
+          "agg": "sum",
+          "chartProperties": {
+            "legendLocation": "top",
+            "stacked": true,
+            "xAxisLabel": "Contract Name",
+            "yAxisLabel": "Count"
+          },
+          "widget_id": "093b12ca"
         },
         {
           "widget_type": "multi_bar_chart",
@@ -1248,7 +1336,7 @@
             "xAxisLabel": "Equipment Type",
             "yAxisLabel": "Count"
           },
-          "widget_id": "093b12ca"
+          "widget_id": "e811d5f7"
         },
         {
           "widget_type": "bar_chart",
