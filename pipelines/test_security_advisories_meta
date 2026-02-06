@@ -1,7 +1,7 @@
 folder: Default
 name: test_security_advisories
 description: test pipeline
-data_path: pipelines/data/test_security_advisories/2026-02-06_1/data.json
+data_path: pipelines/data/test_security_advisories/2026-02-06_2/data.json
 usecase: ''
 category: ''
 sources:
@@ -36,15 +36,9 @@ artifacts:
 - artifact_type: pipeline
   artifact_name: edc_oi_product_alerts_raw
   access: read
-- artifact_type: dataset
-  artifact_name: test-sec-adv-data
-  access: write
-- artifact_type: dataset
-  artifact_name: test-sec-adv-data
-  access: read
 - artifact_type: rda-network-stream
   artifact_name: edc_customer_inventory
   access: write
-version: 2026-02-06_1
+version: 2026-02-06_2
 file_type: json
-checksum: 5b9e485e
+checksum: 67a0f5d0

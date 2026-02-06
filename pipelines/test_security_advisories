@@ -54,12 +54,12 @@
  --> @dm:gc
  ## --> @dm:manipulate-string from="customer_name,project_name,secAdv_psirtColdId,serial_number" and func="concat_columns" and to="unique_key" and value="_"
 
- --> @dm:save name='test-sec-adv-data'
+ --> @dm:save name='temp-secadv-data'
  --> @c:new-block
  --> @dm:recall name='temp-secadv-details'
- --> @dm:enrich dict='test-sec-adv-data' and src_key_cols='product_id,sw_version' and dict_key_cols='product_id,sw_version' and enrich_cols='secAdv_matchConfidence,secAdv_securityImpactRating' and replace_values="yes"
+ --> @dm:enrich dict='temp-secadv-data' and src_key_cols='product_id,sw_version' and dict_key_cols='product_id,sw_version' and enrich_cols='secAdv_matchConfidence,secAdv_securityImpactRating' and replace_values="yes"
  --> @dm:add-missing-columns columns="secAdv_match_confidence,secAdv_securityImpactRating"
  --> @dm:fixnull columns="secAdv_match_confidence,secAdv_securityImpactRating" and value="Not Available" and apply_for_empty="yes"
  --> @dm:gc
- --> @dm:recall name='temp-secadv-details'
+ --> @dm:save name='temp-secadv-details'
  --> @rn:write-stream name='edc_customer_inventory' and direct_to_opensearch="yes"
