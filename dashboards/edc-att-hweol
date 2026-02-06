@@ -173,6 +173,19 @@
       },
       {
         "stream": "edc_customer_inventory",
+        "title": "Contract Name",
+        "group_by": [
+          "contract_name"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 1000,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
         "title": "Portfolio",
         "group_by": [
           "portfolio_desc"
