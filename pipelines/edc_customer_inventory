@@ -241,6 +241,7 @@
  --> @dm:selectcolumns include="serial_number|product_id"
  --> @dm:map from = "serial_number" & to = "serial_number_new" & func = "concat" & prefix = "'" & suffix = "'"
  --> @dm:selectcolumns include="serial_number_new"
+ --> @dm:copy-columns from="serial_number_new" and to="devicserial_number_newe_role" and func="upper"
  --> @dm:save name = "temp-contract_data_network_only_sn"
  --> @c:data-loop columns='serial_number_new' and dataset="temp-contract_data_network_only_sn"
  --> @snowflake:native-query dbname is "CX_DB" and warehouse is "CX_DMP_RPT_WH" and query is "SELECT SERIAL_NUMBER,PRODUCT_NAME, COVERAGE, BUSINESS_ENTITY, BUSINESS_SUB_ENTITY, BK_END_OF_LIFE_REQUEST_NUM, BK_EOL_BULLETIN_PRODUCT_TYP_CD, END_OF_NEW_SVC_ATTACHMENT_DT, END_OF_ROUTINE_FAIL_ANLYSYS_DT, END_OF_SOFTWARE_MAINTENANCE_DT, END_OF_SVC_CONTRACT_RNWL_DT, EOL_EXTERNAL_ANNOUNCE_DT, END_OF_SECURITY_VULN_SUPPORT_DT, EOL_PRODUCT_NAME, ITEM_TYPE, LAST_DATE_OF_SALE, LAST_DATE_OF_SUPPORT, PRODUCT_DESCRIPTION, PRODUCT_FAMILY, PRODUCT_FAMILY_DESCRIPTION, PRODUCT_TYPE, PRODUCT_LIST_PRICE FROM CX_DB.CX_DMP_EBV.BV_ASSET WHERE SERIAL_NUMBER IN ($serial_number_new);"
