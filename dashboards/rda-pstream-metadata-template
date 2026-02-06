@@ -1,40 +1,46 @@
 {
-  "name": "license-grouping-app",
-  "label": "Smart License",
-  "description": "Smart License",
-  "dashboard_folder": "Default",
-  "version": "23.8.1.1",
+  "name": "rda-pstream-metadata-template",
+  "label": "Persistent Stream Metadata",
+  "description": "Persistent Stream Metadata",
   "enabled": true,
-  "dashboard_filters": {
-    "time_filter": false,
-    "columns_filter": []
+  "dashboard_type": "template",
+  "dashboard_style": "auto",
+  "template_variables": {
+    "PSTREAM_NAME": {
+      "contextId": "pstream_name"
+    }
   },
-  "dashboard_type": "app",
+  "dashboard_filters": {
+    "time_filter": false
+  },
   "dashboard_sections": [
     {
-      "title": "Example"
-    }
-  ],
-  "dashboard_pages": [
-    {
-      "name": "smart_licence_summary_consolidate",
-      "label": "License Summary",
-      "icon": "status.svg"
-    },
-    {
-      "name": "smart_license_alerts",
-      "label": "License Alerts",
-      "icon": "status.svg"
-    },
-    {
-      "name": "smart_licence__device_details_grv",
-      "label": "Device Inventory",
-      "icon": "status.svg"
+      "title": "Metadata",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Metadata",
+          "widget_type": "metadata",
+          "paginated": true,
+          "stream": "{{PSTREAM_NAME}}",
+          "widget_id": "2da925b4"
+        }
+      ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Example"
+      "title": "Metadata",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Metadata",
+          "widget_type": "metadata",
+          "paginated": true,
+          "stream": "{{PSTREAM_NAME}}",
+          "widget_id": "2da925b4"
+        }
+      ]
     }
   ]
 }
