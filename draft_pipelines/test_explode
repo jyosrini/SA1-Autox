@@ -1,6 +1,7 @@
-
- ## @files:loadfile filename="alert.json"
-@rn:read-stream name="enrichment-input-alerts" & group="grp-alertenrichment"
- ## Run enrichment pipeline
-
- --> @exec:run-pipeline-multi-proc name="alert-dataset-enrichment" and num_procs="0"
+@c:new-block
+ --> @dm:recall name='sweol-data-run-scan'
+ --> @dm:eval issues='json_dumps(issues)'
+ --> @dm:explode-json column="issues"
+ --> @dm:eval eoXAlert='json_dumps(eoXAlert)'
+ --> @dm:explode-json column="eoXAlert"
+ --> @dm:save name='test-sweol-explode'
