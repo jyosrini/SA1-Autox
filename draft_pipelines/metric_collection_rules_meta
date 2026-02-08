@@ -1,11 +1,4 @@
-folder: Default
-name: metric_collection_rules
-description: ''
-data_path: draft-pipelines/data/metric_collection_rules/2025_02_21_1/data.json
-usecase: ''
-category: null
-sources: []
-artifacts: []
-version: '2025_02_21_1'
-file_type: json
-checksum: 8c929311
+@c:new-block
+ --> @dm:recall name='sw-be-edc-run-scan-op-enriched'
+ --> *dm:filter issues is not '[]'
+ --> @dm:save name='sw-before-explode'
