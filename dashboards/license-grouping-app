@@ -1,48 +1,40 @@
 {
-  "name": "rda-mgmt-page-graphs",
-  "label": "Graphs",
-  "description": " Graphs Management Page",
-  "enabled": false,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
+  "name": "license-grouping-app",
+  "label": "Smart License",
+  "description": "Smart License",
+  "dashboard_folder": "Default",
+  "version": "23.8.1.1",
+  "enabled": true,
   "dashboard_filters": {
     "time_filter": false,
-    "group_filters": [],
     "columns_filter": []
   },
+  "dashboard_type": "app",
   "dashboard_sections": [
     {
-      "title": "Graphs",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Graphs",
-          "widget_type": "portal_tabular",
-          "reportId": "graphdb.graphs.list.tabular",
-          "paginated": true,
-          "height": 10,
-          "min_width": 12,
-          "widget_id": "26052c7a"
-        }
-      ]
+      "title": "Example"
+    }
+  ],
+  "dashboard_pages": [
+    {
+      "name": "smart_licence_summary_consolidate",
+      "label": "License Summary",
+      "icon": "status.svg"
+    },
+    {
+      "name": "smart_license_alerts",
+      "label": "License Alerts",
+      "icon": "status.svg"
+    },
+    {
+      "name": "smart_licence__device_details_grv",
+      "label": "Device Inventory",
+      "icon": "status.svg"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Graphs",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Graphs",
-          "widget_type": "portal_tabular",
-          "reportId": "graphdb.graphs.list.tabular",
-          "paginated": true,
-          "height": 10,
-          "min_width": 12,
-          "widget_id": "26052c7a"
-        }
-      ]
+      "title": "Example"
     }
   ]
 }

@@ -1,34 +1,125 @@
 {
-  "name": "oia-alerts-war-room-app",
-  "label": "War Room",
-  "description": "War Room",
-  "version": "24.5.08",
-  "enabled": true,
-  "status_poller": {},
-  "dashboard_type": "app",
-  "dashboard_folder": "Default",
-  "custom_context": {
-    "rda-dashboard-live-edit": true
-  },
-  "template_variables": {},
+  "name": "Authentication Servers",
+  "description": "Authentication Servers",
+  "label": "Authentication Servers",
+  "enabled": false,
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
+  "template_variables": null,
+  "version": "23.2.7.1",
   "dashboard_filters": {
-    "time_filter": true
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Dashboard"
-    }
-  ],
-  "dashboard_pages": [
+      "title": "Servers",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Authentication Servers",
+          "widget_type": "portal_tabular",
+          "reportId": "remote.server.settings",
+          "height": 5,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "afdcd593"
+        },
+        {
+          "title": "SSO Details",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.sso.details.list.tabular",
+          "height": 5,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "533f4d05"
+        }
+      ]
+    },
     {
-      "name": "oia-alerts-war-room-customer-view",
-      "label": "Customer View",
-      "icon": "Analytics.svg"
+      "title": "User Groups",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "AD User Groups",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.ad.user.group.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "af69b0ed"
+        }
+      ]
+    },
+    {
+      "title": "Users",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "AD Users",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.ad.user.group.members.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "e462054a"
+        }
+      ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Dashboard"
+      "title": "Servers",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Authentication Servers",
+          "widget_type": "portal_tabular",
+          "reportId": "remote.server.settings",
+          "height": 5,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "afdcd593"
+        },
+        {
+          "title": "SSO Details",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.sso.details.list.tabular",
+          "height": 5,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "533f4d05"
+        }
+      ]
+    },
+    {
+      "title": "User Groups",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "AD User Groups",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.ad.user.group.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "af69b0ed"
+        }
+      ]
+    },
+    {
+      "title": "Users",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "AD Users",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.ad.user.group.members.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "e462054a"
+        }
+      ]
     }
   ]
 }

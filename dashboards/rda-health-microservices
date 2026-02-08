@@ -1,8 +1,8 @@
 {
-  "name": "rda-mgmt-page-stagingarea",
-  "label": "Staging Area",
-  "description": " Staging Area Management Page",
-  "enabled": true,
+  "name": "rda-health-microservices",
+  "label": "Microservices",
+  "description": "Microservices",
+  "enabled": false,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
   "dashboard_style": "auto",
@@ -11,64 +11,52 @@
   },
   "dashboard_sections": [
     {
-      "title": "Staging Areas",
+      "title": "Microservices",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Staging Areas",
+          "title": "Core Microservices",
           "widget_type": "portal_tabular",
-          "reportId": "staging.area.list.tabular",
-          "height": 10,
-          "min_wdith": 12,
+          "reportId": "registry.infra.pods.tabular",
+          "height": 6,
+          "min_width": 10,
           "paginated": true,
-          "widget_id": "a835aab9"
-        }
-      ]
-    },
-    {
-      "title": "Metrics",
-      "show_filter": false,
-      "widgets": [
+          "widget_id": "fb282cfc"
+        },
         {
-          "title": "Metrics",
+          "title": "Application Microservices",
           "widget_type": "portal_tabular",
-          "reportId": "staging.area.metrics.tabular",
-          "height": 10,
-          "min_wdith": 12,
+          "reportId": "registry.app.pods.tabular",
+          "height": 6,
+          "min_width": 10,
           "paginated": true,
-          "widget_id": "a835aac8"
+          "widget_id": "8e5d378f"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Staging Areas",
+      "title": "Microservices",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Staging Areas",
+          "title": "Core Microservices",
           "widget_type": "portal_tabular",
-          "reportId": "staging.area.list.tabular",
-          "height": 10,
-          "min_wdith": 12,
+          "reportId": "registry.infra.pods.tabular",
+          "height": 6,
+          "min_width": 10,
           "paginated": true,
-          "widget_id": "a835aab9"
-        }
-      ]
-    },
-    {
-      "title": "Metrics",
-      "show_filter": false,
-      "widgets": [
+          "widget_id": "fb282cfc"
+        },
         {
-          "title": "Metrics",
+          "title": "Application Microservices",
           "widget_type": "portal_tabular",
-          "reportId": "staging.area.metrics.tabular",
-          "height": 10,
-          "min_wdith": 12,
+          "reportId": "registry.app.pods.tabular",
+          "height": 6,
+          "min_width": 10,
           "paginated": true,
-          "widget_id": "a835aac8"
+          "widget_id": "8e5d378f"
         }
       ]
     }
