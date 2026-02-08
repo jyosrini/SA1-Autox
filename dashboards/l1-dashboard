@@ -1,49 +1,62 @@
 {
-  "name": "rda-graph-edges-data-preview-template",
-  "label": "Graph Edges Data Preview",
-  "description": "Graph Edges Data Preview",
-  "enabled": true,
-  "dashboard_type": "template",
+  "name": "l1-dashboard",
+  "label": "L1 - Dashboard",
+  "description": "Dashboard for L1 Users",
+  "version": "22.10.7.1",
   "dashboard_style": "auto",
-  "template_variables": {},
+  "enabled": true,
+  "status_poller": {
+    "stream": "oia-incidents-stream",
+    "frequency": 30,
+    "columns": [
+      "timestamp"
+    ],
+    "sorting": [
+      {
+        "timestamp": "desc"
+      }
+    ],
+    "query": " timestamp is after '$timestamp'",
+    "defaults": {
+      "timestamp": "$UTCNOW"
+    },
+    "action": "refresh"
+  },
   "dashboard_filters": {
-    "time_filter": false,
+    "time_filter": true,
     "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Data Preview",
-      "show_filter": false,
-      "widgets": [
-        {
-          "title": "Collection Data",
-          "widget_type": "portal_tabular",
-          "reportId": "graphdb.edges.collection.data",
-          "max_width": 12,
-          "height": 12,
-          "min_width": 12,
-          "paginated": true,
-          "widget_id": "72498ee4"
-        }
-      ]
+      "title": "All Incidents"
+    }
+  ],
+  "dashboard_type": "app",
+  "dashboard_pages": [
+    {
+      "name": "oia-my-incidents",
+      "label": "My Queue",
+      "icon": "incident.svg"
+    },
+    {
+      "name": "oia-incidents",
+      "label": "All Incidents",
+      "icon": "incident.svg"
+    },
+    {
+      "name": "oia-alerts-os",
+      "label": "Alerts",
+      "icon": "status.svg"
+    },
+    {
+      "name": "incident-collaboration",
+      "label": "Collaboration",
+      "icon": "team.svg"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Data Preview",
-      "show_filter": false,
-      "widgets": [
-        {
-          "title": "Collection Data",
-          "widget_type": "portal_tabular",
-          "reportId": "graphdb.edges.collection.data",
-          "max_width": 12,
-          "height": 12,
-          "min_width": 12,
-          "paginated": true,
-          "widget_id": "72498ee4"
-        }
-      ]
+      "title": "All Incidents"
     }
   ]
 }
