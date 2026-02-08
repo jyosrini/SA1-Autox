@@ -1,278 +1,239 @@
 {
-  "name": "device_inventory",
-  "label": "Inventory",
-  "description": "Device Inventory",
-  "dashboard_folder": "MOW",
-  "version": "24.1.18.2",
-  "enabled": false,
-  "live_edit": true,
-  "stream": "cnc_device_inventory",
+  "name": "incident-details-insights",
+  "label": "Incident Insights",
+  "description": "OIA Insights for Incident",
+  "version": "23.12.4",
+  "enabled": true,
+  "exportable": false,
+  "dashboard_style": "auto",
+  "status_poller": {},
   "dashboard_type": "template",
   "template_variables": {
-    "DEVICE_IP": {
-      "contextId": "device_ip"
+    "PROJECT_ID": {
+      "default": null,
+      "contextId": "projectid"
     },
-    "DEVICE_HOSTNAME": {
-      "contextId": "device_hostname"
+    "INCIDENT_ID": {
+      "default": null,
+      "contextId": "incidentid"
     }
   },
   "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 1 month"
-    ],
-    "extra_filter": "device_ip is '{{DEVICE_IP}}' and device_hostname is '{{DEVICE_HOSTNAME}}'",
-    "columns_filter": [
-      {
-        "id": "device_ip",
-        "label": "IP Address",
-        "type": "TEXT"
-      },
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      },
-      {
-        "id": "device_ip",
-        "label": "IP Address",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_hostname",
-        "label": "Device Hostname",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_model",
-        "label": "Device Model",
-        "type": "TEXT"
-      },
-      {
-        "id": "serial_number",
-        "label": "Device Serial Number",
-        "type": "TEXT"
-      },
-      {
-        "id": "clli_code",
-        "label": "CLLI Code",
-        "type": "TEXT"
-      }
-    ],
-    "group_filters": []
+    "time_filter": false,
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Device View",
-      "show_filter": true,
+      "title": "Insights",
+      "show_filter": false,
+      "projects": [],
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
+          "title": "Similar Incidents",
+          "widget_type": "portal_list",
           "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Inventory</a></h1></div>",
-          "widget_id": "33317e49"
+          "height": 4,
+          "max_width": 12,
+          "refreshRequired": false,
+          "timebased": false,
+          "exportSupported": false,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getNextSteps",
+            "stringified-params": true,
+            "parse-output": false,
+            "params": [
+              {
+                "section_title": "Similar Incidents",
+                "grouping_field": "i_state",
+                "value_groups": {
+                  "Opened": [
+                    "Open",
+                    "ACTIVE",
+                    "New",
+                    "Assigned"
+                  ],
+                  "Resolved": [
+                    "Resolved"
+                  ]
+                }
+              }
+            ]
+          },
+          "widget_template": "cfx-oia/recommendation",
+          "widget_id": "similar_incidents"
         },
         {
-          "title": "Asset Summary",
-          "widget_type": "summary",
-          "max_width": 6,
-          "height": 5,
-          "min_width": 6,
-          "stream": "cnc_device_inventory",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "columns": {
-            "device_model": "Model",
-            "device_type": "Equipment Type",
-            "manufacturer": "Manufacturer",
-            "device_ip": "IP Address",
-            "device_hostname": "Hostname",
-            "serial_number": "Serial Number",
-            "device_family": "Device Family"
+          "title": "How Similar Incidents are Resolved?",
+          "widget_type": "portal_list",
+          "min_width": 12,
+          "height": 4,
+          "max_width": 12,
+          "refreshRequired": false,
+          "timebased": false,
+          "exportSupported": false,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getNextSteps",
+            "stringified-params": true,
+            "parse-output": false,
+            "params": [
+              {
+                "section_title": "How Similar Incidents are Resolved?",
+                "grouping_field": "i_resolution_code",
+                "value_type": "PERCENT",
+                "label_keys": [
+                  "user_name",
+                  "user"
+                ]
+              }
+            ]
           },
-          "widget_id": "7gsoG2q9"
+          "widget_template": "cfx-oia/recommendation",
+          "widget_id": "resolution_code"
         },
         {
-          "title": "Asset Details",
-          "widget_type": "tabular",
-          "stream": "cnc_device_inventory",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "device_ip"
-          ],
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
+          "title": "Who Resolved?",
+          "widget_type": "portal_list",
           "min_width": 12,
-          "height": 8,
+          "height": 4,
           "max_width": 12,
-          "paginated": true,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "device_hostname",
-            "device_ip",
-            "device_model",
-            "clli_code",
-            "device_location",
-            "serial_number",
-            "device_type",
-            "manufacturer",
-            "device_fw_version",
-            "device_fw_type",
-            "admin_state"
-          ],
-          "max_rows": 50,
-          "columns": {
-            "total_count": "Total Quantity",
-            "device_hostname": {
-              "title": "Device Hostname",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_family": {
-              "title": "Device Family",
-              "type": "TEXT",
-              "visible": false
-            },
-            "Product_Family": {
-              "title": "Product Family",
-              "type": "TEXT",
-              "key": true,
-              "visible": false
-            },
-            "device_ip": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_model": "Device Model",
-            "serial_number": {
-              "title": "Serial Number",
-              "type": "TEXT"
-            },
-            "manufacturer": "Vendor",
-            "device_fw_version": "SW Version",
-            "device_type": "Equipment Type",
-            "device_location": "Location",
-            "device_fw_type": "Type",
-            "admin_state": "Admin State",
-            "product_type": "Product Type",
-            "operational_state": "Operational State",
-            "clli_code": "CLLI_CODE",
-            "device_system_description": "Device Descriptions"
+          "refreshRequired": false,
+          "timebased": false,
+          "exportSupported": false,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getNextSteps",
+            "stringified-params": true,
+            "parse-output": false,
+            "params": [
+              {
+                "section_title": "Who Resolved?",
+                "grouping_field": "i_resolved_by",
+                "value_type": "PERCENT",
+                "label_keys": [
+                  "user_name",
+                  "user"
+                ]
+              }
+            ]
           },
-          "widget_id": "4c2cfdd7"
+          "widget_template": "cfx-oia/recommendation",
+          "widget_id": "resolved_user"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Device View",
-      "show_filter": true,
+      "title": "Insights",
+      "show_filter": false,
+      "projects": [],
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
+          "title": "Similar Incidents",
+          "widget_type": "portal_list",
           "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Inventory</a></h1></div>",
-          "widget_id": "33317e49"
+          "height": 4,
+          "max_width": 12,
+          "refreshRequired": false,
+          "timebased": false,
+          "exportSupported": false,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getNextSteps",
+            "stringified-params": true,
+            "parse-output": false,
+            "params": [
+              {
+                "section_title": "Similar Incidents",
+                "grouping_field": "i_state",
+                "value_groups": {
+                  "Opened": [
+                    "Open",
+                    "ACTIVE",
+                    "New",
+                    "Assigned"
+                  ],
+                  "Resolved": [
+                    "Resolved"
+                  ]
+                }
+              }
+            ]
+          },
+          "widget_template": "cfx-oia/recommendation",
+          "widget_id": "similar_incidents"
         },
         {
-          "title": "Asset Summary",
-          "widget_type": "summary",
-          "max_width": 6,
-          "height": 5,
-          "min_width": 6,
-          "stream": "cnc_device_inventory",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "columns": {
-            "device_model": "Model",
-            "device_type": "Equipment Type",
-            "manufacturer": "Manufacturer",
-            "device_ip": "IP Address",
-            "device_hostname": "Hostname",
-            "serial_number": "Serial Number",
-            "device_family": "Device Family"
+          "title": "How Similar Incidents are Resolved?",
+          "widget_type": "portal_list",
+          "min_width": 12,
+          "height": 4,
+          "max_width": 12,
+          "refreshRequired": false,
+          "timebased": false,
+          "exportSupported": false,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getNextSteps",
+            "stringified-params": true,
+            "parse-output": false,
+            "params": [
+              {
+                "section_title": "How Similar Incidents are Resolved?",
+                "grouping_field": "i_resolution_code",
+                "value_type": "PERCENT",
+                "label_keys": [
+                  "user_name",
+                  "user"
+                ]
+              }
+            ]
           },
-          "widget_id": "7gsoG2q9"
+          "widget_template": "cfx-oia/recommendation",
+          "widget_id": "resolution_code"
         },
         {
-          "title": "Asset Details",
-          "widget_type": "tabular",
-          "stream": "cnc_device_inventory",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "device_ip"
-          ],
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
+          "title": "Who Resolved?",
+          "widget_type": "portal_list",
           "min_width": 12,
-          "height": 8,
+          "height": 4,
           "max_width": 12,
-          "paginated": true,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "device_hostname",
-            "device_ip",
-            "device_model",
-            "clli_code",
-            "device_location",
-            "serial_number",
-            "device_type",
-            "manufacturer",
-            "device_fw_version",
-            "device_fw_type",
-            "admin_state"
-          ],
-          "max_rows": 50,
-          "columns": {
-            "total_count": "Total Quantity",
-            "device_hostname": {
-              "title": "Device Hostname",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_family": {
-              "title": "Device Family",
-              "type": "TEXT",
-              "visible": false
-            },
-            "Product_Family": {
-              "title": "Product Family",
-              "type": "TEXT",
-              "key": true,
-              "visible": false
-            },
-            "device_ip": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_model": "Device Model",
-            "serial_number": {
-              "title": "Serial Number",
-              "type": "TEXT"
-            },
-            "manufacturer": "Vendor",
-            "device_fw_version": "SW Version",
-            "device_type": "Equipment Type",
-            "device_location": "Location",
-            "device_fw_type": "Type",
-            "admin_state": "Admin State",
-            "product_type": "Product Type",
-            "operational_state": "Operational State",
-            "clli_code": "CLLI_CODE",
-            "device_system_description": "Device Descriptions"
+          "refreshRequired": false,
+          "timebased": false,
+          "exportSupported": false,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getNextSteps",
+            "stringified-params": true,
+            "parse-output": false,
+            "params": [
+              {
+                "section_title": "Who Resolved?",
+                "grouping_field": "i_resolved_by",
+                "value_type": "PERCENT",
+                "label_keys": [
+                  "user_name",
+                  "user"
+                ]
+              }
+            ]
           },
-          "widget_id": "4c2cfdd7"
+          "widget_template": "cfx-oia/recommendation",
+          "widget_id": "resolved_user"
         }
       ]
     }
