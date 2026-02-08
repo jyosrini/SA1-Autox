@@ -1,6 +1,6 @@
 {
-  "name": "logs",
-  "label": "Logs",
+  "name": "customer_discovery_runs_details_failed",
+  "label": "Failed",
   "description": "onboarded_devices: Insights",
   "dashboard_folder": "NetworkDevicePack",
   "version": "1.0.3",
@@ -17,13 +17,16 @@
     "CUST_TAG": {
       "contextId": "customerTag"
     },
+    "PROJ_ID_SINGLE": {
+      "contextId": "project_id"
+    },
     "JOB_ID": {
       "contextId": "jobid"
     }
   },
   "dashboard_filters": {
     "time_filter": true,
-    "extra_filter0": "ingestion_id is '{{FILENAME}}' and source contains 'Logs' and and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty)",
+    "extra_filter0": "(ingestion_id is '{{FILENAME}}' and auth_state is 'Failed' and source contains 'Run Details')",
     "default_time_filter_labels0": [
       "Last 1 month"
     ],
@@ -42,45 +45,39 @@
       "show_filter": true,
       "widgets": [
         {
-          "title": "Discovery Logs",
+          "title": "Discovery Details",
           "widget_type": "tabular",
           "stream": "asset_inventory_collection_status_stream",
-          "extra_filter0": "customer_tag is '{{CUST_TAG}}'",
-          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname is empty or jobname contains 'job') and type_ is 'device_status' and jobid is '{{JOB_ID}}'",
+          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname is empty or jobname contains 'job') and type_ is 'device_status' and collection_status is 'Failed'  and jobid is '{{JOB_ID}}'",
           "duration_hours": 1080,
           "height": 4,
-          "paginated": false,
           "max_width": 12,
           "min_width": 12,
-          "sorting": [
-            {
-              "timestamp": "desc"
-            }
-          ],
           "columns": {
-            "asset_ip": {
-              "title": "IP Address",
-              "type": "TEXT"
-            },
-            "collection_status": {
-              "title": "Status",
-              "type": "DATETIME"
-            },
+            "asset_ip": "IP Address",
             "collection_timestamp": {
               "title": "Collection Timestamp",
-              "type": "DATETIME"
+              "type": "DATETIME",
+              "visible": true
             },
             "reason": {
               "title": "Reason",
-              "type": "TEXT"
+              "key": true,
+              "visible": true,
+              "hidden": false
             },
             "jobname": {
               "title": "Jobname",
               "type": "TEXT",
               "hidden": true
+            },
+            "jobid": {
+              "title": "Job Id",
+              "type": "TEXT",
+              "hidden": true
             }
           },
-          "widget_id": "7a63dacd"
+          "widget_id": "b2c8d81c"
         }
       ]
     }
@@ -91,45 +88,39 @@
       "show_filter": true,
       "widgets": [
         {
-          "title": "Discovery Logs",
+          "title": "Discovery Details",
           "widget_type": "tabular",
           "stream": "asset_inventory_collection_status_stream",
-          "extra_filter0": "customer_tag is '{{CUST_TAG}}'",
-          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname is empty or jobname contains 'job') and type_ is 'device_status' and jobid is '{{JOB_ID}}'",
+          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname is empty or jobname contains 'job') and type_ is 'device_status' and collection_status is 'Failed'  and jobid is '{{JOB_ID}}'",
           "duration_hours": 1080,
           "height": 4,
-          "paginated": false,
           "max_width": 12,
           "min_width": 12,
-          "sorting": [
-            {
-              "timestamp": "desc"
-            }
-          ],
           "columns": {
-            "asset_ip": {
-              "title": "IP Address",
-              "type": "TEXT"
-            },
-            "collection_status": {
-              "title": "Status",
-              "type": "DATETIME"
-            },
+            "asset_ip": "IP Address",
             "collection_timestamp": {
               "title": "Collection Timestamp",
-              "type": "DATETIME"
+              "type": "DATETIME",
+              "visible": true
             },
             "reason": {
               "title": "Reason",
-              "type": "TEXT"
+              "key": true,
+              "visible": true,
+              "hidden": false
             },
             "jobname": {
               "title": "Jobname",
               "type": "TEXT",
               "hidden": true
+            },
+            "jobid": {
+              "title": "Job Id",
+              "type": "TEXT",
+              "hidden": true
             }
           },
-          "widget_id": "7a63dacd"
+          "widget_id": "b2c8d81c"
         }
       ]
     }
