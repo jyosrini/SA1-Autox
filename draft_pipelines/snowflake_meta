@@ -1,20 +1,20 @@
 folder: Default
-name: test_sleep
+name: snowflake
 description: test pipeline
-data_path: draft-pipelines/data/test_sleep/1.0.0/data.json
+data_path: draft-pipelines/data/snowflake/2025_03_27_03/data.json
 usecase: ''
 category: ''
-sources: {}
+sources:
+  snowflake:
+    name: snowflake
+    type: snowflake
+  rn:
+    name: rn
+    type: rn
 artifacts:
-- artifact_type: dataset
-  artifact_name: test-upgrade-check-log
+- artifact_type: rda-network-stream
+  artifact_name: test-stream
   access: write
-- artifact_type: dataset
-  artifact_name: test-upgrade-check-log
-  access: read
-- artifact_type: dataset
-  artifact_name: oi_vmc
-  access: write
-version: 1.0.0
+version: '2025_03_27_03'
 file_type: json
-checksum: 96af2449
+checksum: 4a3cc590
