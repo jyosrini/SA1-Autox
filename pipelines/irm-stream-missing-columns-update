@@ -1,7 +1,13 @@
-@dm:empty
- --> @dm:addrow name='oia-incidents-stream'
- --> #dm:query-persistent-stream
- --> @dm:eval i_starred = "i_starred if (i_starred != '') else 'Not Starred'"
- --> @dm:eval i_alert_sources = "i_alert_sources if (i_alert_sources != '') else 'Not Available'"
- --> @dm:eval i_assigned_to = "i_assigned_to if (i_assigned_to != '') else 'Not Assigned'"
- --> @dm:fixnull-regex columns = '.*' and value='Not Available' and apply_for_empty='yes'
+@c:new-block
+ --> @dm:empty
+ --> @exec:define-function name="generate_access_token"
+ --> @exec:run-pipeline name ="edc_generate_token" & ignore_failures = "no"
+ --> @dm:addrow key='key'
+ --> @dm:eval current_time_ms="int(time_now_as_ms())"
+ --> @dm:eval token_expiry_time='current_time_ms+3000000'
+ --> @dm:save name='temp-expiry-time'
+ --> @exec:end-function
+ --> @c:new-block
+ --> @dm:empty
+ --> @exec:call-function name='generate_access_token'
+ --> @dm:save name='temp-expiry-time'
