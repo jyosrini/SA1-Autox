@@ -846,7 +846,7 @@
             "customer_name": {
               "title": "Customer Name",
               "type": "TEXT",
-              "visible": true
+              "visible": false
             },
             "gu_name": {
               "title": "GU Name",
@@ -1620,7 +1620,7 @@
             "customer_name": {
               "title": "Customer Name",
               "type": "TEXT",
-              "visible": true
+              "visible": false
             },
             "gu_name": {
               "title": "GU Name",
