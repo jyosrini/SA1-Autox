@@ -672,18 +672,18 @@
           "ts_column": "timestamp",
           "sorting": [
             {
-              "total_rma_25": "desc",
-              "total_rma_24": "desc"
+              "product_id_rma_2025": "desc",
+              "product_id_rma_2024": "desc"
             }
           ],
           "columns": {
             "product_id": "Product ID",
             "contract_number": "Contract",
-            "total_rma_25": {
+            "product_id_rma_2025": {
               "title": "RMA 2025",
               "type": "DOUBLE"
             },
-            "total_rma_24": {
+            "product_id_rma_2024": {
               "title": "RMA 2024",
               "type": "DOUBLE"
             },
@@ -744,8 +744,8 @@
             "group_by": [
               "product_id",
               "contract_number",
-              "total_rma_24",
-              "total_rma_25",
+              "product_id_rma_24",
+              "product_id_rma_25",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
@@ -1443,18 +1443,18 @@
           "ts_column": "timestamp",
           "sorting": [
             {
-              "total_rma_25": "desc",
-              "total_rma_24": "desc"
+              "product_id_rma_2025": "desc",
+              "product_id_rma_2024": "desc"
             }
           ],
           "columns": {
             "product_id": "Product ID",
             "contract_number": "Contract",
-            "total_rma_25": {
+            "product_id_rma_2025": {
               "title": "RMA 2025",
               "type": "DOUBLE"
             },
-            "total_rma_24": {
+            "product_id_rma_2024": {
               "title": "RMA 2024",
               "type": "DOUBLE"
             },
@@ -1515,8 +1515,8 @@
             "group_by": [
               "product_id",
               "contract_number",
-              "total_rma_24",
-              "total_rma_25",
+              "product_id_rma_24",
+              "product_id_rma_25",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
