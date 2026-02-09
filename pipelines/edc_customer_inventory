@@ -618,7 +618,7 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
  ## --> @dm:manipulate-string from="customer_name,project_name,secAdv_psirtColdId,serial_number" and func="concat_columns" and to="unique_key" and value="_"
 
  --> @dm:save name='temp-secadv-data'
- --> @dm:save name='conract-secadv-data'
+ --> @dm:save name='edc_processed_secadv-data'
  ## Deduping Security Advisories based on matchConfidence priority
 
  --> @c:new-block
