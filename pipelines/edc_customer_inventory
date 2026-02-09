@@ -613,10 +613,18 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
  ## --> @dm:manipulate-string from="customer_name,project_name,secAdv_psirtColdId,serial_number" and func="concat_columns" and to="unique_key" and value="_"
 
  --> @dm:save name='temp-secadv-data'
- --> @dm:save name='contract-secadv-data'
+ --> @dm:save name='conract-secadv-data'
+ ## Deduping Security Advisories based on matchConfidence priority
+
+ --> @c:new-block
+ --> @dm:recall name="temp-secadv-data"
+ --> @dm:skip-block-if-shape row_count="0"
+ --> @dm:sort columns='secAdv_confidence_score,secAdv_impact_score' and order='descending'
+ --> @dm:dedup columns='product_id,sw_version,sw_os_type'
+ --> @dm:save name="temp-secadv-data-dedups"
  --> @c:new-block
  --> @dm:recall name='temp-secadv-details'
- --> @dm:enrich dict='temp-secadv-data' and src_key_cols='product_id,sw_version' and dict_key_cols='product_id,sw_version' and enrich_cols='secAdv_match_confidence,secAdv_securityImpactRating' and replace_values="yes"
+ --> @dm:enrich dict='temp-secadv-data-dedups' and src_key_cols='product_id,sw_version' and dict_key_cols='product_id,sw_version' and enrich_cols='secAdv_match_confidence,secAdv_securityImpactRating' and replace_values="yes"
  --> @dm:add-missing-columns columns="secAdv_match_confidence,secAdv_securityImpactRating"
  --> @dm:fixnull columns="secAdv_match_confidence,secAdv_securityImpactRating" and value="Not Available" and apply_for_empty="yes"
  --> @dm:gc

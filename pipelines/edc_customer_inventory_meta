@@ -61,7 +61,7 @@ artifacts:
   artifact_name: edc_oi_product_alerts_raw
   access: read
 - artifact_type: dataset
-  artifact_name: contract-secadv-data
+  artifact_name: conract-secadv-data
   access: write
 - artifact_type: dataset
   artifact_name: edc_customer_contract_names
@@ -74,4 +74,4 @@ artifacts:
   access: write
 version: 2026-02-08_1
 file_type: json
-checksum: f5c28187
+checksum: 8d9b161f
