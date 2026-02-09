@@ -686,7 +686,7 @@
               "title": "RMA 2024",
               "type": "DOUBLE"
             },
-            "stock_forecast": {
+            "product_total_stock_forecast": {
               "title": "Stock Forecast",
               "type": "DOUBLE"
             },
@@ -748,7 +748,7 @@
               "product_id",
               "product_total_rma_2024_count",
               "product_total_rma_2025_count",
-              "stock_forecast",
+              "product_total_stock_forecast",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
@@ -1460,7 +1460,7 @@
               "title": "RMA 2024",
               "type": "DOUBLE"
             },
-            "stock_forecast": {
+            "product_total_stock_forecast": {
               "title": "Stock Forecast",
               "type": "DOUBLE"
             },
@@ -1522,7 +1522,7 @@
               "product_id",
               "product_total_rma_2024_count",
               "product_total_rma_2025_count",
-              "stock_forecast",
+              "product_total_stock_forecast",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
