@@ -1,16 +1,28 @@
 {
-  "name": "bcs_oi_app",
-  "label": "Network Operational Insights",
+  "name": "edc_att_mobility_app",
+  "label": "ATT Mobility Operational Insights",
   "description": "Network Operational Insights",
-  "dashboard_folder": "OI",
-  "version": "23.8.1.1",
+  "dashboard_folder": "OI-C",
+  "version": "2025-09-03_1",
   "enabled": true,
+  "debug": true,
   "dashboard_filters": {
     "time_filter": false,
-    "columns_filter": []
+    "columns_filter": [],
+    "extra_filter": "project_name = 'ATT-Mobility'"
   },
   "custom_context": {
     "rda-dashboard-live-edit": true
+  },
+  "context_enrichment": {
+    "dataset": "edc_customer_names",
+    "enrich_columns": [
+      "customer"
+    ],
+    "query_template": "savm_level = 'dummy'  ",
+    "defaultValues": {
+      "customer": "ATT-Mobility"
+    }
   },
   "dashboard_sections": [
     {
@@ -32,17 +44,28 @@
   },
   "dashboard_pages": [
     {
-      "name": "bcs-oi-inventory-enrich",
-      "label": "Inventory",
+      "name": "edc_mobility_project_inv",
+      "label": "Inventory-ATT-Mobility",
       "icon": "overall.svg"
     },
     {
-      "name": "bcs-oi-pa-hw-eol-enriched",
+      "name": "edc-att-hweol",
       "label": "HW EOL",
       "icon": "hardware.svg",
       "group": "eox"
+    },
+    {
+      "name": "edc_customer_oi_input_form",
+      "label": "OI User Input ",
+      "icon": "customer.svg"
+    },
+    {
+      "name": "oi-asp-documentation",
+      "label": "Insight Guide ",
+      "icon": "software.svg"
     }
   ],
+  "menu_folder": "Project Trial",
   "pstream_dashboards": [
     {
       "title": "Example"
