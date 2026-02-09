@@ -76,6 +76,7 @@
  --> @dm:eval sw_version = "sw_version.replace('[Default]', '') if sw_version else sw_version"
  --> @dm:eval sw_version = "str(sw_version).strip()"
  --> @dm:save name = "temp-network_inv"
+ --> @dm:save name = "normalized-network_inv"
  ## Use this dict to normalize device_model from conexus i.e wsc1900sysID to WS-C1900
 
  --> @c:new-block
