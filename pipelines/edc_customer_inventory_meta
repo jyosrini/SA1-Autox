@@ -60,6 +60,12 @@ artifacts:
 - artifact_type: dataset
   artifact_name: final-enrich
   access: write
+- artifact_type: pipeline
+  artifact_name: edc_oi_product_alerts_raw
+  access: read
+- artifact_type: dataset
+  artifact_name: edc_processed_secadv-data
+  access: write
 - artifact_type: dataset
   artifact_name: edc_customer_contract_names
   access: read
@@ -71,4 +77,4 @@ artifacts:
   access: write
 version: 2026-02-09_3
 file_type: json
-checksum: 0bce5f1d
+checksum: 756c9017
