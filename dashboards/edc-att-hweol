@@ -672,17 +672,17 @@
           "ts_column": "timestamp",
           "sorting": [
             {
-              "product_id_rma_2025": "desc",
-              "product_id_rma_2024": "desc"
+              "product_total_rma_2025_count": "desc",
+              "product_total_rma_2024_count": "desc"
             }
           ],
           "columns": {
             "product_id": "Product ID",
-            "product_id_rma_2025": {
+            "product_total_rma_2025_count": {
               "title": "RMA 2025",
               "type": "DOUBLE"
             },
-            "product_id_rma_2024": {
+            "product_total_rma_2024_count": {
               "title": "RMA 2024",
               "type": "DOUBLE"
             },
@@ -746,8 +746,8 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
-              "product_id_rma_2024",
-              "product_id_rma_2025",
+              "product_total_rma_2024_count",
+              "product_total_rma_2025_count",
               "stock_forecast",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
@@ -1446,17 +1446,17 @@
           "ts_column": "timestamp",
           "sorting": [
             {
-              "product_id_rma_2025": "desc",
-              "product_id_rma_2024": "desc"
+              "product_total_rma_2025_count": "desc",
+              "product_total_rma_2024_count": "desc"
             }
           ],
           "columns": {
             "product_id": "Product ID",
-            "product_id_rma_2025": {
+            "product_total_rma_2025_count": {
               "title": "RMA 2025",
               "type": "DOUBLE"
             },
-            "product_id_rma_2024": {
+            "product_total_rma_2024_count": {
               "title": "RMA 2024",
               "type": "DOUBLE"
             },
@@ -1520,8 +1520,8 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
-              "product_id_rma_2024",
-              "product_id_rma_2025",
+              "product_total_rma_2024_count",
+              "product_total_rma_2025_count",
               "stock_forecast",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
