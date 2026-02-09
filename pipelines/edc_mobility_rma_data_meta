@@ -1,7 +1,7 @@
 folder: OI
 name: edc_mobility_rma_data
 description: test pipeline
-data_path: pipelines/data/edc_mobility_rma_data/2026_02_03-7/data.json
+data_path: pipelines/data/edc_mobility_rma_data/2026_02_09-2/data.json
 usecase: Uses RMA data to enrich inventory
 category: ''
 sources:
@@ -15,6 +15,6 @@ artifacts:
 - artifact_type: rda-network-stream
   artifact_name: edc_customer_inventory
   access: write
-version: 2026_02_03-7
+version: 2026_02_09-2
 file_type: json
-checksum: a66e51b5
+checksum: 65ee11fd
