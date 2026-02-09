@@ -58,7 +58,7 @@
  --> @dm:manipulate-string to="customer" and func="eval" and value="'$customer'"
  --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
  --> @dm:save name ="temp-network_inv"
- ## Enrich with SW Type
+ ## Enrich with SW Type, clean sw_version
 
  --> @c:new-block
  --> @dm:recall name="edc_pid_ostype_dict"
@@ -578,7 +578,9 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
  ## --> @dm:save name='test-contract_data'
 
  --> @dm:save name='temp-contract_data'
- ## #Process Security Advisories
+ ## #############################
+
+ ## Process Security Advisories
 
  ## collecting the file and storing it in edc_cust_pid_sw stream, collecting the API data
 
@@ -608,17 +610,29 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
  --> @c:new-block
  --> @dm:recall name='temp-secadv-data'
  --> @dm:to-type columns='advisoryId,PsirtID' and type='str'
- --> @dm:add-missing-columns columns="PsirtID,MatchConfidence,MatchReason,MatchDefinition,HeadlineName,AdvisoryId,BulletinURL,Summary,Details,RevisedDate,RevisionNumber,PublishedDate,SeverityLevelName,CvssScore,CveId,_id,advisoryId,created,customerVisible,external_text,external_title,firstIcAlertId,groups,icIssueId,icProblemId,ignored,lastIcAlertId,matchDefinition,matchInfo,matchConfidence,missingInfo,moreInfo,name,openedOn,resultType,resultSubType,severity,severityText,state,updated,deviceSN,source,runType,filename,icType,atticaStatus,cdetsList,retry,associatedGroups,key,current_time_ms_loop,token_expiry_time,access_token,expires_in,token_type,sw_version,sw_os_type,product_id,transaction_id,eoXAlert,eoXAlertType,DocumentId"
+ --> @dm:add-missing-columns columns="PsirtID,MatchConfidence,MatchReason,MatchDefinition,HeadlineName,AdvisoryId,BulletinURL,Summary,Details,RevisedDate,RevisionNumber,PublishedDate,SeverityLevelName,CvssScore,CveId,_id,advisoryId,created,customerVisible,external_text,external_title,firstIcAlertId,groups,icIssueId,icProblemId,ignored,lastIcAlertId,matchDefinition,matchInfo,matchConfidence,missingInfo,moreInfo,name,openedOn,resultType,resultSubType,severity,severityText,state,updated,deviceSN,source,runType,filename,icType,atticaStatus,cdetsList,retry,associatedGroups,key,current_time_ms_loop,token_expiry_time,access_token,expires_in,token_type,sw_version,sw_os_type,product_id,transaction_id"
  --> @dm:eval matchConfidence = "'Potentially Vulnerable' if matchConfidence == 'POTVUL' else 'Vulnerable' if matchConfidence == 'VUL' else matchConfidence"
  --> @dm:eval secAdv_confidence_score = "100 if matchConfidence == 'Vulnerable' else 99 if matchConfidence == 'Potentially Vulnerable' else 98 if matchConfidence == 'Not Vulnerable' else 0"
  --> @dm:eval secAdv_impact_score = "100 if SeverityLevelName == 'Critical' else 99 if SeverityLevelName == 'High' else 98 if SeverityLevelName == 'Medium' else 97 if SeverityLevelName == 'Low' else 0"
- --> @dm:fixnull columns="PsirtID,MatchConfidence,MatchReason,MatchDefinition,HeadlineName,AdvisoryId,BulletinURL,Summary,Details,RevisedDate,RevisionNumber,PublishedDate,SeverityLevelName,CvssScore,CveId,_id,advisoryId,created,customerVisible,external_text,external_title,firstIcAlertId,groups,icIssueId,icProblemId,ignored,lastIcAlertId,matchDefinition,matchInfo,matchConfidence,missingInfo,moreInfo,name,openedOn,resultType,resultSubType,severity,severityText,state,updated,deviceSN,source,runType,filename,icType,atticaStatus,cdetsList,retry,associatedGroups,key,current_time_ms_loop,token_expiry_time,expires_in,token_type,sw_version,sw_os_type,product_id,transaction_id,eoXAlert,eoXAlertType,DocumentId,secAdv_confidence_score" and value="Not Available" and apply_for_empty="yes"
+ --> @dm:fixnull columns="PsirtID,MatchConfidence,MatchReason,MatchDefinition,HeadlineName,AdvisoryId,BulletinURL,Summary,Details,RevisedDate,RevisionNumber,PublishedDate,SeverityLevelName,CvssScore,CveId,_id,advisoryId,created,customerVisible,external_text,external_title,firstIcAlertId,groups,icIssueId,icProblemId,ignored,lastIcAlertId,matchDefinition,matchInfo,matchConfidence,missingInfo,moreInfo,name,openedOn,resultType,resultSubType,severity,severityText,state,updated,deviceSN,source,runType,filename,icType,atticaStatus,cdetsList,retry,associatedGroups,key,current_time_ms_loop,token_expiry_time,expires_in,token_type,sw_version,sw_os_type,product_id,transaction_id,secAdv_confidence_score" and value="Not Available" and apply_for_empty="yes"
  --> @dm:rename-columns secAdv_match_confidence ='matchConfidence' and secAdv_securityImpactRating='SeverityLevelName' and secAdv_bulletinTitle='external_title' and secAdv_psirtAdvisoryId='advisoryId' and ID = '_id' and secAdv_bulletinUrl ='BulletinURL' and secAdv_bulletinSummary ='Summary' and secAdv_cveId='CveId' and secAdv_cvssBase='CvssScore' and secAdv_match_confidence_reason='MatchReason' and secAdv_psirtColdId ='PsirtID' and secAdv_bulletinFirstPublished ='PublishedDate' and secAdv_bulletinVersion='RevisionNumber' and secAdv_bulletinLastUpdated='RevisedDate'
  --> @dm:gc
  ## --> @dm:manipulate-string from="customer_name,project_name,secAdv_psirtColdId,serial_number" and func="concat_columns" and to="unique_key" and value="_"
 
  --> @dm:save name='temp-secadv-data'
+ ## Enrich with project and customer name
+
+ --> @c:data-loop columns='project_name,customer_name' and dataset='temp-data-input'
+ --> @dm:recall name="temp-secadv-data"
+ --> @dm:manipulate-string to="project_name" and func="eval" and value="'$project_name'"
+ --> @dm:manipulate-string to="customer_name" and func="eval" and value="'$customer_name'"
+ ## unique key is based on sw version and type because there is not serial number
+
+ --> @dm:manipulate-string from="customer_name,project_name,secAdv_psirtColdId,sw_version,sw_os_type" and func="concat_columns" and to="unique_key" and value="_"
+ --> @dm:gc
+ --> @dm:save name='temp-secadv-data'
  --> @dm:save name='edc_processed_secadv-data'
+ --> @rn:write-stream name="edc_customer_productAlerts"
  ## Deduping Security Advisories based on matchConfidence priority
 
  --> @c:new-block
@@ -650,6 +664,8 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
  --> @dm:gc
  --> @dm:save name='temp-contract_data'
  ## Enrich with sw recommendation and evaluate compliance
+
+ ## write to stream
 
  --> @c:new-block
  --> @dm:recall name="temp-contract_data"
