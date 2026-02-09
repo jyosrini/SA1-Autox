@@ -613,6 +613,7 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
  ## --> @dm:manipulate-string from="customer_name,project_name,secAdv_psirtColdId,serial_number" and func="concat_columns" and to="unique_key" and value="_"
 
  --> @dm:save name='temp-secadv-data'
+ --> @dm:save name='contract-secadv-data'
  --> @c:new-block
  --> @dm:recall name='temp-secadv-details'
  --> @dm:enrich dict='temp-secadv-data' and src_key_cols='product_id,sw_version' and dict_key_cols='product_id,sw_version' and enrich_cols='secAdv_match_confidence,secAdv_securityImpactRating' and replace_values="yes"

@@ -1,7 +1,7 @@
 folder: OI-C
 name: edc_customer_inventory
 description: test pipeline
-data_path: pipelines/data/edc_customer_inventory/2026-02-05_6/data.json
+data_path: pipelines/data/edc_customer_inventory/2026-02-08_1/data.json
 usecase: OI for project based
 category: ''
 sources:
@@ -61,6 +61,9 @@ artifacts:
   artifact_name: edc_oi_product_alerts_raw
   access: read
 - artifact_type: dataset
+  artifact_name: contract-secadv-data
+  access: write
+- artifact_type: dataset
   artifact_name: edc_customer_contract_names
   access: read
 - artifact_type: dataset
@@ -69,6 +72,6 @@ artifacts:
 - artifact_type: rda-network-stream
   artifact_name: edc_customer_inventory
   access: write
-version: 2026-02-05_6
+version: 2026-02-08_1
 file_type: json
-checksum: bde17b69
+checksum: f5c28187
