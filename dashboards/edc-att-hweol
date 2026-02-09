@@ -678,13 +678,16 @@
           ],
           "columns": {
             "product_id": "Product ID",
-            "contract_number": "Contract",
             "product_id_rma_2025": {
               "title": "RMA 2025",
               "type": "DOUBLE"
             },
             "product_id_rma_2024": {
               "title": "RMA 2024",
+              "type": "DOUBLE"
+            },
+            "stock_forecast": {
+              "title": "Stock Forecast",
               "type": "DOUBLE"
             },
             "hw_status": {
@@ -743,9 +746,9 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
-              "contract_number",
-              "product_id_rma_24",
-              "product_id_rma_25",
+              "product_id_rma_2024",
+              "product_id_rma_2025",
+              "stock_forecast",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
@@ -1449,13 +1452,16 @@
           ],
           "columns": {
             "product_id": "Product ID",
-            "contract_number": "Contract",
             "product_id_rma_2025": {
               "title": "RMA 2025",
               "type": "DOUBLE"
             },
             "product_id_rma_2024": {
               "title": "RMA 2024",
+              "type": "DOUBLE"
+            },
+            "stock_forecast": {
+              "title": "Stock Forecast",
               "type": "DOUBLE"
             },
             "hw_status": {
@@ -1514,9 +1520,9 @@
             "pivot_type": "advanced",
             "group_by": [
               "product_id",
-              "contract_number",
-              "product_id_rma_24",
-              "product_id_rma_25",
+              "product_id_rma_2024",
+              "product_id_rma_2025",
+              "stock_forecast",
               "hw_status",
               "hwEOL_endOfLifeAnnouncementDate",
               "hwEOL_endOfSaleDate",
