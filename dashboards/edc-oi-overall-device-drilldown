@@ -21,6 +21,9 @@
     },
     "SW_OS_TYPE": {
       "contextId": "sw_os_type"
+    },
+    "PRODUCT_ID": {
+      "contextId": "product_id"
     }
   },
   "dashboard_pages": [],
@@ -204,13 +207,12 @@
               "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
               "visible": true
             },
-            "product_name": "Product ID",
+            "product_id": "Product ID",
             "serial_number": {
               "title": "Serial Number",
               "type": "TEXT",
               "visible": false
             },
-            "product_family": "Product Family",
             "sw_version": "SW Version",
             "sw_os_type": {
               "title": "OS Type",
@@ -432,13 +434,12 @@
               "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
               "visible": true
             },
-            "product_name": "Product ID",
+            "product_id": "Product ID",
             "serial_number": {
               "title": "Serial Number",
               "type": "TEXT",
               "visible": false
             },
-            "product_family": "Product Family",
             "sw_version": "SW Version",
             "sw_os_type": {
               "title": "OS Type",
