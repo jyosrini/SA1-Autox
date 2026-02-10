@@ -891,6 +891,12 @@
               "type": "TEXT",
               "visible": false
             },
+            "project_name": {
+              "title": "Project Name",
+              "type": "TEXT",
+              "hidden": true,
+              "key": true
+            },
             "savm_group_name": {
               "title": "SAVM Name",
               "type": "TEXT",
@@ -915,9 +921,15 @@
             "sw_os_type": {
               "title": "OS Type",
               "type": "TEXT",
-              "visible": false
+              "visible": false,
+              "key": true
             },
-            "sw_version": "SW Version",
+            "sw_version": {
+              "title": "SW Version",
+              "type": "TEXT",
+              "visible": false,
+              "key": true
+            },
             "recommended_sw_version": {
               "title": "SW Recommended",
               "type": "TEXT",
@@ -1557,6 +1569,12 @@
               "type": "TEXT",
               "visible": false
             },
+            "project_name": {
+              "title": "Project Name",
+              "type": "TEXT",
+              "hidden": true,
+              "key": true
+            },
             "savm_group_name": {
               "title": "SAVM Name",
               "type": "TEXT",
@@ -1581,9 +1599,15 @@
             "sw_os_type": {
               "title": "OS Type",
               "type": "TEXT",
-              "visible": false
+              "visible": false,
+              "key": true
             },
-            "sw_version": "SW Version",
+            "sw_version": {
+              "title": "SW Version",
+              "type": "TEXT",
+              "visible": false,
+              "key": true
+            },
             "recommended_sw_version": {
               "title": "SW Recommended",
               "type": "TEXT",
