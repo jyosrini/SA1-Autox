@@ -687,7 +687,7 @@
               "type": "DOUBLE"
             },
             "product_total_stock_forecast": {
-              "title": "Stock Forecast",
+              "title": "RMA Forecast",
               "type": "DOUBLE"
             },
             "hw_status": {
@@ -1461,7 +1461,7 @@
               "type": "DOUBLE"
             },
             "product_total_stock_forecast": {
-              "title": "Stock Forecast",
+              "title": "RMA Forecast",
               "type": "DOUBLE"
             },
             "hw_status": {
