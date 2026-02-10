@@ -67,7 +67,6 @@
       "6M",
       "12M"
     ],
-    "extra_filter": "(  project_name is 'ATT-Mobility') ",
     "columns_filter": [
       {
         "id": "hwEOL_endOfNewServiceAttachmentDate",
@@ -208,6 +207,19 @@
     "group_filters": [
       {
         "stream": "edc_customer_inventory",
+        "title": "Project Name",
+        "group_by": [
+          "project_name"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 200,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
         "title": "Customer",
         "group_by": [
           "customer_name"
@@ -224,6 +236,19 @@
         "title": "Contract",
         "group_by": [
           "contract_number"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 1000,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
+        "title": "Contract Name",
+        "group_by": [
+          "contract_name"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
@@ -346,19 +371,6 @@
       },
       {
         "stream": "edc_customer_inventory",
-        "title": "Edge Device",
-        "group_by": [
-          "edge_device"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
         "title": "Security Advisory Severity",
         "group_by": [
           "secAdv_securityImpactRating"
@@ -401,6 +413,32 @@
         "title": "SW Version",
         "group_by": [
           "sw_version"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 200,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
+        "title": "SW Compliance",
+        "group_by": [
+          "sw_release_compliance"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 200,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
+        "title": "Business Sub-Entity",
+        "group_by": [
+          "business_sub_entity"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
@@ -628,7 +666,7 @@
           "title": "HW Expiry by QTR and Year",
           "duration_hours": 1080,
           "stream": "edc_customer_inventory",
-          "extra_filter": "hw_expiring_qtr  is not 'Not Available' and hw_expiring_qtr  does not contain '199' and  hw_expiring_qtr  does not contain '200' and hw_expiring_qtr  does not contain '201' and hw_expiring_qtr  does not contain '2020' and hw_expiring_qtr  does not contain '2021'  and hw_expiring_qtr  does not contain '2022' and hw_expiring_qtr  does not contain '2023' and hw_expiring_qtr  does not contain '2024' and hw_expiring_qtr  does not contain '2025'",
+          "extra_filter": "hw_expiring_qtr  is not 'Not Available' and hw_expiring_qtr  does not contain '199' and  hw_expiring_qtr  does not contain '200' and hw_expiring_qtr  does not contain '201' and hw_expiring_qtr  does not contain '2020' and hw_expiring_qtr  does not contain '2021'  and hw_expiring_qtr  does not contain '2022' and hw_expiring_qtr  does not contain '2023' and hw_expiring_qtr  does not contain '2024'",
           "description": "HW expiration on earlier date, has been ommited of graph",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -715,7 +753,7 @@
           "title": "SW Expiry by QTR and Year",
           "duration_hours": 1080,
           "stream": "edc_customer_inventory",
-          "extra_filter": "sw_expiring_qtr is not 'Not Available' and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024' and sw_expiring_qtr does not contain '2025' ",
+          "extra_filter": "sw_expiring_qtr is not 'Not Available' and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
           "height": 6,
@@ -846,10 +884,6 @@
             }
           ],
           "remote_searchable": true,
-          "remote_searchable_cols": [
-            "serial_number",
-            "product_name"
-          ],
           "extra_filter": null,
           "columns": {
             "customer_name": {
@@ -857,14 +891,26 @@
               "type": "TEXT",
               "visible": false
             },
+            "project_name": {
+              "title": "Project Name",
+              "type": "TEXT",
+              "hidden": true,
+              "key": true
+            },
             "savm_group_name": {
               "title": "SAVM Name",
               "type": "TEXT",
               "hidden": true
             },
             "product_name": {
+              "title": "Product Name",
+              "type": "TEXT",
+              "key": true
+            },
+            "product_id": {
               "title": "Product ID",
               "type": "TEXT",
+              "hidden": true,
               "key": true
             },
             "serial_number": {
@@ -878,8 +924,18 @@
               "type": "TEXT",
               "visible": false
             },
-            "sw_os_type": "OS Type",
-            "sw_version": "SW Version",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
+              "visible": false,
+              "key": true
+            },
+            "sw_version": {
+              "title": "SW Version",
+              "type": "TEXT",
+              "visible": false,
+              "key": true
+            },
             "recommended_sw_version": {
               "title": "SW Recommended",
               "type": "TEXT",
@@ -974,11 +1030,6 @@
               "visible": false,
               "key": true
             },
-            "edge_device": {
-              "title": "Edge Device",
-              "type": "TEXT",
-              "visible": true
-            },
             "secAdv_confidence_color": {
               "type": "COLOR-MAP",
               "source-column": "secAdv_match_confidence",
@@ -1035,41 +1086,6 @@
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>",
               "visible": true
             },
-            "hwEOL_endOfLifeAnnouncementDate": {
-              "title": "HW EOL Announcement",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfSaleDate": {
-              "title": "HW End Of Sale",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfRoutineFailureAnalysisDate": {
-              "title": "HW End Of Routine Failure Analysis",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfNewServiceAttachmentDate": {
-              "title": "HW End Of New Service Attachment",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfServiceContractRenewalDate": {
-              "title": "HW End Of Service Contract Renewal",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
-              "title": "HW End Of Software Maintenance Releases",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_lastDayOfSupportDate": {
-              "title": "HW Last Day of Support",
-              "type": "TEXT",
-              "visible": false
-            },
             "timestamp": {
               "title": "Timestamp",
               "type": "DATETIME",
@@ -1093,43 +1109,11 @@
               "identifier": "serial_number",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "Security Advisories",
+              "title": "View Details",
               "type": "GO_TO_APP_STATE"
             }
           ],
           "widget_id": "f5221fe7"
-        },
-        {
-          "widget_type": "multi_bar_chart",
-          "context_filter": "show_pid_grp is 'yes'",
-          "title": "Devices by SW Recommendation",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "height": 6,
-          "max_width": 4,
-          "group_by": [
-            "sw_release_compliance",
-            "product_family"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "style": {
-            "color-map": {
-              "No": "#BB0000",
-              "Unknnown": "#F6C309",
-              "Yes": "#00BB00",
-              "NA": "#2A5FF6"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "47e1d88b"
         }
       ],
       "saved_time": "2025-05-09T06:51:12.699107"
@@ -1334,7 +1318,7 @@
           "title": "HW Expiry by QTR and Year",
           "duration_hours": 1080,
           "stream": "edc_customer_inventory",
-          "extra_filter": "hw_expiring_qtr  is not 'Not Available' and hw_expiring_qtr  does not contain '199' and  hw_expiring_qtr  does not contain '200' and hw_expiring_qtr  does not contain '201' and hw_expiring_qtr  does not contain '2020' and hw_expiring_qtr  does not contain '2021'  and hw_expiring_qtr  does not contain '2022' and hw_expiring_qtr  does not contain '2023' and hw_expiring_qtr  does not contain '2024' and hw_expiring_qtr  does not contain '2025'",
+          "extra_filter": "hw_expiring_qtr  is not 'Not Available' and hw_expiring_qtr  does not contain '199' and  hw_expiring_qtr  does not contain '200' and hw_expiring_qtr  does not contain '201' and hw_expiring_qtr  does not contain '2020' and hw_expiring_qtr  does not contain '2021'  and hw_expiring_qtr  does not contain '2022' and hw_expiring_qtr  does not contain '2023' and hw_expiring_qtr  does not contain '2024'",
           "description": "HW expiration on earlier date, has been ommited of graph",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -1421,7 +1405,7 @@
           "title": "SW Expiry by QTR and Year",
           "duration_hours": 1080,
           "stream": "edc_customer_inventory",
-          "extra_filter": "sw_expiring_qtr is not 'Not Available' and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024' and sw_expiring_qtr does not contain '2025' ",
+          "extra_filter": "sw_expiring_qtr is not 'Not Available' and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
           "height": 6,
@@ -1552,10 +1536,6 @@
             }
           ],
           "remote_searchable": true,
-          "remote_searchable_cols": [
-            "serial_number",
-            "product_name"
-          ],
           "extra_filter": null,
           "columns": {
             "customer_name": {
@@ -1563,14 +1543,26 @@
               "type": "TEXT",
               "visible": false
             },
+            "project_name": {
+              "title": "Project Name",
+              "type": "TEXT",
+              "hidden": true,
+              "key": true
+            },
             "savm_group_name": {
               "title": "SAVM Name",
               "type": "TEXT",
               "hidden": true
             },
             "product_name": {
+              "title": "Product Name",
+              "type": "TEXT",
+              "key": true
+            },
+            "product_id": {
               "title": "Product ID",
               "type": "TEXT",
+              "hidden": true,
               "key": true
             },
             "serial_number": {
@@ -1584,8 +1576,18 @@
               "type": "TEXT",
               "visible": false
             },
-            "sw_os_type": "OS Type",
-            "sw_version": "SW Version",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
+              "visible": false,
+              "key": true
+            },
+            "sw_version": {
+              "title": "SW Version",
+              "type": "TEXT",
+              "visible": false,
+              "key": true
+            },
             "recommended_sw_version": {
               "title": "SW Recommended",
               "type": "TEXT",
@@ -1680,11 +1682,6 @@
               "visible": false,
               "key": true
             },
-            "edge_device": {
-              "title": "Edge Device",
-              "type": "TEXT",
-              "visible": true
-            },
             "secAdv_confidence_color": {
               "type": "COLOR-MAP",
               "source-column": "secAdv_match_confidence",
@@ -1741,41 +1738,6 @@
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>",
               "visible": true
             },
-            "hwEOL_endOfLifeAnnouncementDate": {
-              "title": "HW EOL Announcement",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfSaleDate": {
-              "title": "HW End Of Sale",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfRoutineFailureAnalysisDate": {
-              "title": "HW End Of Routine Failure Analysis",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfNewServiceAttachmentDate": {
-              "title": "HW End Of New Service Attachment",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfServiceContractRenewalDate": {
-              "title": "HW End Of Service Contract Renewal",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
-              "title": "HW End Of Software Maintenance Releases",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_lastDayOfSupportDate": {
-              "title": "HW Last Day of Support",
-              "type": "TEXT",
-              "visible": false
-            },
             "timestamp": {
               "title": "Timestamp",
               "type": "DATETIME",
@@ -1799,43 +1761,11 @@
               "identifier": "serial_number",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "Security Advisories",
+              "title": "View Details",
               "type": "GO_TO_APP_STATE"
             }
           ],
           "widget_id": "f5221fe7"
-        },
-        {
-          "widget_type": "multi_bar_chart",
-          "context_filter": "show_pid_grp is 'yes'",
-          "title": "Devices by SW Recommendation",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "height": 6,
-          "max_width": 4,
-          "group_by": [
-            "sw_release_compliance",
-            "product_family"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "style": {
-            "color-map": {
-              "No": "#BB0000",
-              "Unknnown": "#F6C309",
-              "Yes": "#00BB00",
-              "NA": "#2A5FF6"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "47e1d88b"
         }
       ],
       "saved_time": "2025-05-09T06:51:12.699107"
