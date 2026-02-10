@@ -1108,38 +1108,6 @@
             }
           ],
           "widget_id": "f5221fe7"
-        },
-        {
-          "widget_type": "multi_bar_chart",
-          "context_filter": "show_pid_grp is 'yes'",
-          "title": "Devices by SW Recommendation",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "height": 6,
-          "max_width": 4,
-          "group_by": [
-            "sw_release_compliance",
-            "product_family"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "style": {
-            "color-map": {
-              "No": "#BB0000",
-              "Unknnown": "#F6C309",
-              "Yes": "#00BB00",
-              "NA": "#2A5FF6"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "47e1d88b"
         }
       ],
       "saved_time": "2025-05-09T06:51:12.699107"
@@ -1786,38 +1754,6 @@
             }
           ],
           "widget_id": "f5221fe7"
-        },
-        {
-          "widget_type": "multi_bar_chart",
-          "context_filter": "show_pid_grp is 'yes'",
-          "title": "Devices by SW Recommendation",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "height": 6,
-          "max_width": 4,
-          "group_by": [
-            "sw_release_compliance",
-            "product_family"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "style": {
-            "color-map": {
-              "No": "#BB0000",
-              "Unknnown": "#F6C309",
-              "Yes": "#00BB00",
-              "NA": "#2A5FF6"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "47e1d88b"
         }
       ],
       "saved_time": "2025-05-09T06:51:12.699107"
