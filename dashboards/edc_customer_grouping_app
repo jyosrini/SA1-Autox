@@ -49,6 +49,12 @@
       "group": "eox"
     },
     {
+      "name": "URL_Link_Template_1",
+      "label": "AI Assitant",
+      "icon": "insights.svg",
+      "launchURL": "http://10.122.127.131:8501/"
+    },
+    {
       "name": "edc_customer_oi_input_form",
       "label": "OI User Input ",
       "icon": "customer.svg"
