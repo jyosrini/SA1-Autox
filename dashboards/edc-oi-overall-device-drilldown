@@ -9,6 +9,20 @@
   "dashboard_style": "auto",
   "live_edit": true,
   "dashboard_type": "template",
+  "template_variables": {
+    "PROJECT_NAME": {
+      "contextId": "prokect_name"
+    },
+    "SERIAL_NUMBER": {
+      "contextId": "serial_number"
+    },
+    "SW_VERSION": {
+      "contextId": "sw_version"
+    },
+    "SW_OS_TYPE": {
+      "contextId": "sw_os_type"
+    }
+  },
   "dashboard_pages": [],
   "dashboard_filters": {
     "time_filter": false,
@@ -30,6 +44,7 @@
           "height": 6,
           "min_width": 12,
           "stream": "edc_customer_productAlerts",
+          "context_filter": "project_name is 'ATT-Mobility'",
           "include_context_in_query": true,
           "include_context_keys": [
             "serial_number",
@@ -151,6 +166,7 @@
           "height": 6,
           "min_width": 12,
           "stream": "edc_customer_productAlerts",
+          "context_filter": "project_name is 'ATT-Mobility'",
           "include_context_in_query": true,
           "include_context_keys": [
             "serial_number",
