@@ -11,7 +11,7 @@
   "dashboard_type": "template",
   "template_variables": {
     "PROJECT_NAME": {
-      "contextId": "prokect_name"
+      "contextId": "project_name"
     },
     "SERIAL_NUMBER": {
       "contextId": "serial_number"
