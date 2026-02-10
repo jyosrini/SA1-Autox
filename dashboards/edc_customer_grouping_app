@@ -65,6 +65,7 @@
       "icon": "software.svg"
     }
   ],
+  "menu_folder": "Project Trial",
   "pstream_dashboards": [
     {
       "title": "Example"
