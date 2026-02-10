@@ -9,45 +9,6 @@
   "dashboard_style": "auto",
   "live_edit": true,
   "dashboard_type": "dashboard",
-  "computedContext": {
-    "show_pid_grp": {
-      "expr": "'yes' if str(show_pid_grp) in [ 'yes', 'True'] else 'no'",
-      "defaultValue": "error"
-    },
-    "all_context": {
-      "expr": "",
-      "defaultValue": "Unknown"
-    }
-  },
-  "dynamic_form": {
-    "formData": {},
-    "controlPanelFormDefinition": {
-      "title": "Customize Report",
-      "buttonLabel": "Apply",
-      "id": "kpi.benchmark.json",
-      "refreshRequired": true,
-      "formFieldList": [
-        {
-          "fieldId": "label0",
-          "label": "",
-          "hidden": false,
-          "editable": false,
-          "required": false,
-          "controlType": "LABEL",
-          "defaultValue": "Charts"
-        },
-        {
-          "fieldId": "show_pid_grp",
-          "label": "Devices by SW Recommendation",
-          "hidden": false,
-          "editable": true,
-          "required": false,
-          "controlType": "BOOLEAN_FIELD",
-          "defaultValue": false
-        }
-      ]
-    }
-  },
   "dashboard_pages": [],
   "dashboard_filters": {
     "time_filter": true,
