@@ -912,7 +912,11 @@
               "type": "TEXT",
               "visible": false
             },
-            "sw_os_type": "OS Type",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
+              "visible": false
+            },
             "sw_version": "SW Version",
             "recommended_sw_version": {
               "title": "SW Recommended",
@@ -1574,7 +1578,11 @@
               "type": "TEXT",
               "visible": false
             },
-            "sw_os_type": "OS Type",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
+              "visible": false
+            },
             "sw_version": "SW Version",
             "recommended_sw_version": {
               "title": "SW Recommended",
