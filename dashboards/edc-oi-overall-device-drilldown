@@ -2,7 +2,7 @@
   "name": "edc-oi-overall-device-drilldown",
   "label": "Device Details",
   "description": "EDC Device Drilldown Details",
-  "version": "2026-01-26-01",
+  "version": "2026-02-10-01",
   "enabled": false,
   "context_label_id": "serial_number",
   "dashboard_folder": "OI",
@@ -40,6 +40,79 @@
       "title": "Device Details",
       "show_filter": true,
       "widgets": [
+        {
+          "title": "SW EOLs",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 4,
+          "min_width": 12,
+          "stream": "edc_customer_inventory",
+          "extra_filter": "serial_number is '{{SERIAL_NUMBER}}'",
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "columns": {
+            "swEOL_softwareEOXId": {
+              "title": "SW EOL ID",
+              "type": "DOUBLE"
+            },
+            "swEOL_bulletinNumber": {
+              "title": "Bulletin Number",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.swEOL_bulletinUrl}}\" target='_blank'>{{row. swEOL_bulletinNumber}}</a>{% endraw %}"
+            },
+            "swEOL_bulletinTitle": {
+              "title": "Bulleting Title",
+              "type": "TEXT",
+              "visible": true
+            },
+            "sw_status_color": {
+              "type": "COLOR-MAP",
+              "source-column": "sw_status",
+              "color-map": {
+                "Expired": "#BB0000",
+                "Expiring in a Quarter": "#F6C309",
+                "Expiring in 8 Quarters": "#FF9800",
+                "Expiring after 8 Quarters": "#1ECBE1",
+                "No EOL": "#00BB00"
+              }
+            },
+            "sw_version": "SW Version",
+            "sw_status": {
+              "title": "SW Status",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>{% endraw %}",
+              "visible": true
+            },
+            "product_id": "Product ID",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "visible": false
+            },
+            "product_family": "Product Family",
+            "swEOL_endOfLifeAnnouncementDate": {
+              "title": "EOL Announcement",
+              "type": "DATE"
+            },
+            "swEOL_endOfSaleDate": {
+              "title": "End Of Sale",
+              "type": "DATE"
+            },
+            "swEOL_endOfSoftwareMaintenanceReleasesDate": {
+              "title": "End Of Software Maintenance Releases",
+              "type": "DATE"
+            },
+            "swEOL_endOfVulnerabilitySecuritySupportDate": {
+              "title": "End Of Vulnerability Security Support",
+              "type": "DATE"
+            },
+            "swEOL_lastDayOfSupportDate": {
+              "title": "Last Day of Support",
+              "type": "DATE"
+            }
+          },
+          "widget_id": "c5f4de2f"
+        },
         {
           "title": "Security Advisories",
           "widget_type": "tabular",
@@ -158,7 +231,7 @@
           "context_filter": "project_name is not 'ATT-Mobility'",
           "duration_hours": 1080,
           "ts_column": "timestamp",
-          "extra_filter": "(sw_version is '{{SW_VERSION}}' and sw_os_type is '{{SW_OS_TYPE}}' )",
+          "extra_filter": "(project_name is '{{PROJECT_NAME}}' and product_id is '{{PRODUCT_ID}}' and sw_version is '{{SW_VERSION}}' and sw_os_type is '{{SW_OS_TYPE}}' )",
           "sorting": [
             {
               "secAdv_confidence_score": "desc",
@@ -264,6 +337,79 @@
       "show_filter": true,
       "widgets": [
         {
+          "title": "SW EOLs",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 4,
+          "min_width": 12,
+          "stream": "edc_customer_inventory",
+          "extra_filter": "serial_number is '{{SERIAL_NUMBER}}'",
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "columns": {
+            "swEOL_softwareEOXId": {
+              "title": "SW EOL ID",
+              "type": "DOUBLE"
+            },
+            "swEOL_bulletinNumber": {
+              "title": "Bulletin Number",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.swEOL_bulletinUrl}}\" target='_blank'>{{row. swEOL_bulletinNumber}}</a>{% endraw %}"
+            },
+            "swEOL_bulletinTitle": {
+              "title": "Bulleting Title",
+              "type": "TEXT",
+              "visible": true
+            },
+            "sw_status_color": {
+              "type": "COLOR-MAP",
+              "source-column": "sw_status",
+              "color-map": {
+                "Expired": "#BB0000",
+                "Expiring in a Quarter": "#F6C309",
+                "Expiring in 8 Quarters": "#FF9800",
+                "Expiring after 8 Quarters": "#1ECBE1",
+                "No EOL": "#00BB00"
+              }
+            },
+            "sw_version": "SW Version",
+            "sw_status": {
+              "title": "SW Status",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>{% endraw %}",
+              "visible": true
+            },
+            "product_id": "Product ID",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "visible": false
+            },
+            "product_family": "Product Family",
+            "swEOL_endOfLifeAnnouncementDate": {
+              "title": "EOL Announcement",
+              "type": "DATE"
+            },
+            "swEOL_endOfSaleDate": {
+              "title": "End Of Sale",
+              "type": "DATE"
+            },
+            "swEOL_endOfSoftwareMaintenanceReleasesDate": {
+              "title": "End Of Software Maintenance Releases",
+              "type": "DATE"
+            },
+            "swEOL_endOfVulnerabilitySecuritySupportDate": {
+              "title": "End Of Vulnerability Security Support",
+              "type": "DATE"
+            },
+            "swEOL_lastDayOfSupportDate": {
+              "title": "Last Day of Support",
+              "type": "DATE"
+            }
+          },
+          "widget_id": "c5f4de2f"
+        },
+        {
           "title": "Security Advisories",
           "widget_type": "tabular",
           "max_width": 12,
@@ -381,7 +527,7 @@
           "context_filter": "project_name is not 'ATT-Mobility'",
           "duration_hours": 1080,
           "ts_column": "timestamp",
-          "extra_filter": "(sw_version is '{{SW_VERSION}}' and sw_os_type is '{{SW_OS_TYPE}}' )",
+          "extra_filter": "(project_name is '{{PROJECT_NAME}}' and product_id is '{{PRODUCT_ID}}' and sw_version is '{{SW_VERSION}}' and sw_os_type is '{{SW_OS_TYPE}}' )",
           "sorting": [
             {
               "secAdv_confidence_score": "desc",
