@@ -32,7 +32,9 @@
           "stream": "edc_customer_productAlerts",
           "include_context_in_query": true,
           "include_context_keys": [
-            "serial_number"
+            "serial_number",
+            "sw_version",
+            "sw_os_type"
           ],
           "duration_hours": 1080,
           "ts_column": "timestamp",
@@ -83,6 +85,11 @@
             "serial_number": "Serial Number",
             "product_family": "Product Family",
             "sw_version": "SW Version",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
+              "visible": false
+            },
             "productType": {
               "title": "Product Type",
               "type": "TEXT",
@@ -140,7 +147,9 @@
           "stream": "edc_customer_productAlerts",
           "include_context_in_query": true,
           "include_context_keys": [
-            "serial_number"
+            "serial_number",
+            "sw_version",
+            "sw_os_type"
           ],
           "duration_hours": 1080,
           "ts_column": "timestamp",
@@ -191,6 +200,11 @@
             "serial_number": "Serial Number",
             "product_family": "Product Family",
             "sw_version": "SW Version",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
+              "visible": false
+            },
             "productType": {
               "title": "Product Type",
               "type": "TEXT",
