@@ -224,10 +224,6 @@
               "type": "TEXT",
               "visible": false
             },
-            "secAdv_ciscoBugIds": {
-              "title": "Bug IDs",
-              "type": "TEXT"
-            },
             "secAdv_cveId": {
               "title": "CVE IDs",
               "type": "TEXT"
@@ -450,10 +446,6 @@
               "title": "Product Type",
               "type": "TEXT",
               "visible": false
-            },
-            "secAdv_ciscoBugIds": {
-              "title": "Bug IDs",
-              "type": "TEXT"
             },
             "secAdv_cveId": {
               "title": "CVE IDs",
