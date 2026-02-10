@@ -39,6 +39,12 @@
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "extra_filter1": "(source in 'securityAdvisories')",
+          "sorting": [
+            {
+              "secAdv_confidence_score": "desc",
+              "secAdv_impact_score": "desc"
+            }
+          ],
           "columns": {
             "secAdv_psirtColdId": {
               "title": "Security Advisory Col ID",
@@ -154,6 +160,12 @@
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "extra_filter1": "(source in 'securityAdvisories')",
+          "sorting": [
+            {
+              "secAdv_confidence_score": "desc",
+              "secAdv_impact_score": "desc"
+            }
+          ],
           "columns": {
             "secAdv_psirtColdId": {
               "title": "Security Advisory Col ID",
