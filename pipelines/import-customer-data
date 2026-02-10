@@ -1,14 +1,18 @@
-folder: Default
-name: oia-sources-streams-merge
-description: test pipeline
-data_path: pipelines/data/oia-sources-streams-merge/2023_07_19_1/data.json
-usecase: ''
-category: ''
-sources:
-  oia:
-    name: oia
-    type: oia
-artifacts: []
-version: '2023_07_19_1'
-file_type: json
-checksum: 6c067ccc
+
+ ## ========================
+
+ ## Main: Get user input
+
+ ## Format time
+
+ ## ========================
+@c:new-block
+ --> @dm:empty
+ ## Get submitted form fields
+
+ --> @exec:get-input
+ ## Exclude label as it contains unneeded info that should not be written to stream later
+
+ --> @dm:selectcolumns exclude='.*_label'
+ --> @dm:save name='temp-input_data'
+ --> @dm:save name='upload-input_data'
