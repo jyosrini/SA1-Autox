@@ -231,7 +231,7 @@
  --> @dm:enrich dict="temp-inv_only_hw_data" and src_key_cols="product_id" and dict_key_cols="product_id" and enrich_cols="product_name,business_entity,business_sub_entity,bk_end_of_life_request_num,bk_eol_bulletin_product_typ_cd,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,eol_product_name,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt,product_description,product_family,product_family_description,product_type,item_type,product_list_price" and replace_values='yes'
  --> @dm:save name = "temp-contract_data_network_only_1"
  --> @c:new-block
- --> @dm:recall name="temp-contract_data_network_only"
+ --> @dm:recall name="temp-contract_data_network_only_1"
  --> *dm:filter item_type is not NULL
  --> @dm:save name = "temp-contract_data" and append='yes'
  ## #Create empty file just in case
