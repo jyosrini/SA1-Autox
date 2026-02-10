@@ -57,7 +57,7 @@
     {
       "name": "URL_Link_Template_1",
       "label": "AI Assitant",
-      "icon": "insights.svg",
+      "icon": "rda.svg",
       "launchURL": "http://10.122.127.131:8501/"
     },
     {
