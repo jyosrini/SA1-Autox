@@ -903,8 +903,14 @@
               "hidden": true
             },
             "product_name": {
+              "title": "Product Name",
+              "type": "TEXT",
+              "key": true
+            },
+            "product_id": {
               "title": "Product ID",
               "type": "TEXT",
+              "hidden": true,
               "key": true
             },
             "serial_number": {
@@ -1103,7 +1109,7 @@
               "identifier": "serial_number",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "Security Advisories",
+              "title": "View Details",
               "type": "GO_TO_APP_STATE"
             }
           ],
@@ -1549,8 +1555,14 @@
               "hidden": true
             },
             "product_name": {
+              "title": "Product Name",
+              "type": "TEXT",
+              "key": true
+            },
+            "product_id": {
               "title": "Product ID",
               "type": "TEXT",
+              "hidden": true,
               "key": true
             },
             "serial_number": {
@@ -1749,7 +1761,7 @@
               "identifier": "serial_number",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "Security Advisories",
+              "title": "View Details",
               "type": "GO_TO_APP_STATE"
             }
           ],
