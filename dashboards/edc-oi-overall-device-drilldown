@@ -205,7 +205,11 @@
               "visible": true
             },
             "product_name": "Product ID",
-            "serial_number": "Serial Number",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "visible": false
+            },
             "product_family": "Product Family",
             "sw_version": "SW Version",
             "sw_os_type": {
@@ -429,7 +433,11 @@
               "visible": true
             },
             "product_name": "Product ID",
-            "serial_number": "Serial Number",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "visible": false
+            },
             "product_family": "Product Family",
             "sw_version": "SW Version",
             "sw_os_type": {
