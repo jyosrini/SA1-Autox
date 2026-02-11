@@ -215,7 +215,7 @@
  --> @dm:selectcolumns exclude = "execution_reason|execution_status"
  ## new column product_id to simplify product is during sw scan
 
- --> @dm:change-time-format columns="contract_line_end_date,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt" and from_format="datetimestr" and to_format="%Y-%m-%d"
+ --> @dm:change-time-format columns="end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt" and from_format="datetimestr" and to_format="%Y-%m-%d"
  --> @dm:copy-columns from="product_name" and to="product_id"
  --> @dm:eval product_id = "product_id.replace('=', '')"
  --> @dm:eval tokens = "product_id.rsplit('-', 1)"
@@ -263,7 +263,7 @@
  --> *dm:filter execution_status =="Success"
  --> @dm:skip-block-if-shape column_count = 3
  --> @dm:selectcolumns exclude = "execution_reason|execution_status"
- --> @dm:change-time-format columns="contract_line_end_date,end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt" and from_format="datetimestr" and to_format="%Y-%m-%d"
+ --> @dm:change-time-format columns="end_of_new_svc_attachment_dt,end_of_routine_fail_anlysys_dt,end_of_software_maintenance_dt,end_of_svc_contract_rnwl_dt,eol_external_announce_dt,last_date_of_sale,last_date_of_support,end_of_security_vuln_support_dt" and from_format="datetimestr" and to_format="%Y-%m-%d"
  ## enrich with OS Type
 
  --> @dm:enrich dict="temp-pid-ostype" and src_key_cols="product_name" and dict_key_cols="PID" and enrich_cols="sw_os_type_dict" and case_insensitive="yes" and enrich_cols_as="sw_os_type"
