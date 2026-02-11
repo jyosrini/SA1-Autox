@@ -47,7 +47,7 @@
           "height": 5,
           "min_width": 12,
           "stream": "edc_customer_inventory",
-          "extra_filter": "serial_number is '{{SERIAL_NUMBER}}'",
+          "extra_filter": "project_name is '{{PROJECT_NAME}}' and serial_number is '{{SERIAL_NUMBER}}'",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "columns": {
@@ -343,7 +343,7 @@
           "height": 5,
           "min_width": 12,
           "stream": "edc_customer_inventory",
-          "extra_filter": "serial_number is '{{SERIAL_NUMBER}}'",
+          "extra_filter": "project_name is '{{PROJECT_NAME}}' and serial_number is '{{SERIAL_NUMBER}}'",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "columns": {
