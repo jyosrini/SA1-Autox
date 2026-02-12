@@ -1,26 +1,68 @@
 {
-  "name": "rda_system_snapshots_app",
-  "label": "RDA Artfact Snapshots Management",
-  "description": "Robotic Data Automation Administration",
-  "version": "1.0.0",
+  "name": "rda-mgmt-page-schemas",
+  "label": "Datasets",
+  "description": " Datasets Management Page",
   "enabled": true,
-  "live_edit": true,
-  "dashboard_filters": {
-    "time_filter": false,
-    "columns_filter": []
-  },
-  "dashboard_type": "app",
+  "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "dashboard_pages": [
+  "dashboard_style": "auto",
+  "dashboard_filters": {
+    "time_filter": true,
+    "columns_filter": [
+      {
+        "id": "saved_time",
+        "label": "Dataset Saved",
+        "type": "DATETIME"
+      },
+      {
+        "id": "mem_size_mb",
+        "label": "Size (MB)",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "num_rows",
+        "label": "Rows",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "num_columns",
+        "label": "Columns",
+        "type": "DOUBLE"
+      }
+    ]
+  },
+  "dashboard_sections": [
     {
-      "name": "rda_system_snapshots_main",
-      "label": "Snapshot List",
-      "icon": "Analytics.svg"
-    },
+      "title": "Schemas",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Schemas",
+          "widget_type": "portal_tabular",
+          "reportId": "schemas.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "2ea74a7d"
+        }
+      ]
+    }
+  ],
+  "pstream_dashboards": [
     {
-      "name": "rda_system_snapshots_details",
-      "label": "Snapshot Manifests",
-      "icon": "Analytics.svg"
+      "title": "Schemas",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Schemas",
+          "widget_type": "portal_tabular",
+          "reportId": "schemas.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "2ea74a7d"
+        }
+      ]
     }
   ]
 }
