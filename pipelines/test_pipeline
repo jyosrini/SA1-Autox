@@ -1,19 +1,8 @@
 @dm:empty
- --> @exec:get-input
- ## Save text input
-
- --> @dm:save name="test_data_add"
- --> @rn:write-stream name="test_data"
- ## Uploaded file processing
-
- --> @dm:save name="test_upload1"
- --> @dm:selectcolumns include="fileUpload"
- --> @dm:explode-json column="fileUpload"
- --> @dm:save name="temp-test-upload2"
- --> @dm:save name="test_upload2"
- ## Loop over uploaded file info
-
- --> @c:data-loop dataset="temp-test-upload2" and columns="bucketName,objectName,displayName"
- --> @dm:get-from-location path="$bucketName/$objectName"
- --> @dm:save name="test_upload3"
- --> @rn:write-stream name="test_data"
+ --> @dm:addrow name='edc_oi_inventory_enriched' and limit=0
+ --> #dm:query-persistent-stream
+ --> @dm:save name='temp-edc-oi-inv-enriched'
+ --> @c:new-block
+ --> @dm:recall name='temp-edc-oi-inv-enriched'
+ --> @dm:selectcolumns exclude='^(EndOfLifeInternalAnnouncementDate|EndOfLastHardwareShipDate|EndOfHardwareNewServiceAttachmentDate|EndOfHardwareRoutineFailureAnalysisDate|EndOfBUEngineeringSupportTACDate|EndOfHardwareServiceContractRenewalDate|EndOfSignatureReleasesDate|EndOfSoftwareAvailabilityDate|EndOfSoftwareLicenseAvailabilityDate|created|customerVisible|external_text|external_title|firstIcAlertId|groups|icIssueId|icProblemId|ignored|lastIcAlertId|eoXAlertType|name|openedOn|resultType|severity|severityText|state|updated|deviceSN|runType|filename|icType|atticaStatus|cdetsList|retry|associatedGroups)$'
+ --> @rn:write-stream name='edc_oi_inventory_enriched'
