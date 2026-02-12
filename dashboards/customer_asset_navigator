@@ -1,290 +1,261 @@
 {
-  "name": "customer_asset_navigator",
-  "label": "Asset Navigator",
-  "description": "Asset Navigator",
+  "name": "preview_performance_dashboard",
+  "label": "Performance Workbench",
+  "description": "Performance Workbench",
+  "dashboard_folder": "Default",
   "enabled": true,
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "dashboard_folder": "NetworkDevicePack",
-  "version": "24.1.27.2",
-  "short_label": "Stack",
-  "live_edit": true,
-  "context_label_id": "stack_name",
-  "template_variables": {
-    "NODE_ID": {
-      "contextId": [
-        "navigatorSelectionContexts",
-        "secondaryListSelection",
-        "node_id"
-      ]
-    },
-    "PROJ_ID": {
-      "contextId": "project_id"
-    },
-    "CUST_TAG": {
-      "contextId": "customerTag"
-    }
-  },
+  "dashboard_type": "dashboard",
   "dashboard_filters": {
-    "extra_filter0": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '' or customer_tag is 'None')"
-  },
-  "navigation_dashboards": {
-    "tree_data": {
-      "column_name": "node_type",
-      "pstream_name": "cfx_rdaf_topology_nodes",
-      "cfxql_query0": "(project_id is '{{PROJ_ID}}' and node_type != 'Gateway')",
-      "cfxql_query": "(device_object is not 'Interface'  and node_type not in ['Components', 'Gateway'] and device_status is not 'UNMANAGED') and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty)"
-    },
-    "tree_detail": {
-      "display_column": "node_label",
-      "selected_columns": {
-        "node_id": "Node Id",
-        "node_label": "Node Name"
-      },
-      "pstream_name": "cfx_rdaf_topology_nodes",
-      "cfxql_query0": "node_type != 'Gateway'",
-      "cfxql_query": "(device_object is not 'Interface'  and node_type not in ['Components', 'Gateway'] and device_status is not 'UNMANAGED') and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty)",
-      "duration_hours": 24
-    },
-    "showNodeIcon": true,
-    "showSearchBox": false
-  },
-  "computedContext0": {
-    "customer_tag": {
-      "expr": "customer_tag if customer_tag else ''",
-      "defaultValue": ""
-    }
+    "time_filter": true,
+    "default_time_filter_non_removable": true,
+    "show_default_time_filter": true
   },
   "dashboard_sections": [
     {
-      "title": "Node Details",
+      "title": "Ops Insights",
+      "show_filter": true,
       "widgets": [
         {
-          "widget_type": "launch_actions",
-          "dashboard_name_template": "{node_type}-view-dashboard",
-          "dashboard_name_template0": "{node_type}-alert_device_app",
-          "extra_filter": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is 'None')",
-          "max_width": 12,
-          "height": 0.25,
+          "title": "Time Series",
+          "widget_type": "timeseries",
+          "stream": "psl_kafka_data",
+          "ts_column": "timestamp",
+          "duration_hours": 720,
+          "max_width": 6,
+          "height": 6,
           "min_width": 12,
-          "widget_id": "181129d8",
-          "context_attributes": {
-            "CHASSIS": [
-              "parent_sn",
-              "device_ip"
-            ],
-            "Edge": [
-              "edgeName",
-              "edge_ip",
-              "serialNumber",
-              "edge_id"
-            ]
-          }
-        },
-        {
-          "title": "Summary",
-          "widget_type": "portal_summary",
-          "reportId": "rda.saas.topology.node_details.report",
-          "stream0": "cfx_rdaf_topology_nodes",
-          "max_width": 4,
-          "height": 5,
-          "min_width": 4,
-          "widget_id": "182229d8"
-        },
-        {
-          "title": "Edges Summary",
-          "widget_type": "tabular",
-          "extra_filter": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is 'None')",
-          "max_width": 8,
-          "height": 5,
-          "min_width": 8,
-          "stream": "cfx_rdaf_topology_edges",
-          "timebased": false,
-          "columns": {
-            "left_label": {
-              "title": "Left Label",
-              "visible": true,
-              "key": true
-            },
-            "right_label": {
-              "title": "Right Label",
-              "visible": true,
-              "key": true
-            },
-            "relation_type": {
-              "title": "Relation",
-              "visible": true,
-              "key": true
-            }
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "Date",
+            "legendLocation": "top"
           },
-          "query": "(left_id is '{{NODE_ID}}' or right_id is '{{NODE_ID}}')",
-          "duration_hours": 2160,
-          "widget_id": "dc7103e1"
-        },
-        {
-          "title": "Topology",
-          "widget_type": "topology",
-          "register_search_endpoints": true,
-          "reportId": "rda.saas.stack.view.topo",
-          "context_attributes": {
-            "CHASSIS": [
-              "parent_sn",
-              "device_ip"
-            ],
-            "Edge": [
-              "edgeName",
-              "edge_ip",
-              "serialNumber",
-              "edge_id"
-            ]
-          },
-          "limit_to_node_types": [
-            "CHASSIS",
-            "Edge",
-            "Tunnel_end_point"
+          "interval": "1H",
+          "group_by": [
+            "instance"
           ],
-          "has_more_data_flag": false,
-          "stack_type": "dynamic",
-          "expand_all": true,
-          "stack_definition": {
-            "name": "Network Device Discovery Pack Stack",
-            "description": "",
-            "saved_time": "2023-09-12T21:08:31.418255",
-            "is_dynamic": true,
-            "hierarchical": false,
-            "dynamic_nodes": {
-              "stream": "cfx_rdaf_topology_nodes",
-              "query": "node_type != 'Gateway' and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '')",
-              "limit": 0,
-              "sorting": null
-            },
-            "dynamic_relationships": {
-              "stream": "cfx_rdaf_topology_edges",
-              "query": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '')",
-              "limit": 0,
-              "sorting": null
+          "series_spec": [
+            {
+              "column": "System_Calls_Active",
+              "agg": "max",
+              "type": "int",
+              "label": "System_Calls_Active"
             }
-          },
-          "height": 10,
-          "min_wdith": 12,
-          "widget_id": "182287d8"
+          ],
+          "widget_id": "ee43c826",
+          "extra_filter": "device in [\"'AKRNOHNF11G'\"] and `timestamp` is after -168 hours"
         }
       ]
     }
   ],
-  "pstream_dashboards": [
-    {
-      "title": "Node Details",
-      "widgets": [
+  "dynamic_form": {
+    "formData": {},
+    "formDefinition": {
+      "id": "performance.benchmark.json",
+      "refreshRequired": true,
+      "formFieldList": [
         {
-          "widget_type": "launch_actions",
-          "dashboard_name_template": "{node_type}-view-dashboard",
-          "dashboard_name_template0": "{node_type}-alert_device_app",
-          "extra_filter": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is 'None')",
-          "max_width": 12,
-          "height": 0.25,
-          "min_width": 12,
-          "widget_id": "181129d8",
-          "context_attributes": {
-            "CHASSIS": [
-              "parent_sn",
-              "device_ip"
+          "fieldId": "instance",
+          "label": "Device",
+          "help": "Devices",
+          "controlType": "SELECTOR_DIALOG",
+          "selectionType": "MULTIPLE",
+          "pstream": "psl_kafka_data_kpi",
+          "query_attributes": [
+            "instance"
+          ],
+          "server-validation": {
+            "clear_attributes": [
+              "ifName",
+              "name"
             ],
-            "Edge": [
-              "edgeName",
-              "edge_ip",
-              "serialNumber",
-              "edge_id"
+            "read_attributes": [
+              "ifName",
+              "name"
             ]
           }
         },
         {
-          "title": "Summary",
-          "widget_type": "portal_summary",
-          "reportId": "rda.saas.topology.node_details.report",
-          "stream0": "cfx_rdaf_topology_nodes",
-          "max_width": 4,
-          "height": 5,
-          "min_width": 4,
-          "widget_id": "182229d8"
-        },
-        {
-          "title": "Edges Summary",
-          "widget_type": "tabular",
-          "extra_filter": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is 'None')",
-          "max_width": 8,
-          "height": 5,
-          "min_width": 8,
-          "stream": "cfx_rdaf_topology_edges",
-          "timebased": false,
-          "columns": {
-            "left_label": {
-              "title": "Left Label",
-              "visible": true,
-              "key": true
-            },
-            "right_label": {
-              "title": "Right Label",
-              "visible": true,
-              "key": true
-            },
-            "relation_type": {
-              "title": "Relation",
-              "visible": true,
-              "key": true
-            }
-          },
-          "query": "(left_id is '{{NODE_ID}}' or right_id is '{{NODE_ID}}')",
-          "duration_hours": 2160,
-          "widget_id": "dc7103e1"
-        },
-        {
-          "title": "Topology",
-          "widget_type": "topology",
-          "register_search_endpoints": true,
-          "reportId": "rda.saas.stack.view.topo",
-          "context_attributes": {
-            "CHASSIS": [
-              "parent_sn",
-              "device_ip"
-            ],
-            "Edge": [
-              "edgeName",
-              "edge_ip",
-              "serialNumber",
-              "edge_id"
-            ]
-          },
-          "limit_to_node_types": [
-            "CHASSIS",
-            "Edge",
-            "Tunnel_end_point"
+          "fieldId": "ifName",
+          "label": "Interface",
+          "help": "Device Interface",
+          "controlType": "SELECTOR_DIALOG",
+          "selectionType": "MULTIPLE",
+          "pstream": "psl_kafka_data_kpi",
+          "query_attributes": [
+            "instance",
+            "ifName"
           ],
-          "has_more_data_flag": false,
-          "stack_type": "dynamic",
-          "expand_all": true,
-          "stack_definition": {
-            "name": "Network Device Discovery Pack Stack",
-            "description": "",
-            "saved_time": "2023-09-12T21:08:31.418255",
-            "is_dynamic": true,
-            "hierarchical": false,
-            "dynamic_nodes": {
-              "stream": "cfx_rdaf_topology_nodes",
-              "query": "node_type != 'Gateway' and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '')",
-              "limit": 0,
-              "sorting": null
+          "server-validation": {
+            "clear_attributes": [
+              "name"
+            ],
+            "read_attributes": [
+              "name"
+            ]
+          }
+        },
+        {
+          "fieldId": "name",
+          "label": "Metrics",
+          "help": "Performance Metrics",
+          "isList": true,
+          "required": true,
+          "controlType": "SELECTOR_DIALOG",
+          "selectionType": "MULTIPLE",
+          "pstream": "psl_kafka_data_kpi",
+          "query_attributes": [
+            "instance",
+            "ifName",
+            "name"
+          ]
+        },
+        {
+          "dataType": "string",
+          "required": false,
+          "editable": true,
+          "label": "Combine All",
+          "controlType": "BOOLEAN_FIELD",
+          "hidden": false,
+          "fieldId": "combine"
+        },
+        {
+          "fieldId": "precision",
+          "label": "Rollup Precision",
+          "help": "Rollup Precision",
+          "dataType": "string",
+          "hidden": false,
+          "editable": true,
+          "required": true,
+          "controlType": "COMBO_BOX",
+          "lovValues": [
+            {
+              "identifier": "instance",
+              "displayName": "Device"
             },
-            "dynamic_relationships": {
-              "stream": "cfx_rdaf_topology_edges",
-              "query": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '')",
-              "limit": 0,
-              "sorting": null
+            {
+              "identifier": "ifName",
+              "displayName": "Interface"
+            },
+            {
+              "identifier": "name",
+              "displayName": "Metric"
             }
+          ]
+        },
+        {
+          "fieldId": "function",
+          "label": "Function",
+          "help": "Function",
+          "dataType": "string",
+          "hidden": false,
+          "editable": true,
+          "required": true,
+          "controlType": "COMBO_BOX",
+          "lovValues": [
+            {
+              "identifier": "max",
+              "displayName": "Maximum"
+            },
+            {
+              "identifier": "min",
+              "displayName": "Minimum"
+            },
+            {
+              "identifier": "mean",
+              "displayName": "Mean"
+            }
+          ]
+        },
+        {
+          "fieldId": "duration",
+          "label": "Duration",
+          "help": "Duration",
+          "dataType": "string",
+          "hidden": false,
+          "editable": true,
+          "required": true,
+          "controlType": "COMBO_BOX",
+          "lovValues": [
+            {
+              "identifier": "`timestamp` is after -24 hours",
+              "displayName": "1 Day"
+            },
+            {
+              "identifier": "`timestamp` is after -48 hours",
+              "displayName": "2 Days"
+            },
+            {
+              "identifier": "`timestamp` is after -168 hours",
+              "displayName": "7 Days"
+            },
+            {
+              "identifier": "`timestamp` is after -720 hours",
+              "displayName": "30 Days"
+            }
+          ]
+        }
+      ],
+      "formActionList": {
+        "formActions": [
+          {
+            "api-endpoint": {
+              "methodName": "submitForm",
+              "parse-output": false,
+              "params": [
+                {
+                  "formData": {},
+                  "formId": "kpi.benchmark.json"
+                }
+              ],
+              "service-name": "saas-reports",
+              "stringified-params": true
+            },
+            "actionLabel": "Save",
+            "type": "SUBMIT",
+            "identifier": "Submit"
           },
-          "height": 10,
-          "min_wdith": 12,
-          "widget_id": "182287d8"
+          {
+            "actionLabel": "Cancel",
+            "type": "CANCEL",
+            "identifier": "Cancel"
+          }
+        ]
+      }
+    }
+  },
+  "pstream_dashboards": [
+    {
+      "title": "Ops Insights",
+      "show_filter": true,
+      "widgets": [
+        {
+          "title": "Time Series",
+          "widget_type": "timeseries",
+          "stream": "psl_kafka_data",
+          "ts_column": "timestamp",
+          "duration_hours": 720,
+          "max_width": 6,
+          "height": 6,
+          "min_width": 12,
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "Date",
+            "legendLocation": "top"
+          },
+          "interval": "1H",
+          "group_by": [
+            "instance"
+          ],
+          "series_spec": [
+            {
+              "column": "System_Calls_Active",
+              "agg": "max",
+              "type": "int",
+              "label": "System_Calls_Active"
+            }
+          ],
+          "widget_id": "ee43c826",
+          "extra_filter": "device in [\"'AKRNOHNF11G'\"] and `timestamp` is after -168 hours"
         }
       ]
     }
