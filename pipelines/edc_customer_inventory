@@ -642,6 +642,7 @@ swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecurit
 
  --> @dm:copy-columns from="product_name" and to="product_id"
  --> @dm:eval product_id = "product_id.replace('=', '')"
- --> @dm:fixnull columns="secAdv_match_confidence,secAdv_securityImpactRating" and value="Not Available" and apply_for_empty="yes"
+ ## --> @dm:fixnull columns="secAdv_match_confidence,secAdv_securityImpactRating" and value="Not Available" and apply_for_empty="yes"
+
  --> @dm:save name = "contract_data_IB"
  --> @rn:write-stream name='edc_customer_inventory' and direct_to_opensearch="yes"
