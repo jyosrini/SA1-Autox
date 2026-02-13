@@ -25,6 +25,13 @@
  --> @dm:addrow rule_id = "A3" & rule = "sw_version contains '15\.1\(1\)S'" & sw_status_f="Expired"
  --> @dm:addrow rule_id = "A4" & rule = "sw_version contains '12\.2\(14\)Z'" & sw_status_f="Expired"
  --> @dm:save name='temp-sweox-errs-dict'
+ --> @c:new-block
+ --> @dm:empty
+ --> @dm:addrow rule_id = "A1" & rule = "sw_version contains '7\.6\(17\)' " & sw_os_type_f="CatOS"
+ --> @dm:addrow rule_id = "A2" & rule = "sw_version contains '8\.5\(5\)' " & sw_os_type_f="CatOS"
+ --> @dm:addrow rule_id = "A3" & rule = "sw_version contains '8\.7\(3\)' " & sw_os_type_f="CatOS"
+ --> @dm:addrow rule_id = "A4" & rule = "sw_version contains '8\.7\(1\)' " & sw_os_type_f="CatOS"
+ --> @dm:save name='temp-ostype-errs-dict'
  ## Normalize network data - Explode serial number column (RDAF inv have comma separated for WLC)
 
  --> @c:data-loop columns='sw_dataset,project_name,customer,customer_name' and dataset='temp-data-input'
@@ -50,6 +57,9 @@
  --> @dm:eval serial_number=" 'Not Available' if serial_number=='Not Available'  else serial_number.split(' ')[0] if serial_number and serial_number!='Not Available' else serial_number"
  ## Normalize values for sw_version and sw_type
 
+ --> @dm:enrich-using-rule-dict dict = "temp-ostype-errs-dict" & enrich_columns = "sw_os_type_f" and cache="no"
+ --> @cfxaia:conditional-statement condition_column="sw_os_type_f" and return_if="sw_os_type_f" and return_else="sw_os_type"
+ --> @dm:copy-columns from="sw_os_type_f" and to="sw_os_type"
  --> @dm:eval sw_os_type=" 'Not Available' if sw_os_type in ['Not Found','Missing'] else sw_os_type"
  --> @dm:eval sw_version=" 'Not Available' if sw_version in ['Not Found','Missing'] else sw_version"
  --> @dm:fixnull columns="sw_version,sw_os_type" and value="Not Available" and apply_for_empty="yes"
