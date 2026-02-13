@@ -1,37 +1,64 @@
 {
-  "name": "portal-account-settings",
-  "label": "My Account",
-  "description": "User Account Settings",
-  "version": "22.9.22.2",
-  "enabled": true,
-  "dashboard_sections": [],
-  "dashboard_type": "app",
+  "name": "rda-health-microservices",
+  "label": "Microservices",
+  "description": "Microservices",
+  "enabled": false,
+  "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "dashboard_pages": [
+  "dashboard_style": "auto",
+  "dashboard_filters": {
+    "time_filter": false
+  },
+  "dashboard_sections": [
     {
-      "name": "portal-account-user-preferences-page",
-      "label": "User Preferences",
-      "icon": "remedial.svg"
-    },
+      "title": "Microservices",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Core Microservices",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.infra.pods.tabular",
+          "height": 6,
+          "min_width": 10,
+          "paginated": true,
+          "widget_id": "fb282cfc"
+        },
+        {
+          "title": "Application Microservices",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.app.pods.tabular",
+          "height": 6,
+          "min_width": 10,
+          "paginated": true,
+          "widget_id": "8e5d378f"
+        }
+      ]
+    }
+  ],
+  "pstream_dashboards": [
     {
-      "name": "portal-account-edit-profile-page",
-      "label": "Edit Profile",
-      "icon": "customer.svg"
-    },
-    {
-      "name": "portal-account-change-password-page",
-      "label": "Change Password",
-      "icon": "credentials.svg"
-    },
-    {
-      "name": "portal-account-api-access-page",
-      "label": "API Access Key",
-      "icon": "rda.svg"
-    },
-    {
-      "name": "portal-account-notifications-page",
-      "label": "Notifications",
-      "icon": "notification.svg"
+      "title": "Microservices",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Core Microservices",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.infra.pods.tabular",
+          "height": 6,
+          "min_width": 10,
+          "paginated": true,
+          "widget_id": "fb282cfc"
+        },
+        {
+          "title": "Application Microservices",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.app.pods.tabular",
+          "height": 6,
+          "min_width": 10,
+          "paginated": true,
+          "widget_id": "8e5d378f"
+        }
+      ]
     }
   ]
 }
