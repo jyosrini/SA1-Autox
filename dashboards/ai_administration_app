@@ -1,89 +1,94 @@
 {
-  "name": "ai_administration_app",
-  "label": "AI Administration",
-  "description": "Manage AI on RDAF",
-  "version": "25.6.3",
+  "name": "incident-details-recommendation",
+  "description": "Summary and Recommendation",
+  "label": "Summary and Recommendation",
   "enabled": true,
-  "status_poller": {},
-  "dashboard_type": "app",
-  "dashboard_folder": "AI",
-  "template_variables": {},
-  "custom_context": {
-    "rda-dashboard-live-edit": true
-  },
-  "dashboard_groups": {
-    "personas": {
-      "icon": "team.svg",
-      "label": "AI Personas"
-    },
-    "models": {
-      "icon": "jobs.svg",
-      "label": "AI Models"
-    },
-    "mcp": {
-      "icon": "ml.svg",
-      "label": "MCP"
-    },
-    "agents": {
-      "icon": "bots.svg",
-      "label": "Agents"
+  "dashboard_folder": "Default",
+  "dashboard_style": "auto",
+  "dashboard_type": "template",
+  "template_variables": {
+    "INCIDENT_ID": {
+      "default": null,
+      "contextId": "incident_id"
     }
   },
-  "dashboard_pages": [
+  "custom_context": {
+    "alert-context": true
+  },
+  "dashboard_sections": [
     {
-      "name": "agentic-ai-analytics",
-      "label": "Manage Agents",
-      "group": "agents"
-    },
+      "title": "Summary and Recommendation",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Incident Summary",
+          "min_width": 12,
+          "height": 2,
+          "widget_type": "portal_html",
+          "widget_template": "cfx-oia/incident-summary",
+          "widget_id": "784726f6"
+        },
+        {
+          "widget_type": "label",
+          "min_width": 12,
+          "height": 10,
+          "max_width": 12,
+          "stream": "oia-incidents-stream",
+          "folder": "widget_labels",
+          "objectName": "recommendations",
+          "segments": [
+            {
+              "stream": "oia-incidents-stream",
+              "variable": "recommendations",
+              "columns": [
+                "i_recommendation"
+              ],
+              "type": "tabular",
+              "extra_filter": "incident_id is '{{INCIDENT_ID}}'",
+              "duration_hours": 100000
+            }
+          ],
+          "widget_id": "03430956"
+        }
+      ]
+    }
+  ],
+  "pstream_dashboards": [
     {
-      "name": "atoaserver-dashboard",
-      "label": "A2A Servers",
-      "group": "agents"
-    },
-    {
-      "name": "discoveragents-dashboard",
-      "label": "Discovered Agents",
-      "group": "agents"
-    },
-    {
-      "name": "ai-admin-page-personas",
-      "label": "Manage Personas",
-      "group": "personas"
-    },
-    {
-      "name": "ai-admin-manage-user-group",
-      "label": "Manage User Group",
-      "group": "personas"
-    },
-    {
-      "name": "ai-llm-page-credentials",
-      "label": "LLMs",
-      "group": "models"
-    },
-    {
-      "name": "ai-guardrails-page-credentials",
-      "label": "Guardrails",
-      "group": "models"
-    },
-    {
-      "name": "ai-placeholder-dashboard",
-      "label": "Managed Domains",
-      "group": "mcp"
-    },
-    {
-      "name": "externalmcp-dashboard",
-      "label": "External",
-      "group": "mcp"
-    },
-    {
-      "name": "mcp_prompt_templates",
-      "label": "Prompt Templates",
-      "group": "mcp"
-    },
-    {
-      "name": "NIM_Benchmarking_duplicate_dashboard",
-      "label": "NIM Benchmarking",
-      "icon": "Analytics.svg"
+      "title": "Summary and Recommendation",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Incident Summary",
+          "min_width": 12,
+          "height": 2,
+          "widget_type": "portal_html",
+          "widget_template": "cfx-oia/incident-summary",
+          "widget_id": "784726f6"
+        },
+        {
+          "widget_type": "label",
+          "min_width": 12,
+          "height": 10,
+          "max_width": 12,
+          "stream": "oia-incidents-stream",
+          "folder": "widget_labels",
+          "objectName": "recommendations",
+          "segments": [
+            {
+              "stream": "oia-incidents-stream",
+              "variable": "recommendations",
+              "columns": [
+                "i_recommendation"
+              ],
+              "type": "tabular",
+              "extra_filter": "incident_id is '{{INCIDENT_ID}}'",
+              "duration_hours": 100000
+            }
+          ],
+          "widget_id": "03430956"
+        }
+      ]
     }
   ]
 }
