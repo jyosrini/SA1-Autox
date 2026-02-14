@@ -1,99 +1,309 @@
 {
-  "name": "msp_administration",
-  "label": "MSP Administration",
-  "description": " App",
-  "version": "24.12.22",
-  "dashboard_folder": "Onboarding",
+  "name": "device_SNMP_Traps_from_alerts_fault",
+  "label": "SNMP Traps",
+  "description": "SNMP traps dashboard",
+  "version": "2023-06-13-02",
   "enabled": true,
-  "dashboard_filters": {
-    "time_filter": true,
-    "columns_filter": []
-  },
-  "dashboard_type": "app",
-  "dashboard_generator": {
-    "attachment": "add_dynamic_pages_for_admin"
-  },
-  "custom_context": {
-    "rda-dashboard-live-edit": true
-  },
-  "dashboard_groups": {
-    "customers": {
-      "icon": "hands.svg",
-      "label": "Customers"
+  "dashboard_folder": "NetworkDevicePack",
+  "dashboard_style": "auto",
+  "template_variables": {
+    "CUST_ID": {
+      "contextId": "customer_id"
     },
-    "SNMP": {
-      "icon": "clambdaJobs.svg",
-      "label": "SNMP Profiles"
+    "PROJ_ID": {
+      "contextId": "project_id"
     },
-    "accessMgmt": {
-      "icon": "customer.svg",
-      "label": "Access Management"
+    "CUST_TAG": {
+      "contextId": "customer_tag"
     },
-    "packs": {
-      "icon": "library.svg",
-      "label": "Packs"
-    },
-    "artifacts": {
-      "icon": "blueprint.svg",
-      "label": "Artifacts"
-    },
-    "configuration": {
-      "icon": "settings.svg",
-      "label": "Common Policies"
+    "DEVICE_IP": {
+      "contextId": "device_ip"
     }
   },
-  "dashboard_pages": [
-    {
-      "name": "onboarded_customer_list",
-      "label": "Manage Customers",
-      "group": "customers",
-      "icon": "hands.svg"
+  "status_poller": {
+    "stream": "snmp_trap_event_stream_all",
+    "frequency": 10,
+    "columns": [
+      "timestamp"
+    ],
+    "sorting": [
+      {
+        "timestamp": "desc"
+      }
+    ],
+    "query": "timestamp is after '${timestamp}'",
+    "defaults": {
+      "timestamp": "$UTCNOW"
     },
+    "action": "refresh"
+  },
+  "dashboard_filters": {
+    "default_time_filter_labels": [
+      "Last 1 month"
+    ],
+    "extra_filter1": "(customer_tag is '{{CUST_TAG}}')",
+    "time_filter": true,
+    "columns_filter": [],
+    "group_filters": []
+  },
+  "dashboard_sections": [
     {
-      "name": "rda-mgmt-page-dashboardgroups",
-      "label": "Dashboard Groups",
-      "group": "accessMgmt"
-    },
-    {
-      "name": "rda-packs-all",
-      "label": "RDA Packs",
-      "icon": "library.svg",
-      "group": "packs"
-    },
-    {
-      "name": "rda-mgmt-page-datasets",
-      "label": "Datasets",
-      "icon": "datasource.svg",
-      "group": "artifacts"
-    },
-    {
-      "name": "rda-mgmt-page-pstreams",
-      "label": "Persistent Streams",
-      "icon": "gateway.svg",
-      "group": "artifacts"
-    },
-    {
-      "name": "rda-mgmt-page-pipelines",
-      "label": "Published Pipelines",
-      "icon": "pipeline.svg",
-      "group": "artifacts"
-    },
-    {
-      "name": "rda-mgmt-page-draftpipelines",
-      "label": "Draft Pipelines",
-      "icon": "pipeline.svg",
-      "group": "artifacts"
-    },
-    {
-      "name": "rda-mgmt-page-blueprints",
-      "label": "Service Blueprints",
-      "group": "artifacts"
+      "title": "snmp details",
+      "show_filter": true,
+      "widgets": [
+        {
+          "widget_type": "label",
+          "max_width": 12,
+          "height": 0.5,
+          "min_width": 12,
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Device SNMP Traps</a></h1></div>",
+          "widget_id": "33317e49"
+        },
+        {
+          "title": "Total Traps",
+          "widget_type": "custom_counter",
+          "formatter": "DescriptiveCountFormatter",
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "column": "_id",
+          "agg": "value_count",
+          "type": "int",
+          "max_width": 2,
+          "height": 4,
+          "min_width": 2,
+          "style": {
+            "color-list": [
+              "#215CC3"
+            ]
+          },
+          "widget_id": "df82078f"
+        },
+        {
+          "title": "Unique Traps by OID",
+          "widget_type": "custom_counter",
+          "formatter": "DescriptiveCountFormatter",
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "column": "snmpTrapOID",
+          "agg": "cardinality",
+          "type": "int",
+          "max_width": 2,
+          "height": 4,
+          "min_width": 2,
+          "style": {
+            "color-list": [
+              "#21C374"
+            ]
+          },
+          "widget_id": "ed5e8ee0"
+        },
+        {
+          "title": "Distribution by OID",
+          "widget_type": "bar_chart",
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "OID",
+            "stacked": true,
+            "legendLocation": "none",
+            "orientation": "vertical"
+          },
+          "group_by": [
+            "snmpTrapOID"
+          ],
+          "column": "_id",
+          "agg": "cardinality",
+          "type": "int",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "widget_id": "43799fef"
+        },
+        {
+          "title": "Traps by IP",
+          "widget_type": "pie_chart",
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "column": "rda_gw_client_ip",
+          "agg": "value_count",
+          "group_by": [
+            "rda_gw_client_ip"
+          ],
+          "type": "str",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "widget_id": "5d627f3e"
+        },
+        {
+          "title": "SNMP Traps",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 8,
+          "min_width": 12,
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "resizableColumns": true,
+          "max_rows": 100,
+          "showRowSummary": true,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "rda_gw_client_ip",
+            "snmpTrapName",
+            "snmpTrapOID"
+          ],
+          "columns": {
+            "timestamp": "Timestamp",
+            "rda_gw_client_ip": "Device",
+            "snmpTrapOID": "SNMP Trap OID",
+            "snmpTrapName": "SNMP Trap Name",
+            "snmpTrapDescription": "SNMP Trap Description",
+            "message": "Message",
+            "vb_oid_1": "SNMP OID 1",
+            "vb_value_1": "SNMP Value 1",
+            "vb_oid_2": "SNMP OID 2",
+            "vb_value_2": "SNMP Value 2"
+          },
+          "widget_id": "46a6b5b6"
+        }
+      ]
     }
   ],
-  "attachments": [
+  "dashboard_type": "template",
+  "dashboard_pages": [],
+  "pstream_dashboards": [
     {
-      "name": "add_dynamic_pages_for_admin",
-      "value": "{%- set existing_groups = dashboard[\"dashboard_groups\"] -%}\n{%- set d_pages = [] -%}\n{%- set d_groups = [] -%}\n\n{%- set dlist = engine.query_stream_data(stream=\"rda_packs_dynamic_groups_and_pages\", cfxql_query=\"customer_tag is empty\") or [] -%}\n\n{%- if dlist -%}\n    {# Process the dlist to populate dashboard groups and pages #}\n    {%- for i in dlist -%}\n        {%- set dgroup_ = {\n            \"g_name\": i[\"dashboard_group_name\"],\n            \"g_label\": i[\"dashboard_group_label\"],\n            \"g_icon\": i[\"dashboard_group_icon\"]\n        } -%}\n        {{ d_groups.append(dgroup_) }}\n\n        {%- set dpage_ = {\n            \"name\": i[\"dashboard_page_name\"],\n            \"label\": i[\"dashboard_page_label\"],\n            \"icon\": i[\"dashboard_page_icon\"],\n            \"group\": i[\"dashboard_page_group\"]\n        } -%}\n        {{ d_pages.append(dpage_) }}\n    {%- endfor -%}\n\n    {# Update dashboard groups #}\n    {%- for group in d_groups -%}\n        {%- if group.g_name not in existing_groups | map(attribute='g_name') | list -%}\n            {%- set _ = dashboard[\"dashboard_groups\"].update({\n                group.g_name: {\n                    \"icon\": group.g_icon,\n                    \"label\": group.g_label\n                }\n            }) -%}\n        {%- endif -%}\n\n    {%- endfor -%}\n\n    {# Update dashboard pages #}\n    {%- for page in d_pages -%}\n        {%- set _ = dashboard[\"dashboard_pages\"].append({\n            \"name\": page.name,\n            \"label\": page.label,\n            \"icon\": page.icon,\n            \"group\": page.group\n        }) -%}\n    {%- endfor -%}\n\n{%- endif -%}"
+      "title": "snmp details",
+      "show_filter": true,
+      "widgets": [
+        {
+          "widget_type": "label",
+          "max_width": 12,
+          "height": 0.5,
+          "min_width": 12,
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Device SNMP Traps</a></h1></div>",
+          "widget_id": "33317e49"
+        },
+        {
+          "title": "Total Traps",
+          "widget_type": "custom_counter",
+          "formatter": "DescriptiveCountFormatter",
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "column": "_id",
+          "agg": "value_count",
+          "type": "int",
+          "max_width": 2,
+          "height": 4,
+          "min_width": 2,
+          "style": {
+            "color-list": [
+              "#215CC3"
+            ]
+          },
+          "widget_id": "df82078f"
+        },
+        {
+          "title": "Unique Traps by OID",
+          "widget_type": "custom_counter",
+          "formatter": "DescriptiveCountFormatter",
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "column": "snmpTrapOID",
+          "agg": "cardinality",
+          "type": "int",
+          "max_width": 2,
+          "height": 4,
+          "min_width": 2,
+          "style": {
+            "color-list": [
+              "#21C374"
+            ]
+          },
+          "widget_id": "ed5e8ee0"
+        },
+        {
+          "title": "Distribution by OID",
+          "widget_type": "bar_chart",
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "OID",
+            "stacked": true,
+            "legendLocation": "none",
+            "orientation": "vertical"
+          },
+          "group_by": [
+            "snmpTrapOID"
+          ],
+          "column": "_id",
+          "agg": "cardinality",
+          "type": "int",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "widget_id": "43799fef"
+        },
+        {
+          "title": "Traps by IP",
+          "widget_type": "pie_chart",
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "column": "rda_gw_client_ip",
+          "agg": "value_count",
+          "group_by": [
+            "rda_gw_client_ip"
+          ],
+          "type": "str",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "widget_id": "5d627f3e"
+        },
+        {
+          "title": "SNMP Traps",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 8,
+          "min_width": 12,
+          "stream": "snmp_trap_event_stream_all",
+          "ts_column": "timestamp",
+          "resizableColumns": true,
+          "max_rows": 100,
+          "showRowSummary": true,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "rda_gw_client_ip",
+            "snmpTrapName",
+            "snmpTrapOID"
+          ],
+          "columns": {
+            "timestamp": "Timestamp",
+            "rda_gw_client_ip": "Device",
+            "snmpTrapOID": "SNMP Trap OID",
+            "snmpTrapName": "SNMP Trap Name",
+            "snmpTrapDescription": "SNMP Trap Description",
+            "message": "Message",
+            "vb_oid_1": "SNMP OID 1",
+            "vb_value_1": "SNMP Value 1",
+            "vb_oid_2": "SNMP OID 2",
+            "vb_value_2": "SNMP Value 2"
+          },
+          "widget_id": "46a6b5b6"
+        }
+      ]
     }
   ]
 }

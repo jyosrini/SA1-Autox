@@ -1,449 +1,277 @@
 {
-  "name": "cnc-network-devices",
-  "label": "Network Devices",
-  "description": "Network Devices",
-  "dashboard_folder": "MOW",
-  "version": "2023-03-18_2",
-  "enabled": false,
-  "debug": true,
-  "live_edit": true,
-  "stream": "cnc_device_inventory",
-  "dashboard_type": "template",
+  "name": "rda-administration-app",
+  "label": "RDA Administration",
+  "description": "Robotic Data Automation Administration",
+  "version": "25.4.15",
+  "enabled": true,
   "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 12 months"
-    ],
-    "extra_filter": "`item_type` is  \"CHASSIS\"",
-    "columns_filter": [
-      {
-        "id": "device_ip",
-        "label": "IP Address",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_family",
-        "label": "Device Family",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_serial_number",
-        "label": "Serial Number",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_fw_version",
-        "label": "Software Version",
-        "type": "TEXT"
-      },
-      {
-        "id": "clli_code",
-        "label": "CLLI Code",
-        "type": "TEXT"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "cnc_device_inventory",
-        "title": "Manufacturer",
-        "duration_hours": 1080,
-        "extra_filter": "`item_type` is  \"CHASSIS\"",
-        "group_by": [
-          "manufacturer"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "_RDA_Id",
-        "type": "str"
-      },
-      {
-        "stream": "cnc_device_inventory",
-        "title": "Model",
-        "duration_hours": 1080,
-        "extra_filter": "`item_type` is  \"CHASSIS\"",
-        "group_by": [
-          "device_model"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "_RDA_Id",
-        "type": "str"
-      },
-      {
-        "stream": "cnc_device_inventory",
-        "title": "SW Versions",
-        "duration_hours": 1080,
-        "extra_filter": "`item_type` is  \"CHASSIS\"",
-        "group_by": [
-          "device_fw_version"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "_RDA_Id",
-        "type": "str"
-      }
-    ]
+    "time_filter": false,
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Network Devices",
-      "show_filter": true,
-      "widgets": [
-        {
-          "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Network Devices </a></h1></div>",
-          "min_width": 12,
-          "height": 0.4,
-          "max_width": 12,
-          "widget_id": "dd3ae8ae"
-        },
-        {
-          "title": "Total Devices",
-          "widget_type": "custom_counter",
-          "duration_hours": 1080,
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "type": "int",
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "style": {
-            "color-list": [
-              "#90CAF9"
-            ]
-          },
-          "widget_id": "f0ehB7He"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Devices by Model",
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "duration_hours": 1080,
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "group_by": [
-            "device_model"
-          ],
-          "type": "str",
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "widget_id": "45ecc884"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Devices by SW Versions",
-          "stream": "cnc_device_inventory",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "group_by": [
-            "device_fw_version"
-          ],
-          "type": "str",
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "widget_id": "00a5203d"
-        },
-        {
-          "title": "Devices by Model and Version",
-          "widget_type": "multi_bar_chart",
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "duration_hours": 1080,
-          "group_by": [
-            "device_fw_version",
-            "device_model"
-          ],
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": "Model",
-            "stacked": true,
-            "legendLocation": "right",
-            "orientation": "vertical"
-          },
-          "min_width": 12,
-          "height": 4,
-          "max_width": 12,
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "widget_id": "2O4VqY3d"
-        },
-        {
-          "title": "Network Devices",
-          "widget_type": "tabular",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "query": "*",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "device_ip",
-            "device_serial_number",
-            "device_family",
-            "device_fw_version"
-          ],
-          "columns": {
-            "device_hostname": {
-              "title": "Device Name",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_ip": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_model": {
-              "title": "Model",
-              "type": "TEXT",
-              "key": true
-            },
-            "clli_code": {
-              "title": "CLLI Code",
-              "type": "TEXT",
-              "key": true
-            },
-            "product_type": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": true
-            },
-            "device_family": {
-              "title": "Family",
-              "type": "TEXT",
-              "visible": true
-            },
-            "device_fw_version": {
-              "title": "SW Version",
-              "type": "TEXT",
-              "visible": true
-            },
-            "device_fw_type": {
-              "title": "OS Type",
-              "type": "TEXT",
-              "visible": true
-            }
-          },
-          "actions": [
-            {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard/device_inventory",
-              "drillDownLinkField": "device_hostname",
-              "identifier": "launch.dashboard.device_inventory",
-              "selectionType": "SINGLE",
-              "title": "Node Details",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "device_ip",
-                    "paramId": "a_asset_ip_address"
-                  },
-                  {
-                    "paramKey": "device_hostname",
-                    "paramId": "a_device_hostname"
-                  }
-                ]
-              },
-              "type": "GO_TO_APP_STATE"
-            }
-          ],
-          "widget_id": "fac6548b"
-        }
-      ]
+      "title": "Example"
+    }
+  ],
+  "context_enrichment": [
+    {
+      "rda_service": [
+        "configuration-service"
+      ],
+      "set_context": {
+        "OIA": "enabled"
+      },
+      "defaultValues": {
+        "OIA": "disabled"
+      }
+    }
+  ],
+  "dashboard_type": "app",
+  "dashboard_folder": "System",
+  "dashboard_groups": {
+    "Dashboards": {
+      "icon": "Analytics.svg",
+      "label": "Dashboards",
+      "pageName": "Dashboards"
+    },
+    "Dataset": {
+      "icon": "datasource.svg",
+      "label": "Datasets",
+      "pageName": "Datasets"
+    },
+    "Discovery": {
+      "icon": "datasource.svg",
+      "label": "Asset Discovery",
+      "pageName": "Asset Discovery"
+    },
+    "Persistent Streams": {
+      "icon": "gateway.svg",
+      "label": "Persistent Streams",
+      "pageName": "Persistent Streams"
+    },
+    "Graph DB": {
+      "icon": "enrichment.svg",
+      "label": "Graph DB",
+      "pageName": "Graph DB"
+    },
+    "Pipelines": {
+      "icon": "pipeline.svg",
+      "label": "Pipelines",
+      "pageName": "Pipelines"
+    },
+    "Git": {
+      "icon": "version.svg",
+      "label": "Git",
+      "pageName": "Git"
+    },
+    "Snapshots": {
+      "icon": "snapshot.svg",
+      "label": "Snapshots",
+      "pageName": "Snapshots"
+    }
+  },
+  "dashboard_pages": [
+    {
+      "name": "rda-mgmt-page-nonsystem-dashboards",
+      "label": "User Dashboards",
+      "icon": "Analytics.svg",
+      "group": "Dashboards"
+    },
+    {
+      "name": "rda-mgmt-page-system-dashboards",
+      "label": "System Dashboards",
+      "icon": "Analytics.svg",
+      "group": "Dashboards"
+    },
+    {
+      "name": "rda-mgmt-page-dashboardgroups",
+      "label": "Dashboard Groups",
+      "icon": "Analytics.svg",
+      "group": "Dashboards"
+    },
+    {
+      "name": "rda-administration-dashboard-debug-console",
+      "label": "Debug Console",
+      "icon": "Analytics.svg",
+      "group": "Dashboards"
+    },
+    {
+      "name": "rda-administration-dashboard-schedule",
+      "label": "Export Schedules",
+      "icon": "Analytics.svg",
+      "group": "Dashboards"
+    },
+    {
+      "name": "uimenus-dashboard",
+      "label": "UI Menus",
+      "icon": "software.svg"
+    },
+    {
+      "name": "rda-mgmt-page-datasets",
+      "label": "Datasets",
+      "icon": "datasource.svg",
+      "group": "Dataset"
+    },
+    {
+      "name": "rda-mgmt-page-schemas",
+      "label": "Schemas",
+      "icon": "datasource.svg",
+      "group": "Dataset"
+    },
+    {
+      "name": "rda-mgmt-page-pstreams",
+      "label": "Persistent Streams",
+      "icon": "gateway.svg",
+      "group": "Persistent Streams"
+    },
+    {
+      "name": "rda-pstreams-live-stats",
+      "label": "Live Stats",
+      "icon": "datasource.svg",
+      "group": "Persistent Streams"
+    },
+    {
+      "name": "rda-pstreams-current-usage-stats",
+      "label": "Current Usage",
+      "icon": "datasource.svg",
+      "group": "Persistent Streams"
+    },
+    {
+      "name": "rda-mgmt-page-transform-jobs",
+      "label": "Transform Jobs",
+      "icon": "datasource.svg",
+      "group": "Persistent Streams"
+    },
+    {
+      "name": "rda-pstreams-archives",
+      "label": "Archives",
+      "icon": "datasource.svg",
+      "group": "Persistent Streams"
+    },
+    {
+      "name": "rda-mgmt-page-pipelines",
+      "label": "Published Pipelines",
+      "icon": "pipeline.svg",
+      "group": "Pipelines"
+    },
+    {
+      "name": "rda-mgmt-page-draftpipelines",
+      "label": "Draft Pipelines",
+      "icon": "pipeline.svg",
+      "group": "Pipelines"
+    },
+    {
+      "name": "rda-mgmt-page-botlibrary",
+      "label": "Bot Library",
+      "icon": "pipeline.svg",
+      "group": "Pipelines"
+    },
+    {
+      "name": "rda-artifact-dependencies",
+      "label": "Artifact Dependencies",
+      "icon": "microserviceTrace.svg"
+    },
+    {
+      "name": "rda-administration-audit-logs",
+      "label": "Audit Logs",
+      "icon": "history.svg"
+    },
+    {
+      "name": "rda-github-push",
+      "label": "Push to Git",
+      "icon": "version.svg",
+      "group": "Git"
+    },
+    {
+      "name": "rda-github-pull",
+      "label": "Pull from Git",
+      "icon": "version.svg",
+      "group": "Git"
+    },
+    {
+      "name": "rda-mgmt-page-templates",
+      "label": "Formatting Templates",
+      "icon": "templates.svg"
+    },
+    {
+      "name": "rda-mgmt-page-stacks",
+      "label": "Stacks",
+      "icon": "stack.svg"
+    },
+    {
+      "name": "rda-mgmt-page-graphs",
+      "label": "Graphs",
+      "icon": "enrichment.svg",
+      "group": "Graph DB",
+      "context_filter": "ENV_NO_GRAPHDB != 'true'"
+    },
+    {
+      "name": "rda-mgmt-page-synthetics",
+      "label": "Synthetics",
+      "icon": "experiment.svg"
+    },
+    {
+      "name": "rda-mgmt-page-fsm-models",
+      "label": "FSM Models",
+      "icon": "contract.svg"
+    },
+    {
+      "name": "rda-mgmt-page-collection-group-rules",
+      "label": "Collection Group Rules",
+      "icon": "datasource.svg",
+      "group": "Discovery"
+    },
+    {
+      "name": "rda-mgmt-page-discovery-configurations",
+      "label": "Discovery Configurations",
+      "icon": "datasource.svg",
+      "group": "Discovery"
+    },
+    {
+      "name": "rda-mgmt-page-textfsm-templates",
+      "label": "TextFSM Templates",
+      "icon": "datasource.svg"
+    },
+    {
+      "name": "rda_system_snapshots_main",
+      "label": "Snapshot List",
+      "icon": "snapshot.svg",
+      "group": "Snapshots"
+    },
+    {
+      "name": "rda_system_snapshots_details",
+      "label": "Snapshot Manifests",
+      "icon": "snapshot.svg",
+      "group": "Snapshots"
+    },
+    {
+      "name": "rda-mgmt-page-store-objects",
+      "label": "Object Store"
+    },
+    {
+      "name": "rda-mgmt-page-blueprints",
+      "label": "Service Blueprints",
+      "icon": "blueprint.svg"
+    },
+    {
+      "name": "rda-mgmt-page-alert-rules",
+      "label": "Alert Rules",
+      "icon": "contract.svg"
+    },
+    {
+      "name": "rda-packs-all",
+      "label": "Packs",
+      "icon": "asset.svg"
+    },
+    {
+      "name": "rda-mgmt-page-network",
+      "label": "Network",
+      "icon": "cluster.svg"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Network Devices",
-      "show_filter": true,
-      "widgets": [
-        {
-          "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Network Devices </a></h1></div>",
-          "min_width": 12,
-          "height": 0.4,
-          "max_width": 12,
-          "widget_id": "dd3ae8ae"
-        },
-        {
-          "title": "Total Devices",
-          "widget_type": "custom_counter",
-          "duration_hours": 1080,
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "type": "int",
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "style": {
-            "color-list": [
-              "#90CAF9"
-            ]
-          },
-          "widget_id": "f0ehB7He"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Devices by Model",
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "duration_hours": 1080,
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "group_by": [
-            "device_model"
-          ],
-          "type": "str",
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "widget_id": "45ecc884"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Devices by SW Versions",
-          "stream": "cnc_device_inventory",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "group_by": [
-            "device_fw_version"
-          ],
-          "type": "str",
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "widget_id": "00a5203d"
-        },
-        {
-          "title": "Devices by Model and Version",
-          "widget_type": "multi_bar_chart",
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "duration_hours": 1080,
-          "group_by": [
-            "device_fw_version",
-            "device_model"
-          ],
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": "Model",
-            "stacked": true,
-            "legendLocation": "right",
-            "orientation": "vertical"
-          },
-          "min_width": 12,
-          "height": 4,
-          "max_width": 12,
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "widget_id": "2O4VqY3d"
-        },
-        {
-          "title": "Network Devices",
-          "widget_type": "tabular",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "query": "*",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "device_ip",
-            "device_serial_number",
-            "device_family",
-            "device_fw_version"
-          ],
-          "columns": {
-            "device_hostname": {
-              "title": "Device Name",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_ip": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_model": {
-              "title": "Model",
-              "type": "TEXT",
-              "key": true
-            },
-            "clli_code": {
-              "title": "CLLI Code",
-              "type": "TEXT",
-              "key": true
-            },
-            "product_type": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": true
-            },
-            "device_family": {
-              "title": "Family",
-              "type": "TEXT",
-              "visible": true
-            },
-            "device_fw_version": {
-              "title": "SW Version",
-              "type": "TEXT",
-              "visible": true
-            },
-            "device_fw_type": {
-              "title": "OS Type",
-              "type": "TEXT",
-              "visible": true
-            }
-          },
-          "actions": [
-            {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard/device_inventory",
-              "drillDownLinkField": "device_hostname",
-              "identifier": "launch.dashboard.device_inventory",
-              "selectionType": "SINGLE",
-              "title": "Node Details",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "device_ip",
-                    "paramId": "a_asset_ip_address"
-                  },
-                  {
-                    "paramKey": "device_hostname",
-                    "paramId": "a_device_hostname"
-                  }
-                ]
-              },
-              "type": "GO_TO_APP_STATE"
-            }
-          ],
-          "widget_id": "fac6548b"
-        }
-      ]
+      "title": "Example"
     }
   ]
 }

@@ -1,127 +1,123 @@
 {
-  "name": "rda-pstreams-archives",
-  "label": "Archives",
-  "description": "Pstream Archives Page",
-  "enabled": true,
+  "name": "Authentication Servers",
+  "description": "Authentication Servers",
+  "label": "Authentication Servers",
+  "enabled": false,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "dashboard_style": "auto",
+  "template_variables": null,
+  "version": "23.2.7.1",
   "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 12 months"
-    ],
-    "columns_filter": [
-      {
-        "id": "stream",
-        "label": "Name",
-        "type": "TEXT"
-      }
-    ]
+    "time_filter": false
   },
-  "sorting": [
-    {
-      "stream": "asc"
-    }
-  ],
   "dashboard_sections": [
     {
-      "title": "Archives",
-      "show_filter": true,
+      "title": "Servers",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Archives",
-          "widget_type": "tabular",
-          "stream": "rda_system_pstream_archival_metadata",
+          "title": "Authentication Servers",
+          "widget_type": "portal_tabular",
+          "reportId": "remote.server.settings",
+          "height": 5,
+          "min_wdith": 12,
           "paginated": true,
-          "columns": {
-            "stream": {
-              "title": "Stream Name",
-              "key": true
-            },
-            "archive_date": {
-              "title": "Archive Date",
-              "visible": false
-            }
-          },
+          "widget_id": "afdcd593"
+        },
+        {
+          "title": "SSO Details",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.sso.details.list.tabular",
+          "height": 5,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "533f4d05"
+        }
+      ]
+    },
+    {
+      "title": "User Groups",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "AD User Groups",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.ad.user.group.list.tabular",
           "height": 10,
           "min_wdith": 12,
-          "widget_id": "2ea74a7d",
-          "pivot": {
-            "pivot_type": "advanced",
-            "group_by": [
-              "stream"
-            ],
-            "series": [
-              {
-                "column": "stream",
-                "label": "Archives Count",
-                "agg": "value_count"
-              }
-            ]
-          },
-          "actions": [
-            {
-              "permission": "rda:pstream:archives",
-              "appName": "user-dashboard/rda-pstream-archives-app",
-              "title": "View Archives",
-              "type": "GO_TO_APP_STATE",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "identifier": "saas-service-action:pstream-archive"
-            }
-          ]
+          "paginated": true,
+          "widget_id": "af69b0ed"
+        }
+      ]
+    },
+    {
+      "title": "Users",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "AD Users",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.ad.user.group.members.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "e462054a"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Archives",
-      "show_filter": true,
+      "title": "Servers",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Archives",
-          "widget_type": "tabular",
-          "stream": "rda_system_pstream_archival_metadata",
+          "title": "Authentication Servers",
+          "widget_type": "portal_tabular",
+          "reportId": "remote.server.settings",
+          "height": 5,
+          "min_wdith": 12,
           "paginated": true,
-          "columns": {
-            "stream": {
-              "title": "Stream Name",
-              "key": true
-            },
-            "archive_date": {
-              "title": "Archive Date",
-              "visible": false
-            }
-          },
+          "widget_id": "afdcd593"
+        },
+        {
+          "title": "SSO Details",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.sso.details.list.tabular",
+          "height": 5,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "533f4d05"
+        }
+      ]
+    },
+    {
+      "title": "User Groups",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "AD User Groups",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.ad.user.group.list.tabular",
           "height": 10,
           "min_wdith": 12,
-          "widget_id": "2ea74a7d",
-          "pivot": {
-            "pivot_type": "advanced",
-            "group_by": [
-              "stream"
-            ],
-            "series": [
-              {
-                "column": "stream",
-                "label": "Archives Count",
-                "agg": "value_count"
-              }
-            ]
-          },
-          "actions": [
-            {
-              "permission": "rda:pstream:archives",
-              "appName": "user-dashboard/rda-pstream-archives-app",
-              "title": "View Archives",
-              "type": "GO_TO_APP_STATE",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "identifier": "saas-service-action:pstream-archive"
-            }
-          ]
+          "paginated": true,
+          "widget_id": "af69b0ed"
+        }
+      ]
+    },
+    {
+      "title": "Users",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "AD Users",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.ad.user.group.members.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "e462054a"
         }
       ]
     }
