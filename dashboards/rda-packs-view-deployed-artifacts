@@ -1,24 +1,17 @@
 {
-  "name": "rda-packs-view-deployed-artifacts",
-  "label": "RDA Packs Activation Status",
-  "context_label_id": "activation_status_page_label",
-  "description": "customer-rda-packs-artifacts: Insights",
-  "dashboard_folder": "System",
+  "name": "snowinventory",
+  "label": "Snow Inventory",
+  "description": "snowinventory: Insights",
+  "dashboard_folder": "default",
+  "version": "1.0.0",
   "enabled": false,
-  "stream": "customer-rda-packs-artifacts",
-  "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "template_variables": {
-    "ACTIVATION_ID": {
-      "contextId": "activation_id"
-    }
-  },
+  "stream": "snowinventory",
+  "dashboard_type": "dashboard",
+  "live_edit": true,
   "dashboard_filters": {
-    "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
     "time_filter": true,
     "default_time_filter_labels": [
-      "Last 24 months"
+      "Last 24 hours"
     ],
     "columns_filter": [
       {
@@ -27,55 +20,293 @@
         "type": "DATETIME"
       },
       {
-        "id": "customer",
-        "label": "Customer",
+        "id": "import_set_run",
+        "label": "Import Set Run",
         "type": "TEXT"
       },
       {
-        "id": "activation_id",
-        "label": "Activation Id",
+        "id": "sys_class_name",
+        "label": "Sys Class Name",
         "type": "TEXT"
       },
       {
-        "id": "version",
-        "label": "Pack Version",
+        "id": "sys_created_by",
+        "label": "Sys Created By",
         "type": "TEXT"
       },
       {
-        "id": "art_type",
-        "label": "Artifact Type",
+        "id": "sys_created_on",
+        "label": "Sys Created On",
         "type": "TEXT"
       },
       {
-        "id": "art_name",
-        "label": "Artifact Name",
+        "id": "sys_id",
+        "label": "Sys Id",
         "type": "TEXT"
       },
       {
-        "id": "art_version",
-        "label": "Artifact Version",
+        "id": "sys_import_row",
+        "label": "Sys Import Row",
         "type": "TEXT"
       },
       {
-        "id": "status",
-        "title": "Status",
+        "id": "sys_import_set",
+        "label": "Sys Import Set",
         "type": "TEXT"
       },
       {
-        "id": "message",
-        "title": "Message",
+        "id": "sys_import_state",
+        "label": "Sys Import State",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_import_state_comment",
+        "label": "Sys Import State Comment",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_mod_count",
+        "label": "Sys Mod Count",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_row_error",
+        "label": "Sys Row Error",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_tags",
+        "label": "Sys Tags",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_target_sys_id",
+        "label": "Sys Target Sys Id",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_target_table",
+        "label": "Sys Target Table",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_transform_map",
+        "label": "Sys Transform Map",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_updated_by",
+        "label": "Sys Updated By",
+        "type": "TEXT"
+      },
+      {
+        "id": "sys_updated_on",
+        "label": "Sys Updated On",
+        "type": "TEXT"
+      },
+      {
+        "id": "template_import_log",
+        "label": "Template Import Log",
+        "type": "TEXT"
+      },
+      {
+        "id": "u___uuid",
+        "label": "U Uuid",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_ap_mac_address",
+        "label": "U Ap Mac Address",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_ap_wlc_ip",
+        "label": "U Ap Wlc Ip",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_ap_wlc_name",
+        "label": "U Ap Wlc Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_dev_count",
+        "label": "U Dev Count",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_family",
+        "label": "U Device Family",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_fw_version",
+        "label": "U Device Fw Version",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_group",
+        "label": "U Device Group",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_hostname",
+        "label": "U Device Hostname",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_ip_address",
+        "label": "U Device Ip Address",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_model",
+        "label": "U Device Model",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_name",
+        "label": "U Device Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_serial_number",
+        "label": "U Device Serial Number",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_type",
+        "label": "U Device Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_type_det",
+        "label": "U Device Type Det",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_device_vendor",
+        "label": "U Device Vendor",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_oid",
+        "label": "U Oid",
+        "type": "TEXT"
+      },
+      {
+        "id": "u_system_description",
+        "label": "U System Description",
         "type": "TEXT"
       }
     ],
     "group_filters": [
       {
-        "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
-        "stream": "customer-rda-packs-artifacts",
-        "title": "Artifact Type",
+        "stream": "snowinventory",
+        "title": "Sys Created On",
         "duration_hours": 1080,
         "limit": 200,
+        "extra_filter": null,
         "group_by": [
-          "art_type"
+          "sys_created_on"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "snowinventory",
+        "title": "Sys Updated On",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "sys_updated_on"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "snowinventory",
+        "title": "U Ap Mac Address",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "u_ap_mac_address"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "snowinventory",
+        "title": "U Ap Wlc Ip",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "u_ap_wlc_ip"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "snowinventory",
+        "title": "U Ap Wlc Name",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "u_ap_wlc_name"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "snowinventory",
+        "title": "U Dev Count",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "u_dev_count"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "snowinventory",
+        "title": "U Device Family",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "u_device_family"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "snowinventory",
+        "title": "U Device Group",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "u_device_group"
         ],
         "ts_column": "timestamp",
         "agg": "sum",
@@ -86,9 +317,153 @@
   },
   "dashboard_sections": [
     {
-      "title": "RDA Packs Activation Status",
+      "title": "Snow Inventory",
       "show_filter": true,
       "widgets": [
+        {
+          "widget_type": "pie_chart",
+          "title": "Sys Created On",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "sys_created_on"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "c6ec2ece"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Sys Updated On",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "sys_updated_on"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "25afa65b"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Ap Mac Address",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_ap_mac_address"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "c04b2b63"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Ap Wlc Ip",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_ap_wlc_ip"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "0b1a0bf3"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Ap Wlc Name",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_ap_wlc_name"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "845533ca"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Dev Count",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_dev_count"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "92a7f15e"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Device Family",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_device_family"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "2676db3b"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Device Group",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_device_group"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "600ef054"
+        },
         {
           "title": "Data",
           "widget_type": "tabular",
@@ -96,65 +471,187 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "customer-rda-packs-artifacts",
+          "stream": "snowinventory",
           "ts_column": "timestamp",
-          "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
+          "extra_filter": null,
           "columns": {
-            "activation_id": {
-              "title": "Activation Id",
-              "type": "TEXT",
-              "hidden": true
-            },
-            "name": {
-              "title": "Pack Name",
+            "sys_id": {
+              "title": "Sys Id",
               "type": "TEXT",
               "hidden": false
             },
-            "version": {
-              "title": "Pack Version",
+            "sys_import_row": {
+              "title": "Sys Import Row",
               "type": "TEXT",
               "hidden": false
             },
-            "customer": {
-              "title": "Customer",
+            "u_device_hostname": {
+              "title": "U Device Hostname",
               "type": "TEXT",
               "hidden": false
             },
-            "art_name": {
-              "title": "Artifact Name",
+            "u_device_ip_address": {
+              "title": "U Device Ip Address",
               "type": "TEXT",
               "hidden": false
             },
-            "art_type": {
-              "title": "Artifact Type",
+            "u_device_name": {
+              "title": "U Device Name",
               "type": "TEXT",
               "hidden": false
             },
-            "art_version": {
-              "title": "Artifact Version",
+            "u_device_serial_number": {
+              "title": "U Device Serial Number",
               "type": "TEXT",
               "hidden": false
             },
-            "state_color": {
-              "type": "COLOR-MAP",
-              "source-column": "status",
-              "color-map": {
-                "success": "#4CAF50",
-                "created": "#4CAF50",
-                "skipped": "#4CAF50",
-                "error": "#FF0000"
-              }
+            "u___uuid": {
+              "title": "U Uuid",
+              "type": "TEXT",
+              "hidden": false
             },
-            "status": {
-              "title": "Status",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.state_color }}' > {{ row.status }} </span>{% endraw %}"
+            "u_system_description": {
+              "title": "U System Description",
+              "type": "TEXT",
+              "hidden": false
             },
-            "message": {
-              "title": "Message",
+            "u_device_fw_version": {
+              "title": "U Device Fw Version",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_model": {
+              "title": "U Device Model",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_oid": {
+              "title": "U Oid",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_type": {
+              "title": "U Device Type",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_ap_mac_address": {
+              "title": "U Ap Mac Address",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_family": {
+              "title": "U Device Family",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_type_det": {
+              "title": "U Device Type Det",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_created_on": {
+              "title": "Sys Created On",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_updated_on": {
+              "title": "Sys Updated On",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_ap_wlc_ip": {
+              "title": "U Ap Wlc Ip",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_ap_wlc_name": {
+              "title": "U Ap Wlc Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_dev_count": {
+              "title": "U Dev Count",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_group": {
+              "title": "U Device Group",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_vendor": {
+              "title": "U Device Vendor",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "import_set_run": {
+              "title": "Import Set Run",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_class_name": {
+              "title": "Sys Class Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_created_by": {
+              "title": "Sys Created By",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_import_set": {
+              "title": "Sys Import Set",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_import_state": {
+              "title": "Sys Import State",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_import_state_comment": {
+              "title": "Sys Import State Comment",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_mod_count": {
+              "title": "Sys Mod Count",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_row_error": {
+              "title": "Sys Row Error",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_tags": {
+              "title": "Sys Tags",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_target_sys_id": {
+              "title": "Sys Target Sys Id",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_target_table": {
+              "title": "Sys Target Table",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_transform_map": {
+              "title": "Sys Transform Map",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_updated_by": {
+              "title": "Sys Updated By",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "template_import_log": {
+              "title": "Template Import Log",
               "type": "TEXT",
               "hidden": false
             },
@@ -164,16 +661,160 @@
               "hidden": false
             }
           },
-          "widget_id": "52812fbe"
+          "widget_id": "81de9015"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "RDA Packs Activation Status",
+      "title": "Snow Inventory",
       "show_filter": true,
       "widgets": [
+        {
+          "widget_type": "pie_chart",
+          "title": "Sys Created On",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "sys_created_on"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "c6ec2ece"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Sys Updated On",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "sys_updated_on"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "25afa65b"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Ap Mac Address",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_ap_mac_address"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "c04b2b63"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Ap Wlc Ip",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_ap_wlc_ip"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "0b1a0bf3"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Ap Wlc Name",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_ap_wlc_name"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "845533ca"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Dev Count",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_dev_count"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "92a7f15e"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Device Family",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_device_family"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "2676db3b"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "U Device Group",
+          "duration_hours": 1080,
+          "stream": "snowinventory",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "u_device_group"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "600ef054"
+        },
         {
           "title": "Data",
           "widget_type": "tabular",
@@ -181,65 +822,187 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "customer-rda-packs-artifacts",
+          "stream": "snowinventory",
           "ts_column": "timestamp",
-          "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
+          "extra_filter": null,
           "columns": {
-            "activation_id": {
-              "title": "Activation Id",
-              "type": "TEXT",
-              "hidden": true
-            },
-            "name": {
-              "title": "Pack Name",
+            "sys_id": {
+              "title": "Sys Id",
               "type": "TEXT",
               "hidden": false
             },
-            "version": {
-              "title": "Pack Version",
+            "sys_import_row": {
+              "title": "Sys Import Row",
               "type": "TEXT",
               "hidden": false
             },
-            "customer": {
-              "title": "Customer",
+            "u_device_hostname": {
+              "title": "U Device Hostname",
               "type": "TEXT",
               "hidden": false
             },
-            "art_name": {
-              "title": "Artifact Name",
+            "u_device_ip_address": {
+              "title": "U Device Ip Address",
               "type": "TEXT",
               "hidden": false
             },
-            "art_type": {
-              "title": "Artifact Type",
+            "u_device_name": {
+              "title": "U Device Name",
               "type": "TEXT",
               "hidden": false
             },
-            "art_version": {
-              "title": "Artifact Version",
+            "u_device_serial_number": {
+              "title": "U Device Serial Number",
               "type": "TEXT",
               "hidden": false
             },
-            "state_color": {
-              "type": "COLOR-MAP",
-              "source-column": "status",
-              "color-map": {
-                "success": "#4CAF50",
-                "created": "#4CAF50",
-                "skipped": "#4CAF50",
-                "error": "#FF0000"
-              }
+            "u___uuid": {
+              "title": "U Uuid",
+              "type": "TEXT",
+              "hidden": false
             },
-            "status": {
-              "title": "Status",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.state_color }}' > {{ row.status }} </span>{% endraw %}"
+            "u_system_description": {
+              "title": "U System Description",
+              "type": "TEXT",
+              "hidden": false
             },
-            "message": {
-              "title": "Message",
+            "u_device_fw_version": {
+              "title": "U Device Fw Version",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_model": {
+              "title": "U Device Model",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_oid": {
+              "title": "U Oid",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_type": {
+              "title": "U Device Type",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_ap_mac_address": {
+              "title": "U Ap Mac Address",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_family": {
+              "title": "U Device Family",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_type_det": {
+              "title": "U Device Type Det",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_created_on": {
+              "title": "Sys Created On",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_updated_on": {
+              "title": "Sys Updated On",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_ap_wlc_ip": {
+              "title": "U Ap Wlc Ip",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_ap_wlc_name": {
+              "title": "U Ap Wlc Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_dev_count": {
+              "title": "U Dev Count",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_group": {
+              "title": "U Device Group",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "u_device_vendor": {
+              "title": "U Device Vendor",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "import_set_run": {
+              "title": "Import Set Run",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_class_name": {
+              "title": "Sys Class Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_created_by": {
+              "title": "Sys Created By",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_import_set": {
+              "title": "Sys Import Set",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_import_state": {
+              "title": "Sys Import State",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_import_state_comment": {
+              "title": "Sys Import State Comment",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_mod_count": {
+              "title": "Sys Mod Count",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_row_error": {
+              "title": "Sys Row Error",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_tags": {
+              "title": "Sys Tags",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_target_sys_id": {
+              "title": "Sys Target Sys Id",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_target_table": {
+              "title": "Sys Target Table",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_transform_map": {
+              "title": "Sys Transform Map",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "sys_updated_by": {
+              "title": "Sys Updated By",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "template_import_log": {
+              "title": "Template Import Log",
               "type": "TEXT",
               "hidden": false
             },
@@ -249,7 +1012,7 @@
               "hidden": false
             }
           },
-          "widget_id": "52812fbe"
+          "widget_id": "81de9015"
         }
       ]
     }

@@ -1,540 +1,691 @@
 {
-  "id": "user-dashboard-exec-dashboard_page_kpi",
-  "name": "exec-dashboard_page_kpi",
-  "description": "Executive Dashboard, Page: KPI",
-  "label": "Executive Dashboard, Page: KPI",
+  "name": "rda-mgmt-page-blueprints",
+  "label": "Service Blueprints",
+  "description": " Service Blueprints Management Page",
   "enabled": true,
-  "dashboard_type": "template",
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "template_variables": {
-    "STACK_NAME": {
-      "default": "Online_Banking_Stack",
-      "contextId": "stack_name"
-    }
-  },
-  "custom_context": {
-    "alert-context": true
-  },
+  "stream": "rda_blueprints_meta",
   "dashboard_filters": {
-    "time_filter": true,
+    "time_filter": false,
     "columns_filter": [
       {
-        "id": "incident_id",
-        "label": "Incident ID",
+        "id": "enabled",
+        "label": "Enabled",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "auto_deploy",
+        "label": "Auto Deploy",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "errors",
+        "label": "Audit Errors",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "warnings",
+        "label": "Audit Warnings",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "name",
+        "label": "Name",
         "type": "TEXT"
       },
       {
-        "id": "i_created_ts",
-        "label": "Created",
-        "type": "DATETIME"
+        "id": "id",
+        "label": "ID",
+        "type": "TEXT"
+      },
+      {
+        "id": "comment",
+        "label": "Description",
+        "type": "TEXT"
+      },
+      {
+        "id": "category",
+        "label": "Category",
+        "type": "TEXT"
       }
-    ],
-    "default_time_filter_labels": [
-      "Last 24 hours"
     ]
   },
   "dashboard_sections": [
     {
-      "title": "KPIs",
+      "title": "Service Blueprints",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "custom_counter",
-          "title": "P1 Incidents (Open)",
-          "stream": "oia-incidents-stream",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "extra_filter": "(i_state is 'Open' or i_state is 'Assigned') and (i_priority is '1' and i_priority_label is 'Critical')",
-          "height": 3,
-          "max_width": 3,
-          "style": {
-            "color-list": [
-              "#e53935"
-            ]
-          },
-          "sparkline": {
-            "interval": "1h"
-          },
-          "agg": "cardinality",
-          "column": "incident_id.keyword",
-          "type": "int",
-          "widget_id": "1946665b"
-        },
-        {
-          "title": "P1 Incidents Trend",
-          "widget_type": "timeseries",
-          "stream": "oia-incidents-stream",
-          "extra_filter": "i_priority is '1' and i_priority_label is 'Critical'",
-          "ts_column": "timestamp",
-          "max_width": 9,
-          "height": 3,
-          "min_width": 9,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": null,
-            "legendLocation": "bottom"
-          },
-          "interval": "15Min",
-          "series_spec": [
-            {
-              "column": "count_",
-              "agg": "sum",
-              "type": "int"
-            }
+          "title": "Service Blueprints",
+          "widget_type": "tabular",
+          "stream": "rda_blueprints_meta",
+          "duration_hours": 87600,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "id",
+            "name",
+            "comment",
+            "category",
+            "note",
+            "url"
           ],
-          "widget_id": "d3a88011"
-        },
-        {
-          "title": "Noise Reduction",
-          "widget_type": "expression_counter",
-          "expression": "(((total_alerts - total_tickets)/total_alerts) * 100) if total_alerts else 0",
-          "unit": "%",
-          "max_width": 2,
-          "height": 3,
-          "min_width": 2,
-          "segments": [
+          "ts_column": "saved_time",
+          "paginated": true,
+          "height": 10,
+          "min_width": 12,
+          "columns": {
+            "id": {
+              "title": "Id",
+              "key": true
+            },
+            "name": {
+              "title": "Name",
+              "key": true
+            },
+            "comment": {
+              "title": "Description"
+            },
+            "category": {
+              "title": "Category",
+              "key": true
+            },
+            "auto_deploy": {
+              "title": "Auto Deploy"
+            },
+            "note": {
+              "title": "Note"
+            },
+            "url": {
+              "title": "URL",
+              "key": true,
+              "visible": false
+            }
+          },
+          "custom_columns": [
             {
-              "variable": "total_tickets",
-              "stream": "oia-alerts-kpi-stream",
-              "ts_column": "timestamp",
-              "duration_hours": 24,
-              "column": "total_incidents",
-              "extra_filter": "kpi_name  in ['noise_reduction_daily']",
-              "agg": "sum",
-              "type": "int"
+              "id": "enabled",
+              "label": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
             },
             {
-              "variable": "total_alerts",
-              "stream": "oia-alerts-kpi-stream",
-              "ts_column": "timestamp",
-              "duration_hours": 24,
-              "column": "total_alerts",
-              "extra_filter": "kpi_name  in ['noise_reduction_daily']",
-              "agg": "sum",
-              "type": "int"
-            }
-          ],
-          "widget_id": "7f935de8"
-        },
-        {
-          "title": "Noise Reduction Hourly Trend",
-          "widget_type": "timeseries",
-          "stream": "oia-alerts-kpi-stream",
-          "extra_filter": "kpi_name  in ['noise_reduction_daily']",
-          "ts_column": "timestamp",
-          "interval": "15Min",
-          "max_width": 4,
-          "height": 3,
-          "min_width": 4,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": null,
-            "legendLocation": "bottom"
-          },
-          "series_spec": [
-            {
-              "column": "kpi_value",
-              "agg": "mean",
-              "type": "int"
-            }
-          ],
-          "widget_id": "d3a88001"
-        },
-        {
-          "title": "Self Healed Incidents",
-          "widget_type": "expression_counter",
-          "expression": "((auto_resolved/total_tickets) * 100) if total_tickets else 0",
-          "unit": "%",
-          "max_width": 3,
-          "height": 3,
-          "min_width": 3,
-          "segments": [
-            {
-              "variable": "auto_resolved",
-              "stream": "oia-incidents-stream",
-              "extra_filter": "i_resolution_code in ['Auto Cleared','Alert Watch'] and i_state in ['Resolved','Closed']",
-              "ts_column": "timestamp",
-              "column": "count_",
-              "agg": "sum",
-              "type": "int"
+              "id": "enableColor",
+              "label": "Enable Color",
+              "expr": "['#4CAF50'] if enabled == 'true' else ['#9E9E9E']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
             },
             {
-              "variable": "total_tickets",
-              "stream": "oia-incidents-stream",
-              "ts_column": "timestamp",
-              "column": "count_",
-              "agg": "sum",
-              "type": "int"
-            }
-          ],
-          "widget_id": "3877ec89"
-        },
-        {
-          "title": "MTTR",
-          "widget_type": "expression_counter",
-          "expression": "minutes/(1000*60*num) if num and minutes else 0 ",
-          "unit": "Mins",
-          "max_width": 3,
-          "height": 3,
-          "min_width": 3,
-          "segments": [
-            {
-              "variable": "minutes",
-              "stream": "oia-incidents-stream",
-              "ts_column": "timestamp",
-              "column": "i_ttr_millis",
-              "agg": "sum",
-              "type": "int"
+              "id": "warningColor",
+              "label": "Warning Color",
+              "expr": "['#FFA726'] if warnings > 0 else ['#03A9F4']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
             },
             {
-              "variable": "num",
-              "stream": "oia-incidents-stream",
-              "ts_column": "timestamp",
-              "column": "count_",
-              "agg": "sum",
-              "type": "int"
+              "id": "errorColor",
+              "label": "Error Color",
+              "expr": "['#B71C1C'] if errors > 0  else ['#03A9F4']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "errors",
+              "label": "Audit Errors",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.errorColor }}' > {{ row.errors }} </span>"
+            },
+            {
+              "id": "warnings",
+              "label": "Audit Warnings",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.warningColor }}' > {{ row.warnings }} </span>"
+            },
+            {
+              "id": "artifact_name",
+              "label": "Artifact Name",
+              "expr": "id",
+              "key": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "artifact_type",
+              "label": "Artifact Type",
+              "expr": "'blueprint'",
+              "key": true,
+              "visible": false,
+              "sortable": false
             }
           ],
-          "widget_id": "7f935ee8"
-        },
-        {
-          "widget_type": "alert_heatmap",
-          "title": "Alert HeatMap",
-          "stream": "oia-alerts-stream",
-          "raised_column": "a_raised_ts",
-          "state_column": "a_status",
-          "cleared_column": "a_created_ts",
-          "severity_column": "a_severity",
-          "window_hours": 24,
-          "num_cells": 24,
-          "height": 6,
-          "max_width": 9,
-          "group_by": [
-            "a_asset_ip_address"
+          "actions": [
+            {
+              "permission": "rda:deploymentspec:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.add.yaml"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Import from Catalog",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-import",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.import"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Dashboard",
+              "type": "GO_TO_APP_STATE",
+              "appName": "dynamic-dashboard",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-dashboard",
+              "drillDownLinkField": "name"
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.view"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit Layout",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-layout",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit.layout"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:enable",
+              "title": "Enable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-activate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.activate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "false",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:disable",
+              "title": "Disable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-deactivate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.deactivate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "true",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "appName": "user-dashboard/rda-artifact-dependencies-app",
+              "identifier": "launch.url.dashboard",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "View Dependencies",
+              "type": "GO_TO_APP_STATE"
+            }
           ],
-          "widget_id": "5f2d2885"
+          "widget_id": "03db8d0f"
         },
         {
-          "title": "Top Noisy Alert Sources",
-          "widget_type": "multi_bar_chart",
-          "stream": "oia-alerts-stream",
-          "extra_filter": "count_ > 0 and a_source_systemname not in ['Alert Group']",
-          "ts_column": "timestamp",
-          "max_width": 6,
-          "height": 6,
-          "min_width": 3,
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "horizontal"
-          },
-          "group_by": [
-            "a_source_systemname",
-            "a_en_node_type"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "type": "int",
-          "widget_id": "2d7432a3"
+          "title": "Deployed Blueprints",
+          "widget_type": "portal_tabular",
+          "reportId": "apps.deployed.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "c8689a20"
         },
         {
-          "widget_type": "custom_counter",
-          "title": "Priority Incidents Handled By L1-Team",
-          "stream": "oia-incidents-stream",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "extra_filter": "i_priority in ['1', '2'] and i_priority_label in ['Critical', 'High'] and i_assigned_to = 'l1user@cfx.com'",
-          "height": 3,
-          "max_width": 6,
-          "style": {
-            "color-list": [
-              "#e53935"
-            ]
-          },
-          "sparkline": {
-            "interval": "1h"
-          },
-          "agg": "cardinality",
-          "column": "incident_id.keyword",
-          "type": "int",
-          "widget_id": "e4d99e9b"
-        },
-        {
-          "widget_type": "custom_counter",
-          "title": "Priority Incidents Handled By L2-Team",
-          "stream": "oia-incidents-stream",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "extra_filter": "i_priority in ['1', '2'] and i_priority_label in ['Critical', 'High']   and i_assigned_to = 'l2user@cfx.com'",
-          "height": 3,
-          "max_width": 6,
-          "style": {
-            "color-list": [
-              "#e53935"
-            ]
-          },
-          "sparkline": {
-            "interval": "1h"
-          },
-          "agg": "cardinality",
-          "column": "incident_id.keyword",
-          "type": "int",
-          "widget_id": "0a0ee29a"
+          "title": "Service Blueprint Catalog",
+          "widget_type": "portal_tabular",
+          "reportId": "apps.available.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "57d54731"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "KPIs",
+      "title": "Service Blueprints",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "custom_counter",
-          "title": "P1 Incidents (Open)",
-          "stream": "oia-incidents-stream",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "extra_filter": "(i_state is 'Open' or i_state is 'Assigned') and (i_priority is '1' and i_priority_label is 'Critical')",
-          "height": 3,
-          "max_width": 3,
-          "style": {
-            "color-list": [
-              "#e53935"
-            ]
-          },
-          "sparkline": {
-            "interval": "1h"
-          },
-          "agg": "cardinality",
-          "column": "incident_id.keyword",
-          "type": "int",
-          "widget_id": "1946665b"
-        },
-        {
-          "title": "P1 Incidents Trend",
-          "widget_type": "timeseries",
-          "stream": "oia-incidents-stream",
-          "extra_filter": "i_priority is '1' and i_priority_label is 'Critical'",
-          "ts_column": "timestamp",
-          "max_width": 9,
-          "height": 3,
-          "min_width": 9,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": null,
-            "legendLocation": "bottom"
-          },
-          "interval": "15Min",
-          "series_spec": [
-            {
-              "column": "count_",
-              "agg": "sum",
-              "type": "int"
-            }
+          "title": "Service Blueprints",
+          "widget_type": "tabular",
+          "stream": "rda_blueprints_meta",
+          "duration_hours": 87600,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "id",
+            "name",
+            "comment",
+            "category",
+            "note",
+            "url"
           ],
-          "widget_id": "d3a88011"
-        },
-        {
-          "title": "Noise Reduction",
-          "widget_type": "expression_counter",
-          "expression": "(((total_alerts - total_tickets)/total_alerts) * 100) if total_alerts else 0",
-          "unit": "%",
-          "max_width": 2,
-          "height": 3,
-          "min_width": 2,
-          "segments": [
+          "ts_column": "saved_time",
+          "paginated": true,
+          "height": 10,
+          "min_width": 12,
+          "columns": {
+            "id": {
+              "title": "Id",
+              "key": true
+            },
+            "name": {
+              "title": "Name",
+              "key": true
+            },
+            "comment": {
+              "title": "Description"
+            },
+            "category": {
+              "title": "Category",
+              "key": true
+            },
+            "auto_deploy": {
+              "title": "Auto Deploy"
+            },
+            "note": {
+              "title": "Note"
+            },
+            "url": {
+              "title": "URL",
+              "key": true,
+              "visible": false
+            }
+          },
+          "custom_columns": [
             {
-              "variable": "total_tickets",
-              "stream": "oia-alerts-kpi-stream",
-              "ts_column": "timestamp",
-              "duration_hours": 24,
-              "column": "total_incidents",
-              "extra_filter": "kpi_name  in ['noise_reduction_daily']",
-              "agg": "sum",
-              "type": "int"
+              "id": "enabled",
+              "label": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
             },
             {
-              "variable": "total_alerts",
-              "stream": "oia-alerts-kpi-stream",
-              "ts_column": "timestamp",
-              "duration_hours": 24,
-              "column": "total_alerts",
-              "extra_filter": "kpi_name  in ['noise_reduction_daily']",
-              "agg": "sum",
-              "type": "int"
-            }
-          ],
-          "widget_id": "7f935de8"
-        },
-        {
-          "title": "Noise Reduction Hourly Trend",
-          "widget_type": "timeseries",
-          "stream": "oia-alerts-kpi-stream",
-          "extra_filter": "kpi_name  in ['noise_reduction_daily']",
-          "ts_column": "timestamp",
-          "interval": "15Min",
-          "max_width": 4,
-          "height": 3,
-          "min_width": 4,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": null,
-            "legendLocation": "bottom"
-          },
-          "series_spec": [
-            {
-              "column": "kpi_value",
-              "agg": "mean",
-              "type": "int"
-            }
-          ],
-          "widget_id": "d3a88001"
-        },
-        {
-          "title": "Self Healed Incidents",
-          "widget_type": "expression_counter",
-          "expression": "((auto_resolved/total_tickets) * 100) if total_tickets else 0",
-          "unit": "%",
-          "max_width": 3,
-          "height": 3,
-          "min_width": 3,
-          "segments": [
-            {
-              "variable": "auto_resolved",
-              "stream": "oia-incidents-stream",
-              "extra_filter": "i_resolution_code in ['Auto Cleared','Alert Watch'] and i_state in ['Resolved','Closed']",
-              "ts_column": "timestamp",
-              "column": "count_",
-              "agg": "sum",
-              "type": "int"
+              "id": "enableColor",
+              "label": "Enable Color",
+              "expr": "['#4CAF50'] if enabled == 'true' else ['#9E9E9E']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
             },
             {
-              "variable": "total_tickets",
-              "stream": "oia-incidents-stream",
-              "ts_column": "timestamp",
-              "column": "count_",
-              "agg": "sum",
-              "type": "int"
-            }
-          ],
-          "widget_id": "3877ec89"
-        },
-        {
-          "title": "MTTR",
-          "widget_type": "expression_counter",
-          "expression": "minutes/(1000*60*num) if num and minutes else 0 ",
-          "unit": "Mins",
-          "max_width": 3,
-          "height": 3,
-          "min_width": 3,
-          "segments": [
-            {
-              "variable": "minutes",
-              "stream": "oia-incidents-stream",
-              "ts_column": "timestamp",
-              "column": "i_ttr_millis",
-              "agg": "sum",
-              "type": "int"
+              "id": "warningColor",
+              "label": "Warning Color",
+              "expr": "['#FFA726'] if warnings > 0 else ['#03A9F4']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
             },
             {
-              "variable": "num",
-              "stream": "oia-incidents-stream",
-              "ts_column": "timestamp",
-              "column": "count_",
-              "agg": "sum",
-              "type": "int"
+              "id": "errorColor",
+              "label": "Error Color",
+              "expr": "['#B71C1C'] if errors > 0  else ['#03A9F4']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "errors",
+              "label": "Audit Errors",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.errorColor }}' > {{ row.errors }} </span>"
+            },
+            {
+              "id": "warnings",
+              "label": "Audit Warnings",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.warningColor }}' > {{ row.warnings }} </span>"
+            },
+            {
+              "id": "artifact_name",
+              "label": "Artifact Name",
+              "expr": "id",
+              "key": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "artifact_type",
+              "label": "Artifact Type",
+              "expr": "'blueprint'",
+              "key": true,
+              "visible": false,
+              "sortable": false
             }
           ],
-          "widget_id": "7f935ee8"
-        },
-        {
-          "widget_type": "alert_heatmap",
-          "title": "Alert HeatMap",
-          "stream": "oia-alerts-stream",
-          "raised_column": "a_raised_ts",
-          "state_column": "a_status",
-          "cleared_column": "a_created_ts",
-          "severity_column": "a_severity",
-          "window_hours": 24,
-          "num_cells": 24,
-          "height": 6,
-          "max_width": 9,
-          "group_by": [
-            "a_asset_ip_address"
+          "actions": [
+            {
+              "permission": "rda:deploymentspec:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.add.yaml"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Import from Catalog",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-import",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.import"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Dashboard",
+              "type": "GO_TO_APP_STATE",
+              "appName": "dynamic-dashboard",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-dashboard",
+              "drillDownLinkField": "name"
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.view"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit Layout",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-layout",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit.layout"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:enable",
+              "title": "Enable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-activate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.activate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "false",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:disable",
+              "title": "Disable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-deactivate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.deactivate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "true",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "appName": "user-dashboard/rda-artifact-dependencies-app",
+              "identifier": "launch.url.dashboard",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "View Dependencies",
+              "type": "GO_TO_APP_STATE"
+            }
           ],
-          "widget_id": "5f2d2885"
+          "widget_id": "03db8d0f"
         },
         {
-          "title": "Top Noisy Alert Sources",
-          "widget_type": "multi_bar_chart",
-          "stream": "oia-alerts-stream",
-          "extra_filter": "count_ > 0 and a_source_systemname not in ['Alert Group']",
-          "ts_column": "timestamp",
-          "max_width": 6,
-          "height": 6,
-          "min_width": 3,
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "horizontal"
-          },
-          "group_by": [
-            "a_source_systemname",
-            "a_en_node_type"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "type": "int",
-          "widget_id": "2d7432a3"
+          "title": "Deployed Blueprints",
+          "widget_type": "portal_tabular",
+          "reportId": "apps.deployed.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "c8689a20"
         },
         {
-          "widget_type": "custom_counter",
-          "title": "Priority Incidents Handled By L1-Team",
-          "stream": "oia-incidents-stream",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "extra_filter": "i_priority in ['1', '2'] and i_priority_label in ['Critical', 'High'] and i_assigned_to = 'l1user@cfx.com'",
-          "height": 3,
-          "max_width": 6,
-          "style": {
-            "color-list": [
-              "#e53935"
-            ]
-          },
-          "sparkline": {
-            "interval": "1h"
-          },
-          "agg": "cardinality",
-          "column": "incident_id.keyword",
-          "type": "int",
-          "widget_id": "e4d99e9b"
-        },
-        {
-          "widget_type": "custom_counter",
-          "title": "Priority Incidents Handled By L2-Team",
-          "stream": "oia-incidents-stream",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "extra_filter": "i_priority in ['1', '2'] and i_priority_label in ['Critical', 'High']   and i_assigned_to = 'l2user@cfx.com'",
-          "height": 3,
-          "max_width": 6,
-          "style": {
-            "color-list": [
-              "#e53935"
-            ]
-          },
-          "sparkline": {
-            "interval": "1h"
-          },
-          "agg": "cardinality",
-          "column": "incident_id.keyword",
-          "type": "int",
-          "widget_id": "0a0ee29a"
+          "title": "Service Blueprint Catalog",
+          "widget_type": "portal_tabular",
+          "reportId": "apps.available.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "57d54731"
         }
       ]
     }
