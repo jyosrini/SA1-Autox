@@ -1,80 +1,60 @@
 {
-  "name": "navigator",
-  "label": "Navigator",
-  "description": "Navigator",
-  "enabled": true,
+  "name": "rda-health-agents",
+  "label": "Agents",
+  "description": "Agents",
+  "enabled": false,
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "short_label": "Stack",
-  "context_label_id": "stack_name",
-  "dashboard_folder": "Default",
-  "version": "23.10.02.1",
   "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 1 month"
-    ]
-  },
-  "template_variables": {
-    "CITY": {
-      "contextId": [
-        "navigatorSelectionContexts",
-        "secondaryListSelection",
-        "city"
-      ]
-    },
-    "NAME": {
-      "contextId": [
-        "navigatorSelectionContexts",
-        "secondaryListSelection",
-        "name"
-      ]
-    }
-  },
-  "navigation_dashboards": {
-    "tree_data": {
-      "column_name": "city",
-      "pstream_name": "main",
-      "cfxql_query": "timestamp is after -720d "
-    },
-    "tree_detail": {
-      "display_column": "name",
-      "pstream_name": "main",
-      "cfxql_query": "timestamp is after -720d "
-    },
-    "showNodeIcon": false,
-    "showSearchBox": true
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Node Details",
+      "title": "Agents",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Details",
-          "widget_type": "tabular",
-          "extra_filter": "(name is '{{NAME}}') and (city is '{{CITY}}')",
-          "stream": "main",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "widget_id": "cc9a9626"
+          "title": "RDA Agents",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.agents.tabular",
+          "paginated": true,
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "c2488225"
+        },
+        {
+          "title": "Event Gateway Endpoints",
+          "widget_type": "portal_tabular",
+          "reportId": "eventgw.status.tabular",
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "9cc1d5b0"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Node Details",
+      "title": "Agents",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Details",
-          "widget_type": "tabular",
-          "extra_filter": "(name is '{{NAME}}') and (city is '{{CITY}}')",
-          "stream": "main",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "widget_id": "cc9a9626"
+          "title": "RDA Agents",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.agents.tabular",
+          "paginated": true,
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "c2488225"
+        },
+        {
+          "title": "Event Gateway Endpoints",
+          "widget_type": "portal_tabular",
+          "reportId": "eventgw.status.tabular",
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "9cc1d5b0"
         }
       ]
     }

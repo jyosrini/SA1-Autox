@@ -1,45 +1,49 @@
 {
-  "name": "rda-graph-app",
-  "label": "Graph: {{GRAPH_NAME}}",
-  "is_template": true,
-  "description": "Graph App",
-  "version": "24.7.24.1",
+  "name": "rda-pstream-stats-template",
+  "label": "Persistent Stream Stats",
+  "description": "Persistent Stream Stats",
   "enabled": true,
+  "dashboard_type": "template",
+  "dashboard_style": "auto",
   "template_variables": {
-    "GRAPH_NAME": {
-      "contextId": "graph_name"
+    "PSTREAM_NAME": {
+      "contextId": "pstream_name"
+    },
+    "TS_COLUMN": {
+      "contextId": "ts_column"
     }
   },
   "dashboard_filters": {
-    "time_filter": false,
-    "columns_filter": []
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Example"
-    }
-  ],
-  "dashboard_type": "app",
-  "dashboard_pages": [
-    {
-      "name": "rda-graph-nodes-data-preview-template",
-      "label": "Nodes",
-      "icon": "enrichment.svg"
-    },
-    {
-      "name": "rda-graph-edges-data-preview-template",
-      "label": "Edges",
-      "icon": "microserviceTrace.svg"
-    },
-    {
-      "name": "rda-graph-aql-editor-template",
-      "label": "AQL",
-      "icon": "collaboration.svg"
+      "title": "Stats",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Details",
+          "widget_type": "pstream_details",
+          "stream": "{{PSTREAM_NAME}}",
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
+        }
+      ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Example"
+      "title": "Stats",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Details",
+          "widget_type": "pstream_details",
+          "stream": "{{PSTREAM_NAME}}",
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
+        }
+      ]
     }
   ]
 }
