@@ -1,49 +1,45 @@
 {
-  "name": "rda-pstream-stats-template",
-  "label": "Persistent Stream Stats",
-  "description": "Persistent Stream Stats",
+  "name": "rda-graph-app",
+  "label": "Graph: {{GRAPH_NAME}}",
+  "is_template": true,
+  "description": "Graph App",
+  "version": "24.7.24.1",
   "enabled": true,
-  "dashboard_type": "template",
-  "dashboard_style": "auto",
   "template_variables": {
-    "PSTREAM_NAME": {
-      "contextId": "pstream_name"
-    },
-    "TS_COLUMN": {
-      "contextId": "ts_column"
+    "GRAPH_NAME": {
+      "contextId": "graph_name"
     }
   },
   "dashboard_filters": {
-    "time_filter": false
+    "time_filter": false,
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Stats",
-      "show_filter": false,
-      "widgets": [
-        {
-          "title": "Details",
-          "widget_type": "pstream_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "widget_id": "2da925b3"
-        }
-      ]
+      "title": "Example"
+    }
+  ],
+  "dashboard_type": "app",
+  "dashboard_pages": [
+    {
+      "name": "rda-graph-nodes-data-preview-template",
+      "label": "Nodes",
+      "icon": "enrichment.svg"
+    },
+    {
+      "name": "rda-graph-edges-data-preview-template",
+      "label": "Edges",
+      "icon": "microserviceTrace.svg"
+    },
+    {
+      "name": "rda-graph-aql-editor-template",
+      "label": "AQL",
+      "icon": "collaboration.svg"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Stats",
-      "show_filter": false,
-      "widgets": [
-        {
-          "title": "Details",
-          "widget_type": "pstream_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "widget_id": "2da925b3"
-        }
-      ]
+      "title": "Example"
     }
   ]
 }
