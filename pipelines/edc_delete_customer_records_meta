@@ -1,11 +1,14 @@
 folder: OI
-name: edc_delete_customer_records
+name: edc_oi_generate_token
 description: test pipeline
-data_path: pipelines/data/edc_delete_customer_records/2025-04-14_01/data.json
-usecase: Delete OI data from 2 streams
+data_path: pipelines/data/edc_oi_generate_token/2025_07_23_01/data.json
+usecase: ''
 category: ''
-sources: {}
+sources:
+  restclient:
+    name: restclient
+    type: restclient
 artifacts: []
-version: 2025-04-14_01
+version: '2025_07_23_01'
 file_type: json
-checksum: c65ecebb
+checksum: 6fee65be
