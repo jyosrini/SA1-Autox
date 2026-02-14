@@ -1,43 +1,64 @@
 {
-  "name": "tenant-info",
-  "description": "MSP Info",
-  "label": "MSP Info",
-  "enabled": false,
+  "name": "global-service-configs",
+  "label": "Service Configurations",
+  "description": "Service Configurations",
+  "enabled": true,
   "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "template_variables": null,
-  "version": "23.2.7.1",
+  "dashboard_folder": "administration",
+  "exportable": false,
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Information",
+      "title": "Service Configurations",
       "show_filter": false,
       "widgets": [
         {
-          "title": "MSP Details",
-          "widget_type": "portal_tabular",
-          "reportId": "tenant.details.tabular",
-          "height": 10,
-          "min_wdith": 12,
-          "widget_id": "1e85b253"
+          "title": "Service Configurations",
+          "widget_type": "tabular",
+          "api-endpoint": {
+            "service-name": "configuration-service",
+            "namespace": "io.cfx.dimensions.app",
+            "methodName": "invokeAppApi:getServiceConfigurationsTabularReport",
+            "version": "*",
+            "useReportContext": true,
+            "stringified-params": true,
+            "parse-output": false,
+            "params": [
+              {
+                "context": {}
+              }
+            ]
+          },
+          "widget_id": "bae3b367"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Information",
+      "title": "Service Configurations",
       "show_filter": false,
       "widgets": [
         {
-          "title": "MSP Details",
-          "widget_type": "portal_tabular",
-          "reportId": "tenant.details.tabular",
-          "height": 10,
-          "min_wdith": 12,
-          "widget_id": "1e85b253"
+          "title": "Service Configurations",
+          "widget_type": "tabular",
+          "api-endpoint": {
+            "service-name": "configuration-service",
+            "namespace": "io.cfx.dimensions.app",
+            "methodName": "invokeAppApi:getServiceConfigurationsTabularReport",
+            "version": "*",
+            "useReportContext": true,
+            "stringified-params": true,
+            "parse-output": false,
+            "params": [
+              {
+                "context": {}
+              }
+            ]
+          },
+          "widget_id": "bae3b367"
         }
       ]
     }
