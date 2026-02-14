@@ -1,47 +1,48 @@
 {
-  "name": "rda-pstream-stats-template",
-  "label": "Persistent Stream Stats",
-  "description": "Persistent Stream Stats",
-  "enabled": true,
-  "dashboard_type": "template",
+  "name": "rda-health-workers",
+  "label": "Workers",
+  "description": "Workers",
+  "enabled": false,
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "template_variables": {
-    "PSTREAM_NAME": {
-      "contextId": "pstream_name"
-    },
-    "TS_COLUMN": {
-      "contextId": "ts_column"
-    }
-  },
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Stats",
+      "title": "Workers",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Details",
-          "widget_type": "pstream_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "widget_id": "2da925b3"
+          "title": "Workers",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.workers.tabular",
+          "params": {
+            "pod_type": "worker"
+          },
+          "height": 10,
+          "min_width": 10,
+          "widget_id": "d6500713"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Stats",
+      "title": "Workers",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Details",
-          "widget_type": "pstream_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "widget_id": "2da925b3"
+          "title": "Workers",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.workers.tabular",
+          "params": {
+            "pod_type": "worker"
+          },
+          "height": 10,
+          "min_width": 10,
+          "widget_id": "d6500713"
         }
       ]
     }
