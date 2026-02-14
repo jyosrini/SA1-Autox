@@ -1,45 +1,47 @@
 {
-  "name": "rda-diff-preview",
-  "label": "Git Diff",
-  "description": "Preview dashboard to view the diffs in html",
-  "enabled": false,
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
+  "name": "rda-pstream-stats-template",
+  "label": "Persistent Stream Stats",
+  "description": "Persistent Stream Stats",
+  "enabled": true,
   "dashboard_type": "template",
+  "dashboard_style": "auto",
   "template_variables": {
-    "FILENAME": {
-      "contextId": "filename"
+    "PSTREAM_NAME": {
+      "contextId": "pstream_name"
     },
-    "DIFF_HTML": {
-      "contextId": "diff_html"
+    "TS_COLUMN": {
+      "contextId": "ts_column"
     }
+  },
+  "dashboard_filters": {
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Diff",
+      "title": "Stats",
+      "show_filter": false,
       "widgets": [
         {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 3,
-          "label": "<div style='overflow: auto'>{{DIFF_HTML}}</div>",
-          "widget_id": "cc11f713"
+          "title": "Details",
+          "widget_type": "pstream_details",
+          "stream": "{{PSTREAM_NAME}}",
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Diff",
+      "title": "Stats",
+      "show_filter": false,
       "widgets": [
         {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 3,
-          "label": "<div style='overflow: auto'>{{DIFF_HTML}}</div>",
-          "widget_id": "cc11f713"
+          "title": "Details",
+          "widget_type": "pstream_details",
+          "stream": "{{PSTREAM_NAME}}",
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
         }
       ]
     }
