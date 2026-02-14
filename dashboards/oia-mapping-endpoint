@@ -1,1034 +1,397 @@
 {
-  "name": "oia-mapping-endpoint",
-  "label": "Oia Mapping And Endpoint Dashboards",
-  "is_template": false,
-  "description": "Oia Mapping And Endpoint Dashboards",
+  "name": "rda_system_snapshots_details",
+  "label": "Snapshots Details",
+  "description": "Snapshots Details",
+  "dashboard_folder": "System",
+  "version": "1.0.2",
+  "enabled": false,
   "live_edit": true,
-  "version": "24.07.24.2",
-  "enabled": true,
+  "stream": "rda_system_snapshots_details",
   "dashboard_type": "dashboard",
-  "dashboard_folder": "Default",
-  "dashboard_style": "tabbed",
+  "template_variables0": {
+    "SNAPSHOT_NAME": {
+      "contextId": "snapshot_name"
+    }
+  },
+  "dashboard_filters": {
+    "time_filter": true,
+    "default_time_filter_labels": [
+      "All Time"
+    ],
+    "extra_filter0": "snapshot_name is '{{SNAPSHOT_NAME}}'",
+    "columns_filter": [
+      {
+        "id": "artifact_name",
+        "label": "Artifact Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "artifact_type",
+        "label": "Artifact Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "artifact_version_visibility",
+        "label": "Artifact Checksum In Snapshot Repo",
+        "type": "TEXT"
+      },
+      {
+        "id": "checksum",
+        "label": "Checksum",
+        "type": "TEXT"
+      },
+      {
+        "id": "object_name",
+        "label": "Object Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "snapshot_name",
+        "label": "Snapshot Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "snapshot_type",
+        "label": "Snapshot Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "size",
+        "label": "Size",
+        "type": "DOUBLE"
+      }
+    ],
+    "group_filters": [
+      {
+        "stream": "rda_system_snapshots_details",
+        "title": "Artifact Type",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "artifact_type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_system_snapshots_details",
+        "title": "Artifact Checksum In Snapshot Repo",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "artifact_version_visibility"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_system_snapshots_details",
+        "title": "Snapshot Name",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "snapshot_name"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_system_snapshots_details",
+        "title": "Snapshot Type",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "snapshot_type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      }
+    ]
+  },
   "dashboard_sections": [
     {
-      "title": "Alert Endpoints",
+      "title": "rda_system_snapshots_details",
       "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
       "widgets": [
         {
-          "title": "Alert Endpoints",
-          "widget_type": "tabular",
-          "stream": "oia_alertendpoints",
-          "ts_column": "createdat",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "remote_searchable": true,
-          "sorting1": [
-            {
-              "precedence": "desc"
-            }
+          "widget_type": "pie_chart",
+          "title": "Artifact Type",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "artifact_type"
           ],
-          "remote_searchable_cols": [],
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 50,
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "cc2794c5"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Snapshot Name",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "snapshot_name"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "4dee4aec"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Snapshot Type",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "snapshot_type"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "6f0e550a"
+        },
+        {
+          "title": "Snapshot Manifest",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 8,
+          "min_width": 12,
+          "paginated": true,
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
           "columns": {
-            "name": {
-              "title": "Name",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "description": {
-              "key": true,
-              "visible": true,
-              "title": "Description",
-              "defaultWidth": 150
-            },
-            "type": {
-              "key": true,
-              "visible": true,
-              "title": "Endpoint Type",
-              "defaultWidth": 150
-            },
-            "role": {
-              "title": "Endpoint Role",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "category": {
-              "title": "Event Category",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "eventtype": {
-              "title": "Event Type",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "enabled": {
-              "title": "Enable/Disable",
+            "snapshot_type": {
+              "title": "Snapshot Type",
               "type": "TEXT",
-              "visible": true,
-              "key": true,
-              "defaultValue": "yes",
-              "uiProperties": {
-                "valueMap": {
-                  "editType": "switch",
-                  "trueValue": "yes",
-                  "falseValue": "no",
-                  "defaultValue": "yes",
-                  "editable": true,
-                  "showLabel": false
-                },
-                "editEndpoint": {
-                  "service-name": "configuration-service",
-                  "namespace": "io.cfx.dimensions.app",
-                  "methodName": "invokeAppApi:enableDisableEndpoint",
-                  "stringified-params": true,
-                  "useReportContext": true,
-                  "parse-output": false,
-                  "params": [
-                    {
-                      "context": {}
-                    }
-                  ]
-                }
-              }
+              "hidden": false
+            },
+            "snapshot_name": {
+              "title": "Snapshot Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "artifact_type": {
+              "title": "Artifact Type",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "artifact_name": {
+              "title": "Artifact Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "artifact_version_visibility": {
+              "title": "Artifact Checksum In Snapshot Repo",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "size": {
+              "title": "Size",
+              "type": "DOUBLE",
+              "hidden": false
+            },
+            "checksum": {
+              "title": "Checksum",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "object_name": {
+              "title": "Object Name",
+              "type": "TEXT",
+              "visible": false,
+              "key": true
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME"
             }
           },
           "actions": [
             {
-              "permission": "oia:eventEndPoint:add",
-              "title": "Add",
+              "title": "View",
               "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "NONE",
-              "identifier": "configuration-service:cfx.eventendpoint.upsert",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventendpoint.upsert",
-                    "context": {},
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventEndPoint:delete",
-              "title": "Delete",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
               "selectionType": "SINGLE",
-              "identifier": "configuration-service:cfx.eventendpoint.delete",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "NOT_EQUAL",
-                    "conditionValue": "System",
-                    "fieldId": "createdby"
-                  }
-                ]
-              },
+              "permission": "rda:dataset:view",
+              "identifier": "rda.saas.snapshot.obj.view",
               "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
+                "service-name": "saas-reports",
+                "methodName": "getForm",
                 "stringified-params": true,
-                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "form_id": "cfx.eventendpoint.delete",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventEndPoint:edit",
-              "title": "Edit",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "configuration-service:cfx.eventendpoint.upsert",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "NOT_EQUAL",
-                    "conditionValue": "System",
-                    "fieldId": "createdby"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventendpoint.upsert",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventEndPoint:webhook",
-              "title": "Webhook URL",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "AND",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "source",
-                    "fieldId": "role"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "webhook-basic",
-                    "fieldId": "type"
-                  }
-                ]
-              },
-              "identifier": "configuration-service:cfx.eventendpoint.view",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventendpoint.view",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventEndPoint:webhook",
-              "title": "Kafka Details",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "AND",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "source",
-                    "fieldId": "role"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "kafka",
-                    "fieldId": "type"
-                  }
-                ]
-              },
-              "identifier": "configuration-service:cfx.eventendpoint.viewkafka",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventendpoint.viewkafka",
-                    "context": {}
+                    "formId": "rda.saas.snapshot.obj.view"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "94a3fc11"
-        }
-      ]
-    },
-    {
-      "title": "Alert Mappings",
-      "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
-      "widgets": [
-        {
-          "title": "Alert Mappings",
-          "widget_type": "tabular",
-          "stream": "oia_eventmapping",
-          "ts_column": "updated",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [],
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 50,
-          "sorting1": [
-            {
-              "precedence": "desc"
-            }
-          ],
-          "columns": {
-            "mappingid": {
-              "title": "Mapping Id",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "description": {
-              "title": "Description",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "sourcename": {
-              "key": true,
-              "visible": true,
-              "title": "Source Endpoint",
-              "defaultWidth": 150
-            },
-            "targetname": {
-              "key": true,
-              "visible": true,
-              "title": "Target Endpoint",
-              "defaultWidth": 150
-            },
-            "sourceendpointtype": {
-              "title": "Source Endpoint Type",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "targetendpointtype": {
-              "title": "Target Endpoint Type",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "sourcemapper": {
-              "title": "Source Mapper",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "sourcepipeline": {
-              "title": "Source Pipeline",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "sourcebundle": {
-              "title": "Source Bundle",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "enabled": {
-              "title": "Enable/Disable",
-              "type": "TEXT",
-              "visible": true,
-              "key": true,
-              "defaultValue": "yes",
-              "uiProperties": {
-                "valueMap": {
-                  "editType": "switch",
-                  "trueValue": "yes",
-                  "falseValue": "no",
-                  "defaultValue": "yes",
-                  "editable": true,
-                  "showLabel": false
-                },
-                "editEndpoint": {
-                  "service-name": "saas-reports",
-                  "namespace": "io.cfx.dimensions.app",
-                  "methodName": "getForm",
-                  "stringified-params": true,
-                  "parse-output": true,
-                  "params": [
-                    {}
-                  ]
-                }
-              }
-            },
-            "createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            }
-          },
-          "actions": [
-            {
-              "permission": "oia:eventMapping:edit",
-              "title": "View Mapping Logic",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.view",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventmapping.view",
-                    "action": "view",
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventMapping:add",
-              "title": "Add",
-              "type": "POPUP_WIZARD",
-              "icon": "mdi mdi-plus",
-              "selectionType": "NONE",
-              "identifier": "configuration-service:cfx.eventmapping.wizard",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getWizard",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "wizard_id": "cfx.eventmapping.wizard",
-                    "wizardData": {},
-                    "context": {},
-                    "action": "add",
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventMapping:edit",
-              "title": "Edit",
-              "type": "POPUP_WIZARD",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.wizard",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getWizard",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "wizard_id": "cfx.eventmapping.wizard",
-                    "wizardData": {},
-                    "context": {},
-                    "action": "edit",
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventMapping:edit",
-              "title": "Clone",
-              "type": "POPUP_WIZARD",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.wizard",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getWizard",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "wizard_id": "cfx.eventmapping.wizard",
-                    "wizardData": {},
-                    "context": {},
-                    "action": "clone",
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventMapping:delete",
-              "title": "Delete",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "configuration-service:cfx.eventmapping.delete",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventmapping.delete",
-                    "context": {}
-                  }
-                ]
-              }
-            }
-          ],
-          "widget_id": "a803750d"
+          "widget_id": "7089a9ae"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Alert Endpoints",
+      "title": "rda_system_snapshots_details",
       "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
       "widgets": [
         {
-          "title": "Alert Endpoints",
-          "widget_type": "tabular",
-          "stream": "oia_alertendpoints",
-          "ts_column": "createdat",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "remote_searchable": true,
-          "sorting1": [
-            {
-              "precedence": "desc"
-            }
+          "widget_type": "pie_chart",
+          "title": "Artifact Type",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "artifact_type"
           ],
-          "remote_searchable_cols": [],
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 50,
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "cc2794c5"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Snapshot Name",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "snapshot_name"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "4dee4aec"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Snapshot Type",
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "snapshot_type"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "6f0e550a"
+        },
+        {
+          "title": "Snapshot Manifest",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 8,
+          "min_width": 12,
+          "paginated": true,
+          "stream": "rda_system_snapshots_details",
+          "ts_column": "timestamp",
+          "extra_filter": null,
           "columns": {
-            "name": {
-              "title": "Name",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "description": {
-              "key": true,
-              "visible": true,
-              "title": "Description",
-              "defaultWidth": 150
-            },
-            "type": {
-              "key": true,
-              "visible": true,
-              "title": "Endpoint Type",
-              "defaultWidth": 150
-            },
-            "role": {
-              "title": "Endpoint Role",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "category": {
-              "title": "Event Category",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "eventtype": {
-              "title": "Event Type",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "enabled": {
-              "title": "Enable/Disable",
+            "snapshot_type": {
+              "title": "Snapshot Type",
               "type": "TEXT",
-              "visible": true,
-              "key": true,
-              "defaultValue": "yes",
-              "uiProperties": {
-                "valueMap": {
-                  "editType": "switch",
-                  "trueValue": "yes",
-                  "falseValue": "no",
-                  "defaultValue": "yes",
-                  "editable": true,
-                  "showLabel": false
-                },
-                "editEndpoint": {
-                  "service-name": "configuration-service",
-                  "namespace": "io.cfx.dimensions.app",
-                  "methodName": "invokeAppApi:enableDisableEndpoint",
-                  "stringified-params": true,
-                  "useReportContext": true,
-                  "parse-output": false,
-                  "params": [
-                    {
-                      "context": {}
-                    }
-                  ]
-                }
-              }
+              "hidden": false
+            },
+            "snapshot_name": {
+              "title": "Snapshot Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "artifact_type": {
+              "title": "Artifact Type",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "artifact_name": {
+              "title": "Artifact Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "artifact_version_visibility": {
+              "title": "Artifact Checksum In Snapshot Repo",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "size": {
+              "title": "Size",
+              "type": "DOUBLE",
+              "hidden": false
+            },
+            "checksum": {
+              "title": "Checksum",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "object_name": {
+              "title": "Object Name",
+              "type": "TEXT",
+              "visible": false,
+              "key": true
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME"
             }
           },
           "actions": [
             {
-              "permission": "oia:eventEndPoint:add",
-              "title": "Add",
+              "title": "View",
               "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "NONE",
-              "identifier": "configuration-service:cfx.eventendpoint.upsert",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventendpoint.upsert",
-                    "context": {},
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventEndPoint:delete",
-              "title": "Delete",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
               "selectionType": "SINGLE",
-              "identifier": "configuration-service:cfx.eventendpoint.delete",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "NOT_EQUAL",
-                    "conditionValue": "System",
-                    "fieldId": "createdby"
-                  }
-                ]
-              },
+              "permission": "rda:dataset:view",
+              "identifier": "rda.saas.snapshot.obj.view",
               "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
+                "service-name": "saas-reports",
+                "methodName": "getForm",
                 "stringified-params": true,
-                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "form_id": "cfx.eventendpoint.delete",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventEndPoint:edit",
-              "title": "Edit",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "configuration-service:cfx.eventendpoint.upsert",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "NOT_EQUAL",
-                    "conditionValue": "System",
-                    "fieldId": "createdby"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventendpoint.upsert",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventEndPoint:webhook",
-              "title": "Webhook URL",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "AND",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "source",
-                    "fieldId": "role"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "webhook-basic",
-                    "fieldId": "type"
-                  }
-                ]
-              },
-              "identifier": "configuration-service:cfx.eventendpoint.view",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventendpoint.view",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventEndPoint:webhook",
-              "title": "Kafka Details",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "AND",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "source",
-                    "fieldId": "role"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "kafka",
-                    "fieldId": "type"
-                  }
-                ]
-              },
-              "identifier": "configuration-service:cfx.eventendpoint.viewkafka",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventendpoint.viewkafka",
-                    "context": {}
+                    "formId": "rda.saas.snapshot.obj.view"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "94a3fc11"
-        }
-      ]
-    },
-    {
-      "title": "Alert Mappings",
-      "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
-      "widgets": [
-        {
-          "title": "Alert Mappings",
-          "widget_type": "tabular",
-          "stream": "oia_eventmapping",
-          "ts_column": "updated",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [],
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 50,
-          "sorting1": [
-            {
-              "precedence": "desc"
-            }
-          ],
-          "columns": {
-            "mappingid": {
-              "title": "Mapping Id",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "description": {
-              "title": "Description",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "sourcename": {
-              "key": true,
-              "visible": true,
-              "title": "Source Endpoint",
-              "defaultWidth": 150
-            },
-            "targetname": {
-              "key": true,
-              "visible": true,
-              "title": "Target Endpoint",
-              "defaultWidth": 150
-            },
-            "sourceendpointtype": {
-              "title": "Source Endpoint Type",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "targetendpointtype": {
-              "title": "Target Endpoint Type",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "sourcemapper": {
-              "title": "Source Mapper",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "sourcepipeline": {
-              "title": "Source Pipeline",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "sourcebundle": {
-              "title": "Source Bundle",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "enabled": {
-              "title": "Enable/Disable",
-              "type": "TEXT",
-              "visible": true,
-              "key": true,
-              "defaultValue": "yes",
-              "uiProperties": {
-                "valueMap": {
-                  "editType": "switch",
-                  "trueValue": "yes",
-                  "falseValue": "no",
-                  "defaultValue": "yes",
-                  "editable": true,
-                  "showLabel": false
-                },
-                "editEndpoint": {
-                  "service-name": "saas-reports",
-                  "namespace": "io.cfx.dimensions.app",
-                  "methodName": "getForm",
-                  "stringified-params": true,
-                  "parse-output": true,
-                  "params": [
-                    {}
-                  ]
-                }
-              }
-            },
-            "createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            }
-          },
-          "actions": [
-            {
-              "permission": "oia:eventMapping:edit",
-              "title": "View Mapping Logic",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.view",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventmapping.view",
-                    "action": "view",
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventMapping:add",
-              "title": "Add",
-              "type": "POPUP_WIZARD",
-              "icon": "mdi mdi-plus",
-              "selectionType": "NONE",
-              "identifier": "configuration-service:cfx.eventmapping.wizard",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getWizard",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "wizard_id": "cfx.eventmapping.wizard",
-                    "wizardData": {},
-                    "context": {},
-                    "action": "add",
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventMapping:edit",
-              "title": "Edit",
-              "type": "POPUP_WIZARD",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.wizard",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getWizard",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "wizard_id": "cfx.eventmapping.wizard",
-                    "wizardData": {},
-                    "context": {},
-                    "action": "edit",
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventMapping:edit",
-              "title": "Clone",
-              "type": "POPUP_WIZARD",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "cfxdimensions-app-irmconfiguration:cfx.eventmapping.wizard",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getWizard",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "wizard_id": "cfx.eventmapping.wizard",
-                    "wizardData": {},
-                    "context": {},
-                    "action": "clone",
-                    "eventCategory": "eventCategory"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:eventMapping:delete",
-              "title": "Delete",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "configuration-service:cfx.eventmapping.delete",
-              "api-endpoint": {
-                "service-name": "configuration-service",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.eventmapping.delete",
-                    "context": {}
-                  }
-                ]
-              }
-            }
-          ],
-          "widget_id": "a803750d"
+          "widget_id": "7089a9ae"
         }
       ]
     }
