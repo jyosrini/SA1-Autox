@@ -1,193 +1,117 @@
 {
-  "name": "aiops-org-configuration-app",
-  "description": "AIOps Organization Configuration",
-  "label": "AIOps Organization Configuration",
+  "name": "rda-mgmt-page-botlibrary",
+  "label": "Pipelines",
+  "description": " Pipelines Management Page",
   "enabled": true,
-  "dashboard_type": "template",
+  "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "version": "25.2.7.1",
+  "dashboard_style": "auto",
+  "exportable": false,
   "dashboard_filters": {
-    "time_filter": false
-  },
-  "template_variables": {
-    "USER_PROJECTS": {
-      "contextId": "USER_PROJECTS"
-    }
+    "time_filter": true,
+    "columns_filter": [
+      {
+        "id": "source",
+        "label": "Integration",
+        "type": "TEXT"
+      },
+      {
+        "id": "source_type",
+        "label": "Integration Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "tmpl",
+        "label": "Bot Capabilities",
+        "type": "TEXT"
+      },
+      {
+        "id": "bot_name",
+        "label": "Bot Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "bot_description",
+        "label": "Description",
+        "type": "TEXT"
+      },
+      {
+        "id": "flags",
+        "label": "Flags",
+        "type": "TEXT"
+      },
+      {
+        "id": "input_type",
+        "label": "Input Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "api_model",
+        "label": "API Model",
+        "type": "TEXT"
+      },
+      {
+        "id": "is_block",
+        "label": "Is Block",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "is_source",
+        "label": "Is Source",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "is_sink",
+        "label": "Is Sink",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "formDefinition",
+        "label": "Form Definition",
+        "type": "TEXT"
+      },
+      {
+        "id": "bot_url",
+        "label": "Bot URL",
+        "type": "TEXT"
+      },
+      {
+        "id": "saved_time",
+        "label": "Saved Time",
+        "type": "DATETIME"
+      }
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Organizations",
+      "title": "Bot Library",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Organizations",
-          "widget_type": "tabular",
-          "stream": "rda_system_organizations",
-          "remote_searchable": true,
-          "ts_column": "createdAt",
-          "duration_hours": 8760000,
+          "title": "Bot Library",
+          "widget_type": "portal_tabular",
+          "reportId": "bots.list",
           "paginated": true,
-          "height": 6,
+          "height": 10,
           "min_wdith": 12,
-          "extra_filter": "projectId in {{USER_PROJECTS}}",
-          "columns": {
-            "customerName": {
-              "title": "Customer Name",
-              "key": true
-            },
-            "tag1": {
-              "title": "Customer Tag1",
-              "visible": false,
-              "key": true
-            },
-            "description": {
-              "title": "Description",
-              "key": true,
-              "hidden": true
-            },
-            "customerId": {
-              "title": "customerId",
-              "key": true,
-              "visible": false
-            },
-            "projectId": {
-              "title": "projectId",
-              "key": true,
-              "visible": false
-            }
-          },
-          "custom_columns": [
-            {
-              "id": "customerTag",
-              "label": "Customer Tag",
-              "expr": "str(tag1)",
-              "visible": true,
-              "key": true
-            },
-            {
-              "id": "customerDescription",
-              "label": "Customer Description",
-              "expr": "str(description)",
-              "visible": false,
-              "key": true
-            }
-          ],
-          "actions": [
-            {
-              "appName": "user-dashboard/correlation-suppression-policies-configuration",
-              "permission": "rda:page:view",
-              "identifier": "corr_supp_policies_configuration",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Configure",
-              "type": "GO_TO_APP_STATE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "customerName",
-                    "paramId": "customerName"
-                  },
-                  {
-                    "paramKey": "projectId",
-                    "paramId": "project_id"
-                  },
-                  {
-                    "paramKey": "customerTag",
-                    "paramId": "customer_tag"
-                  }
-                ]
-              }
-            }
-          ],
-          "widget_id": "corr_supp_policies_configuration"
+          "widget_id": "182287d1"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Organizations",
+      "title": "Bot Library",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Organizations",
-          "widget_type": "tabular",
-          "stream": "rda_system_organizations",
-          "remote_searchable": true,
-          "ts_column": "createdAt",
-          "duration_hours": 8760000,
+          "title": "Bot Library",
+          "widget_type": "portal_tabular",
+          "reportId": "bots.list",
           "paginated": true,
-          "height": 6,
+          "height": 10,
           "min_wdith": 12,
-          "extra_filter": "projectId in {{USER_PROJECTS}}",
-          "columns": {
-            "customerName": {
-              "title": "Customer Name",
-              "key": true
-            },
-            "tag1": {
-              "title": "Customer Tag1",
-              "visible": false,
-              "key": true
-            },
-            "description": {
-              "title": "Description",
-              "key": true,
-              "hidden": true
-            },
-            "customerId": {
-              "title": "customerId",
-              "key": true,
-              "visible": false
-            },
-            "projectId": {
-              "title": "projectId",
-              "key": true,
-              "visible": false
-            }
-          },
-          "custom_columns": [
-            {
-              "id": "customerTag",
-              "label": "Customer Tag",
-              "expr": "str(tag1)",
-              "visible": true,
-              "key": true
-            },
-            {
-              "id": "customerDescription",
-              "label": "Customer Description",
-              "expr": "str(description)",
-              "visible": false,
-              "key": true
-            }
-          ],
-          "actions": [
-            {
-              "appName": "user-dashboard/correlation-suppression-policies-configuration",
-              "permission": "rda:page:view",
-              "identifier": "corr_supp_policies_configuration",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Configure",
-              "type": "GO_TO_APP_STATE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "customerName",
-                    "paramId": "customerName"
-                  },
-                  {
-                    "paramKey": "projectId",
-                    "paramId": "project_id"
-                  },
-                  {
-                    "paramKey": "customerTag",
-                    "paramId": "customer_tag"
-                  }
-                ]
-              }
-            }
-          ],
-          "widget_id": "corr_supp_policies_configuration"
+          "widget_id": "182287d1"
         }
       ]
     }
