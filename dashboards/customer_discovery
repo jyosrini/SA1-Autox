@@ -1,819 +1,628 @@
 {
-  "name": "customer_discovery",
-  "label": "On Demand Discovery",
-  "description": "onboarded_devices: Insights",
-  "dashboard_folder": "NetworkDevicePack",
-  "version": "1.0.4",
+  "name": "edc-oi-overall-device-drilldown",
+  "label": "Device Details",
+  "description": "EDC Device Drilldown Details",
+  "version": "2026-02-10-01",
   "enabled": false,
-  "stream0": "onboarded_devices",
+  "context_label_id": "serial_number",
+  "dashboard_folder": "OI",
+  "dashboard_style": "auto",
+  "live_edit": true,
   "dashboard_type": "template",
   "template_variables": {
-    "CUST_ID": {
-      "contextId": "customerId"
+    "PROJECT_NAME": {
+      "contextId": "project_name"
     },
-    "PROJ_ID": {
-      "contextId": "project_id"
+    "SERIAL_NUMBER": {
+      "contextId": "serial_number"
     },
-    "CUST_TAG": {
-      "contextId": "customerTag"
+    "SW_VERSION": {
+      "contextId": "sw_version"
+    },
+    "SW_OS_TYPE": {
+      "contextId": "sw_os_type"
+    },
+    "PRODUCT_ID": {
+      "contextId": "product_id"
     }
   },
+  "dashboard_pages": [],
   "dashboard_filters": {
-    "time_filter": true,
+    "time_filter": false,
     "default_time_filter_labels": [
-      "Last 1 month"
+      "Last 12 months"
     ],
     "columns_filter": [],
     "group_filters": []
   },
   "dashboard_sections": [
     {
-      "title": "Onboarded Devices",
-      "show_filters": true,
+      "title": "Device Details",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Discovery",
+          "title": "SW EOLs",
           "widget_type": "tabular",
-          "stream": "discovery",
-          "stream0": "devices_to_discover",
-          "filter0": "customer_id = '{{CUST_ID}}' and project_id = '{{PROJ_ID}}'",
-          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "device_ip",
-            "discovery_scope"
-          ],
+          "max_width": 12,
+          "height": 5,
+          "min_width": 12,
+          "stream": "edc_customer_inventory",
+          "extra_filter": "project_name is '{{PROJECT_NAME}}' and serial_number is '{{SERIAL_NUMBER}}'",
+          "duration_hours": 1080,
           "ts_column": "timestamp",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
           "columns": {
-            "device_ip": {
-              "title": "IP Address",
-              "key": true
+            "swEOL_softwareEOXId": {
+              "title": "SW EOL ID",
+              "type": "DOUBLE"
             },
-            "discovery_scope": {
-              "title": "Discovery Scope",
-              "visible": true,
-              "key": true,
-              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.discovery_status_color }}' > {{ row.discovery_scope }} </span>{%endraw%}"
+            "swEOL_bulletinNumber": {
+              "title": "Bulletin Number",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.swEOL_bulletinUrl}}\" target='_blank'>{{row. swEOL_bulletinNumber}}</a>{% endraw %}"
             },
-            "customer_tag": {
-              "title": "customer_tag",
-              "key": true,
+            "swEOL_bulletinTitle": {
+              "title": "Bulleting Title",
+              "type": "TEXT",
+              "visible": true
+            },
+            "sw_status_color": {
+              "type": "COLOR-MAP",
+              "source-column": "sw_status",
+              "color-map": {
+                "Expired": "#BB0000",
+                "Expiring in a Quarter": "#F6C309",
+                "Expiring in 8 Quarters": "#FF9800",
+                "Expiring after 8 Quarters": "#1ECBE1",
+                "No EOL": "#00BB00"
+              }
+            },
+            "sw_version": "SW Version",
+            "sw_status": {
+              "title": "SW Status",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>{% endraw %}",
+              "visible": true
+            },
+            "product_id": "Product ID",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
               "visible": false
             },
-            "customer_id": {
-              "title": "customer_id",
-              "key": true,
+            "product_family": "Product Family",
+            "swEOL_endOfLifeAnnouncementDate": {
+              "title": "EOL Announcement",
+              "type": "DATE"
+            },
+            "swEOL_endOfSaleDate": {
+              "title": "End Of Sale",
+              "type": "DATE"
+            },
+            "swEOL_endOfSoftwareMaintenanceReleasesDate": {
+              "title": "End Of Software Maintenance Releases",
+              "type": "DATE"
+            },
+            "swEOL_endOfVulnerabilitySecuritySupportDate": {
+              "title": "End Of Vulnerability Security Support",
+              "type": "DATE"
+            },
+            "swEOL_lastDayOfSupportDate": {
+              "title": "Last Day of Support",
+              "type": "DATE"
+            }
+          },
+          "widget_id": "c5f4de2f"
+        },
+        {
+          "title": "Security Advisories",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 6,
+          "min_width": 12,
+          "stream": "edc_customer_productAlerts",
+          "context_filter": "project_name is 'ATT-Mobility'",
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "extra_filter": "(serial_number is '{{SERIAL_NUMBER}}' )",
+          "sorting": [
+            {
+              "secAdv_confidence_score": "desc",
+              "secAdv_impact_score": "desc"
+            }
+          ],
+          "columns": {
+            "secAdv_psirtColdId": {
+              "title": "Security Advisory Col ID",
+              "type": "DOUBLE"
+            },
+            "secAdv_psirtAdvisoryId": {
+              "title": "Security Advisory ID",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.secAdv_bulletinUrl}}\" target='_blank'>{{row.secAdv_psirtAdvisoryId}}</a>{% endraw %}"
+            },
+            "secAdv_bulletinTitle": "Title",
+            "secAdv_confidence_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_match_confidence",
+              "color-map": {
+                "Not Vulnerable": "#00BB00",
+                "Vulnerable": "#BB0000",
+                "Potentially Vulnerable": "#F6C309"
+              }
+            },
+            "secAdv_match_confidence": {
+              "title": "Confidence",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>{% endraw %}",
+              "visible": true
+            },
+            "secAdv_impact_rating_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_securityImpactRating",
+              "color-map": {
+                "Critical": "#8B0000",
+                "High": "#FF4500",
+                "Medium": "#ff8b11",
+                "Low": "#f3ce20"
+              }
+            },
+            "secAdv_securityImpactRating": {
+              "title": "Impact Rating",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
+              "visible": true
+            },
+            "product_name": "Product ID",
+            "serial_number": "Serial Number",
+            "product_family": "Product Family",
+            "sw_version": "SW Version",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
               "visible": false
             },
-            "timestamp": {
-              "title": "Timestamp",
+            "productType": {
+              "title": "Product Type",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_ciscoBugIds": {
+              "title": "Bug IDs",
+              "type": "TEXT"
+            },
+            "secAdv_cveId": {
+              "title": "CVE IDs",
+              "type": "TEXT"
+            },
+            "secAdv_match_confidence_reason": "Confidence Reason",
+            "secAdv_bulletinLastUpdated": {
+              "title": "Published",
               "type": "DATETIME"
             },
-            "_RDA_Id": {
-              "title": "RDA ID",
-              "key": true,
+            "secAdv_bulletinVersion": {
+              "title": "Version",
+              "type": "TEXT"
+            },
+            "secAdv_bulletinUrl": {
+              "title": "URL",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinSummary": {
+              "title": "Summary",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinMappingCaveat": {
+              "title": "Caveat",
+              "type": "TEXT",
               "visible": false
             }
           },
-          "custom_columns": [
+          "widget_id": "8f645323"
+        },
+        {
+          "title": "Security Advisories",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 6,
+          "min_width": 12,
+          "stream": "edc_customer_productAlerts",
+          "context_filter": "project_name is not 'ATT-Mobility'",
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "extra_filter": "(project_name is '{{PROJECT_NAME}}' and product_id is '{{PRODUCT_ID}}' and sw_version is '{{SW_VERSION}}' and sw_os_type is '{{SW_OS_TYPE}}' )",
+          "sorting": [
             {
-              "id": "discovery_status_color",
-              "label": "Discovery Scope Color",
-              "key": false,
-              "visible": false,
-              "expr": "'#008000' if str(discovery_scope) in [ 'yes', 'True'] else '#FF0000'"
+              "secAdv_confidence_score": "desc",
+              "secAdv_impact_score": "desc"
             }
           ],
-          "actions": [
-            {
-              "permission": "rda:github:view",
-              "title": "Add Devices",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "actionLabel": "Add",
-                          "identifier": "Submit"
-                        },
-                        {
-                          "actionLabel": "Cancel",
-                          "identifier": "Cancel"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "IP Address of network device",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "IP Address",
-                          "hidden": false,
-                          "fieldId": "device_ip"
-                        },
-                        {
-                          "fieldId": "discovery_scope",
-                          "label": "Add it to discovery?",
-                          "help": "Should this network device be part of discovery?",
-                          "dataType": "string",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "lovValues": [
-                            {
-                              "identifier": "yes",
-                              "displayName": "Yes"
-                            },
-                            {
-                              "identifier": "no",
-                              "displayName": "No"
-                            }
-                          ],
-                          "controlType": "RADIO_BUTTON"
-                        },
-                        {
-                          "help": "customer_tag",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "customer_tag",
-                          "hidden": true,
-                          "defaultValue": "{{CUST_TAG}}",
-                          "fieldId": "customer_tag"
-                        },
-                        {
-                          "help": "customer_id",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "customer_id",
-                          "hidden": true,
-                          "defaultValue": "{{CUST_ID}}",
-                          "fieldId": "customer_id"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "UPDATE_PSTREAM",
-                        "operation": "ADD",
-                        "pstreamName": "discovery"
-                      }
-                    ]
-                  }
-                ]
+          "columns": {
+            "secAdv_psirtColdId": {
+              "title": "Security Advisory Col ID",
+              "type": "DOUBLE"
+            },
+            "secAdv_psirtAdvisoryId": {
+              "title": "Security Advisory ID",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.secAdv_bulletinUrl}}\" target='_blank'>{{row.secAdv_psirtAdvisoryId}}</a>{% endraw %}"
+            },
+            "secAdv_bulletinTitle": "Title",
+            "secAdv_confidence_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_match_confidence",
+              "color-map": {
+                "Not Vulnerable": "#00BB00",
+                "Vulnerable": "#BB0000",
+                "Potentially Vulnerable": "#F6C309"
               }
             },
-            {
-              "permission": "rda:github:view",
-              "title": "Import Devices",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "CSV file format.The file should contain ip_address,  discovery_scope columns.",
-                          "dataType": "string",
-                          "required": true,
-                          "editable": true,
-                          "label": "NOTE: Required headers in CSV file: ip_address, discovery_scope",
-                          "controlType": "LABEL",
-                          "hidden": false,
-                          "fieldId": "csv_format"
-                        },
-                        {
-                          "help": "Choose csv file to upload",
-                          "dataType": "string",
-                          "required": true,
-                          "editable": true,
-                          "label": "Choose file to upload",
-                          "controlType": "FILE_UPLOAD",
-                          "hidden": false,
-                          "fieldId": "fileUpload"
-                        },
-                        {
-                          "help": "Overwrite existing onboarded data",
-                          "required": false,
-                          "editable": true,
-                          "label": "Replace Data",
-                          "hidden": false,
-                          "fieldId": "replace",
-                          "dataType": "boolean",
-                          "controlType": "BOOLEAN_FIELD",
-                          "defaultValue": false,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "Features"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "25"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "customer_tag",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "customer_tag",
-                          "hidden": true,
-                          "defaultValue": "{{CUST_TAG}}",
-                          "fieldId": "customer_tag"
-                        },
-                        {
-                          "help": "customer_id",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "customer_id",
-                          "hidden": true,
-                          "defaultValue": "{{CUST_ID}}",
-                          "fieldId": "customer_id"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "import-customer-devices",
-                        "isSync": false,
-                        "workerGroup": "{{CUST_TAG}}.*"
-                      }
-                    ]
-                  }
-                ]
+            "secAdv_match_confidence": {
+              "title": "Confidence",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>{% endraw %}",
+              "visible": true
+            },
+            "secAdv_impact_rating_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_securityImpactRating",
+              "color-map": {
+                "Critical": "#8B0000",
+                "High": "#FF4500",
+                "Medium": "#ff8b11",
+                "Low": "#f3ce20"
               }
             },
-            {
-              "permission": "rda:github:view",
-              "title": "Edit Device",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "actionLabel": "Update",
-                          "identifier": "Submit"
-                        },
-                        {
-                          "actionLabel": "Cancel",
-                          "identifier": "Cancel"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Name of Device",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Device Name",
-                          "hidden": false,
-                          "fieldId": "device_ip"
-                        },
-                        {
-                          "fieldId": "discovery_scope",
-                          "label": "Discovery Scope",
-                          "help": "Should this be part of device?",
-                          "dataType": "string",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "lovValues": [
-                            {
-                              "identifier": "yes",
-                              "displayName": "Yes"
-                            },
-                            {
-                              "identifier": "no",
-                              "displayName": "No"
-                            }
-                          ],
-                          "controlType": "RADIO_BUTTON"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "UPDATE_PSTREAM",
-                        "pstreamName": "discovery",
-                        "operation": "UPDATE",
-                        "cfxql_query": "device_ip is '{%raw%}{{device_ip}}{%endraw%}'"
-                      }
-                    ]
-                  }
-                ]
-              }
+            "secAdv_securityImpactRating": {
+              "title": "Impact Rating",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
+              "visible": true
             },
-            {
-              "permission": "rda:github:view",
-              "title": "Delete Device",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Delete"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Readonly field. Name of device to be deleted.",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Device Name",
-                          "hidden": false,
-                          "fieldId": "device_ip"
-                        },
-                        {
-                          "help": "Readonly field. Discovery Scope to be deleted.",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Discovery Scope",
-                          "hidden": false,
-                          "fieldId": "discovery_scope"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "UPDATE_PSTREAM",
-                        "pstreamName": "discovery",
-                        "operation": "DELETE",
-                        "cfxql_query": "device_ip is '{%raw%}{{device_ip}}{%endraw%}'"
-                      }
-                    ]
-                  }
-                ]
-              }
+            "product_id": "Product ID",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "visible": false
+            },
+            "sw_version": "SW Version",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
+              "visible": false
+            },
+            "productType": {
+              "title": "Product Type",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_cveId": {
+              "title": "CVE IDs",
+              "type": "TEXT"
+            },
+            "secAdv_match_confidence_reason": "Confidence Reason",
+            "secAdv_bulletinLastUpdated": {
+              "title": "Published",
+              "type": "DATETIME"
+            },
+            "secAdv_bulletinVersion": {
+              "title": "Version",
+              "type": "TEXT"
+            },
+            "secAdv_bulletinUrl": {
+              "title": "URL",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinSummary": {
+              "title": "Summary",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinMappingCaveat": {
+              "title": "Caveat",
+              "type": "TEXT",
+              "visible": false
             }
-          ],
-          "widget_id": "4ed05ae9"
+          },
+          "widget_id": "3cf88777"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Onboarded Devices",
-      "show_filters": true,
+      "title": "Device Details",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Discovery",
+          "title": "SW EOLs",
           "widget_type": "tabular",
-          "stream": "discovery",
-          "stream0": "devices_to_discover",
-          "filter0": "customer_id = '{{CUST_ID}}' and project_id = '{{PROJ_ID}}'",
-          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "device_ip",
-            "discovery_scope"
-          ],
+          "max_width": 12,
+          "height": 5,
+          "min_width": 12,
+          "stream": "edc_customer_inventory",
+          "extra_filter": "project_name is '{{PROJECT_NAME}}' and serial_number is '{{SERIAL_NUMBER}}'",
+          "duration_hours": 1080,
           "ts_column": "timestamp",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
           "columns": {
-            "device_ip": {
-              "title": "IP Address",
-              "key": true
+            "swEOL_softwareEOXId": {
+              "title": "SW EOL ID",
+              "type": "DOUBLE"
             },
-            "discovery_scope": {
-              "title": "Discovery Scope",
-              "visible": true,
-              "key": true,
-              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.discovery_status_color }}' > {{ row.discovery_scope }} </span>{%endraw%}"
+            "swEOL_bulletinNumber": {
+              "title": "Bulletin Number",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.swEOL_bulletinUrl}}\" target='_blank'>{{row. swEOL_bulletinNumber}}</a>{% endraw %}"
             },
-            "customer_tag": {
-              "title": "customer_tag",
-              "key": true,
+            "swEOL_bulletinTitle": {
+              "title": "Bulleting Title",
+              "type": "TEXT",
+              "visible": true
+            },
+            "sw_status_color": {
+              "type": "COLOR-MAP",
+              "source-column": "sw_status",
+              "color-map": {
+                "Expired": "#BB0000",
+                "Expiring in a Quarter": "#F6C309",
+                "Expiring in 8 Quarters": "#FF9800",
+                "Expiring after 8 Quarters": "#1ECBE1",
+                "No EOL": "#00BB00"
+              }
+            },
+            "sw_version": "SW Version",
+            "sw_status": {
+              "title": "SW Status",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>{% endraw %}",
+              "visible": true
+            },
+            "product_id": "Product ID",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
               "visible": false
             },
-            "customer_id": {
-              "title": "customer_id",
-              "key": true,
+            "product_family": "Product Family",
+            "swEOL_endOfLifeAnnouncementDate": {
+              "title": "EOL Announcement",
+              "type": "DATE"
+            },
+            "swEOL_endOfSaleDate": {
+              "title": "End Of Sale",
+              "type": "DATE"
+            },
+            "swEOL_endOfSoftwareMaintenanceReleasesDate": {
+              "title": "End Of Software Maintenance Releases",
+              "type": "DATE"
+            },
+            "swEOL_endOfVulnerabilitySecuritySupportDate": {
+              "title": "End Of Vulnerability Security Support",
+              "type": "DATE"
+            },
+            "swEOL_lastDayOfSupportDate": {
+              "title": "Last Day of Support",
+              "type": "DATE"
+            }
+          },
+          "widget_id": "c5f4de2f"
+        },
+        {
+          "title": "Security Advisories",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 6,
+          "min_width": 12,
+          "stream": "edc_customer_productAlerts",
+          "context_filter": "project_name is 'ATT-Mobility'",
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "extra_filter": "(serial_number is '{{SERIAL_NUMBER}}' )",
+          "sorting": [
+            {
+              "secAdv_confidence_score": "desc",
+              "secAdv_impact_score": "desc"
+            }
+          ],
+          "columns": {
+            "secAdv_psirtColdId": {
+              "title": "Security Advisory Col ID",
+              "type": "DOUBLE"
+            },
+            "secAdv_psirtAdvisoryId": {
+              "title": "Security Advisory ID",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.secAdv_bulletinUrl}}\" target='_blank'>{{row.secAdv_psirtAdvisoryId}}</a>{% endraw %}"
+            },
+            "secAdv_bulletinTitle": "Title",
+            "secAdv_confidence_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_match_confidence",
+              "color-map": {
+                "Not Vulnerable": "#00BB00",
+                "Vulnerable": "#BB0000",
+                "Potentially Vulnerable": "#F6C309"
+              }
+            },
+            "secAdv_match_confidence": {
+              "title": "Confidence",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>{% endraw %}",
+              "visible": true
+            },
+            "secAdv_impact_rating_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_securityImpactRating",
+              "color-map": {
+                "Critical": "#8B0000",
+                "High": "#FF4500",
+                "Medium": "#ff8b11",
+                "Low": "#f3ce20"
+              }
+            },
+            "secAdv_securityImpactRating": {
+              "title": "Impact Rating",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
+              "visible": true
+            },
+            "product_name": "Product ID",
+            "serial_number": "Serial Number",
+            "product_family": "Product Family",
+            "sw_version": "SW Version",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
               "visible": false
             },
-            "timestamp": {
-              "title": "Timestamp",
+            "productType": {
+              "title": "Product Type",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_ciscoBugIds": {
+              "title": "Bug IDs",
+              "type": "TEXT"
+            },
+            "secAdv_cveId": {
+              "title": "CVE IDs",
+              "type": "TEXT"
+            },
+            "secAdv_match_confidence_reason": "Confidence Reason",
+            "secAdv_bulletinLastUpdated": {
+              "title": "Published",
               "type": "DATETIME"
             },
-            "_RDA_Id": {
-              "title": "RDA ID",
-              "key": true,
+            "secAdv_bulletinVersion": {
+              "title": "Version",
+              "type": "TEXT"
+            },
+            "secAdv_bulletinUrl": {
+              "title": "URL",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinSummary": {
+              "title": "Summary",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinMappingCaveat": {
+              "title": "Caveat",
+              "type": "TEXT",
               "visible": false
             }
           },
-          "custom_columns": [
+          "widget_id": "8f645323"
+        },
+        {
+          "title": "Security Advisories",
+          "widget_type": "tabular",
+          "max_width": 12,
+          "height": 6,
+          "min_width": 12,
+          "stream": "edc_customer_productAlerts",
+          "context_filter": "project_name is not 'ATT-Mobility'",
+          "duration_hours": 1080,
+          "ts_column": "timestamp",
+          "extra_filter": "(project_name is '{{PROJECT_NAME}}' and product_id is '{{PRODUCT_ID}}' and sw_version is '{{SW_VERSION}}' and sw_os_type is '{{SW_OS_TYPE}}' )",
+          "sorting": [
             {
-              "id": "discovery_status_color",
-              "label": "Discovery Scope Color",
-              "key": false,
-              "visible": false,
-              "expr": "'#008000' if str(discovery_scope) in [ 'yes', 'True'] else '#FF0000'"
+              "secAdv_confidence_score": "desc",
+              "secAdv_impact_score": "desc"
             }
           ],
-          "actions": [
-            {
-              "permission": "rda:github:view",
-              "title": "Add Devices",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "actionLabel": "Add",
-                          "identifier": "Submit"
-                        },
-                        {
-                          "actionLabel": "Cancel",
-                          "identifier": "Cancel"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "IP Address of network device",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "IP Address",
-                          "hidden": false,
-                          "fieldId": "device_ip"
-                        },
-                        {
-                          "fieldId": "discovery_scope",
-                          "label": "Add it to discovery?",
-                          "help": "Should this network device be part of discovery?",
-                          "dataType": "string",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "lovValues": [
-                            {
-                              "identifier": "yes",
-                              "displayName": "Yes"
-                            },
-                            {
-                              "identifier": "no",
-                              "displayName": "No"
-                            }
-                          ],
-                          "controlType": "RADIO_BUTTON"
-                        },
-                        {
-                          "help": "customer_tag",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "customer_tag",
-                          "hidden": true,
-                          "defaultValue": "{{CUST_TAG}}",
-                          "fieldId": "customer_tag"
-                        },
-                        {
-                          "help": "customer_id",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "customer_id",
-                          "hidden": true,
-                          "defaultValue": "{{CUST_ID}}",
-                          "fieldId": "customer_id"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "UPDATE_PSTREAM",
-                        "operation": "ADD",
-                        "pstreamName": "discovery"
-                      }
-                    ]
-                  }
-                ]
+          "columns": {
+            "secAdv_psirtColdId": {
+              "title": "Security Advisory Col ID",
+              "type": "DOUBLE"
+            },
+            "secAdv_psirtAdvisoryId": {
+              "title": "Security Advisory ID",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %} <a href=\"{{row.secAdv_bulletinUrl}}\" target='_blank'>{{row.secAdv_psirtAdvisoryId}}</a>{% endraw %}"
+            },
+            "secAdv_bulletinTitle": "Title",
+            "secAdv_confidence_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_match_confidence",
+              "color-map": {
+                "Not Vulnerable": "#00BB00",
+                "Vulnerable": "#BB0000",
+                "Potentially Vulnerable": "#F6C309"
               }
             },
-            {
-              "permission": "rda:github:view",
-              "title": "Import Devices",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "CSV file format.The file should contain ip_address,  discovery_scope columns.",
-                          "dataType": "string",
-                          "required": true,
-                          "editable": true,
-                          "label": "NOTE: Required headers in CSV file: ip_address, discovery_scope",
-                          "controlType": "LABEL",
-                          "hidden": false,
-                          "fieldId": "csv_format"
-                        },
-                        {
-                          "help": "Choose csv file to upload",
-                          "dataType": "string",
-                          "required": true,
-                          "editable": true,
-                          "label": "Choose file to upload",
-                          "controlType": "FILE_UPLOAD",
-                          "hidden": false,
-                          "fieldId": "fileUpload"
-                        },
-                        {
-                          "help": "Overwrite existing onboarded data",
-                          "required": false,
-                          "editable": true,
-                          "label": "Replace Data",
-                          "hidden": false,
-                          "fieldId": "replace",
-                          "dataType": "boolean",
-                          "controlType": "BOOLEAN_FIELD",
-                          "defaultValue": false,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "Features"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "25"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "customer_tag",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "customer_tag",
-                          "hidden": true,
-                          "defaultValue": "{{CUST_TAG}}",
-                          "fieldId": "customer_tag"
-                        },
-                        {
-                          "help": "customer_id",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "customer_id",
-                          "hidden": true,
-                          "defaultValue": "{{CUST_ID}}",
-                          "fieldId": "customer_id"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "import-customer-devices",
-                        "isSync": false,
-                        "workerGroup": "{{CUST_TAG}}.*"
-                      }
-                    ]
-                  }
-                ]
+            "secAdv_match_confidence": {
+              "title": "Confidence",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_match_confidence }} </span>{% endraw %}",
+              "visible": true
+            },
+            "secAdv_impact_rating_color": {
+              "type": "COLOR-MAP",
+              "source-column": "secAdv_securityImpactRating",
+              "color-map": {
+                "Critical": "#8B0000",
+                "High": "#FF4500",
+                "Medium": "#ff8b11",
+                "Low": "#f3ce20"
               }
             },
-            {
-              "permission": "rda:github:view",
-              "title": "Edit Device",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "actionLabel": "Update",
-                          "identifier": "Submit"
-                        },
-                        {
-                          "actionLabel": "Cancel",
-                          "identifier": "Cancel"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Name of Device",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Device Name",
-                          "hidden": false,
-                          "fieldId": "device_ip"
-                        },
-                        {
-                          "fieldId": "discovery_scope",
-                          "label": "Discovery Scope",
-                          "help": "Should this be part of device?",
-                          "dataType": "string",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "lovValues": [
-                            {
-                              "identifier": "yes",
-                              "displayName": "Yes"
-                            },
-                            {
-                              "identifier": "no",
-                              "displayName": "No"
-                            }
-                          ],
-                          "controlType": "RADIO_BUTTON"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "UPDATE_PSTREAM",
-                        "pstreamName": "discovery",
-                        "operation": "UPDATE",
-                        "cfxql_query": "device_ip is '{%raw%}{{device_ip}}{%endraw%}'"
-                      }
-                    ]
-                  }
-                ]
-              }
+            "secAdv_securityImpactRating": {
+              "title": "Impact Rating",
+              "type": "TEXT",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
+              "visible": true
             },
-            {
-              "permission": "rda:github:view",
-              "title": "Delete Device",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Delete"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Readonly field. Name of device to be deleted.",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Device Name",
-                          "hidden": false,
-                          "fieldId": "device_ip"
-                        },
-                        {
-                          "help": "Readonly field. Discovery Scope to be deleted.",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Discovery Scope",
-                          "hidden": false,
-                          "fieldId": "discovery_scope"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "UPDATE_PSTREAM",
-                        "pstreamName": "discovery",
-                        "operation": "DELETE",
-                        "cfxql_query": "device_ip is '{%raw%}{{device_ip}}{%endraw%}'"
-                      }
-                    ]
-                  }
-                ]
-              }
+            "product_id": "Product ID",
+            "serial_number": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "visible": false
+            },
+            "sw_version": "SW Version",
+            "sw_os_type": {
+              "title": "OS Type",
+              "type": "TEXT",
+              "visible": false
+            },
+            "productType": {
+              "title": "Product Type",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_cveId": {
+              "title": "CVE IDs",
+              "type": "TEXT"
+            },
+            "secAdv_match_confidence_reason": "Confidence Reason",
+            "secAdv_bulletinLastUpdated": {
+              "title": "Published",
+              "type": "DATETIME"
+            },
+            "secAdv_bulletinVersion": {
+              "title": "Version",
+              "type": "TEXT"
+            },
+            "secAdv_bulletinUrl": {
+              "title": "URL",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinSummary": {
+              "title": "Summary",
+              "type": "TEXT",
+              "visible": false
+            },
+            "secAdv_bulletinMappingCaveat": {
+              "title": "Caveat",
+              "type": "TEXT",
+              "visible": false
             }
-          ],
-          "widget_id": "4ed05ae9"
+          },
+          "widget_id": "3cf88777"
         }
       ]
     }
