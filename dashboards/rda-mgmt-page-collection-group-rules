@@ -1,713 +1,314 @@
 {
-  "name": "rda-administration-dashboard-debug-console",
-  "label": "Dashboard Debug Console",
-  "description": "rda_dashboards_debug_console: Insights",
-  "dashboard_folder": "System",
-  "version": "1.0.0",
-  "enabled": false,
-  "stream": "rda_dashboards_debug_console",
+  "name": "rda-mgmt-page-collection-group-rules",
+  "label": "Collection Group Rules",
+  "description": "Collection Group Rules",
+  "enabled": true,
   "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
   "dashboard_filters": {
     "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 24 hours"
-    ],
     "columns_filter": [
       {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      },
-      {
-        "id": "db_label",
-        "label": "Dashboard Label",
+        "id": "name",
+        "label": "Name",
         "type": "TEXT"
-      },
-      {
-        "id": "db_name",
-        "label": "Dashboard Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "error",
-        "label": "Error",
-        "type": "TEXT"
-      },
-      {
-        "id": "extra_filter",
-        "label": "Extra Filter",
-        "type": "TEXT"
-      },
-      {
-        "id": "filter",
-        "label": "Filter",
-        "type": "TEXT"
-      },
-      {
-        "id": "section",
-        "label": "Section",
-        "type": "TEXT"
-      },
-      {
-        "id": "status",
-        "label": "Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "stream",
-        "label": "Stream",
-        "type": "TEXT"
-      },
-      {
-        "id": "user_id",
-        "label": "User Id",
-        "type": "TEXT"
-      },
-      {
-        "id": "widget_title",
-        "label": "Widget Title",
-        "type": "TEXT"
-      },
-      {
-        "id": "widget_type",
-        "label": "Widget Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "duration_millis",
-        "label": "Duration Millis",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "pid",
-        "label": "Pid",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "widget_index",
-        "label": "Widget Index",
-        "type": "DOUBLE"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Widget Type",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "widget_type"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Dashboard Label",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "db_label"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Dashboard Name",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "db_name"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Section",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "section"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Status",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "status"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "User",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "user_id"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Dashboard Debug Console",
+      "title": "Collection Group Rules",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Dashboard Label",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "db_label"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "116802d9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboard Name",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "db_name"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "d8519019"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Widget Type",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "widget_type"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "ed5f5eea"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Section",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "section"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "17936f98"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Status",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "status"
-          ],
-          "style": {
-            "color-map": {
-              "failed": [
-                "#E91E63",
-                "#ffffff"
-              ],
-              "ok": [
-                "#4CAF50",
-                "#ffffff"
-              ]
-            }
-          },
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "2e2e2f33"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Stream",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "stream"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "78585d23"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "User",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "user_id"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "f955a777"
-        },
-        {
-          "title": "Logs",
+          "title": "Collection Group Rules",
           "widget_type": "tabular",
-          "duration_hours": 1080,
-          "max_width": 12,
-          "height": 12,
-          "min_width": 12,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "showRowSummary": true,
-          "paginated": true,
-          "virtual_scrolling": false,
-          "extra_filter": null,
-          "sorting": [
-            {
-              "timestamp": "desc"
-            }
-          ],
+          "duration_hours": 87600,
+          "stream": "rda_collection_group_rules_meta",
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "db_label",
-            "db_name",
-            "error",
-            "status",
-            "widget_type",
-            "widget_title",
-            "stream",
-            "filter",
-            "extra_filter",
-            "user_id",
-            "context",
-            "os_queries"
+            "name"
           ],
+          "ts_column": "saved_time",
+          "paginated": true,
+          "height": 10,
+          "min_wdith": 12,
           "columns": {
-            "db_label": {
-              "title": "Dashboard Label",
-              "type": "TEXT",
-              "hidden": false
+            "name": {
+              "title": "Name",
+              "key": true
             },
-            "db_name": {
-              "title": "Dashboard Name",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "widget_title": {
-              "title": "Widget Title",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "widget_type": {
-              "title": "Widget Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "status": {
-              "title": "Status",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "error": {
-              "title": "Error",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "extra_filter": {
-              "title": "Extra Filter",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "filter": {
-              "title": "Filter",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "section": {
-              "title": "Section",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "stream": {
-              "title": "Stream",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "user_id": {
-              "title": "User Id",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "duration_millis": {
-              "title": "Duration Millis",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "pid": {
-              "title": "Pid",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "widget_index": {
-              "title": "Widget Index",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "context": {
-              "title": "Context",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "os_queries": {
-              "title": "OS Queries",
-              "type": "TEXT",
-              "hidden": false
+            "type": "Type",
+            "description": "Description",
+            "folder": "Folder",
+            "saved_time": {
+              "title": "Saved Time",
+              "type": "DATETIME"
             }
           },
-          "widget_id": "decb12f1"
+          "custom_columns": [],
+          "actions": [
+            {
+              "permission": "rda:user_dashboard:add",
+              "title": "Add",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.add",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.add"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:view",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.view",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.view"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:update",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.update",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.update"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "NOT_EQUAL",
+                    "conditionValue": "default",
+                    "fieldId": "name"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:update",
+              "title": "Clone",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.clone",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.clone"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.delete"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "NOT_EQUAL",
+                    "conditionValue": "default",
+                    "fieldId": "name"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "d5b2edd5"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Dashboard Debug Console",
+      "title": "Collection Group Rules",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Dashboard Label",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "db_label"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "116802d9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboard Name",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "db_name"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "d8519019"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Widget Type",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "widget_type"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "ed5f5eea"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Section",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "section"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "17936f98"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Status",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "status"
-          ],
-          "style": {
-            "color-map": {
-              "failed": [
-                "#E91E63",
-                "#ffffff"
-              ],
-              "ok": [
-                "#4CAF50",
-                "#ffffff"
-              ]
-            }
-          },
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "2e2e2f33"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Stream",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "stream"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "78585d23"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "User",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "user_id"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "f955a777"
-        },
-        {
-          "title": "Logs",
+          "title": "Collection Group Rules",
           "widget_type": "tabular",
-          "duration_hours": 1080,
-          "max_width": 12,
-          "height": 12,
-          "min_width": 12,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "showRowSummary": true,
-          "paginated": true,
-          "virtual_scrolling": false,
-          "extra_filter": null,
-          "sorting": [
-            {
-              "timestamp": "desc"
-            }
-          ],
+          "duration_hours": 87600,
+          "stream": "rda_collection_group_rules_meta",
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "db_label",
-            "db_name",
-            "error",
-            "status",
-            "widget_type",
-            "widget_title",
-            "stream",
-            "filter",
-            "extra_filter",
-            "user_id",
-            "context",
-            "os_queries"
+            "name"
           ],
+          "ts_column": "saved_time",
+          "paginated": true,
+          "height": 10,
+          "min_wdith": 12,
           "columns": {
-            "db_label": {
-              "title": "Dashboard Label",
-              "type": "TEXT",
-              "hidden": false
+            "name": {
+              "title": "Name",
+              "key": true
             },
-            "db_name": {
-              "title": "Dashboard Name",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "widget_title": {
-              "title": "Widget Title",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "widget_type": {
-              "title": "Widget Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "status": {
-              "title": "Status",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "error": {
-              "title": "Error",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "extra_filter": {
-              "title": "Extra Filter",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "filter": {
-              "title": "Filter",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "section": {
-              "title": "Section",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "stream": {
-              "title": "Stream",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "user_id": {
-              "title": "User Id",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "duration_millis": {
-              "title": "Duration Millis",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "pid": {
-              "title": "Pid",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "widget_index": {
-              "title": "Widget Index",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "context": {
-              "title": "Context",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "os_queries": {
-              "title": "OS Queries",
-              "type": "TEXT",
-              "hidden": false
+            "type": "Type",
+            "description": "Description",
+            "folder": "Folder",
+            "saved_time": {
+              "title": "Saved Time",
+              "type": "DATETIME"
             }
           },
-          "widget_id": "decb12f1"
+          "custom_columns": [],
+          "actions": [
+            {
+              "permission": "rda:user_dashboard:add",
+              "title": "Add",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.add",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.add"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:view",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.view",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.view"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:update",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.update",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.update"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "NOT_EQUAL",
+                    "conditionValue": "default",
+                    "fieldId": "name"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:update",
+              "title": "Clone",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.clone",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.clone"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:rda.saas.collectiongrouprule.delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.collectiongrouprule.delete"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "NOT_EQUAL",
+                    "conditionValue": "default",
+                    "fieldId": "name"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "d5b2edd5"
         }
       ]
     }

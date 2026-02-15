@@ -1,573 +1,626 @@
 {
-  "name": "security-advisories-niki-details",
-  "label": "Test Details",
-  "description": "Test Details",
-  "version": "2023-07-13-01",
+  "name": "rda-administration-dashboard-schedule",
+  "label": "Export Schedules",
+  "description": "rda_dashboards_dashboard_schedule: Insights",
+  "dashboard_folder": "System",
+  "version": "24.5.29.1",
   "enabled": false,
-  "debug": false,
-  "context_label_id": "securityAdvisoryId",
-  "live_edit": true,
-  "dashboard_folder": "Default",
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "template_variables": {
-    "COLDID": {
-      "contextId": "securityAdvisoryId"
-    },
-    "CONFIDENCE": {
-      "contextId": "secAdv_matchConfidence"
-    }
-  },
-  "dashboard_pages": [],
+  "dashboard_type": "dashboard",
   "dashboard_filters": {
     "time_filter": true,
     "default_time_filter_labels": [
-      "Last 12 months"
+      "Last 1 month"
     ],
-    "extra_filter": "securityAdvisoryId is '{{COLDID}}' and secAdv_matchConfidence is '{{CONFIDENCE}}'",
     "columns_filter": [
       {
-        "id": "deviceId",
-        "label": "Device ID",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "deviceName",
-        "label": "Asset Name",
+        "id": "job_id",
+        "label": "RDA ID",
         "type": "TEXT"
       },
       {
-        "id": "deviceIp",
-        "label": "Asset IP",
+        "id": "schedule_id",
+        "label": "Job ID",
         "type": "TEXT"
       },
       {
-        "id": "serialNumber",
-        "label": "Serial Number",
+        "id": "dashboard_name",
+        "label": "Dashboard Name",
         "type": "TEXT"
       },
       {
-        "id": "physicalAssetId",
-        "label": "Physical Asset ID",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "physicalAssetType",
-        "label": "Physical Asset Type",
+        "id": "dashboard_title",
+        "label": "Dashboard Label",
         "type": "TEXT"
       },
       {
-        "id": "productId",
-        "label": "Product Id",
+        "id": "filters",
+        "label": "Condition Filters",
         "type": "TEXT"
       },
       {
-        "id": "bugIds",
-        "label": "Bug IDS",
+        "id": "name",
+        "label": "Export Filename",
         "type": "TEXT"
       },
       {
-        "id": "bulletinFirstPublishedTimestamp",
-        "label": "Published",
+        "id": "include_csv_files",
+        "label": "Include CSV Files",
+        "type": "TEXT"
+      },
+      {
+        "id": "descr",
+        "label": "Description",
+        "type": "TEXT"
+      },
+      {
+        "id": "email_id",
+        "label": "Send To",
+        "type": "TEXT"
+      },
+      {
+        "id": "start_time",
+        "label": "Schedule Start Time",
         "type": "DATETIME"
       },
       {
-        "id": "bulletinLastUpdatedTimestamp",
-        "label": "Last Updated",
+        "id": "next_run_time",
+        "label": "Next Run Time",
         "type": "DATETIME"
       },
       {
-        "id": "bulletinSummary",
-        "label": "Summary",
+        "id": "end_time",
+        "label": "Schedule End Time",
+        "type": "DATETIME"
+      },
+      {
+        "id": "frequency",
+        "label": "Schedule Frequency",
         "type": "TEXT"
       },
       {
-        "id": "bulletinTitle",
-        "label": "Title",
+        "id": "created_by",
+        "label": "Created By",
         "type": "TEXT"
       },
       {
-        "id": "bulletinUrl",
-        "label": "URL",
+        "id": "expired",
+        "label": "Job Expired",
         "type": "TEXT"
-      },
-      {
-        "id": "bulletinVersion",
-        "label": "Version",
-        "type": "TEXT"
-      },
-      {
-        "id": "commonVulnerabilityScoringSystemBaseScore",
-        "label": "Common Vulnerability Scoring System Base Score",
-        "type": "TEXT"
-      },
-      {
-        "id": "commonVulnerabilityScoringSystemTemporalScore",
-        "label": "Common Vulnerability Scoring System Temporal Score",
-        "type": "TEXT"
-      },
-      {
-        "id": "cveIds",
-        "label": "CveIds",
-        "type": "TEXT"
-      },
-      {
-        "id": "securityAdvisoryColdId",
-        "label": "Security Advisory Cold ID",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "securityAdvisoryId",
-        "label": "Security Advisory ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "secAdv_securityImpactRating",
-        "label": "Security Advisory Severity",
-        "type": "TEXT"
-      },
-      {
-        "id": "secAdv_matchConfidence",
-        "label": "Security Advisory Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "matchConfidenceReason",
-        "label": "Confidence Reason",
-        "type": "TEXT"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "edc_sec_adv_data_enriched",
-        "title": "Product Family",
-        "extra_filter": "(source in 'securityAdvisories') and (secAdv_matchConfidence not in 'Not Vulnerable')",
-        "group_by": [
-          "productFamily"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "value_count",
-        "column": "deviceId",
-        "type": "int"
-      },
-      {
-        "stream": "edc_sec_adv_data_enriched",
-        "title": "SW Type",
-        "extra_filter": "(source in 'securityAdvisories') and (secAdv_matchConfidence not in 'Not Vulnerable')",
-        "group_by": [
-          "softwareType"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "value_count",
-        "column": "deviceId",
-        "type": "int"
-      },
-      {
-        "stream": "edc_sec_adv_data_enriched",
-        "title": "SW Version",
-        "extra_filter": "(source in 'securityAdvisories') and (secAdv_matchConfidence not in 'Not Vulnerable') ",
-        "group_by": [
-          "softwareVersion"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "value_count",
-        "column": "deviceId",
-        "type": "int"
-      },
-      {
-        "stream": "edc_sec_adv_data_enriched",
-        "title": "Product Family",
-        "extra_filter": "(source in 'securityAdvisories') and (secAdv_matchConfidence not in 'Not Vulnerable')",
-        "group_by": [
-          "productFamily"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "value_count",
-        "column": "deviceId",
-        "type": "int"
-      },
-      {
-        "stream": "edc_sec_adv_data_enriched",
-        "title": "Security Advisory Status",
-        "extra_filter": "(source in 'securityAdvisories') and (secAdv_matchConfidence not in 'Not Vulnerable')",
-        "group_by": [
-          "secAdv_matchConfidence"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "cardinality",
-        "column": "deviceId",
-        "type": "int"
-      },
-      {
-        "stream": "edc_sec_adv_data_enriched",
-        "title": "Security Advisory Severity",
-        "extra_filter": "(source in 'securityAdvisories') and (secAdv_matchConfidence not in 'Not Vulnerable')",
-        "group_by": [
-          "secAdv_securityImpactRating"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "value_count",
-        "column": "deviceId",
-        "type": "int"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Security Advisories Details",
+      "title": "Dashboard Schedules",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Security Advisories Details",
+          "title": "Schedule Details",
           "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
+          "paginated": true,
+          "stream": "rda_dashboard_export_schedules",
+          "height": 10,
           "min_width": 12,
-          "stream": "edc_sec_adv_data_enriched",
-          "duration_hours": 10800000,
-          "ts_column": "timestamp",
           "columns": {
-            "PsirtID": {
-              "title": "PsirtID",
-              "type": "DOUBLE",
-              "visible": true
-            },
-            "secAdv_impact_rating_color": {
-              "type": "COLOR-MAP",
-              "source-column": "secAdv_securityImpactRating",
-              "color-map": {
-                "Critical": "#8B0000",
-                "High": "#FF4500",
-                "Medium": "#F6C309",
-                "Low": "#00BB00"
-              }
-            },
-            "secAdv_securityImpactRating": {
-              "title": "Security Advisory Severity",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
-              "visible": true
-            },
-            "deviceId": {
-              "title": "Device ID",
-              "type": "TEXT",
+            "job_id": {
+              "title": "RDA ID",
               "key": true,
               "visible": false
             },
-            "deviceName": {
-              "title": "Asset Name",
-              "type": "TEXT",
-              "hidden": true
+            "schedule_id": {
+              "title": "Job ID"
             },
-            "deviceIp": {
-              "title": "Asset IP",
-              "type": "TEXT",
-              "hidden": true
+            "created_by": {
+              "title": "Created By"
             },
-            "productId": "Product ID",
-            "serialNumber": "Serial Number",
-            "to_internet": {
-              "title": "Internet Facing",
-              "type": "TEXT",
+            "dashboard_name": {
+              "title": "Dashboard Name",
               "visible": false
             },
-            "physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
+            "dashboard_title": {
+              "title": "Dashboard Label"
             },
-            "productFamily": "Product Family",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
+            "filters": {
+              "title": "Condition Filters"
             },
-            "softwareVersion": "SW Version",
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
+            "name": {
+              "title": "Export Filename"
             },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
+            "include_csv_files": {
+              "title": "Include CSV Files"
             },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
+            "descr": {
+              "title": "Description"
             },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
+            "email_id": {
+              "title": "Send To"
             },
-            "bugIds": {
-              "title": "Bug IDs",
-              "type": "TEXT"
+            "start_time": {
+              "title": "Schedule Start Time",
+              "type": "DATETIME",
+              "hidden": false
             },
-            "cveIds": {
-              "title": "CVE IDs",
-              "type": "TEXT"
+            "next_run_time": {
+              "title": "Next Run Time",
+              "type": "DATETIME",
+              "hidden": false
             },
-            "matchConfidenceReason": "Confidence Reason",
-            "bulletinFirstPublishedTimestamp": {
-              "title": "Published",
-              "type": "DATETIME"
+            "end_time": {
+              "title": "Schedule End Time",
+              "type": "DATETIME",
+              "hidden": false
             },
-            "bulletinLastUpdatedTimestamp": {
-              "title": "Last Updated",
-              "type": "DATETIME"
+            "frequency": {
+              "title": "Schedule Frequency"
             },
-            "bulletinVersion": {
-              "title": "Version",
-              "type": "TEXT"
-            },
-            "bulletinSummary": {
-              "title": "Summary",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bulletinMappingCaveat": {
-              "title": "Caveat",
-              "type": "TEXT"
-            },
-            "commonVulnerabilityScoringSystemBaseScore": {
-              "title": "Vulnerability Base Score",
-              "type": "TEXT"
-            },
-            "commonVulnerabilityScoringSystemTemporalScore": {
-              "title": "Vulnerability Temporal Score",
-              "type": "TEXT"
-            },
-            "id": {
-              "title": "ID",
-              "value": "user-dashboard-bcs-oi-overall-device-enriched-drilldown",
-              "key": true,
-              "type": "FIXED_VALUE",
-              "hidden": true,
-              "visible": false
-            },
-            "securityAdvisoryId": {
-              "title": "Security Advisory ID",
-              "type": "TEXT"
-            },
-            "secAdv_confidence_color": {
-              "type": "COLOR-MAP",
-              "source-column": "secAdv_matchConfidence",
-              "color-map": {
-                "Not Vulnerable": "#00BB00",
-                "Vulnerable": "#BB0000",
-                "Potentially Vulnerable": "#F6C309"
-              }
-            },
-            "secAdv_matchConfidence": {
-              "title": "Security Advisory Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %} <span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_matchConfidence }} </span>{% endraw %}",
-              "visible": true
+            "expired": {
+              "title": "Job Expired"
             }
+          },
+          "custom_columns": [
+            {
+              "id": "enabled",
+              "label": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
+            },
+            {
+              "id": "enableColor",
+              "label": "Enable Color",
+              "expr": "['#4CAF50'] if enabled == 'yes' else ['#9E9E9E']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            }
+          ],
+          "0custom_columns": [
+            {
+              "id": "id",
+              "label": "JOB",
+              "expr": "job_id if job_id else None",
+              "visible": false,
+              "key": true
+            }
+          ],
+          "refreshOptions": {
+            "refreshType": "Periodic",
+            "refreshInterval": 60000
           },
           "actions": [
             {
-              "appName": "user-dashboard",
-              "permission": "aia:page:view",
-              "drillDownContext": "id",
-              "drillDownLinkField": "deviceName",
-              "identifier": "deviceName",
+              "permission": "rda:schedules:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:delete-schedule",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "job_id",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "dashboard_title",
+                    "paramId": "dashboard_title"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dashboard.schedule.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:schedules:edit",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:update-schedule",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "job_id",
+                    "paramId": "id"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dashboard.schedule.update"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "no",
+                    "fieldId": "expired"
+                  }
+                ]
+              }
+            },
+            {
+              "appName": "user-dashboard/rda-dashboard-view-logs",
+              "permission": "rda:schedules:view",
+              "identifier": "view_logs",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Details",
+              "title": "View Logs",
               "type": "GO_TO_APP_STATE"
+            },
+            {
+              "permission": "rda:user_dashboard:enable",
+              "title": "Enable",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:schedule-enable",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "job_id",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "dashboard_title",
+                    "paramId": "dashboard_title"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dashboard.schedule.enable"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "no",
+                    "fieldId": "enabled"
+                  },
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "no",
+                    "fieldId": "expired"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:disable",
+              "title": "Disable",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:schedule-disable",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "job_id",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "dashboard_title",
+                    "paramId": "dashboard_title"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dashboard.schedule.disable"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "yes",
+                    "fieldId": "enabled"
+                  },
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "no",
+                    "fieldId": "expired"
+                  }
+                ]
+              }
             }
           ],
-          "widget_id": "79c76f48"
+          "widget_id": "cdc398bc"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Security Advisories Details",
+      "title": "Dashboard Schedules",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Security Advisories Details",
+          "title": "Schedule Details",
           "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
+          "paginated": true,
+          "stream": "rda_dashboard_export_schedules",
+          "height": 10,
           "min_width": 12,
-          "stream": "edc_sec_adv_data_enriched",
-          "duration_hours": 10800000,
-          "ts_column": "timestamp",
           "columns": {
-            "PsirtID": {
-              "title": "PsirtID",
-              "type": "DOUBLE",
-              "visible": true
-            },
-            "secAdv_impact_rating_color": {
-              "type": "COLOR-MAP",
-              "source-column": "secAdv_securityImpactRating",
-              "color-map": {
-                "Critical": "#8B0000",
-                "High": "#FF4500",
-                "Medium": "#F6C309",
-                "Low": "#00BB00"
-              }
-            },
-            "secAdv_securityImpactRating": {
-              "title": "Security Advisory Severity",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
-              "visible": true
-            },
-            "deviceId": {
-              "title": "Device ID",
-              "type": "TEXT",
+            "job_id": {
+              "title": "RDA ID",
               "key": true,
               "visible": false
             },
-            "deviceName": {
-              "title": "Asset Name",
-              "type": "TEXT",
-              "hidden": true
+            "schedule_id": {
+              "title": "Job ID"
             },
-            "deviceIp": {
-              "title": "Asset IP",
-              "type": "TEXT",
-              "hidden": true
+            "created_by": {
+              "title": "Created By"
             },
-            "productId": "Product ID",
-            "serialNumber": "Serial Number",
-            "to_internet": {
-              "title": "Internet Facing",
-              "type": "TEXT",
+            "dashboard_name": {
+              "title": "Dashboard Name",
               "visible": false
             },
-            "physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
+            "dashboard_title": {
+              "title": "Dashboard Label"
             },
-            "productFamily": "Product Family",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
+            "filters": {
+              "title": "Condition Filters"
             },
-            "softwareVersion": "SW Version",
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
+            "name": {
+              "title": "Export Filename"
             },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
+            "include_csv_files": {
+              "title": "Include CSV Files"
             },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
+            "descr": {
+              "title": "Description"
             },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
+            "email_id": {
+              "title": "Send To"
             },
-            "bugIds": {
-              "title": "Bug IDs",
-              "type": "TEXT"
+            "start_time": {
+              "title": "Schedule Start Time",
+              "type": "DATETIME",
+              "hidden": false
             },
-            "cveIds": {
-              "title": "CVE IDs",
-              "type": "TEXT"
+            "next_run_time": {
+              "title": "Next Run Time",
+              "type": "DATETIME",
+              "hidden": false
             },
-            "matchConfidenceReason": "Confidence Reason",
-            "bulletinFirstPublishedTimestamp": {
-              "title": "Published",
-              "type": "DATETIME"
+            "end_time": {
+              "title": "Schedule End Time",
+              "type": "DATETIME",
+              "hidden": false
             },
-            "bulletinLastUpdatedTimestamp": {
-              "title": "Last Updated",
-              "type": "DATETIME"
+            "frequency": {
+              "title": "Schedule Frequency"
             },
-            "bulletinVersion": {
-              "title": "Version",
-              "type": "TEXT"
-            },
-            "bulletinSummary": {
-              "title": "Summary",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bulletinMappingCaveat": {
-              "title": "Caveat",
-              "type": "TEXT"
-            },
-            "commonVulnerabilityScoringSystemBaseScore": {
-              "title": "Vulnerability Base Score",
-              "type": "TEXT"
-            },
-            "commonVulnerabilityScoringSystemTemporalScore": {
-              "title": "Vulnerability Temporal Score",
-              "type": "TEXT"
-            },
-            "id": {
-              "title": "ID",
-              "value": "user-dashboard-bcs-oi-overall-device-enriched-drilldown",
-              "key": true,
-              "type": "FIXED_VALUE",
-              "hidden": true,
-              "visible": false
-            },
-            "securityAdvisoryId": {
-              "title": "Security Advisory ID",
-              "type": "TEXT"
-            },
-            "secAdv_confidence_color": {
-              "type": "COLOR-MAP",
-              "source-column": "secAdv_matchConfidence",
-              "color-map": {
-                "Not Vulnerable": "#00BB00",
-                "Vulnerable": "#BB0000",
-                "Potentially Vulnerable": "#F6C309"
-              }
-            },
-            "secAdv_matchConfidence": {
-              "title": "Security Advisory Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %} <span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_matchConfidence }} </span>{% endraw %}",
-              "visible": true
+            "expired": {
+              "title": "Job Expired"
             }
+          },
+          "custom_columns": [
+            {
+              "id": "enabled",
+              "label": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
+            },
+            {
+              "id": "enableColor",
+              "label": "Enable Color",
+              "expr": "['#4CAF50'] if enabled == 'yes' else ['#9E9E9E']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            }
+          ],
+          "0custom_columns": [
+            {
+              "id": "id",
+              "label": "JOB",
+              "expr": "job_id if job_id else None",
+              "visible": false,
+              "key": true
+            }
+          ],
+          "refreshOptions": {
+            "refreshType": "Periodic",
+            "refreshInterval": 60000
           },
           "actions": [
             {
-              "appName": "user-dashboard",
-              "permission": "aia:page:view",
-              "drillDownContext": "id",
-              "drillDownLinkField": "deviceName",
-              "identifier": "deviceName",
+              "permission": "rda:schedules:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:delete-schedule",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "job_id",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "dashboard_title",
+                    "paramId": "dashboard_title"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dashboard.schedule.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:schedules:edit",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:update-schedule",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "job_id",
+                    "paramId": "id"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dashboard.schedule.update"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "no",
+                    "fieldId": "expired"
+                  }
+                ]
+              }
+            },
+            {
+              "appName": "user-dashboard/rda-dashboard-view-logs",
+              "permission": "rda:schedules:view",
+              "identifier": "view_logs",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Details",
+              "title": "View Logs",
               "type": "GO_TO_APP_STATE"
+            },
+            {
+              "permission": "rda:user_dashboard:enable",
+              "title": "Enable",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:schedule-enable",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "job_id",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "dashboard_title",
+                    "paramId": "dashboard_title"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dashboard.schedule.enable"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "no",
+                    "fieldId": "enabled"
+                  },
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "no",
+                    "fieldId": "expired"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:disable",
+              "title": "Disable",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:schedule-disable",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "job_id",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "dashboard_title",
+                    "paramId": "dashboard_title"
+                  }
+                ]
+              },
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dashboard.schedule.disable"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "yes",
+                    "fieldId": "enabled"
+                  },
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "no",
+                    "fieldId": "expired"
+                  }
+                ]
+              }
             }
           ],
-          "widget_id": "79c76f48"
+          "widget_id": "cdc398bc"
         }
       ]
     }

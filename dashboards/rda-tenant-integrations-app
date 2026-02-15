@@ -1,34 +1,30 @@
 {
-  "name": "rda-topology-app",
-  "label": "Topology",
-  "description": "Topology",
-  "version": "23.2.7.1",
+  "name": "rda-tenant-integrations-app",
+  "label": "RDA Integrations",
+  "description": "Robotic Data Automation Integrations",
+  "dashboard_folder": "System",
+  "version": "22.11.10.1",
   "enabled": true,
-  "short_label": "Topology",
-  "context_label_id": "stack_name",
-  "status_poller": {},
   "dashboard_filters": {
     "time_filter": false,
-    "columns_filter": [],
-    "group_filters": []
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "new dashboard"
+      "title": "Example"
     }
   ],
   "dashboard_type": "app",
-  "dashboard_folder": "System",
   "dashboard_pages": [
     {
-      "name": "topology",
-      "label": "Topology",
-      "icon": "topology.svg"
+      "name": "rda-mgmt-page-tenant-credentials",
+      "label": "Credentials",
+      "icon": "credentials.svg"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "new dashboard"
+      "title": "Example"
     }
   ]
 }
