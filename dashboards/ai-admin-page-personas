@@ -1,278 +1,294 @@
 {
-  "name": "device_inventory",
-  "label": "Inventory",
-  "description": "Device Inventory",
-  "dashboard_folder": "MOW",
-  "version": "24.1.18.2",
-  "enabled": false,
+  "name": "ai-admin-page-personas",
+  "label": "AI Personas",
+  "description": "AI Personas",
+  "enabled": true,
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "AI",
   "live_edit": true,
-  "stream": "cnc_device_inventory",
-  "dashboard_type": "template",
-  "template_variables": {
-    "DEVICE_IP": {
-      "contextId": "device_ip"
-    },
-    "DEVICE_HOSTNAME": {
-      "contextId": "device_hostname"
-    }
-  },
+  "dashboard_style": "auto",
+  "stream": "rda_secret_meta",
   "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 1 month"
-    ],
-    "extra_filter": "device_ip is '{{DEVICE_IP}}' and device_hostname is '{{DEVICE_HOSTNAME}}'",
-    "columns_filter": [
-      {
-        "id": "device_ip",
-        "label": "IP Address",
-        "type": "TEXT"
-      },
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      },
-      {
-        "id": "device_ip",
-        "label": "IP Address",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_hostname",
-        "label": "Device Hostname",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_model",
-        "label": "Device Model",
-        "type": "TEXT"
-      },
-      {
-        "id": "serial_number",
-        "label": "Device Serial Number",
-        "type": "TEXT"
-      },
-      {
-        "id": "clli_code",
-        "label": "CLLI Code",
-        "type": "TEXT"
-      }
-    ],
-    "group_filters": []
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Device View",
+      "title": "Personas",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Inventory</a></h1></div>",
-          "widget_id": "33317e49"
-        },
-        {
-          "title": "Asset Summary",
-          "widget_type": "summary",
-          "max_width": 6,
-          "height": 5,
-          "min_width": 6,
-          "stream": "cnc_device_inventory",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "columns": {
-            "device_model": "Model",
-            "device_type": "Equipment Type",
-            "manufacturer": "Manufacturer",
-            "device_ip": "IP Address",
-            "device_hostname": "Hostname",
-            "serial_number": "Serial Number",
-            "device_family": "Device Family"
-          },
-          "widget_id": "7gsoG2q9"
-        },
-        {
-          "title": "Asset Details",
+          "title": "Personas",
           "widget_type": "tabular",
-          "stream": "cnc_device_inventory",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "device_ip"
-          ],
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "min_width": 12,
-          "height": 8,
-          "max_width": 12,
-          "paginated": true,
+          "stream": "rda_ai_admin_meta",
+          "duration_hours": 87600,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "device_hostname",
-            "device_ip",
-            "device_model",
-            "clli_code",
-            "device_location",
-            "serial_number",
-            "device_type",
-            "manufacturer",
-            "device_fw_version",
-            "device_fw_type",
-            "admin_state"
+            "name"
           ],
-          "max_rows": 50,
+          "ts_column": "saved_time",
+          "paginated": true,
+          "height": 10,
+          "min_wdith": 12,
           "columns": {
-            "total_count": "Total Quantity",
-            "device_hostname": {
-              "title": "Device Hostname",
-              "type": "TEXT",
+            "name": {
+              "title": "Name",
               "key": true
             },
-            "device_family": {
-              "title": "Device Family",
-              "type": "TEXT",
-              "visible": false
+            "description": {
+              "title": "Description",
+              "key": false
             },
-            "Product_Family": {
-              "title": "Product Family",
-              "type": "TEXT",
+            "llms": {
+              "title": "LLMs",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.static_color }}' > {{ row.llms }} </span>"
+            },
+            "guardrails": {
+              "title": "Guardrails",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.static_color }}' > {{ row.guardrails }} </span>"
+            },
+            "color": {
+              "title": "Color",
               "key": true,
-              "visible": false
+              "type": "DYNAMIC_HTML",
+              "htmlTemplate": "<div class='d-flex'><div style='width:18px;height:18px;margin-right:8px;' :style='{backgroundColor:rowData.color}'></div></div>"
             },
-            "device_ip": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "key": true
+            "saved_time": {
+              "title": "Saved Time",
+              "type": "DATETIME"
             },
-            "device_model": "Device Model",
-            "serial_number": {
-              "title": "Serial Number",
-              "type": "TEXT"
-            },
-            "manufacturer": "Vendor",
-            "device_fw_version": "SW Version",
-            "device_type": "Equipment Type",
-            "device_location": "Location",
-            "device_fw_type": "Type",
-            "admin_state": "Admin State",
-            "product_type": "Product Type",
-            "operational_state": "Operational State",
-            "clli_code": "CLLI_CODE",
-            "device_system_description": "Device Descriptions"
+            "timestamp": {
+              "title": "When",
+              "type": "HUMANIZE_TIME_DELTA",
+              "source-column": "saved_time",
+              "sortable": false
+            }
           },
-          "widget_id": "4c2cfdd7"
+          "custom_columns": [
+            {
+              "id": "static_color",
+              "expr": "['#3F51B5']",
+              "visible": false,
+              "hidden": true,
+              "label": "Static Color"
+            }
+          ],
+          "actions": [
+            {
+              "permission": "rda:credential:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:personas-add",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.add"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:edit",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:personas-edit",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:verify",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:vault-persona-view",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.view.json"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:verify",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:vault-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.delete"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "c9d555e3"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Device View",
+      "title": "Personas",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Inventory</a></h1></div>",
-          "widget_id": "33317e49"
-        },
-        {
-          "title": "Asset Summary",
-          "widget_type": "summary",
-          "max_width": 6,
-          "height": 5,
-          "min_width": 6,
-          "stream": "cnc_device_inventory",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "columns": {
-            "device_model": "Model",
-            "device_type": "Equipment Type",
-            "manufacturer": "Manufacturer",
-            "device_ip": "IP Address",
-            "device_hostname": "Hostname",
-            "serial_number": "Serial Number",
-            "device_family": "Device Family"
-          },
-          "widget_id": "7gsoG2q9"
-        },
-        {
-          "title": "Asset Details",
+          "title": "Personas",
           "widget_type": "tabular",
-          "stream": "cnc_device_inventory",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "device_ip"
-          ],
-          "extra_filter": "`item_type` is  \"CHASSIS\"",
-          "min_width": 12,
-          "height": 8,
-          "max_width": 12,
-          "paginated": true,
+          "stream": "rda_ai_admin_meta",
+          "duration_hours": 87600,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "device_hostname",
-            "device_ip",
-            "device_model",
-            "clli_code",
-            "device_location",
-            "serial_number",
-            "device_type",
-            "manufacturer",
-            "device_fw_version",
-            "device_fw_type",
-            "admin_state"
+            "name"
           ],
-          "max_rows": 50,
+          "ts_column": "saved_time",
+          "paginated": true,
+          "height": 10,
+          "min_wdith": 12,
           "columns": {
-            "total_count": "Total Quantity",
-            "device_hostname": {
-              "title": "Device Hostname",
-              "type": "TEXT",
+            "name": {
+              "title": "Name",
               "key": true
             },
-            "device_family": {
-              "title": "Device Family",
-              "type": "TEXT",
-              "visible": false
+            "description": {
+              "title": "Description",
+              "key": false
             },
-            "Product_Family": {
-              "title": "Product Family",
-              "type": "TEXT",
+            "llms": {
+              "title": "LLMs",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.static_color }}' > {{ row.llms }} </span>"
+            },
+            "guardrails": {
+              "title": "Guardrails",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.static_color }}' > {{ row.guardrails }} </span>"
+            },
+            "color": {
+              "title": "Color",
               "key": true,
-              "visible": false
+              "type": "DYNAMIC_HTML",
+              "htmlTemplate": "<div class='d-flex'><div style='width:18px;height:18px;margin-right:8px;' :style='{backgroundColor:rowData.color}'></div></div>"
             },
-            "device_ip": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "key": true
+            "saved_time": {
+              "title": "Saved Time",
+              "type": "DATETIME"
             },
-            "device_model": "Device Model",
-            "serial_number": {
-              "title": "Serial Number",
-              "type": "TEXT"
-            },
-            "manufacturer": "Vendor",
-            "device_fw_version": "SW Version",
-            "device_type": "Equipment Type",
-            "device_location": "Location",
-            "device_fw_type": "Type",
-            "admin_state": "Admin State",
-            "product_type": "Product Type",
-            "operational_state": "Operational State",
-            "clli_code": "CLLI_CODE",
-            "device_system_description": "Device Descriptions"
+            "timestamp": {
+              "title": "When",
+              "type": "HUMANIZE_TIME_DELTA",
+              "source-column": "saved_time",
+              "sortable": false
+            }
           },
-          "widget_id": "4c2cfdd7"
+          "custom_columns": [
+            {
+              "id": "static_color",
+              "expr": "['#3F51B5']",
+              "visible": false,
+              "hidden": true,
+              "label": "Static Color"
+            }
+          ],
+          "actions": [
+            {
+              "permission": "rda:credential:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:personas-add",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.add"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:edit",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:personas-edit",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:verify",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:vault-persona-view",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.view.json"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:verify",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:vault-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.delete"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "c9d555e3"
         }
       ]
     }

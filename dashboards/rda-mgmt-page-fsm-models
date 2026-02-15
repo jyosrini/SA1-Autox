@@ -1,35 +1,44 @@
 {
-  "name": "portal-account-change-password-page",
-  "label": "Change Password",
-  "description": "Change Password Page",
+  "name": "rda-mgmt-page-fsm-models",
+  "label": "FSM Models",
+  "description": " FSM Models",
   "enabled": true,
   "dashboard_type": "dashboard",
-  "dashboard_style": "auto",
   "dashboard_folder": "System",
+  "dashboard_style": "auto",
+  "dashboard_filters": {
+    "time_filter": false
+  },
   "dashboard_sections": [
     {
-      "title": "Change Password",
+      "title": "FSM Models",
       "show_filter": false,
       "widgets": [
         {
-          "title": "",
-          "widget_type": "portal_html",
-          "widget_template": "saas/my_account/ChangePasswordForm",
-          "widget_id": "2edb3f42"
+          "title": "FSM Models",
+          "widget_type": "portal_tabular",
+          "reportId": "fsm.models.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "2bb9b670"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Change Password",
+      "title": "FSM Models",
       "show_filter": false,
       "widgets": [
         {
-          "title": "",
-          "widget_type": "portal_html",
-          "widget_template": "saas/my_account/ChangePasswordForm",
-          "widget_id": "2edb3f42"
+          "title": "FSM Models",
+          "widget_type": "portal_tabular",
+          "reportId": "fsm.models.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "2bb9b670"
         }
       ]
     }
