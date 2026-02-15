@@ -1,40 +1,46 @@
 {
-  "name": "oia-logs-war-room-customer-view",
+  "name": "oia-incidents-war-room-customer-view",
   "label": "War Room - Customer View",
   "description": "War Room - Customer View",
   "enabled": true,
   "version": "2024.6.17.2",
   "dashboard_type": "template",
   "template_variables": {
-    "LOG_OT": {
-      "contextId": "rda_gw_timestamp"
+    "INCIDENT_OT": {
+      "contextId": "i_cfx_incident_occurred"
+    },
+    "INCIDENT_ID": {
+      "contextId": "incident_id"
     },
     "CUSTOMER_ID": {
       "contextId": "customer_id"
+    },
+    "INCIDENT_OT_DATETIME": {
+      "contextId": "i_cfx_incident_occurred_datetime"
     }
   },
   "dashboard_filters": {
     "time_filter": true,
     "default_time_range": {
-      "from_time": "{{LOG_OT}}",
-      "from_time_delta_hours": -24,
-      "to_time": "{{LOG_OT}}",
-      "to_time_delta_hours": 24,
-      "label": "Time Range"
+      "from_time": "{{INCIDENT_OT}}",
+      "from_time_delta_hours": -12,
+      "to_time": "{{INCIDENT_OT}}",
+      "to_time_delta_hours": 4,
+      "label": "{{INCIDENT_ID}} Time Range"
     }
   },
   "stream_query_mapping": {
+    "syslog_udp_event_stream_all": {
+      "i_cfx_incident_occurred": "rda_gw_timestamp"
+    },
     "oia-alerts-stream": {
-      "rda_gw_timestamp": "a_created_ts"
+      "i_cfx_incident_occurred": "a_created_ts"
     },
     "oia-ml-metrics-regression-output": {
-      "rda_gw_timestamp": "timestamp"
+      "i_cfx_incident_occurred": "timestamp"
     },
     "change_requests_stream": {
-      "rda_gw_timestamp": "timestamp"
-    },
-    "oia-incidents-stream": {
-      "rda_gw_timestamp": "i_created_ts"
+      "i_cfx_incident_occurred": "timestamp"
     }
   },
   "dashboard_sections": [
@@ -44,7 +50,7 @@
       "widgets": [
         {
           "widget_type": "label",
-          "label": "<h3 style='text-align: center;'>Log Time: {%raw%} {{' {{ '}} {%endraw%} toDateTimeString({{ LOG_OT }}) {%raw%} {{ '}}' }} {%endraw%} </h3>",
+          "label": "<h3 style='text-align: center;'>Incident Occurred: {%raw%} {{' {{ '}} {%endraw%} toDateTimeString({{ INCIDENT_OT }}) {%raw%} {{ '}}' }} {%endraw%} </h3>",
           "advanced": true,
           "min_width": 12,
           "max_width": 12,
@@ -83,7 +89,7 @@
           "column": "count_",
           "agg": "sum",
           "type": "int",
-          "widget_id": "5962e11c"
+          "widget_id": "5ddd5221"
         },
         {
           "title": "OSPF Alerts",
@@ -100,7 +106,7 @@
           "column": "count_",
           "agg": "sum",
           "type": "int",
-          "widget_id": "3f145adb"
+          "widget_id": "42dd66a3"
         },
         {
           "title": "Patch Changes",
@@ -117,7 +123,7 @@
           "column": "count_",
           "agg": "sum",
           "type": "int",
-          "widget_id": "a90db915"
+          "widget_id": "0b902e7b"
         },
         {
           "title": "Change Requests",
@@ -134,7 +140,7 @@
           "column": "count_",
           "agg": "sum",
           "type": "int",
-          "widget_id": "8bc53b8f"
+          "widget_id": "bfdcedca"
         },
         {
           "title": "Events Timeline",
@@ -152,8 +158,8 @@
           },
           "static_markers": [
             {
-              "timestamp": "{{LOG_OT}}",
-              "message": "Log Time",
+              "timestamp": "{{INCIDENT_OT}}",
+              "message": "Incident Occurred",
               "color": "#B71C1C"
             }
           ],
@@ -353,8 +359,8 @@
           ],
           "static_markers": [
             {
-              "timestamp": "{{LOG_OT}}",
-              "message": "Log Time",
+              "timestamp": "{{INCIDENT_OT}}",
+              "message": "Incident Occurred",
               "color": "#B71C1C"
             }
           ],
@@ -438,7 +444,7 @@
             }
           },
           "type": "str",
-          "widget_id": "58e08b21"
+          "widget_id": "ac07f7ed"
         },
         {
           "title": "Incident Trend",
@@ -461,8 +467,8 @@
           ],
           "static_markers": [
             {
-              "timestamp": "{{LOG_OT}}",
-              "message": "Log Time",
+              "timestamp": "{{INCIDENT_OT}}",
+              "message": "Incident Occurred",
               "color": "#B71C1C"
             }
           ],
@@ -497,7 +503,7 @@
               ]
             }
           },
-          "widget_id": "3e5d8325"
+          "widget_id": "cdc4f054"
         },
         {
           "widget_type": "pie_chart",
@@ -597,8 +603,8 @@
           },
           "static_markers": [
             {
-              "timestamp": "{{LOG_OT}}",
-              "message": "Log Time",
+              "timestamp": "{{INCIDENT_OT}}",
+              "message": "Incident Occurred",
               "color": "#B71C1C"
             }
           ],
@@ -628,13 +634,25 @@
           "columns": {
             "rda_gw_timestamp": {
               "title": "Event Time",
-              "type": "DATETIME"
+              "type": "DATETIME",
+              "key": true
             },
             "rda_gw_client_ip": "IP Address",
             "hostname": "Host",
             "raw": "Message",
             "syslog_severity": "Severity"
           },
+          "actions": [
+            {
+              "appName": "user-dashboard/oia-logs-war-room-app",
+              "permission": "oia:alert:view",
+              "identifier": "GoToWarRoom",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "Go to War Room",
+              "type": "GO_TO_APP_STATE"
+            }
+          ],
           "widget_id": "3d7466a3"
         }
       ]
@@ -647,7 +665,7 @@
       "widgets": [
         {
           "widget_type": "label",
-          "label": "<h3 style='text-align: center;'>Log Time: {%raw%} {{' {{ '}} {%endraw%} toDateTimeString({{ LOG_OT }}) {%raw%} {{ '}}' }} {%endraw%} </h3>",
+          "label": "<h3 style='text-align: center;'>Incident Occurred: {%raw%} {{' {{ '}} {%endraw%} toDateTimeString({{ INCIDENT_OT }}) {%raw%} {{ '}}' }} {%endraw%} </h3>",
           "advanced": true,
           "min_width": 12,
           "max_width": 12,
@@ -686,7 +704,7 @@
           "column": "count_",
           "agg": "sum",
           "type": "int",
-          "widget_id": "5962e11c"
+          "widget_id": "5ddd5221"
         },
         {
           "title": "OSPF Alerts",
@@ -703,7 +721,7 @@
           "column": "count_",
           "agg": "sum",
           "type": "int",
-          "widget_id": "3f145adb"
+          "widget_id": "42dd66a3"
         },
         {
           "title": "Patch Changes",
@@ -720,7 +738,7 @@
           "column": "count_",
           "agg": "sum",
           "type": "int",
-          "widget_id": "a90db915"
+          "widget_id": "0b902e7b"
         },
         {
           "title": "Change Requests",
@@ -737,7 +755,7 @@
           "column": "count_",
           "agg": "sum",
           "type": "int",
-          "widget_id": "8bc53b8f"
+          "widget_id": "bfdcedca"
         },
         {
           "title": "Events Timeline",
@@ -755,8 +773,8 @@
           },
           "static_markers": [
             {
-              "timestamp": "{{LOG_OT}}",
-              "message": "Log Time",
+              "timestamp": "{{INCIDENT_OT}}",
+              "message": "Incident Occurred",
               "color": "#B71C1C"
             }
           ],
@@ -956,8 +974,8 @@
           ],
           "static_markers": [
             {
-              "timestamp": "{{LOG_OT}}",
-              "message": "Log Time",
+              "timestamp": "{{INCIDENT_OT}}",
+              "message": "Incident Occurred",
               "color": "#B71C1C"
             }
           ],
@@ -1041,7 +1059,7 @@
             }
           },
           "type": "str",
-          "widget_id": "58e08b21"
+          "widget_id": "ac07f7ed"
         },
         {
           "title": "Incident Trend",
@@ -1064,8 +1082,8 @@
           ],
           "static_markers": [
             {
-              "timestamp": "{{LOG_OT}}",
-              "message": "Log Time",
+              "timestamp": "{{INCIDENT_OT}}",
+              "message": "Incident Occurred",
               "color": "#B71C1C"
             }
           ],
@@ -1100,7 +1118,7 @@
               ]
             }
           },
-          "widget_id": "3e5d8325"
+          "widget_id": "cdc4f054"
         },
         {
           "widget_type": "pie_chart",
@@ -1200,8 +1218,8 @@
           },
           "static_markers": [
             {
-              "timestamp": "{{LOG_OT}}",
-              "message": "Log Time",
+              "timestamp": "{{INCIDENT_OT}}",
+              "message": "Incident Occurred",
               "color": "#B71C1C"
             }
           ],
@@ -1231,13 +1249,25 @@
           "columns": {
             "rda_gw_timestamp": {
               "title": "Event Time",
-              "type": "DATETIME"
+              "type": "DATETIME",
+              "key": true
             },
             "rda_gw_client_ip": "IP Address",
             "hostname": "Host",
             "raw": "Message",
             "syslog_severity": "Severity"
           },
+          "actions": [
+            {
+              "appName": "user-dashboard/oia-logs-war-room-app",
+              "permission": "oia:alert:view",
+              "identifier": "GoToWarRoom",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "Go to War Room",
+              "type": "GO_TO_APP_STATE"
+            }
+          ],
           "widget_id": "3d7466a3"
         }
       ]
