@@ -1,66 +1,48 @@
 {
-  "name": "global-configs",
-  "label": "Configurations",
-  "description": "Configurations",
-  "enabled": true,
+  "name": "organizations",
+  "description": "Organizations",
+  "label": "Organizations",
+  "enabled": false,
   "dashboard_type": "dashboard",
-  "dashboard_folder": "administration",
+  "dashboard_folder": "System",
+  "template_variables": null,
+  "version": "24.1.18.1",
   "exportable": false,
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Configurations",
+      "title": "Organizations",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Configs",
-          "widget_type": "tabular",
-          "api-endpoint": {
-            "service-name": "cfx-app-controller",
-            "namespace": "io.cfx.dimensions.app",
-            "methodName": "invokeAppApi:getGlobalConfigsData",
-            "version": "*",
-            "useReportContext": true,
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "context": {},
-                "filters": []
-              }
-            ]
-          },
-          "widget_id": "bae3b366"
+          "title": "Organizations",
+          "widget_type": "portal_card",
+          "widget_template": "saas/cfx-label-description-action-cards",
+          "reportId": "oia.organizations.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "exportSupported": false,
+          "widget_id": "bb1dd6c0"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Configurations",
+      "title": "Organizations",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Configs",
-          "widget_type": "tabular",
-          "api-endpoint": {
-            "service-name": "cfx-app-controller",
-            "namespace": "io.cfx.dimensions.app",
-            "methodName": "invokeAppApi:getGlobalConfigsData",
-            "version": "*",
-            "useReportContext": true,
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "context": {},
-                "filters": []
-              }
-            ]
-          },
-          "widget_id": "bae3b366"
+          "title": "Organizations",
+          "widget_type": "portal_card",
+          "widget_template": "saas/cfx-label-description-action-cards",
+          "reportId": "oia.organizations.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "exportSupported": false,
+          "widget_id": "bb1dd6c0"
         }
       ]
     }
