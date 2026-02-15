@@ -1,59 +1,134 @@
 {
-  "name": "rda-mgmt-page-discovery-configurations",
-  "label": "Discovery Configurations",
-  "description": "Discovery Configurations",
+  "name": "rda-mgmt-page-store-objects",
+  "label": "Object Store",
+  "description": "Objects Management Page",
   "enabled": true,
   "dashboard_type": "dashboard",
+  "dashboard_style": "auto",
+  "stream": "rda_objects_meta",
   "dashboard_folder": "System",
   "dashboard_filters": {
     "time_filter": true,
+    "additional_datetime_column_filters": [
+      {
+        "id": "saved_time",
+        "label": "Saved Time"
+      }
+    ],
     "columns_filter": [
+      {
+        "id": "saved_time",
+        "label": "Dataset Saved",
+        "type": "DATETIME"
+      },
+      {
+        "id": "folder",
+        "label": "Folder",
+        "type": "TEXT"
+      },
       {
         "id": "name",
         "label": "Name",
         "type": "TEXT"
+      },
+      {
+        "id": "file_type",
+        "label": "File Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "file_size",
+        "label": "Raw Size",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "humansized_file_size",
+        "label": "Size",
+        "type": "TEXT"
+      },
+      {
+        "id": "description",
+        "label": "Description",
+        "type": "TEXT"
+      },
+      {
+        "id": "retention_days",
+        "label": "Retention Days",
+        "type": "DOUBLE"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Discovery Cofigurations",
+      "title": "Object Store",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Discovery Configurations",
+          "title": "Object store",
+          "extra_filter": "folder is not null",
           "widget_type": "tabular",
-          "duration_hours": 87600,
-          "stream": "rda_discovery_configurations_meta",
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "name"
-          ],
-          "ts_column": "saved_time",
-          "paginated": true,
+          "stream": "rda_objects_meta",
           "height": 10,
           "min_wdith": 12,
+          "paginated": true,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "name",
+            "folder",
+            "file_type",
+            "humansized_file_size",
+            "description"
+          ],
+          "duration_hours": 87600,
           "columns": {
             "name": {
               "title": "Name",
               "key": true
             },
-            "type": "Type",
-            "description": "Description",
-            "folder": "Folder",
+            "folder": {
+              "title": "Folder",
+              "key": true
+            },
+            "description": {
+              "title": "Description"
+            },
             "saved_time": {
               "title": "Saved Time",
               "type": "DATETIME"
+            },
+            "file_type": {
+              "title": "File Type",
+              "key": true
+            },
+            "file_size": {
+              "title": "Raw Size"
+            },
+            "humansized_file_size": {
+              "title": "Size"
+            },
+            "data_path": {
+              "title": "File Path",
+              "key": true,
+              "visible": false
+            },
+            "retention_days": {
+              "title": "Retention Days",
+              "key": true
             }
           },
-          "custom_columns": [],
+          "sorting": [
+            {
+              "saved_time": "desc"
+            }
+          ],
           "actions": [
             {
-              "permission": "rda:discovery_configuration:view",
-              "title": "View",
+              "permission": "rda:object:upload",
+              "title": "Upload",
+              "icon": "mdi mdi-plus",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:rda.saas.discoveryconfiguration.view",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:add-object",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -61,17 +136,17 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.discoveryconfiguration.view"
+                    "formId": "rda.saas.object.add"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:discovery_configuration:update",
-              "title": "Update",
+              "permission": "rda:object:download",
+              "title": "Download",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:rda.saas.discoveryconfiguration.update",
+              "identifier": "saas-service-action:download-object",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -79,56 +154,124 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.discoveryconfiguration.update"
+                    "formId": "rda.saas.object.download"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:object:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:delete-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.object.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:object:update_retention",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:update-retention-days",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.object.update_retention"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "d5b2wsd5"
+          "widget_id": "01dc3a55"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Discovery Cofigurations",
+      "title": "Object Store",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Discovery Configurations",
+          "title": "Object store",
+          "extra_filter": "folder is not null",
           "widget_type": "tabular",
-          "duration_hours": 87600,
-          "stream": "rda_discovery_configurations_meta",
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "name"
-          ],
-          "ts_column": "saved_time",
-          "paginated": true,
+          "stream": "rda_objects_meta",
           "height": 10,
           "min_wdith": 12,
+          "paginated": true,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "name",
+            "folder",
+            "file_type",
+            "humansized_file_size",
+            "description"
+          ],
+          "duration_hours": 87600,
           "columns": {
             "name": {
               "title": "Name",
               "key": true
             },
-            "type": "Type",
-            "description": "Description",
-            "folder": "Folder",
+            "folder": {
+              "title": "Folder",
+              "key": true
+            },
+            "description": {
+              "title": "Description"
+            },
             "saved_time": {
               "title": "Saved Time",
               "type": "DATETIME"
+            },
+            "file_type": {
+              "title": "File Type",
+              "key": true
+            },
+            "file_size": {
+              "title": "Raw Size"
+            },
+            "humansized_file_size": {
+              "title": "Size"
+            },
+            "data_path": {
+              "title": "File Path",
+              "key": true,
+              "visible": false
+            },
+            "retention_days": {
+              "title": "Retention Days",
+              "key": true
             }
           },
-          "custom_columns": [],
+          "sorting": [
+            {
+              "saved_time": "desc"
+            }
+          ],
           "actions": [
             {
-              "permission": "rda:discovery_configuration:view",
-              "title": "View",
+              "permission": "rda:object:upload",
+              "title": "Upload",
+              "icon": "mdi mdi-plus",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:rda.saas.discoveryconfiguration.view",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:add-object",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -136,17 +279,17 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.discoveryconfiguration.view"
+                    "formId": "rda.saas.object.add"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:discovery_configuration:update",
-              "title": "Update",
+              "permission": "rda:object:download",
+              "title": "Download",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:rda.saas.discoveryconfiguration.update",
+              "identifier": "saas-service-action:download-object",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -154,13 +297,49 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.discoveryconfiguration.update"
+                    "formId": "rda.saas.object.download"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:object:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:delete-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.object.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:object:update_retention",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:update-retention-days",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.object.update_retention"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "d5b2wsd5"
+          "widget_id": "01dc3a55"
         }
       ]
     }
