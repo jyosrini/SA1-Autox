@@ -1,257 +1,215 @@
+
+ ## ## NetApp ONTAP 7 Mode Storage Inventory Collection
+
+ ## NetApp ONTAP 7 Mode IP Range Feed
 @c:new-block
- --> @agent:cfx-edgecollector:ec-group-01:createJob jobName = "cisco_ios_devices1" &
-seed_addresses = "9.3.252.91,9.3.252.92,9.3.252.93,9.3.252.94,9.3.252.38,9.3.252.32,9.3.252.35,9.3.252.36,9.3.252.37,9.3.252.31,9.3.252.33,9.3.252.34" &
-cli_access = true &
-extended_inventory = true &
-credentials ="cml-snmp,cml-ssh1,cml-ssh2,cml-ssh3"
- --> @agent:cfx-edgecollector:ec-group-01:updateJob jobName = "cisco_ios_devices1" & seed_addresses = "9.3.252.91,9.3.252.92,9.3.252.93,9.3.252.94,9.3.252.38,9.3.252.32,9.3.252.35,9.3.252.36,9.3.252.37,9.3.252.31,9.3.252.33,9.3.252.34"
- --> @c:new-block
- --> @agent:cfx-edgecollector:ec-group-01:runDiscovery jobName = "cisco_ios_devices1"
- --> @dm:save name = "temp-discovery-results"
- --> @c:data-loop dataset = "temp-discovery-results" and columns="Minio_location"
- --> @dm:recall name = "temp-discovery-results"
- --> @files:ec-get-discovery-results minio_file_location = "$Minio_location" & json_path = "base.data,system.data,entityPhysical.data,interfaces.data,entAliasMappingTable.data,cdpGlobal.data,ipAddrTable.data,cdpCache.data,cli_show_ether_channel_summary.data,management-target"
- --> @dm:save name="temp-df"
- --> @c:simple-loop loop_var="base.data,system.data,entityPhysical.data,interfaces.data,entAliasMappingTable.data,cdpGlobal.data,ipAddrTable.data,cdpCache.data,cli_show_ether_channel_summary.data,management-target"
- --> @dm:set-tracing-context __block__="$loop_var"
- --> @dm:recall name="temp-df"
- --> @dm:selectcolumns include="$loop_var|target"
- --> @dm:rename-columns data="$loop_var"
- --> @dm:add-missing-columns columns="data"
- --> *dm:filter data is not null
- --> @dm:eval-multi-proc data ="data.replace('[[','[') if str(data).startswith('[[') else data" and _max_procs=4
- --> @dm:eval-multi-proc data ="data.replace(']]',']') if str(data).endswith(']]') else data" and _max_procs=4
- --> @dm:explode-json column='data'
- --> @dm:save name="temp-Group-$loop_var"
- ## temp-ifindex-entPhysicalIndex DATASET: Create 'ifIndex' & 'entPhysicalIndex' mapping columns by reading entAliasMappingTable group
+ --> @dm:empty
+ --> @dm:addrow ntap_ip = '10.95.158.15,10.95.158.17,10.95.131.51,10.95.131.52'
+ --> @dm:save name = 'temp-ntap-ip-feed'
+ ## NetApp ONTAP 7 Mode Controller Info
 
  --> @c:new-block
- --> @dm:set-tracing-context __block__="entity-alias-mapping"
- --> @dm:recall name="temp-Group-entAliasMappingTable.data"
- --> @dm:skip-block-if-shape row_count='0'
- --> @dm:skip-block-if-shape column_count=1
- --> @dm:add-missing-columns columns="if_index,entPhysicalIndex"
- --> @dm:eval-multi-proc if_index=" entAliasMappingIdentifier[entAliasMappingIdentifier.rfind('.') + 1: len(entAliasMappingIdentifier)] if entAliasMappingIdentifier else None" and _max_procs=4
- --> *dm:filter if_index is not None
- --> @dm:selectcolumns include="target|if_index|entPhysicalIndex"
- --> @dm:to-type columns="entPhysicalIndex" and type="int"
- --> @dm:to-type columns="if_index" and type="int"
- --> @dm:save name="temp-ifindex-entPhysicalIndex"
- --> @c:new-block
- --> @dm:recall name="temp-Group-entityPhysical.data"
- --> @dm:skip-block-if-shape row_count='0'
- --> @dm:skip-block-if-shape column_count=1
- --> *dm:filter entPhysicalClassEnumeratedLabel in ["Port","port","PORT"]
- --> @dm:to-type columns="entPhysicalIndex" and type="int"
- --> @dm:enrich dict="temp-ifindex-entPhysicalIndex" and src_key_cols="target,entPhysicalIndex" and dict_key_cols="target,entPhysicalIndex" and enrich_cols="if_index"
- --> @dm:to-type columns="if_index" and type="int"
- --> @dm:save name="temp-entityPhysical_logical_data"
- ## Read interfaces data
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:controller-info column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_controller_info'
+ ## NetApp ONTAP 7 Mode Network Configuration
 
  --> @c:new-block
- --> @dm:recall name="temp-Group-interfaces.data"
- --> @dm:skip-block-if-shape row_count='0'
- --> @dm:skip-block-if-shape column_count=1
- --> @dm:to-type columns="ifIndex" and type="int"
- --> @dm:enrich dict="temp-entityPhysical_logical_data" and src_key_cols="target,ifIndex" and dict_key_cols="target,if_index" and enrich_cols="entPhysicalDescr,entPhysicalContainedIn,entPhysicalClass,entPhysicalName,entPhysicalSoftwareRev,entPhysicalSerialNum,entPhysicalModelName,entPhysicalVendorName,entPhysicalClassEnumeratedLabel,entPhysicalAlias,entPhysicalIndex"
- --> @dm:to-type columns="ifIndex" and type="int"
- --> @dm:to-type columns="entPhysicalIndex" and type="int"
- --> @dm:eval type="'PORT_CHANNEL' if ifDescr and ifDescr.startswith('Port-channel') else 'PHYSICAL_PORT' if entPhysicalIndex else 'LOGICAL_PORT'"
- --> @dm:save name="temp-interface"
- ## Read cdp data
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:network-config column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_network_config'
+ ## NetApp ONTAP 7 Mode FC Adapter Configuration
 
  --> @c:new-block
- --> @dm:set-tracing-context __block__="parse-cdp-cache"
- --> @dm:recall name="temp-Group-cdpCache.data"
- --> @dm:add-missing-columns columns="data"
- --> *dm:filter data is not "[]"
- --> @dm:skip-block-if-shape row_count='0'
- --> @dm:skip-block-if-shape column_count=1
- --> @dm:to-type columns = 'cdpCacheIfIndex' & type = 'int'
- --> @dm:save name="temp-cdp"
- ## Enrich interface with cdp data
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:fc-adapters column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_fc_adapters'
+ ## NetApp ONTAP 7 Mode Volumes
 
  --> @c:new-block
- --> @dm:recall name="temp-interface"
- --> @dm:enrich dict="temp-cdp" and dict_key_cols="target,cdpCacheIfIndex" and src_key_cols="target,ifIndex" and enrich_cols="cdpCacheAddress,cdpCacheDevicePort,cdpCacheDeviceId,cdpCachePlatform,cdpCacheCapabilitiesEnumeratedLabel"
- --> @dm:to-type columns="cdpCacheIfIndex" and type="int"
- --> @dm:to-type columns="ifIndex" and type="int"
- --> @dm:save name="temp-interface"
- ## Port Chassis SN
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:volumes column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_volumes'
+ ## NetApp ONTAP 7 Mode Aggregates
 
  --> @c:new-block
- --> @dm:set-tracing-context __block__="get-port-chassis-sr"
- --> @dm:recall name="temp-Group-entityPhysical.data"
- --> @dm:skip-block-if-shape row_count='0'
- --> @dm:skip-block-if-shape column_count=1
- --> *dm:filter entPhysicalClassEnumeratedLabel in ["chassis","Chassis","CHASSIS"]
- --> @dm:rename-columns chassis_phyindex="entPhysicalIndex" & chassis_containedin="entPhysicalContainedIn"
- --> @dm:selectcolumns include="chassis_phyindex|entPhysicalClassEnumeratedLabel|entPhysicalSerialNum|target|entPhysicalName"
- --> @dm:to-type columns="chassis_phyindex" and type="int"
- --> @dm:save name="temp-chassis"
- --> @dm:recall name="temp-Group-entityPhysical.data"
- --> @dm:skip-block-if-shape row_count='0'
- --> @dm:skip-block-if-shape column_count=1
- --> @dm:build-hierarchy entity_key_column = "entPhysicalIndex" and relation_key_column = "entPhysicalContainedIn" and hierarchy_end_key_column="entPhysicalClassEnumeratedLabel" and hierarchy_end_value="Chassis" and include_column_to_primary_key="target"
- --> @dm:copy-columns from="hierarchy" and to="chassis_phyindex" and func="split" and value="-"
- --> @dm:eval-multi-proc chassis_phyindex="chassis_phyindex[-1] if hierarchy else None" and _max_procs=4
- --> *dm:filter entPhysicalClassEnumeratedLabel in ["Port","PORT","port"]
- --> @dm:rename-columns port_phyindex="entPhysicalIndex"
- --> @dm:to-type columns="chassis_phyindex" and type="int"
- --> @dm:selectcolumns include="port_phyindex|chassis_phyindex|target"
- --> @dm:enrich dict="temp-chassis" and src_key_cols="chassis_phyindex,target" and dict_key_cols="chassis_phyindex,target" and enrich_cols="entPhysicalSerialNum"
- --> @dm:selectcolumns include="port_phyindex|entPhysicalSerialNum|entPhysicalClassEnumeratedLabel|target"
- --> @dm:rename-columns chassis_sn="entPhysicalSerialNum"
- --> @dm:to-type columns="port_phyindex" and type="int"
- --> @dm:gc
- --> @dm:save name="temp-port-chassis-sr"
- --> @c:new-block
- --> @dm:set-tracing-context __block__="merge-port-chassis-sr-to-if"
- --> @dm:recall name="temp-ifindex-entPhysicalIndex"
- --> @dm:skip-block-if-shape row_count='0'
- --> @dm:skip-block-if-shape column_count=1
- --> @dm:recall name="temp-interface"
- --> @dm:enrich dict="temp-port-chassis-sr" and src_key_cols="entPhysicalIndex,target" and dict_key_cols="port_phyindex,target" and enrich_cols="chassis_sn"
- --> @dm:to-type columns="port_phyindex" and type="int"
- --> @dm:to-type columns="entPhysicalIndex" and type="int"
- --> @dm:gc
- --> @dm:save name="temp-interface"
- ## device_additional_ips: Read 'ipAddrTable' group & create comma separated list of ipAdEntAddr based on target and merge it with temp-df
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:aggregates column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_aggregates'
+ ## NetApp ONTAP 7 Mode LUNs
 
  --> @c:new-block
- --> @dm:set-tracing-context __block__="merge device_additional_ips"
- --> @dm:recall name="temp-Group-ipAddrTable.data"
- --> @dm:add-missing-columns columns="data"
- --> *dm:filter data is not "[]"
- --> @dm:skip-block-if-shape row_count=0
- --> @dm:skip-block-if-shape column_count=1
- --> @dm:fixnull columns="ipAdEntAddr" and value=''
- --> @dm:implode key_columns = "target" and merge_columns="ipAdEntAddr"
- --> @dm:save name="temp-additional-ip"
- --> @dm:recall name="temp-interface"
- --> @dm:enrich dict="temp-additional-ip" and src_key_cols="target" and dict_key_cols="target" and enrich_cols="ipAdEntAddr" and enrich_cols_as="device_additional_ips"
- --> @dm:save name="temp-interface"
- ## mgmt_ip: create mgmt_ip list by reading management-target group & merge with temp-df
-
- ## ip_address: Merge temp-df with management-target group & map mgmt ip to ip_address
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:luns column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_luns'
+ ## NetApp ONTAP 7 Mode NFS Exports
 
  --> @c:new-block
- --> @dm:set-tracing-context __block__=" map mgmt ip to ip_address"
- --> @dm:recall name="temp-Group-management-target"
- --> @dm:skip-block-if-shape row_count=0
- --> @dm:skip-block-if-shape column_count=1
- --> @dm:sort columns="data,target"
- --> @dm:save name="temp-mgmt"
- --> @dm:implode key_columns="target" and merge_columns="data"
- --> @dm:save name="temp-mgmt-list"
- --> @dm:recall name="temp-interface"
- --> @dm:enrich dict="temp-mgmt-list" and src_key_cols="target" and dict_key_cols="target" and enrich_cols="data" and enrich_cols_as="mgmt_ip"
- --> @dm:enrich dict="temp-mgmt" and src_key_cols="target" and dict_key_cols="target" and enrich_cols="data" and enrich_cols_as="target_ip"
- --> @dm:selectcolumns exclude="^data$"
- --> @dm:save name="temp-interface"
- --> @c:data-loop dataset = "temp-discovery-results" and columns="Minio_location"
- --> @dm:recall name = "temp-discovery-results"
- --> @files:ec-get-discovery-results minio_file_location = "$Minio_location" &
-json_path = "system.data"
- --> @dm:rename-columns data="system.data"
- --> *dm:filter data is not null
- --> @dm:explode-json column= "data"
- --> @dm:selectcolumns exclude ='^sysObjectID$|^systemVendorSubID$'
- --> @dm:save name = "temp-system-info"
- --> @c:data-loop dataset = "temp-discovery-results" and columns="Minio_location"
- --> @dm:recall name = "temp-discovery-results"
- --> @files:ec-get-discovery-results minio_file_location = "$Minio_location" &
-json_path = "entityPhysical.data"
- --> @dm:rename-columns data="entityPhysical.data"
- --> *dm:filter data is not null
- --> @dm:explode-json column= "data"
- --> *dm:filter entPhysicalClassEnumeratedLabel in [ "Chassis" ]
- --> @dm:save name = "temp-ent-info"
- --> @c:data-loop dataset = "temp-discovery-results" and columns="Minio_location"
- --> @dm:recall name = "temp-discovery-results"
- --> @files:ec-get-discovery-results minio_file_location = "$Minio_location" &
-json_path = "base.data"
- --> @dm:rename-columns data="base.data"
- --> *dm:filter data is not null
- --> @dm:explode-json column= "data"
- --> *dm:filter sysDescr contains "Cisco"
- --> @dm:manipulate-string from="sysDescr" and func = "split" and value="Version" and to ="version"
- --> @dm:eval version= "version[1].split(',')[0].split('[')[0].split()[0] if sysDescr else None"
- --> @dm:save name="temp-base"
- --> *dm:filter * get target as 'device_ip',sysDescr as 'device_version_summary',systemManagerIP as 'device_mgmt_ip',systemVendorOS as 'device_fw_type',version as 'device_fw_version'
- --> @dm:save name = 'temp-base-updated-info'
- --> @c:new-block
- --> @dm:recall name = 'temp-system-info'
- --> *dm:filter * get sysContact as 'device_contact',sysLocation as 'device_location',sysName as 'device_hostname',target as 'device_ip'
- --> @dm:save name="temp-system-updated-info"
- --> @c:new-block
- --> @dm:recall name = 'temp-ent-info'
- --> @dm:save name = 'temp-ent-info'
- --> *dm:filter * get entPhysicalClassEnumeratedLabel as 'device_equip_type',entPhysicalDescr as 'device_eq_description',entPhysicalMfgName as 'device_vendor',entPhysicalModelName as 'device_model',entPhysicalSerialNum as 'device_serial_number',target as 'device_ip'
- --> @dm:enrich dict = 'temp-base-updated-info' & src_key_cols = 'device_ip' & dict_key_cols = 'device_ip' & enrich_cols = 'device_version_summary,device_mgmt_ip,device_fw_type,device_fw_version'
- --> @dm:enrich dict = 'temp-system-updated-info' & src_key_cols = 'device_ip' & dict_key_cols = 'device_ip' & enrich_cols = 'device_contact,device_location,device_hostname'
- --> @dm:save name = 'cml_cisco_device_chassis_dict'
- --> @c:new-block
- --> @dm:set-tracing-context __block__=" map source_ip"
- --> @dm:recall name="temp-interface"
- --> @dm:add-missing-columns columns="target_ip"
- --> @cfxaia:conditional-statement condition_column = "target_ip" and return_if = "target_ip" and return_else = "target" and to_column = "ip_address"
- --> @dm:selectcolumns exclude="target-ip|if_index"
- --> @dm:save name="temp-interface"
- --> *dm:filter * get target as 'device_ip',ifDescr as 'device_int_name',ifIndex as 'device_int_index',ifName as 'device_int_shortname',ifOperStatusEnumeratedLabel as 'device_interface_status',type as 'device_interface_type',cdpCacheIfIndex as 'remote_device_int_index',cdpCacheAddress as 'remote_device_ip',cdpCacheDevicePort as 'remote_device_int_name',cdpCacheDeviceId as 'remote_device_id',cdpCachePlatform as 'remote_device_model',cdpCacheCapabilitiesEnumeratedLabel as 'remote_device_capabilities',chassis_sn as 'device_serial_number'
- --> @dm:enrich dict = 'cisco_device_chassis_dict' & src_key_cols = 'device_ip' & dict_key_cols = 'device_ip' & enrich_cols = 'device_eq_description,device_mgmt_ip,device_fw_version,device_fw_type,device_model,device_vendor,device_hostname,device_contact,device_location,device_version_summary'
- --> @dm:eval cdp_device_order = "':'.join(sorted([device_ip, remote_device_ip]))"
- --> @dm:save name = 'cml_cisco_device_interface_data'
- --> *dm:filter remote_device_int_name is not empty get device_ip,device_int_name,device_int_shortname,remote_device_ip,remote_device_int_name
- --> @dm:eval cdp_device_order = "':'.join(sorted([device_ip, remote_device_ip]))"
- --> @dm:save name = 'cml_cisco_device_interface_cdp_dict'
- ## Adding Cisco Simulated devices
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:nfs-exports column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_nfs_exports'
+ ## ### NetApp ONTAP 7 - Nodes ######
 
- ## Cisco Device Chassis
+ ## NetApp ONTAP 7 Controllers
 
  --> @c:new-block
- --> @dm:recall name = "cml_cisco_device_chassis_dict"
- --> @dm:save name = "temp-chassis-1"
- --> *dm:filter device_ip = "9.3.140.7"
- --> @dm:eval device_ip = "'10.122.127.184'"
- --> @dm:eval device_mgmt_ip = "'10.122.127.184'"
- --> @dm:eval device_serial_number = "'FJC2535ACME'"
- --> @dm:eval device_hostname = "'CNXSSIM-C1100TG-4.attpsl.cisco.com'"
- --> @dm:save name = "temp-chassis-2"
- --> @c:new-block
- --> @dm:concat names = "temp-chassis-.*"
- ## Overwrite dataset
-
- --> @dm:save name = "cml_cisco_device_chassis_sim_dict"
- ## Cisco Device Interfaces
+ --> @dm:recall name = 'netapp_ontap7_controller_info' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter * get system_name as 'ntap_array_name',system_model as 'ntap_array_model',system_serial_number as 'ntap_array_serial_number',vendor_id as 'ntap_array_vendor',version as 'ntap_array_version',controller_ip as 'ntap_array_ip'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Storage'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Controller'
+ --> @dm:map from = 'ntap_array_name' & to = 'node_label'
+ --> @dm:map from = 'ntap_array_serial_number' & to = 'node_id'
+ --> @dm:save name = 'netapp_ontap7_controller_nodes'
+ ## NetApp ONTAP 7 - Network Configuration
 
  --> @c:new-block
- --> @dm:recall name = "cml_cisco_device_interface_data"
- --> @dm:save name = "temp-chassis-1"
- --> *dm:filter device_ip = "9.3.140.7"
- --> @dm:eval device_ip = "'10.122.127.184'"
- ## --> @dm:evalMap values using evaluate function. Speciy one of more column = 'expression' pairs device_mgmt_ip = "'10.122.127.184'"
-
- --> @dm:eval device_serial_number = "'FJC2535ACME'"
- --> @dm:eval device_hostname = "'CNXSSIM-C1100TG-4.attpsl.cisco.com'"
- --> @dm:save name = "temp-chassis-2"
+ --> @dm:recall name = 'netapp_ontap7_network_config' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter object_type='IFGRP' get controller_ip,interface_name as 'ifgrp_name',links_link_0,links_link_1
+ --> @dm:save name = 'temp-ntap-ifgroup-to-phy-interface'
  --> @c:new-block
- --> @dm:concat names = "temp-chassis-.*"
- --> @dm:save name="temp-output"
- --> @dm:add-missing-columns columns="left_id"
- --> @dm:selectcolumns include="^left_id$|^device_ip$"
- --> @dm:add-checksum checksum_type="rows-only" and row_checksum_column="left_id" and key="yes"
- --> @dm:save name = "temp-node_id"
- --> @dm:recall name="temp-output"
- --> @dm:enrich dict="temp-node_id" and src_key_cols="device_ip" and dict_key_cols="device_ip" and enrich_cols="left_id"
- --> @dm:save name="cml_disc_output1"
- --> @dm:save name="temp-output"
- --> @dm:add-missing-columns columns="right_id"
- --> @dm:selectcolumns include="^right_id$|^remote_device_ip$"
- --> @dm:add-checksum checksum_type="rows-only" and row_checksum_column="right_id" and key="yes"
- --> @dm:save name = "temp-node_id"
- --> @dm:recall name="temp-output"
- --> @dm:enrich dict="temp-node_id" and src_key_cols="remote_device_ip" and dict_key_cols="device_ip" and enrich_cols="left_id" and enrich_cols_as="right_id"
- ## Overwrite dataset
+ --> @dm:recall name = 'netapp_ontap7_network_config' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter object_type='INTERFACE' and v4_primary_address_ip_address_info_address is not empty and interface_name does not contain 'c0*|^e0P$' get controller_ip,interface_name as 'vlan_interface_name',mac_address,v4_primary_address_ip_address_info_address as 'interface_ip_address'
+ --> @dm:save name = 'temp-ntap-interface-mac-ip'
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_network_config' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter object_type='VLAN' get controller_ip,interface_name as 'vlan_interface_name',parent_interface
+ --> @dm:enrich dict='temp-ntap-interface-mac-ip' & src_key_cols = 'controller_ip,vlan_interface_name' & dict_key_cols='controller_ip,vlan_interface_name' & enrich_cols = 'interface_ip_address,mac_address'
+ --> @dm:fixnull-regex columns = '.*'
+ --> @dm:enrich dict='temp-ntap-ifgroup-to-phy-interface' & src_key_cols='controller_ip,parent_interface' & dict_key_cols='controller_ip,ifgrp_name' & enrich_cols='links_link_0,links_link_1'
+ --> *dm:filter * get controller_ip as 'ntap_array_ip',vlan_interface_name as 'ntap_array_vlan_interface',parent_interface as 'ntap_array_parent_interface',interface_ip_address as 'ntap_array_interface_ip',mac_address as 'ntap_array_interface_mac',links_link_0 as 'ntap_array_nic0',links_link_1 as 'ntap_array_nic1'
+ --> @dm:enrich dict = 'netapp_ontap7_controller_nodes' & src_key_cols = 'ntap_array_ip' & dict_key_cols = 'ntap_array_ip' & enrich_cols = 'ntap_array_serial_number'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Storage'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'NIC'
+ --> @dm:map from = 'ntap_array_vlan_interface' & to = 'node_label'
+ --> @dm:map from = 'ntap_array_ip,ntap_array_vlan_interface' & to = 'ntap_array_vlan_interface_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'ntap_array_vlan_interface_id' & to = 'node_id'
+ --> @dm:save name = 'netapp_ontap7_network_nodes'
+ ## NetApp ONTAP 7 - Aggregate Configuration
 
- --> @dm:save name = "cml_cisco_device_interface_sim_data"
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_aggregates' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter * get name as 'ntap_array_aggr_name',controller_ip as 'ntap_array_ip',controller as 'ntap_array_ip_2',has_local_root as 'ntap_array_aggr_root',is_hybrid as 'ntap_array_aggr_hybrid',is_mirrored as 'ntap_array_aggr_mirrored',mount_state as 'ntap_array_aggr_status',disk_count as 'ntap_array_aggr_disks',raid_size as 'ntap_array_aggr_raid_size',raid_status as 'ntap_array_aggr_raid_type'
+ --> @dm:map to = 'ntap_array_ip' & func = 'evaluate' & expr = "ntap_array_ip_2 if ntap_array_ip == '' else ntap_array_ip"
+ --> @dm:selectcolumns exclude = 'ntap_array_ip_2'
+ --> @dm:enrich dict = 'netapp_ontap7_controller_nodes' & src_key_cols = 'ntap_array_ip' & dict_key_cols = 'ntap_array_ip' & enrich_cols = 'ntap_array_serial_number'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Storage'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Storagepool'
+ --> @dm:map from = 'ntap_array_aggr_name' & to = 'node_label'
+ --> @dm:map from = 'ntap_array_ip,ntap_array_aggr_name' & to = 'ntap_array_aggr_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'ntap_array_aggr_id' & to = 'node_id'
+ --> @dm:save name = 'netapp_ontap7_aggr_nodes'
+ ## NetApp ONTAP 7 - Volume Configuration
+
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_volumes' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter * get controller_ip as 'ntap_array_ip',name as 'ntap_array_vol_name',containing_aggregate as 'ntap_array_parent_aggr',sis_sis_info_state as 'ntap_array_vol_dedup_status'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Storage'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Volume'
+ --> @dm:map from = 'ntap_array_vol_name' & to = 'node_label'
+ --> @dm:map from = 'ntap_array_ip,ntap_array_vol_name' & to = 'ntap_array_vol_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'ntap_array_ip,ntap_array_parent_aggr' & to = 'ntap_array_aggr_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'ntap_array_vol_id' & to = 'node_id'
+ --> @dm:save name = 'netapp_ontap7_volume_nodes'
+ ## NetApp ONTAP 7 - NFS Exports Configuration
+
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_nfs_exports' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> @dm:map from = 'pathname' & to = 'parent_vol'
+ --> @dm:map attr = 'parent_vol' & func = 'split' & sep = '/'
+ --> @dm:map attr = 'parent_vol' & func = 'slice' & fromIdx = 2
+ --> @dm:map attr = 'parent_vol' & func = 'join'
+ --> *dm:filter * get controller_ip as 'ntap_array_ip',pathname as 'ntap_array_nfs_export_path',parent_vol as 'ntap_array_parent_vol'
+ --> @dm:save name = 'temp-netapp_ontap7_nfs_exports'
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_volume_nodes' & empty_as_null = 'no'
+ --> @dm:enrich dict = 'temp-netapp_ontap7_nfs_exports' & src_key_cols = 'ntap_array_ip,ntap_array_vol_name' & dict_key_cols = 'ntap_array_ip,ntap_array_parent_vol' & enrich_cols = 'ntap_array_nfs_export_path'
+ --> @dm:selectcolumns exclude = '^ntap_array_parent_vol$'
+ --> @dm:save name = 'netapp_ontap7_volume_nodes'
+ ## ### Consolidated Nodes output
+
+ --> @c:new-block
+ --> @dm:concat names = '^netapp_ontap7_controller_nodes$|^netapp_ontap7_network_nodes$|^netapp_ontap7_aggr_nodes$|^netapp_ontap7_volume_nodes$'
+ --> @dm:save name = 'netapp_ontap7_inventory_nodes'
+ ## # NetApp ONTAP 7 Mode - Relationships
+
+ ## NetApp Array Controllers to Network interfaces
+
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_inventory_nodes' & empty_as_null = 'no'
+ --> *dm:filter node_type='NIC' get node_label,node_id,ntap_array_serial_number
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get ntap_array_serial_number as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'netapp_ontap7_array_to_network_edges'
+ ## NetApp Array Controllers to Aggregates
+
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_inventory_nodes' & empty_as_null = 'no'
+ --> *dm:filter node_type='Storagepool' get node_label,node_id,ntap_array_serial_number
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get ntap_array_serial_number as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'netapp_ontap7_array_to_aggregate_edges'
+ ## NetApp Array Aggregates to Volumes
+
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_inventory_nodes' & empty_as_null = 'no'
+ --> *dm:filter node_type='Volume' get node_label,node_id,ntap_array_aggr_id
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get ntap_array_aggr_id as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'netapp_ontap7_aggregate_to_volume_edges'
+ ## ## NetApp Array - Relationships
+
+ --> @c:new-block
+ --> @dm:concat names = '^netapp_ontap7_array_to_network_edges$|^netapp_ontap7_array_to_aggregate_edges$|^netapp_ontap7_aggregate_to_volume_edges$'
+ --> @dm:dropnull columns = 'left,right'
+ --> @dm:dedup
+ --> @dm:map from = 'left' & to = 'left_id'
+ --> @dm:map from = 'right' & to = 'right_id'
+ --> @dm:save name = 'netapp_ontap7_inventory_edges'
+ ## #########################################
+
+ ## # NetApp Storage Arrat Stacks - Topology Pipeline
+
+ ## #########################################
+
+ --> @c:new-block
+ --> @dm:stack-create topology_nodes='netapp_ontap7_inventory_nodes' and topology_edges='netapp_ontap7_inventory_edges' and name = 'netapp_array_7mode_topology_stack'
+ --> @dm:stack-save name='netapp_array_7mode_topology_stackv2'
+ ## #########################################
+
+ ## # Create pstreams if not existing already
+
+ ## #########################################
+
+ --> @dm:create-persistent-stream name = 'ntap_topology_nodes' and retention_days=0 and unique_cols= "node_id"
+ --> @exec:retry-loop retries is 30 and retry_delay_millis is 5000
+ --> @dm:empty
+ --> @dm:addrow name is "ntap_topology_nodes" and limit is 1
+ --> #dm:query-persistent-stream
+ --> @exec:end-loop
+ --> @dm:create-persistent-stream name = 'ntap_topology_edges' and retention_days=0 and unique_cols= "left_id,right_id"
+ --> @exec:retry-loop retries is 30 and retry_delay_millis is 5000
+ --> @dm:empty
+ --> @dm:addrow name is "ntap_topology_edges" and limit is 1
+ --> #dm:query-persistent-stream
+ --> @exec:end-loop
+ ## #####################
+
+ ## Save nodes and edges data to dynamic pstreams
+
+ ## #####################
+
+ --> @c:new-block
+ --> @dm:recall name="netapp_ontap7_inventory_nodes"
+ --> @dm:map to = 'stack_type' & func = 'fixed' & value = 'NetApp'
+ --> @dm:add-missing-columns columns = 'iconURL' & value = 'Not Available'
+ --> @rn:write-stream name="ntap_topology_nodes"
+ --> @dm:recall name="netapp_ontap7_inventory_edges"
+ --> @dm:map to = 'stack_type' & func = 'fixed' & value = 'NetApp'
+ --> @rn:write-stream name="ntap_topology_edges"

@@ -1,290 +1,215 @@
-%%template_type="jinja"
 
-##%% import_src_type = "asset-discovery"
-%%start_inline_object name="context_dynamic_form" and type="data" and format="json"
-{
-    "formFieldList": [
-        {
-            "fieldId": "customer_tag",
-            "label": "Tag of the customer",
-            "required": false,
-            "dataType": "string"
-        }
-    ]
-}
-%%end_inline_object
+ ## ## NetApp ONTAP 7 Mode Storage Inventory Collection
 
-@dm:empty
-    --> @dm:save name = "temp-customer-context"
+ ## NetApp ONTAP 7 Mode IP Range Feed
+@c:new-block
+ --> @dm:empty
+ --> @dm:addrow ntap_ip = '10.95.158.15,10.95.158.17,10.95.131.51,10.95.131.52'
+ --> @dm:save name = 'temp-ntap-ip-feed'
+ ## NetApp ONTAP 7 Mode Controller Info
 
+ --> @c:new-block
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:controller-info column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_controller_info'
+ ## NetApp ONTAP 7 Mode Network Configuration
 
-   {% if customer_tag %} 
-      {% set customer_id = customer_id %}
-      {% set customer_tag = customer_tag %}
-      {% set customerTag = customer_tag %}
-   {% elif customerTag %} 
-      {% set customer_id = customer_id %}
-      {% set customer_tag = customerTag %}
-   {% else %}
-      {% set customer_id = '' %}
-      {% set customer_tag = '' %}
-   {% endif %}   
+ --> @c:new-block
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:network-config column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_network_config'
+ ## NetApp ONTAP 7 Mode FC Adapter Configuration
 
--->@c:new-block
-    --> @dm:empty
-    --> @dm:save name = "temp-discovery"
-    --> @dm:save name = "temp-discovery-ondemand"
-    --> @dm:save name = "temp-main_discovery_result"
-    --> @dm:save name = "temp-discovery-ondemand-data"
-    --> @dm:save name = "temp-ondemand-discovery"
-    --> @dm:save name = "temp-discovery-data"
+ --> @c:new-block
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:fc-adapters column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_fc_adapters'
+ ## NetApp ONTAP 7 Mode Volumes
 
---> @c:flex-block
-    --> @dm:empty
-    --> @exec:define-function name = 'test-func'
-       --> @exec:run-pipeline name="juniper_discovery_main_pipeline"
-       --> @exec:run-pipeline name="cisco_discovery_main_pipeline"
-       ## --> @exec:run-pipeline name="vyatta_discovery_main_pipeline"
-       --> @exec:run-pipeline name="fortinet_discovery_main_pipeline"
-       ## --> @exec:run-pipeline name="viptela_discovery_main_pipeline"
-       --> @exec:run-pipeline name="discovery_main_pipeline"
-       --> @exec:run-pipeline name = "other_vendors_discovery_main_pipeline"
-    --> @exec:end-function
+ --> @c:new-block
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:volumes column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_volumes'
+ ## NetApp ONTAP 7 Mode Aggregates
 
+ --> @c:new-block
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:aggregates column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_aggregates'
+ ## NetApp ONTAP 7 Mode LUNs
 
-## -->  @c:new-block     
-##            -->  @dm:empty 
-##            {% if customer_tag %}   
-##            -->  #dm:query-persistent-stream     type in ['snmp-cred','device-snmp-v3','device-host-ssh','device-snmp-v1v2','ssh-cred'] and (customerTag contains '{{customer_tag}}') with-input name = ## 'rda_secrets_meta' and limit= 0
-##             {% else %}
-##            -->  #dm:query-persistent-stream     type in ['snmp-cred','device-snmp-v3','device-host-ssh','device-snmp-v1v2','ssh-cred'] and (customerTag is empty) with-input name = 'rda_secrets_meta' and ## limit= 0
-##             {% endif %}
-##            --> @dm:eval key ="'key'"            
-## -->  @dm:save     name = 'temp-creds'
-## -->  @dm:save     name = 'test-creds-ondemand' 
+ --> @c:new-block
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:luns column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_luns'
+ ## NetApp ONTAP 7 Mode NFS Exports
 
-## ondemand execution
---> @c:new-block
-    --> @exec:get-input
-    ##--> @dm:save name = "ondemand-inp-ui-data"
-    --> @dm:save name = "temp-discovery-ondemand-data"
-    ## explode others and enrich the discovery_scope
-    --> @dm:selectcolumns include = "Others|customer_tag|customer_id"
-    ## --> @dm:eval Others = 'Others.replace("\'", "\"")'
-    --> @dm:explode-json column="Others"
-    --> @dm:eval key ="'key'"
-     -->  @dm:add-missing-columns     columns = "customer_tag,customer_id" 
-    --> *dm:filter device_ip is not empty
-    --> @dm:map attr = "device_ip" & func = 'strip'
-    --> @dm:save name = "temp-discovery-ondemand"
+ --> @c:new-block
+ --> @dm:recall name = 'temp-ntap-ip-feed'
+ --> @ntap:nfs-exports column_name='ntap_ip' & concurrent_discovery = '100'
+ --> @dm:save name = 'netapp_ontap7_nfs_exports'
+ ## ### NetApp ONTAP 7 - Nodes ######
 
-## ondemand discovery
---> @c:new-block
-    --> @dm:recall name = "temp-discovery-ondemand-data"
-    --> @dm:skip-block-if-shape row_count = 0
-    --> @dm:recall name = "temp-discovery-ondemand"
-    --> @dm:eval current_time ='int(time_now_as_ms())'
-    
-    --> @dm:eval ondemand_discovery ="'yes'"
-    --> @dm:eval pipeline_name="'discovery_main_pipeline'"
-    --> @dm:rename-columns discovery_enabled = "discovery_scope"
-    --> @dm:save name="temp-ondemand-discovery"
+ ## NetApp ONTAP 7 Controllers
 
-    ##--> @c:data-loop dataset="temp-creds" and columns="name"
-    ##--> @dm:recall name="temp-ondemand-discovery"
-    ## --> @dm:skip-block-if-shape row_count = 0
-    ##-->@dm:eval name = "'$name'"
-    ## --> @dm:save name="temp-discovery-data" & append = "yes"
-    ##--> @dm:enrich dict = "temp-creds" & src_key_cols = "key" & dict_key_cols="key" & enrich_cols = "name"
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_controller_info' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter * get system_name as 'ntap_array_name',system_model as 'ntap_array_model',system_serial_number as 'ntap_array_serial_number',vendor_id as 'ntap_array_vendor',version as 'ntap_array_version',controller_ip as 'ntap_array_ip'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Storage'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Controller'
+ --> @dm:map from = 'ntap_array_name' & to = 'node_label'
+ --> @dm:map from = 'ntap_array_serial_number' & to = 'node_id'
+ --> @dm:save name = 'netapp_ontap7_controller_nodes'
+ ## NetApp ONTAP 7 - Network Configuration
 
-    ##--> @c:new-block
-    ##--> @dm:recall name="temp-discovery-data"
-    ##--> @dm:save name="main_discovery_result-ondemand1"
-    --> @exec:run-pipeline-multi-proc name="discovery_main_pipeline" 
-    --> @dm:save name="temp-run_discovery-result"
-   
-    
-## scheduled execution
---> @c:new-block
-    --> @dm:recall name = "temp-discovery-ondemand-data"
-    --> @dm:skip-block-if-shape row_count > 0
-    --> @dm:empty
-     {% if customer_tag %}
-        --> #dm:query-persistent-stream auth_state = 'Success' and (customer_tag is '{{customer_tag}}')
-            with-input name = "network_access_verification" & limit = "0"
-       {% else %}
-        --> #dm:query-persistent-stream auth_state = 'Success' and (customer_tag is empty or customer_tag is 'None')
-            with-input name = "network_access_verification" & limit = "0"
-      {% endif %}  
-    --> @dm:selectcolumns exclude= "limit|index|name"
-    --> @dm:add-missing-columns columns = "customer_tag,customer_id"
-    --> @dm:selectcolumns include="discovery_scope|key|ip_address|collection_timestamp|customer_tag|customer_id|used_cred"
-    --> @dm:rename-columns device_ip  = "ip_address"
-    --> @dm:selectcolumns exclude= "limit|index|name|^discovery_scope1$|^discovery_scope2$"
-    --> *dm:filter discovery_scope == 'yes'
-    --> @dm:rename-columns discovery_enabled = "discovery_scope" & name = "used_cred"
-    --> @dm:eval pipeline_name="'discovery_main_pipeline'"
-    --> @dm:save name="temp-customer-details"
-    --> @dm:selectcolumns exclude= "count_|_RDA_Id|timestamp|key"
-      --> @dm:eval key ="'key'"
-       ## --> @dm:enrich dict = "temp-creds" & src_key_cols = "key" & dict_key_cols="key" & enrich_cols = "name"
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_network_config' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter object_type='IFGRP' get controller_ip,interface_name as 'ifgrp_name',links_link_0,links_link_1
+ --> @dm:save name = 'temp-ntap-ifgroup-to-phy-interface'
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_network_config' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter object_type='INTERFACE' and v4_primary_address_ip_address_info_address is not empty and interface_name does not contain 'c0*|^e0P$' get controller_ip,interface_name as 'vlan_interface_name',mac_address,v4_primary_address_ip_address_info_address as 'interface_ip_address'
+ --> @dm:save name = 'temp-ntap-interface-mac-ip'
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_network_config' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter object_type='VLAN' get controller_ip,interface_name as 'vlan_interface_name',parent_interface
+ --> @dm:enrich dict='temp-ntap-interface-mac-ip' & src_key_cols = 'controller_ip,vlan_interface_name' & dict_key_cols='controller_ip,vlan_interface_name' & enrich_cols = 'interface_ip_address,mac_address'
+ --> @dm:fixnull-regex columns = '.*'
+ --> @dm:enrich dict='temp-ntap-ifgroup-to-phy-interface' & src_key_cols='controller_ip,parent_interface' & dict_key_cols='controller_ip,ifgrp_name' & enrich_cols='links_link_0,links_link_1'
+ --> *dm:filter * get controller_ip as 'ntap_array_ip',vlan_interface_name as 'ntap_array_vlan_interface',parent_interface as 'ntap_array_parent_interface',interface_ip_address as 'ntap_array_interface_ip',mac_address as 'ntap_array_interface_mac',links_link_0 as 'ntap_array_nic0',links_link_1 as 'ntap_array_nic1'
+ --> @dm:enrich dict = 'netapp_ontap7_controller_nodes' & src_key_cols = 'ntap_array_ip' & dict_key_cols = 'ntap_array_ip' & enrich_cols = 'ntap_array_serial_number'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Storage'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'NIC'
+ --> @dm:map from = 'ntap_array_vlan_interface' & to = 'node_label'
+ --> @dm:map from = 'ntap_array_ip,ntap_array_vlan_interface' & to = 'ntap_array_vlan_interface_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'ntap_array_vlan_interface_id' & to = 'node_id'
+ --> @dm:save name = 'netapp_ontap7_network_nodes'
+ ## NetApp ONTAP 7 - Aggregate Configuration
 
-    --> @dm:save name = "temp-discovery"
-    --> @dm:save name="main_discovery_mlt_sch"
-    ## --> @exec:run-pipeline-by-row-multi-proc pipeline_col="pipeline_name" and save_output="yes"
-    --> @exec:run-pipeline-multi-proc name="discovery_main_pipeline"
-    ##--> @dm:save name="main_discovery_result_mlt"
-    --> @dm:save name="temp-run_discovery-result"
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_aggregates' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter * get name as 'ntap_array_aggr_name',controller_ip as 'ntap_array_ip',controller as 'ntap_array_ip_2',has_local_root as 'ntap_array_aggr_root',is_hybrid as 'ntap_array_aggr_hybrid',is_mirrored as 'ntap_array_aggr_mirrored',mount_state as 'ntap_array_aggr_status',disk_count as 'ntap_array_aggr_disks',raid_size as 'ntap_array_aggr_raid_size',raid_status as 'ntap_array_aggr_raid_type'
+ --> @dm:map to = 'ntap_array_ip' & func = 'evaluate' & expr = "ntap_array_ip_2 if ntap_array_ip == '' else ntap_array_ip"
+ --> @dm:selectcolumns exclude = 'ntap_array_ip_2'
+ --> @dm:enrich dict = 'netapp_ontap7_controller_nodes' & src_key_cols = 'ntap_array_ip' & dict_key_cols = 'ntap_array_ip' & enrich_cols = 'ntap_array_serial_number'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Storage'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Storagepool'
+ --> @dm:map from = 'ntap_array_aggr_name' & to = 'node_label'
+ --> @dm:map from = 'ntap_array_ip,ntap_array_aggr_name' & to = 'ntap_array_aggr_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'ntap_array_aggr_id' & to = 'node_id'
+ --> @dm:save name = 'netapp_ontap7_aggr_nodes'
+ ## NetApp ONTAP 7 - Volume Configuration
 
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_volumes' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> *dm:filter * get controller_ip as 'ntap_array_ip',name as 'ntap_array_vol_name',containing_aggregate as 'ntap_array_parent_aggr',sis_sis_info_state as 'ntap_array_vol_dedup_status'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Storage'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Volume'
+ --> @dm:map from = 'ntap_array_vol_name' & to = 'node_label'
+ --> @dm:map from = 'ntap_array_ip,ntap_array_vol_name' & to = 'ntap_array_vol_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'ntap_array_ip,ntap_array_parent_aggr' & to = 'ntap_array_aggr_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'ntap_array_vol_id' & to = 'node_id'
+ --> @dm:save name = 'netapp_ontap7_volume_nodes'
+ ## NetApp ONTAP 7 - NFS Exports Configuration
 
-## topology_latest
--->@c:new-block
---> @dm:empty
-    --> @dm:save name = "temp-nodes_l1"
-    --> @dm:sleep seconds = "60"
-    --> @dm:empty
-    {% if customer_tag %}
-    --> #dm:query-persistent-stream device_hostname is not Empty and (customer_tag is '{{customer_tag}}') with-input name = "network_device_inventory" & limit = "0"
-     {% else %}  
-     --> #dm:query-persistent-stream device_hostname is not Empty and (customer_tag is empty) with-input name = "network_device_inventory" & limit = "0"          
-     {% endif %}
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_nfs_exports' & empty_as_null = 'no'
+ --> @dm:fixcolumns
+ --> @dm:map from = 'pathname' & to = 'parent_vol'
+ --> @dm:map attr = 'parent_vol' & func = 'split' & sep = '/'
+ --> @dm:map attr = 'parent_vol' & func = 'slice' & fromIdx = 2
+ --> @dm:map attr = 'parent_vol' & func = 'join'
+ --> *dm:filter * get controller_ip as 'ntap_array_ip',pathname as 'ntap_array_nfs_export_path',parent_vol as 'ntap_array_parent_vol'
+ --> @dm:save name = 'temp-netapp_ontap7_nfs_exports'
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_volume_nodes' & empty_as_null = 'no'
+ --> @dm:enrich dict = 'temp-netapp_ontap7_nfs_exports' & src_key_cols = 'ntap_array_ip,ntap_array_vol_name' & dict_key_cols = 'ntap_array_ip,ntap_array_parent_vol' & enrich_cols = 'ntap_array_nfs_export_path'
+ --> @dm:selectcolumns exclude = '^ntap_array_parent_vol$'
+ --> @dm:save name = 'netapp_ontap7_volume_nodes'
+ ## ### Consolidated Nodes output
 
-    --> @dm:eval country = "device_hostname[0:2]"
-    --> @dm:eval city = "device_hostname[6:9]"
-    --> @dm:eval state = "device_hostname[9:11]"
-    --> @dm:save name = "temp-geomap-data"
-    --> *dm:filter country in ["US"]
-    ##--> @dm:enrich dict = "geo_codes_dict" & src_key_cols = "country,city,state" & dict_key_cols = "country,city,state" & enrich_cols = "latitude,longitude" and replace_values = "yes"
-    --> @rn:write-stream name  = "network_device_inventory"
-    --> @dm:save name = "temp-geomap-us-data"
-    --> @dm:recall name = "temp-geomap-data"
-    --> *dm:filter country not in ["US"]
-    ##--> @dm:enrich dict = "geo_codes_dict" & src_key_cols = "country,city" & dict_key_cols = "country,city" & enrich_cols = "latitude,longitude" and replace_values = "yes"
-    --> @dm:save name = "temp-geomap-nonus-data"
-    --> @rn:write-stream name  = "network_device_inventory"
-    ## Getting inventory data and creating the nodes datasets
-    --> @dm:empty
-    {% if customer_tag %}
-    --> #dm:query-persistent-stream device_equip_type in ["CHASSIS","Chassis","chassis"] and (customer_tag is '{{customer_tag}}') with-input name = "network_device_inventory" & limit = "0"
-    
-    {% else %}
-    --> #dm:query-persistent-stream device_equip_type in ["CHASSIS","Chassis","chassis"] and (customer_tag is empty) with-input name = "network_device_inventory" & limit = "0"
-            
-    {% endif %}
+ --> @c:new-block
+ --> @dm:concat names = '^netapp_ontap7_controller_nodes$|^netapp_ontap7_network_nodes$|^netapp_ontap7_aggr_nodes$|^netapp_ontap7_volume_nodes$'
+ --> @dm:save name = 'netapp_ontap7_inventory_nodes'
+ ## # NetApp ONTAP 7 Mode - Relationships
 
-    --> @dm:selectcolumns exclude="_RDA_Id|count_|^timestamp$"
-    --> @dm:dedup columns ="parent_sn"
-    --> @dm:eval-multi-proc node_type="'CHASSIS'" and
-            device_status="'MANAGED'" and
-            source="'CHASSIS'" and
-            device_hostname_short = "device_hostname.split('.')[0]"
-    --> @dm:copy-columns from ="device_hostname_short" and to="node_label"
-    --> @dm:copy-columns from ="device_ip" and to="node_id"
-    --> @dm:eval layer = "'Network'"
-    --> @dm:eval node_id = "device_ip+'_CHASSIS'"
-    --> @dm:eval deviceFamily = "device_model"
-    --> @dm:eval serialNumber = "device_serial_number"
-    --> @dm:eval iconURL="'Router'"
-    --> @dm:save name="temp-chassis-nodes"
+ ## NetApp Array Controllers to Network interfaces
 
-## Getting cdp data and creating the nodes datasets where remote device is unmanaged
---> @c:new-block
-    --> @dm:empty
-    {% if customer_tag %}
-    --> #dm:query-persistent-stream device_object in ['LLDP','CDP'] and (customer_tag is '{{customer_tag}}') with-input name = "network_devices_cdp" & limit = "0"
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_inventory_nodes' & empty_as_null = 'no'
+ --> *dm:filter node_type='NIC' get node_label,node_id,ntap_array_serial_number
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get ntap_array_serial_number as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'netapp_ontap7_array_to_network_edges'
+ ## NetApp Array Controllers to Aggregates
 
-     {% else %}       
-      --> #dm:query-persistent-stream device_object in ['LLDP','CDP'] and (customer_tag is empty) with-input name = "network_devices_cdp" & limit = "0"     
-    {% endif %}
-            
-    --> @dm:eval remote_hostname_short = "remote_device_id.split('.')[0]"
-    --> @dm:save name = "temp-cdp-nodes"
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_inventory_nodes' & empty_as_null = 'no'
+ --> *dm:filter node_type='Storagepool' get node_label,node_id,ntap_array_serial_number
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get ntap_array_serial_number as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'netapp_ontap7_array_to_aggregate_edges'
+ ## NetApp Array Aggregates to Volumes
 
---> @c:new-block
-    --> @dm:recall name = "temp-cdp-nodes"
-    --> @dm:enrich-conditional dict = "temp-chassis-nodes" and condition is "device_hostname_short is '$remote_hostname_short'" and return_status = "yes"
-    --> *dm:filter meta_enrich_status contains "Failed" and remote_device_id is not "Not Available"
-    --> @dm:dedup columns ="remote_device_id"
-    --> @dm:eval-multi-proc node_type="'CHASSIS'" and
-            device_status="'UNMANAGED'" and
-            source=device_object
-    --> @dm:copy-columns from ="remote_hostname_short" and to="node_label"
-    --> @dm:copy-columns from ="remote_hostname_short" and to="node_id"
-    --> @dm:eval layer = "'Network'"
-    --> @dm:eval node_id = "remote_hostname_short +'_CHASSIS'"
-    --> @dm:eval iconURL="'Router'"
-    --> @dm:save name="temp-cdp-unmanaged-nodes"
+ --> @c:new-block
+ --> @dm:recall name = 'netapp_ontap7_inventory_nodes' & empty_as_null = 'no'
+ --> *dm:filter node_type='Volume' get node_label,node_id,ntap_array_aggr_id
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get ntap_array_aggr_id as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'netapp_ontap7_aggregate_to_volume_edges'
+ ## ## NetApp Array - Relationships
 
---> @c:new-block
-    --> @dm:concat names="^temp-chassis-nodes$|^temp-cdp-unmanaged-nodes$"
-    --> @dm:selectcolumns exclude = "target_x|target_y"
-    --> @dm:save name="temp-rdaf_topology_nodes"
-    --> @rn:write-stream name='cfx_rdaf_topology_nodes'
-    --> @graph:insert-nodes dbname = 'cfx_rdaf_topology' & collection = 'cfx_rdaf_topology_nodes' & key_column = 'node_id'
+ --> @c:new-block
+ --> @dm:concat names = '^netapp_ontap7_array_to_network_edges$|^netapp_ontap7_array_to_aggregate_edges$|^netapp_ontap7_aggregate_to_volume_edges$'
+ --> @dm:dropnull columns = 'left,right'
+ --> @dm:dedup
+ --> @dm:map from = 'left' & to = 'left_id'
+ --> @dm:map from = 'right' & to = 'right_id'
+ --> @dm:save name = 'netapp_ontap7_inventory_edges'
+ ## #########################################
 
---> @c:new-block
-    --> @dm:empty
-    {% if customer_tag %}
-    --> #dm:query-persistent-stream device_object in ['LLDP','CDP'] and remote_device_id is not "Not Available" and (customer_tag is '{{customer_tag}}') with-input name = "network_devices_cdp" & limit = "0"
-    
-    {% else %} 
-    --> #dm:query-persistent-stream device_object in ['LLDP','CDP'] and remote_device_id is not "Not Available" and (customer_tag is empty) with-input name = "network_devices_cdp" & limit = "0"           
-    {% endif %}
-    
-    --> @dm:eval remote_hostname_short = "remote_device_id.split('.')[0]"
-    --> @dm:eval node_id = "str(remote_hostname_short)+'_CHASSIS' if remote_device_ip == 'Not Available' else str(remote_device_ip)+'_CHASSIS'"
-    --> @dm:eval link_type=device_object
-    --> @dm:eval showAttrs="'^link_type$'"
-    --> @dm:eval direction = "'NO_DIRECTION'"
-    --> @dm:eval relation_type = "'connected-to'"
-    --> @dm:save name = "temp-cdp-edges"
-    --> @dm:enrich dict="temp-chassis-nodes" and src_key_cols="remote_hostname_short" and dict_key_cols="device_hostname_short" and enrich_cols="node_id,node_label,node_type" and enrich_cols_as = "left_id,left_label,left_node_type"
-    --> @dm:enrich dict="temp-chassis-nodes" and src_key_cols="device_ip" and dict_key_cols="device_ip" and enrich_cols="node_id,node_label,node_type" and enrich_cols_as = "right_id,right_label,right_node_type"
-    --> @dm:selectcolumns exclude="node_id|node_label|device_status|device_hostname_short|left_node_id|left_node_label|right_node_id|right_node_label"
-    --> @dm:eval showAttrs="'^link_type$'"
-    --> @dm:eval direction = "'NO_DIRECTION'"
-    --> @dm:eval relation_type = "'connected-to'"
-    --> @dm:dedup columns="left_id,right_id"
-    --> @dm:fixnull columns ="left_id,right_id"
-    --> @dm:map to="edge_id" and func="evaluate" and expr="f'{left_id}#{right_id}' if left_id < right_id else f'{right_id}#{left_id}'"
-    --> *dm:filter left_id is not Empty
-    --> *dm:filter left_id != right_id
-    --> @dm:save name="temp-rdaf-topology-edges"
-    --> @rn:write-stream name='cfx_rdaf_topology_edges'
-    --> @graph:insert-edges dbname = 'cfx_rdaf_topology' & nodes_collection = 'cfx_rdaf_topology_nodes' & edges_collection = 'cfx_rdaf_topology_edges' & left_id = 'left_id' & right_id = 'right_id'
+ ## # NetApp Storage Arrat Stacks - Topology Pipeline
 
---> @c:new-block
-    --> @dm:empty
-    {% if customer_tag %}
-    --> #dm:query-persistent-stream device_object is "Chassis" and device_equip_type is "CHASSIS" and (customer_tag is '{{customer_tag}}') with-input name = "network_device_inventory" & limit = "0"
-   
-    {% else %}  
-   --> #dm:query-persistent-stream device_object is "Chassis" and device_equip_type is "CHASSIS" and (customer_tag is empty) with-input name = "network_device_inventory" & limit = "0"          
-    {% endif %}
-    --> @dm:eval-multi-proc device_hostname_short = "device_hostname.split('.')[0]" and device_status = "'MANAGED'"
-    --> @dm:save name = "chassis_inventory"
+ ## #########################################
 
---> @c:new-block
-    --> @dm:empty
-    {% if customer_tag %}
-    --> #dm:query-persistent-stream  (customer_tag is '{{customer_tag}}') with-input name = "cfx_rdaf_topology_nodes" & limit = "0"
-      {% else %}   
-       --> #dm:query-persistent-stream  (customer_tag is empty) with-input name = "cfx_rdaf_topology_nodes" & limit = "0"         
-      {% endif %}
-    --> @dm:skip-pipeline-if-shape row_count= 0
-    --> @dm:save name = "temp-nodes_l1"
-    --> *dm:filter device_equip_type is "CHASSIS" and device_hostname is not empty
-    --> @dm:eval country = "device_hostname[0:2]"
-    --> @dm:eval city = "device_hostname[6:9]"
-    --> @dm:eval state = "device_hostname[9:11]"
-    ##--> @dm:enrich dict = "geo_codes_dict" and src_key_cols = "country,city" and dict_key_cols = "country,city" and enrich_cols = "latitude,longitude" and replace_values = "yes"
-    --> @rn:write-stream name = "cfx_rdaf_topology_nodes"
-    --> @dm:recall name = "temp-nodes_l1"
-    --> *dm:filter node_type is "Edge"
-    --> @dm:eval country = "edgeName[0:2]"
-    --> @dm:eval city = "edgeName[6:9]"
-    --> @dm:eval state = "edgeName[9:11]"
-    ##--> @dm:enrich dict = "geo_codes_dict" and src_key_cols = "country,city" and dict_key_cols = "country,city" and enrich_cols = "latitude,longitude" and replace_values = "yes"
-    --> @rn:write-stream name = "cfx_rdaf_topology_nodes"
-    --> @graph:insert-nodes dbname = 'cfx_rdaf_topology' & collection = 'cfx_rdaf_topology_nodes' & key_column = 'node_id'
+ --> @c:new-block
+ --> @dm:stack-create topology_nodes='netapp_ontap7_inventory_nodes' and topology_edges='netapp_ontap7_inventory_edges' and name = 'netapp_array_7mode_topology_stack'
+ --> @dm:stack-save name='netapp_array_7mode_topology_stackv2'
+ ## #########################################
 
+ ## # Create pstreams if not existing already
+
+ ## #########################################
+
+ --> @dm:create-persistent-stream name = 'ntap_topology_nodes' and retention_days=0 and unique_cols= "node_id"
+ --> @exec:retry-loop retries is 30 and retry_delay_millis is 5000
+ --> @dm:empty
+ --> @dm:addrow name is "ntap_topology_nodes" and limit is 1
+ --> #dm:query-persistent-stream
+ --> @exec:end-loop
+ --> @dm:create-persistent-stream name = 'ntap_topology_edges' and retention_days=0 and unique_cols= "left_id,right_id"
+ --> @exec:retry-loop retries is 30 and retry_delay_millis is 5000
+ --> @dm:empty
+ --> @dm:addrow name is "ntap_topology_edges" and limit is 1
+ --> #dm:query-persistent-stream
+ --> @exec:end-loop
+ ## #####################
+
+ ## Save nodes and edges data to dynamic pstreams
+
+ ## #####################
+
+ --> @c:new-block
+ --> @dm:recall name="netapp_ontap7_inventory_nodes"
+ --> @dm:map to = 'stack_type' & func = 'fixed' & value = 'NetApp'
+ --> @dm:add-missing-columns columns = 'iconURL' & value = 'Not Available'
+ --> @rn:write-stream name="ntap_topology_nodes"
+ --> @dm:recall name="netapp_ontap7_inventory_edges"
+ --> @dm:map to = 'stack_type' & func = 'fixed' & value = 'NetApp'
+ --> @rn:write-stream name="ntap_topology_edges"
