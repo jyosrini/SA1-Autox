@@ -1,255 +1,465 @@
 {
-  "name": "oi-inventory-template",
-  "label": "OI Inventory",
-  "description": "OI Inventory",
-  "context_label_id": "product_name",
-  "dashboard_folder": "OI",
-  "version": "2024-04-03_01",
-  "enabled": false,
-  "debug": true,
-  "live_edit": true,
+  "name": "discoveragents-dashboard",
+  "label": "Discover Agents",
+  "description": "Discover Agents Insights",
+  "enabled": true,
   "dashboard_type": "template",
-  "template_variables": {
-    "CONTRACT_NUMBER": {
-      "contextId": "contract_number"
-    },
-    "PRODUCT_NAME": {
-      "contextId": "product_name"
-    },
-    "COVERAGE": {
-      "contextId": "coverage"
-    },
-    "COVERED_LINE_STATUS": {
-      "contextId": "covered_line_status"
-    },
-    "BUSINESS_ENTITY": {
-      "contextId": "business_entity"
-    },
-    "BUSINESS_SUB_ENTITY": {
-      "contextId": "business_sub_entity"
-    },
-    "PRODUCT_LIST_PRICE": {
-      "contextId": "product_list_price"
-    }
-  },
+  "dashboard_folder": "AI",
   "dashboard_filters": {
-    "columns_filter": [],
-    "group_filters": []
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Summary",
-      "show_filter": true,
+      "title": "AI",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Product",
-          "widget_type": "summary",
-          "duration_hours": 1080,
-          "paginated": false,
-          "max_rows": 1,
-          "limit": 1,
-          "max_width": 12,
-          "height": 10,
+          "title": "Server",
+          "widget_type": "tabular",
           "min_width": 12,
-          "stream": "edc_oi_inventory_enriched",
-          "ts_column": "timestamp",
-          "extra_filter": "contract_number is '{{ CONTRACT_NUMBER }}' and product_name is '{{ PRODUCT_NAME }}' and coverage is '{{ COVERAGE }}' and covered_line_status is '{{ COVERED_LINE_STATUS }}' and business_entity is '{{ BUSINESS_ENTITY }}' and business_sub_entity is '{{ BUSINESS_SUB_ENTITY }}' and product_list_price is '{{ PRODUCT_LIST_PRICE }}' ",
+          "height": 6,
+          "max_width": 12,
+          "timebased": false,
+          "timestamp": "timestamp",
+          "stream": "discoveragents",
           "columns": {
-            "combination_count": {
-              "title": "Qty",
-              "type": "DOUBLE",
-              "visible": true
+            "Name": {
+              "title": "Name",
+              "key": true
             },
-            "product_name": "Product ID",
-            "item_type": {
-              "title": "Equipment Type",
-              "type": "TEXT"
+            "description": {
+              "title": "Description",
+              "key": false
             },
-            "product_family": "Product Family",
-            "product_description": {
-              "title": "Product Description",
-              "type": "TEXT",
-              "visible": true
+            "enabled_color": {
+              "type": "COLOR-MAP",
+              "source-column": "enabled",
+              "color-map": {
+                "yes": "#4CAF50",
+                "no": "#B71C1C"
+              }
             },
-            "product_family_description": {
-              "title": "Product Family Description",
-              "type": "TEXT",
-              "visible": true
+            "enabled": {
+              "title": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.enabled_color }}'}}' > {{'{{ row.enabled }}'}} </span>",
+              "key": false
             },
-            "product_type": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": true
-            },
-            "contract_number": {
-              "title": "Contract Number",
-              "type": "FLOAT",
-              "visible": true
-            },
-            "portfolio_desc": {
-              "title": "Portfolio Name",
-              "type": "TEXT",
-              "visible": true
-            },
-            "usage_code": {
-              "title": "Usage Type",
-              "type": "TEXT",
-              "visible": true
-            },
-            "coverage": {
-              "title": "Coverage",
-              "type": "TEXT",
-              "visible": true
-            },
-            "covered_line_status": {
-              "title": "Covered Line Status",
-              "type": "TEXT",
-              "visible": true
-            },
-            "gu_name": {
-              "title": "Customer Name",
-              "type": "TEXT",
-              "visible": true
-            },
-            "business_entity": {
-              "title": "Business Entity",
-              "type": "TEXT",
-              "visible": true
-            },
-            "business_sub_entity": {
-              "title": "Business Sub Entity",
-              "type": "TEXT",
-              "visible": true
-            },
-            "product_list_price": {
-              "title": "Product List Price",
-              "type": "DOUBLE",
-              "uiProperties": {
-                "formatting": {
-                  "locale": "en-US",
-                  "style": "currency",
-                  "currency": "USD",
-                  "minimumFractionDigits": 2
-                }
-              },
-              "visible": true
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "visible": true
+            "provider": {
+              "title": "provider",
+              "key": false
             }
           },
-          "widget_id": "a69be2eb"
+          "widget_id": "2630645a",
+          "actions": [
+            {
+              "permission": "rda:github:view",
+              "title": "Add",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:aiadministration-add-mcpserver",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formData": {
+                      "server_json": "{}"
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "formFieldList": [
+                        {
+                          "help": "Enter Server Name",
+                          "dataType": "string",
+                          "required": true,
+                          "editable": true,
+                          "label": "Agent Name",
+                          "controlType": "TEXT_FIELD",
+                          "hidden": false,
+                          "fieldId": "name",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "layout-group-id",
+                              "value": "pstream-details"
+                            }
+                          ]
+                        },
+                        {
+                          "fieldId": "contents",
+                          "label": "Agent YAML",
+                          "description": "Agent YAML",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "PYTHON_EDITOR",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "lang",
+                              "value": "yaml"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "permission": "rda:github:view",
+                        "title": "Add",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-add-mcpserver-addaction",
+                        "pstreamName": "discoveragents",
+                        "operation": "ADD"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-edit-mcpserver",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "form_data_field_mapping": {
+                      "contents": "contents"
+                    },
+                    "formData": {},
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "formFieldList": [
+                        {
+                          "fieldId": "contents",
+                          "label": "Server YAML",
+                          "description": "Server YAML",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "PYTHON_EDITOR",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "lang",
+                              "value": "yaml"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "permission": "rda:github:view",
+                        "title": "Edit",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-edit-mcpserver-editaction",
+                        "pstreamName": "discoveragents",
+                        "operation": "UPDATE",
+                        "cfxql_query": "domain contains \"{{domain}}\""
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-delete-mcpserver",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formData": {},
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "formFieldList": [
+                        {
+                          "help": "Are you sure you want to delete this Agent ?",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "label": "Are you sure you want to delete this Agent ?",
+                          "hidden": false,
+                          "fieldId": "delete_form_field"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "permission": "rda:github:view",
+                        "title": "Delete",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-add-mcpserver-deleteaction",
+                        "pstreamName": "discoveragents",
+                        "operation": "DELETE",
+                        "cfxql_query": "domain contains \"{{domain}}\""
+                      }
+                    ],
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "identifier": "Submit",
+                          "actionLabel": "Delete"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Summary",
-      "show_filter": true,
+      "title": "AI",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Product",
-          "widget_type": "summary",
-          "duration_hours": 1080,
-          "paginated": false,
-          "max_rows": 1,
-          "limit": 1,
-          "max_width": 12,
-          "height": 10,
+          "title": "Server",
+          "widget_type": "tabular",
           "min_width": 12,
-          "stream": "edc_oi_inventory_enriched",
-          "ts_column": "timestamp",
-          "extra_filter": "contract_number is '{{ CONTRACT_NUMBER }}' and product_name is '{{ PRODUCT_NAME }}' and coverage is '{{ COVERAGE }}' and covered_line_status is '{{ COVERED_LINE_STATUS }}' and business_entity is '{{ BUSINESS_ENTITY }}' and business_sub_entity is '{{ BUSINESS_SUB_ENTITY }}' and product_list_price is '{{ PRODUCT_LIST_PRICE }}' ",
+          "height": 6,
+          "max_width": 12,
+          "timebased": false,
+          "timestamp": "timestamp",
+          "stream": "discoveragents",
           "columns": {
-            "combination_count": {
-              "title": "Qty",
-              "type": "DOUBLE",
-              "visible": true
+            "Name": {
+              "title": "Name",
+              "key": true
             },
-            "product_name": "Product ID",
-            "item_type": {
-              "title": "Equipment Type",
-              "type": "TEXT"
+            "description": {
+              "title": "Description",
+              "key": false
             },
-            "product_family": "Product Family",
-            "product_description": {
-              "title": "Product Description",
-              "type": "TEXT",
-              "visible": true
+            "enabled_color": {
+              "type": "COLOR-MAP",
+              "source-column": "enabled",
+              "color-map": {
+                "yes": "#4CAF50",
+                "no": "#B71C1C"
+              }
             },
-            "product_family_description": {
-              "title": "Product Family Description",
-              "type": "TEXT",
-              "visible": true
+            "enabled": {
+              "title": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.enabled_color }}'}}' > {{'{{ row.enabled }}'}} </span>",
+              "key": false
             },
-            "product_type": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": true
-            },
-            "contract_number": {
-              "title": "Contract Number",
-              "type": "FLOAT",
-              "visible": true
-            },
-            "portfolio_desc": {
-              "title": "Portfolio Name",
-              "type": "TEXT",
-              "visible": true
-            },
-            "usage_code": {
-              "title": "Usage Type",
-              "type": "TEXT",
-              "visible": true
-            },
-            "coverage": {
-              "title": "Coverage",
-              "type": "TEXT",
-              "visible": true
-            },
-            "covered_line_status": {
-              "title": "Covered Line Status",
-              "type": "TEXT",
-              "visible": true
-            },
-            "gu_name": {
-              "title": "Customer Name",
-              "type": "TEXT",
-              "visible": true
-            },
-            "business_entity": {
-              "title": "Business Entity",
-              "type": "TEXT",
-              "visible": true
-            },
-            "business_sub_entity": {
-              "title": "Business Sub Entity",
-              "type": "TEXT",
-              "visible": true
-            },
-            "product_list_price": {
-              "title": "Product List Price",
-              "type": "DOUBLE",
-              "uiProperties": {
-                "formatting": {
-                  "locale": "en-US",
-                  "style": "currency",
-                  "currency": "USD",
-                  "minimumFractionDigits": 2
-                }
-              },
-              "visible": true
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "visible": true
+            "provider": {
+              "title": "provider",
+              "key": false
             }
           },
-          "widget_id": "a69be2eb"
+          "widget_id": "2630645a",
+          "actions": [
+            {
+              "permission": "rda:github:view",
+              "title": "Add",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:aiadministration-add-mcpserver",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formData": {
+                      "server_json": "{}"
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "formFieldList": [
+                        {
+                          "help": "Enter Server Name",
+                          "dataType": "string",
+                          "required": true,
+                          "editable": true,
+                          "label": "Agent Name",
+                          "controlType": "TEXT_FIELD",
+                          "hidden": false,
+                          "fieldId": "name",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "layout-group-id",
+                              "value": "pstream-details"
+                            }
+                          ]
+                        },
+                        {
+                          "fieldId": "contents",
+                          "label": "Agent YAML",
+                          "description": "Agent YAML",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "PYTHON_EDITOR",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "lang",
+                              "value": "yaml"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "permission": "rda:github:view",
+                        "title": "Add",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-add-mcpserver-addaction",
+                        "pstreamName": "discoveragents",
+                        "operation": "ADD"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-edit-mcpserver",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "form_data_field_mapping": {
+                      "contents": "contents"
+                    },
+                    "formData": {},
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "formFieldList": [
+                        {
+                          "fieldId": "contents",
+                          "label": "Server YAML",
+                          "description": "Server YAML",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "PYTHON_EDITOR",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "lang",
+                              "value": "yaml"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "permission": "rda:github:view",
+                        "title": "Edit",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-edit-mcpserver-editaction",
+                        "pstreamName": "discoveragents",
+                        "operation": "UPDATE",
+                        "cfxql_query": "domain contains \"{{domain}}\""
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-delete-mcpserver",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formData": {},
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "formFieldList": [
+                        {
+                          "help": "Are you sure you want to delete this Agent ?",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "label": "Are you sure you want to delete this Agent ?",
+                          "hidden": false,
+                          "fieldId": "delete_form_field"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "permission": "rda:github:view",
+                        "title": "Delete",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-add-mcpserver-deleteaction",
+                        "pstreamName": "discoveragents",
+                        "operation": "DELETE",
+                        "cfxql_query": "domain contains \"{{domain}}\""
+                      }
+                    ],
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "identifier": "Submit",
+                          "actionLabel": "Delete"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }
