@@ -1,310 +1,415 @@
 {
-  "name": "cml-topo-dashboard",
-  "label": "CML Network Topology",
-  "description": "CML Network Topology",
-  "dashboard_style": "auto",
-  "version": "23.6.12.1",
+  "name": "alert-rules-open-clear",
+  "label": "Alert rules based Open and Clear Alerts",
+  "description": "Alert rules based Open and Clear Alerts",
+  "version": "25.5.13.1",
   "enabled": true,
-  "dashboard_type": "dashboard",
-  "custom_context": {
-    "alert-context": true,
-    "node_view_params": {
-      "stream": "oia-alerts-stream",
-      "extra_filter": "a_asset_ip_address is '${node_id}' and a_status = 'ACTIVE' and a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE'",
-      "title": "Active Alerts ${node_id}",
-      "duration_hours": 1,
-      "columns": {
-        "a_asset_ip_address": {
-          "title": "Device"
-        },
-        "a_en_local_interface": {
-          "title": "Interface"
-        },
-        "a_en_remote_ip": {
-          "title": "Remote Device"
-        },
-        "a_en_remote_interface": {
-          "title": "Remote Interface"
-        },
-        "a_en_alert_name": {
-          "title": "Alert Name"
-        },
-        "a_en_link_type": {
-          "title": "Link Type"
-        },
-        "a_severity": {
-          "title": "Alert severity"
-        },
-        "a_incident_id": {
-          "title": "Incident ID"
-        },
-        "a_message": {
-          "title": "Message"
-        },
-        "timestamp": {
-          "title": "timestamp"
-        }
-      },
-      "severity_columns": [
-        "a_severity"
-      ]
+  "live_edit": true,
+  "dashboard_type": "template",
+  "status_poller": {
+    "stream": "rda_alert_state_management_data",
+    "frequency": 15,
+    "columns": [
+      "timestamp"
+    ],
+    "sorting": [
+      {
+        "timestamp": "desc"
+      }
+    ],
+    "query": "timestamp is after '$timestamp'",
+    "defaults": {
+      "timestamp": "$UTCNOW"
     },
-    "link_view_params": {
-      "stream": "oia-alerts-stream",
-      "extra_filter": "(a_asset_ip_address is '${source}' and a_en_remote_ip is '${target}') or (a_asset_ip_address is '${target}' and a_en_remote_ip is '${source}') and a_status = 'ACTIVE' and a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE'",
-      "title": "Active Alerts on ${source} <-> ${target}",
-      "duration_hours": 1,
-      "columns": {
-        "a_asset_ip_address": {
-          "title": "Device"
-        },
-        "a_en_local_interface": {
-          "title": "Interface"
-        },
-        "a_en_remote_ip": {
-          "title": "Remote Device"
-        },
-        "a_en_remote_interface": {
-          "title": "Remote Interface"
-        },
-        "a_en_alert_name": {
-          "title": "Alert Name"
-        },
-        "a_en_link_type": {
-          "title": "Link Type"
-        },
-        "a_severity": {
-          "title": "Alert severity"
-        },
-        "a_incident_id": {
-          "title": "Incident ID"
-        },
-        "a_message": {
-          "title": "Message"
-        },
-        "timestamp": {
-          "title": "timestamp"
-        }
-      },
-      "severity_columns": [
-        "a_severity"
-      ]
-    }
+    "action": "refresh"
   },
   "dashboard_filters": {
     "time_filter": true,
-    "columns_filter": []
+    "default_time_filter_non_removable": true,
+    "show_default_time_filter": false,
+    "columns_filter": [
+      {
+        "id": "type",
+        "label": "Alert Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "name",
+        "label": "Alert Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "TEXT"
+      },
+      {
+        "id": "severity",
+        "label": "Open Severity",
+        "type": "TEXT"
+      },
+      {
+        "id": "clear_severity",
+        "label": "Clear Severity",
+        "type": "TEXT"
+      },
+      {
+        "id": "md5",
+        "label": "Alert Id",
+        "type": "TEXT"
+      },
+      {
+        "id": "unique_keys",
+        "label": "Alert Keys",
+        "type": "TEXT"
+      },
+      {
+        "id": "payload",
+        "label": "Payload",
+        "type": "TEXT"
+      }
+    ],
+    "default_time_filter_labels": [
+      "Last 24 hours"
+    ],
+    "group_filters": [
+      {
+        "stream": "rda_alert_state_management_data",
+        "title": "Alert Type",
+        "group_by": [
+          "type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "str"
+      },
+      {
+        "stream": "rda_alert_state_management_data",
+        "title": "Alert Name",
+        "group_by": [
+          "name"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "str"
+      },
+      {
+        "stream": "rda_alert_state_management_data",
+        "title": "State",
+        "group_by": [
+          "state"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "str"
+      }
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Topology",
+      "title": "alerts",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "topology",
-          "title": "Topology",
-          "actions": [
-            {
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "Network",
-                    "fieldId": "layer"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getReport",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "reportId": "rda.saas.topology.stream.nodes.alerts"
-                  }
-                ]
-              },
-              "icon": "mdi mdi-plus",
-              "identifier": "rda.saas.topology.stream.nodes.alerts.view",
-              "selectionType": "SINGLE",
-              "title": "Show Node Alerts",
-              "type": "POPUP_REPORT"
-            },
-            {
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "connects-to",
-                    "fieldId": "edgeType"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getReport",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "reportId": "rda.saas.topology.stream.links.alerts",
-                    "hello": "world SIRI"
-                  }
-                ]
-              },
-              "icon": "mdi mdi-plus",
-              "identifier": "rda.saas.topology.stream.links.alerts.view",
-              "selectionType": "SINGLE",
-              "title": "Show Link Alerts",
-              "type": "POPUP_REPORT"
-            }
+          "extends": [
+            "self:alerts_tabular_widget",
+            "self:actions_lib.alerts_tabular_widget_actions"
           ],
-          "chartProperties": {
-            "hasToolbar": true,
-            "shortToolbar": true,
-            "userZoomingEnabled": false
+          "extend_vars": {
+            "alerts_tabular_widget_extra_filter": "state in ['OPEN', 'CLEAR']"
           },
-          "stack": "cml_topo_stack",
-          "max_width": 12,
-          "min_width": 12,
-          "height": 12,
-          "alert_source": {
-            "stream": "oia-alerts-stream",
-            "group_by": [
-              "a_asset_ip_address",
-              "a_severity",
-              "a_status"
-            ],
-            "ts_column": "timestamp",
-            "duration_hours": 1,
-            "agg": "value_count",
-            "column": "_id",
-            "type": "int",
-            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
-          },
-          "link_alert_source": {
-            "stream": "trap_alert_stream",
-            "group_by": [
-              "left_id",
-              "right_id"
-            ],
-            "agg": "min",
-            "column": "alert_severity_num",
-            "ts_column": "timestamp",
-            "duration_hours": 1440,
-            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
-          },
-          "widget_id": "9db5a36f"
+          "widget_id": "94a3fc99"
         }
       ]
     }
   ],
+  "library": {
+    "widgets": {
+      "alerts_tabular_widget": {
+        "extra_filter": "$alerts_tabular_widget_extra_filter",
+        "title": "Alerts",
+        "widget_type": "tabular",
+        "stream": "rda_alert_state_management_data",
+        "min_width": 12,
+        "height": 12,
+        "max_width": 12,
+        "paginated": true,
+        "resizableColumns": false,
+        "remote_searchable": true,
+        "remote_searchable_cols": [
+          "type",
+          "name",
+          "state",
+          "severity",
+          "clear_severity",
+          "md5",
+          "unique_keys"
+        ],
+        "refreshRequired": true,
+        "timebased": false,
+        "max_rows": 50,
+        "columns": {
+          "type": {
+            "title": "Alert Type",
+            "key": true
+          },
+          "name": {
+            "title": "Alert Name",
+            "key": true
+          },
+          "md5": {
+            "title": "Alert Id",
+            "key": true
+          },
+          "unique_keys": {
+            "title": "Alert Keys"
+          },
+          "state_color": {
+            "type": "COLOR-MAP",
+            "source-column": "state",
+            "color-map": {
+              "CLEAR": "#4CAF50",
+              "OPEN": "#FFA726"
+            }
+          },
+          "state": {
+            "title": "State",
+            "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.state_color }}'}}' > {{'{{ row.state }}'}} </span>",
+            "defaultWidth": 150,
+            "key": true
+          },
+          "severity_color": {
+            "type": "COLOR-MAP",
+            "source-column": "severity",
+            "color-map": {
+              "SEVERE": "#B71C1C",
+              "CRITICAL": "#E53935",
+              "MAJOR": "#F57C00",
+              "MINOR": "#FFA726",
+              "WARNING": "#FFD54F",
+              "NOTIFICATION": "#4DD0E1",
+              "INFORMATION": "#03A9F4"
+            }
+          },
+          "severity": {
+            "title": "Open Severity",
+            "type": "DYNAMIC_HTML",
+            "htmlTemplate": "<span class='badge' v-if='rowData.severity' :style='{ backgroundColor: rowData.severity_color }'>{{'{{ rowData.severity }}'}}</span>",
+            "defaultWidth": 150
+          },
+          "clear_severity_color": {
+            "type": "COLOR-MAP",
+            "source-column": "clear_severity",
+            "color-map": {
+              "SEVERE": "#B71C1C",
+              "CRITICAL": "#E53935",
+              "MAJOR": "#F57C00",
+              "MINOR": "#FFA726",
+              "WARNING": "#FFD54F",
+              "NOTIFICATION": "#4DD0E1",
+              "INFORMATION": "#03A9F4"
+            }
+          },
+          "clear_severity": {
+            "title": "Clear Severity",
+            "type": "DYNAMIC_HTML",
+            "htmlTemplate": "<span class='badge' v-if='rowData.clear_severity' :style='{ backgroundColor: rowData.clear_severity_color }'>{{'{{ rowData.clear_severity }}'}}</span>",
+            "defaultWidth": 150,
+            "visible": false
+          },
+          "open_timestamp": {
+            "title": "Open Timestamp",
+            "type": "DATETIME"
+          },
+          "clear_timestamp": {
+            "title": "Clear Timestamp",
+            "type": "DATETIME",
+            "visible": false
+          },
+          "timestamp": {
+            "title": "Timestamp",
+            "type": "DATETIME",
+            "visible": false
+          }
+        }
+      }
+    },
+    "actions_lib": {
+      "alerts_tabular_widget_actions": {
+        "actions": [
+          {
+            "permission": "rda:user_dashboard:clear",
+            "title": "Clear Alerts",
+            "type": "POPUP_FORM",
+            "selectionType": "NONE",
+            "identifier": "saas-service-action:alertrule-clear-batch",
+            "api-endpoint": {
+              "service-name": "saas-reports",
+              "methodName": "getForm",
+              "stringified-params": true,
+              "parse-output": false,
+              "params": [
+                {
+                  "formId": "rda.saas.dynamic.form",
+                  "formDefinition": {
+                    "id": "rda.saas.dynamic.form",
+                    "refreshRequired": true,
+                    "formFieldList": [
+                      {
+                        "help": "Clear Alerts",
+                        "dataType": "string",
+                        "controlType": "SELECTOR_TABLE",
+                        "controlPropertyList": [
+                          {
+                            "attribute": "column-key",
+                            "value": "md5"
+                          },
+                          {
+                            "attribute": "selection",
+                            "value": "MULTIPLE"
+                          }
+                        ],
+                        "widget": {
+                          "extends": "self:alerts_tabular_widget",
+                          "extend_vars": {
+                            "alerts_tabular_widget_extra_filter": "state in ['OPEN']"
+                          }
+                        },
+                        "required": true,
+                        "editable": true,
+                        "label": "Alerts",
+                        "hidden": false,
+                        "fieldId": "selectedAlerts"
+                      },
+                      {
+                        "fieldId": "notification",
+                        "dataType": "boolean",
+                        "controlType": "BOOLEAN_FIELD",
+                        "hidden": false,
+                        "required": false,
+                        "editable": true,
+                        "defaultValue": false,
+                        "label": "Send Notification",
+                        "help": "Send Clear Notification"
+                      }
+                    ]
+                  },
+                  "formActionList": {
+                    "formActions": [
+                      {
+                        "identifier": "Submit",
+                        "actionLabel": "Clear",
+                        "type": "SUBMIT"
+                      }
+                    ]
+                  },
+                  "actions": [
+                    {
+                      "type": "UPDATE_PSTREAM",
+                      "pstreamName": "alert_rules_clear_jobs_custom_nats_stream",
+                      "collapse_json": true,
+                      "collapsed_json_column": "payload"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "permission": "rda:user_dashboard:view",
+            "title": "Clear Alert",
+            "type": "POPUP_FORM",
+            "selectionType": "SINGLE",
+            "identifier": "saas-service-action:alertrule-clear",
+            "api-endpoint": {
+              "service-name": "saas-reports",
+              "methodName": "getForm",
+              "stringified-params": true,
+              "parse-output": false,
+              "params": [
+                {
+                  "formId": "rda.saas.alertrule.clear_alert"
+                }
+              ]
+            },
+            "actionCondition": {
+              "actionControl": "SHOW_IF",
+              "conditionalField": [
+                {
+                  "conditionType": "EQUAL",
+                  "conditionValue": "OPEN",
+                  "fieldId": "state"
+                }
+              ]
+            }
+          },
+          {
+            "permission": "rda:user_dashboard:view",
+            "title": "View Open Payload",
+            "type": "POPUP_FORM",
+            "selectionType": "SINGLE",
+            "identifier": "saas-service-action:alertrule-view-payload",
+            "api-endpoint": {
+              "service-name": "saas-reports",
+              "methodName": "getForm",
+              "stringified-params": true,
+              "parse-output": false,
+              "params": [
+                {
+                  "formId": "rda.saas.alertrule.view_payload"
+                }
+              ]
+            }
+          },
+          {
+            "permission": "rda:user_dashboard:view",
+            "title": "View Clear Payload",
+            "type": "POPUP_FORM",
+            "selectionType": "SINGLE",
+            "identifier": "saas-service-action:alertrule-view-clear-payload",
+            "api-endpoint": {
+              "service-name": "saas-reports",
+              "methodName": "getForm",
+              "stringified-params": true,
+              "parse-output": false,
+              "params": [
+                {
+                  "formId": "rda.saas.alertrule.view_clear_payload"
+                }
+              ]
+            },
+            "actionCondition": {
+              "actionControl": "SHOW_IF",
+              "conditionalField": [
+                {
+                  "conditionType": "EQUAL",
+                  "conditionValue": "CLEAR",
+                  "fieldId": "state"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
   "pstream_dashboards": [
     {
-      "title": "Topology",
+      "title": "alerts",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "topology",
-          "title": "Topology",
-          "actions": [
-            {
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "Network",
-                    "fieldId": "layer"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getReport",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "reportId": "rda.saas.topology.stream.nodes.alerts"
-                  }
-                ]
-              },
-              "icon": "mdi mdi-plus",
-              "identifier": "rda.saas.topology.stream.nodes.alerts.view",
-              "selectionType": "SINGLE",
-              "title": "Show Node Alerts",
-              "type": "POPUP_REPORT"
-            },
-            {
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "connects-to",
-                    "fieldId": "edgeType"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getReport",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "reportId": "rda.saas.topology.stream.links.alerts",
-                    "hello": "world SIRI"
-                  }
-                ]
-              },
-              "icon": "mdi mdi-plus",
-              "identifier": "rda.saas.topology.stream.links.alerts.view",
-              "selectionType": "SINGLE",
-              "title": "Show Link Alerts",
-              "type": "POPUP_REPORT"
-            }
+          "extends": [
+            "self:alerts_tabular_widget",
+            "self:actions_lib.alerts_tabular_widget_actions"
           ],
-          "chartProperties": {
-            "hasToolbar": true,
-            "shortToolbar": true,
-            "userZoomingEnabled": false
+          "extend_vars": {
+            "alerts_tabular_widget_extra_filter": "state in ['OPEN', 'CLEAR']"
           },
-          "stack": "cml_topo_stack",
-          "max_width": 12,
-          "min_width": 12,
-          "height": 12,
-          "alert_source": {
-            "stream": "oia-alerts-stream",
-            "group_by": [
-              "a_asset_ip_address",
-              "a_severity",
-              "a_status"
-            ],
-            "ts_column": "timestamp",
-            "duration_hours": 1,
-            "agg": "value_count",
-            "column": "_id",
-            "type": "int",
-            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
-          },
-          "link_alert_source": {
-            "stream": "trap_alert_stream",
-            "group_by": [
-              "left_id",
-              "right_id"
-            ],
-            "agg": "min",
-            "column": "alert_severity_num",
-            "ts_column": "timestamp",
-            "duration_hours": 1440,
-            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
-          },
-          "widget_id": "9db5a36f"
+          "widget_id": "94a3fc99"
         }
       ]
     }
