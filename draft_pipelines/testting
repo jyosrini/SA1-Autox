@@ -1,3 +1,2 @@
-@dm:recall name='sa-data-before-explode'
- --> @dm:dedup columns='product_id'
- --> @dm:save name='unique-sa-data-before explode'
+@dm:empty
+ --> @dm:recall name="testtt"
