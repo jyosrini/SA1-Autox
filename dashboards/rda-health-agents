@@ -1,82 +1,60 @@
 {
-  "name": "l2-l3-metric-analysis",
-  "description": "L2/L3 Metric Analysis",
-  "label": "Metric Analysis - L2/L3 User",
+  "name": "rda-health-agents",
+  "label": "Agents",
+  "description": "Agents",
   "enabled": false,
   "dashboard_type": "dashboard",
-  "template_variables": null,
+  "dashboard_folder": "System",
+  "dashboard_style": "auto",
   "dashboard_filters": {
-    "time_filter": true,
-    "columns_filter": [
-      {
-        "id": "metric_name",
-        "label": "Metric Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "source_tool",
-        "label": "Source",
-        "type": "TEXT"
-      },
-      {
-        "id": "node_type",
-        "label": "Node Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "node_label",
-        "label": "Node Label",
-        "type": "TEXT"
-      },
-      {
-        "id": "layer",
-        "label": "Layer",
-        "type": "TEXT"
-      },
-      {
-        "id": "stack_name",
-        "label": "Stack Name",
-        "type": "TEXT"
-      }
-    ],
-    "default_time_filter_labels": [
-      "Last 24 hours"
-    ]
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Metric Analysis",
-      "show_filter": true,
+      "title": "Agents",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Summary of All Metrics for Full Stack",
-          "widget_type": "metric_analysis",
-          "max_width": 12,
-          "min_width": 12,
-          "height": 16,
-          "stream": "rda_synthetic_metrics",
-          "ts_column": "timestamp",
-          "duration_hours": 24,
-          "widget_id": "f00bc459"
+          "title": "RDA Agents",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.agents.tabular",
+          "paginated": true,
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "c2488225"
+        },
+        {
+          "title": "Event Gateway Endpoints",
+          "widget_type": "portal_tabular",
+          "reportId": "eventgw.status.tabular",
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "9cc1d5b0"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Metric Analysis",
-      "show_filter": true,
+      "title": "Agents",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Summary of All Metrics for Full Stack",
-          "widget_type": "metric_analysis",
-          "max_width": 12,
-          "min_width": 12,
-          "height": 16,
-          "stream": "rda_synthetic_metrics",
-          "ts_column": "timestamp",
-          "duration_hours": 24,
-          "widget_id": "f00bc459"
+          "title": "RDA Agents",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.agents.tabular",
+          "paginated": true,
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "c2488225"
+        },
+        {
+          "title": "Event Gateway Endpoints",
+          "widget_type": "portal_tabular",
+          "reportId": "eventgw.status.tabular",
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "9cc1d5b0"
         }
       ]
     }
