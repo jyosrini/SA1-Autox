@@ -1,11 +1,5 @@
-folder: Default
-name: delete_extra_row
-description: test pipeline
-data_path: draft-pipelines/data/delete_extra_row/2025_07_11_02/data.json
-usecase: ''
-category: ''
-sources: {}
-artifacts: []
-version: '2025_07_11_02'
-file_type: json
-checksum: 9f28c933
+@c:new-block
+ --> @dm:empty
+ --> @dm:addrow dbname='<alerts-dbname>' & table='allalertsview' & limit = '0'
+ --> #mysql:read raisedat is during this month and customerId is '$customerId'
+ --> @cfxusml:logclustering columns='message' and min_cluster_size = 30 and remove_vars = 'yes' and job_name='DB Alerts'
