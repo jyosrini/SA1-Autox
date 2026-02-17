@@ -1,18 +1,21 @@
 {
-  "name": "bcs-oi-pa-sw-eol-cfx",
+  "name": "oi-pa-sw-eol1",
   "label": "Product Alerts - SW EOL",
   "description": "BCS Product Alerts SW EOL Summary dashboard",
   "version": "2023-22-24",
-  "stream": "test_ingest_2",
+  "stream": "edc_sweol_data",
   "enabled": false,
-  "dashboard_folder": "BCS_PA_SWEOL_Summary",
+  "dashboard_folder": "OI",
   "dashboard_style": "tabbed",
   "dashboard_type": "dashboard",
   "live_edit": true,
   "dashboard_pages": [],
   "dashboard_filters": {
     "time_filter": true,
-    "extra_filter": "(sw_status not in \"No EOL\") and sw_status is not 'Not Available' and contract_number is not null",
+    "default_time_filter_labels": [
+      "Last 2 months"
+    ],
+    "extra_filter1": "(sw_status not in \"No EOL\") and sw_status is not 'Not Available' and contract_number is not null and combination_count_sum is not null",
     "columns_filter": [
       {
         "id": "end_of_new_svc_attachment_dt",
@@ -192,11 +195,11 @@
     ],
     "group_filters": [
       {
-        "stream": "test_ingest_2",
+        "stream": "edc_sweol_data",
         "title": "Customer Name",
         "extra_filter": null,
         "group_by": [
-          "customer_name"
+          "customer"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
@@ -206,21 +209,7 @@
         "type": "int"
       },
       {
-        "stream": "test_ingest_2",
-        "title": "GU Name",
-        "extra_filter": null,
-        "group_by": [
-          "gu_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "combination_count_sum",
-        "type": "int"
-      },
-      {
-        "stream": "test_ingest_2",
+        "stream": "edc_sweol_data",
         "title": "Contract",
         "group_by": [
           "contract_number"
@@ -233,8 +222,8 @@
         "type": "int"
       },
       {
-        "stream": "test_ingest_2",
-        "title": "Portfolio",
+        "stream": "edc_sweol_data",
+        "title": "Porfolio",
         "group_by": [
           "portfolio_desc"
         ],
@@ -246,21 +235,7 @@
         "type": "int"
       },
       {
-        "stream": "test_ingest_2",
-        "title": "Product Family",
-        "extra_filter": null,
-        "group_by": [
-          "product_family"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 700,
-        "agg": "sum",
-        "column": "combination_count_sum",
-        "type": "int"
-      },
-      {
-        "stream": "test_ingest_2",
+        "stream": "edc_sweol_data",
         "title": "Equipment Type",
         "extra_filter": null,
         "group_by": [
@@ -274,11 +249,39 @@
         "type": "int"
       },
       {
-        "stream": "test_ingest_2",
-        "title": "Product Type",
+        "stream": "edc_sweol_data",
+        "title": "Product Name",
         "extra_filter": null,
         "group_by": [
-          "product_type"
+          "product_name"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 700,
+        "agg": "sum",
+        "column": "combination_count_sum",
+        "type": "int"
+      },
+      {
+        "stream": "edc_sweol_data",
+        "title": "Product Family",
+        "extra_filter": null,
+        "group_by": [
+          "product_family"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 700,
+        "agg": "sum",
+        "column": "combination_count_sum",
+        "type": "int"
+      },
+      {
+        "stream": "edc_sweol_data",
+        "title": "SW Version",
+        "extra_filter": null,
+        "group_by": [
+          "sw_version"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
@@ -288,11 +291,11 @@
         "type": "int"
       },
       {
-        "stream": "test_ingest_2",
-        "title": "Coverage",
+        "stream": "edc_sweol_data",
+        "title": "SW OS Type",
         "extra_filter": null,
         "group_by": [
-          "coverage"
+          "sw_os_type"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
@@ -302,11 +305,11 @@
         "type": "int"
       },
       {
-        "stream": "test_ingest_2",
-        "title": "Coverage Status",
+        "stream": "edc_sweol_data",
+        "title": "SW Bulletin Number",
         "extra_filter": null,
         "group_by": [
-          "covered_line_status"
+          "swEOL_bulletinNumber"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
@@ -316,21 +319,7 @@
         "type": "int"
       },
       {
-        "stream": "test_ingest_2",
-        "title": "Business Entity",
-        "group_by": [
-          "business_entity"
-        ],
-        "ts_column": "timestamp",
-        "extra_filter": null,
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "combination_count_sum",
-        "type": "int"
-      },
-      {
-        "stream": "test_ingest_2",
+        "stream": "edc_sweol_data",
         "title": "SW EOL Status",
         "extra_filter": null,
         "group_by": [
@@ -344,7 +333,7 @@
         "type": "int"
       },
       {
-        "stream": "test_ingest_2",
+        "stream": "edc_sweol_data",
         "title": "SW Expiry Year",
         "extra_filter": null,
         "group_by": [
@@ -373,31 +362,10 @@
           "widget_id": "dd3ae8ae"
         },
         {
-          "widget_type1": "label",
-          "max_width": 12,
-          "height": 1,
-          "min_width": 12,
-          "label1": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Assets Inventory</a></h1></div>",
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#B22222;' target='_blank'> Data is on the way. Work in progress! </a></h1></div>",
-          "label2": "<div style='text-align:center;width:100%;'><h1>{% if latest_end_time %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Assets Inventory</a></h1></div>\"}}{% else %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#B22222;' target='_blank'>Data is on the way. Work in progress!</a></h1></div>\"}}{% endif %}</h1></div>",
-          "segments": [
-            {
-              "stream": "test_ingest_2",
-              "variable": "latest_end_time",
-              "ts_column": "timestamp",
-              "duration_hours": 1080,
-              "agg": "cardinality",
-              "group_by": "customer_name",
-              "column": "timestamp"
-            }
-          ],
-          "widget_id": "18bbda1c"
-        },
-        {
           "title": "Assets EOL Status",
           "widget_type": "pie_chart",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'swEOL'",
           "min_width": 4,
@@ -437,7 +405,7 @@
           "title": "Assets SW EOL Status",
           "widget_type": "counter",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "ts_column": "timestamp",
           "extra_filter1": "(source in 'swEOL')",
           "min_width": 6,
@@ -479,55 +447,29 @@
           "max_width": 2,
           "sorting": [
             {
-              "last_updated_time": "desc"
+              "last_updated_time": "asc"
             }
           ],
-          "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set created = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": created }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center>",
+          "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center>",
           "segments": [
             {
-              "stream": "test_ingest_2",
+              "stream": "edc_sweol_data",
               "variable": "latest_end_time",
               "ts_column": "timestamp",
               "extra_filter1": "(source in 'last_updated')",
               "duration_hours1": 1080,
               "agg": "cardinality",
-              "group_by": "created",
-              "column": "customer_name"
+              "group_by": "last_updated_time",
+              "column": "customer"
             }
           ],
           "widget_id": "ebecd631"
         },
         {
-          "widget_type": "label",
-          "min_width": 2.5,
-          "height": 3,
-          "max_width": 2.5,
-          "sorting": [
-            {
-              "last_updated_time": "asc"
-            }
-          ],
-          "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center>",
-          "label0": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center><br><div><a style='text-decoration:none;color:#90CAF9;' target='_blank'><i><b>***</b> Current data showcases assets shipped from 2017 onwards. Data from before 2017 will be available soon</i></a></div>",
-          "segments": [
-            {
-              "stream": "test_ingest_2",
-              "variable": "latest_end_time",
-              "ts_column": "timestamp",
-              "extra_filter1": "portfolio_desc is not null",
-              "duration_hours": 1080,
-              "agg": "cardinality",
-              "group_by": "created",
-              "column": "created"
-            }
-          ],
-          "widget_id": "af082780"
-        },
-        {
           "widget_type": "multi_bar_chart",
-          "title": "SW Status by Source",
+          "title": "SW Status by Product Family",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "extra_filter1": "source in 'swEOL'",
           "extra_filter2": "(sw_status not in \"No EOL\")",
           "ts_column": "timestamp",
@@ -536,7 +478,7 @@
           "max_width": 6,
           "group_by": [
             "sw_status",
-            "product_id"
+            "product_family"
           ],
           "style": {
             "color-map": {
@@ -565,7 +507,7 @@
           "max_width": 6,
           "height": 6,
           "min_width": 6,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "extra_filter1": "source in 'swEOL'",
@@ -578,11 +520,11 @@
               "combination_count_sum": "desc"
             },
             {
-              "customer_name": "asc"
+              "customer": "asc"
             }
           ],
           "columns": {
-            "product_id": "Product Name",
+            "product_name": "Product Name",
             "product_family": {
               "title": "Product Family",
               "type": "TEXT",
@@ -594,7 +536,7 @@
               "htmlTemplateForRow": "<a href=\"{{row.swEOL_bulletinUrl}}\" target='_blank'>{{row.softwareEndOfLifeId}}</a>",
               "visible": false
             },
-            "customer_name": {
+            "customer": {
               "title": "Customer Name",
               "type": "TEXT"
             },
@@ -628,8 +570,8 @@
           "pivot": {
             "pivot_type": "advanced",
             "group_by": [
-              "customer_name",
-              "product_id",
+              "customer",
+              "product_name",
               "sw_status"
             ],
             "series": [
@@ -660,7 +602,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by QTR and Year",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "extra_filter": "sw_expiring_qtr is not null and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -693,7 +635,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by Year",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "extra_filter": "sw_expiring_qtr  is not null and sw_expiring_qtr  does not contain '199' and  sw_expiring_qtr  does not contain '200' and sw_expiring_qtr  does not contain '201' and sw_expiring_qtr  does not contain '2020' and sw_expiring_qtr  does not contain '2021'  and sw_expiring_qtr  does not contain '2022' and sw_expiring_qtr  does not contain '2023' and sw_expiring_qtr  does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -718,7 +660,7 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "extra_filter1": "source in 'swEOL'",
           "extra_filter": "(sw_status not in \"No EOL\")",
           "duration_hours": 1080,
@@ -726,10 +668,10 @@
           "columns": {
             "combination_count_sum": {
               "title": "Total Count",
-              "type": "DOUBLE",
+              "type": "TEXT",
               "visible": true
             },
-            "product_id": {
+            "product_name": {
               "title": "Product Name",
               "type": "TEXT",
               "visible": true
@@ -738,7 +680,8 @@
             "contract_number": "Contract Number",
             "item_type": {
               "title": "Equipment Type",
-              "type": "TEXT"
+              "type": "TEXT",
+              "visible": false
             },
             "sw_status_color": {
               "type": "COLOR-MAP",
@@ -756,7 +699,7 @@
               "title": "SW EOX ID",
               "type": "TEXT",
               "key": true,
-              "visible": true
+              "visible": false
             },
             "sw_version": {
               "title": "SW Version",
@@ -929,7 +872,7 @@
           "max_width": 12,
           "height": 6,
           "min_width": 12,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "extra_filter1": "source in 'swEOL'",
@@ -946,7 +889,7 @@
               "type": "DOUBLE",
               "visible": true
             },
-            "customer_name": {
+            "customer": {
               "title": "Customer Name",
               "type": "TEXT",
               "visible": true
@@ -1142,31 +1085,10 @@
           "widget_id": "dd3ae8ae"
         },
         {
-          "widget_type1": "label",
-          "max_width": 12,
-          "height": 1,
-          "min_width": 12,
-          "label1": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Assets Inventory</a></h1></div>",
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#B22222;' target='_blank'> Data is on the way. Work in progress! </a></h1></div>",
-          "label2": "<div style='text-align:center;width:100%;'><h1>{% if latest_end_time %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Assets Inventory</a></h1></div>\"}}{% else %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#B22222;' target='_blank'>Data is on the way. Work in progress!</a></h1></div>\"}}{% endif %}</h1></div>",
-          "segments": [
-            {
-              "stream": "test_ingest_2",
-              "variable": "latest_end_time",
-              "ts_column": "timestamp",
-              "duration_hours": 1080,
-              "agg": "cardinality",
-              "group_by": "customer_name",
-              "column": "timestamp"
-            }
-          ],
-          "widget_id": "18bbda1c"
-        },
-        {
           "title": "Assets EOL Status",
           "widget_type": "pie_chart",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'swEOL'",
           "min_width": 4,
@@ -1206,7 +1128,7 @@
           "title": "Assets SW EOL Status",
           "widget_type": "counter",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "ts_column": "timestamp",
           "extra_filter1": "(source in 'swEOL')",
           "min_width": 6,
@@ -1248,55 +1170,29 @@
           "max_width": 2,
           "sorting": [
             {
-              "last_updated_time": "desc"
+              "last_updated_time": "asc"
             }
           ],
-          "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set created = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": created }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center>",
+          "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center>",
           "segments": [
             {
-              "stream": "test_ingest_2",
+              "stream": "edc_sweol_data",
               "variable": "latest_end_time",
               "ts_column": "timestamp",
               "extra_filter1": "(source in 'last_updated')",
               "duration_hours1": 1080,
               "agg": "cardinality",
-              "group_by": "created",
-              "column": "customer_name"
+              "group_by": "last_updated_time",
+              "column": "customer"
             }
           ],
           "widget_id": "ebecd631"
         },
         {
-          "widget_type": "label",
-          "min_width": 2.5,
-          "height": 3,
-          "max_width": 2.5,
-          "sorting": [
-            {
-              "last_updated_time": "asc"
-            }
-          ],
-          "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center>",
-          "label0": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center><br><div><a style='text-decoration:none;color:#90CAF9;' target='_blank'><i><b>***</b> Current data showcases assets shipped from 2017 onwards. Data from before 2017 will be available soon</i></a></div>",
-          "segments": [
-            {
-              "stream": "test_ingest_2",
-              "variable": "latest_end_time",
-              "ts_column": "timestamp",
-              "extra_filter1": "portfolio_desc is not null",
-              "duration_hours": 1080,
-              "agg": "cardinality",
-              "group_by": "created",
-              "column": "created"
-            }
-          ],
-          "widget_id": "af082780"
-        },
-        {
           "widget_type": "multi_bar_chart",
-          "title": "SW Status by Source",
+          "title": "SW Status by Product Family",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "extra_filter1": "source in 'swEOL'",
           "extra_filter2": "(sw_status not in \"No EOL\")",
           "ts_column": "timestamp",
@@ -1305,7 +1201,7 @@
           "max_width": 6,
           "group_by": [
             "sw_status",
-            "product_id"
+            "product_family"
           ],
           "style": {
             "color-map": {
@@ -1334,7 +1230,7 @@
           "max_width": 6,
           "height": 6,
           "min_width": 6,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "extra_filter1": "source in 'swEOL'",
@@ -1347,11 +1243,11 @@
               "combination_count_sum": "desc"
             },
             {
-              "customer_name": "asc"
+              "customer": "asc"
             }
           ],
           "columns": {
-            "product_id": "Product Name",
+            "product_name": "Product Name",
             "product_family": {
               "title": "Product Family",
               "type": "TEXT",
@@ -1363,7 +1259,7 @@
               "htmlTemplateForRow": "<a href=\"{{row.swEOL_bulletinUrl}}\" target='_blank'>{{row.softwareEndOfLifeId}}</a>",
               "visible": false
             },
-            "customer_name": {
+            "customer": {
               "title": "Customer Name",
               "type": "TEXT"
             },
@@ -1397,8 +1293,8 @@
           "pivot": {
             "pivot_type": "advanced",
             "group_by": [
-              "customer_name",
-              "product_id",
+              "customer",
+              "product_name",
               "sw_status"
             ],
             "series": [
@@ -1429,7 +1325,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by QTR and Year",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "extra_filter": "sw_expiring_qtr is not null and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -1462,7 +1358,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by Year",
           "duration_hours": 1080,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "extra_filter": "sw_expiring_qtr  is not null and sw_expiring_qtr  does not contain '199' and  sw_expiring_qtr  does not contain '200' and sw_expiring_qtr  does not contain '201' and sw_expiring_qtr  does not contain '2020' and sw_expiring_qtr  does not contain '2021'  and sw_expiring_qtr  does not contain '2022' and sw_expiring_qtr  does not contain '2023' and sw_expiring_qtr  does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -1487,7 +1383,7 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "extra_filter1": "source in 'swEOL'",
           "extra_filter": "(sw_status not in \"No EOL\")",
           "duration_hours": 1080,
@@ -1495,10 +1391,10 @@
           "columns": {
             "combination_count_sum": {
               "title": "Total Count",
-              "type": "DOUBLE",
+              "type": "TEXT",
               "visible": true
             },
-            "product_id": {
+            "product_name": {
               "title": "Product Name",
               "type": "TEXT",
               "visible": true
@@ -1507,7 +1403,8 @@
             "contract_number": "Contract Number",
             "item_type": {
               "title": "Equipment Type",
-              "type": "TEXT"
+              "type": "TEXT",
+              "visible": false
             },
             "sw_status_color": {
               "type": "COLOR-MAP",
@@ -1525,7 +1422,7 @@
               "title": "SW EOX ID",
               "type": "TEXT",
               "key": true,
-              "visible": true
+              "visible": false
             },
             "sw_version": {
               "title": "SW Version",
@@ -1698,7 +1595,7 @@
           "max_width": 12,
           "height": 6,
           "min_width": 12,
-          "stream": "test_ingest_2",
+          "stream": "edc_sweol_data",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "extra_filter1": "source in 'swEOL'",
@@ -1715,7 +1612,7 @@
               "type": "DOUBLE",
               "visible": true
             },
-            "customer_name": {
+            "customer": {
               "title": "Customer Name",
               "type": "TEXT",
               "visible": true
