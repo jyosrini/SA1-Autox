@@ -1,41 +1,47 @@
 {
-  "name": "no-permission",
-  "label": "No Permission",
-  "description": "No Permission Landing Dashboard",
+  "name": "rda-pstream-stats-template",
+  "label": "Persistent Stream Stats",
+  "description": "Persistent Stream Stats",
   "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
+  "dashboard_type": "template",
+  "dashboard_style": "auto",
+  "template_variables": {
+    "PSTREAM_NAME": {
+      "contextId": "pstream_name"
+    },
+    "TS_COLUMN": {
+      "contextId": "ts_column"
+    }
+  },
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "No Permission",
+      "title": "Stats",
       "show_filter": false,
       "widgets": [
         {
-          "title": "No Permission",
-          "widget_type": "portal_html",
-          "widget_template": "common/access-denied-screen",
-          "height": 12,
-          "min_wdith": 12,
-          "widget_id": "186d9a0f"
+          "title": "Details",
+          "widget_type": "pstream_details",
+          "stream": "{{PSTREAM_NAME}}",
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "No Permission",
+      "title": "Stats",
       "show_filter": false,
       "widgets": [
         {
-          "title": "No Permission",
-          "widget_type": "portal_html",
-          "widget_template": "common/access-denied-screen",
-          "height": 12,
-          "min_wdith": 12,
-          "widget_id": "186d9a0f"
+          "title": "Details",
+          "widget_type": "pstream_details",
+          "stream": "{{PSTREAM_NAME}}",
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
         }
       ]
     }
