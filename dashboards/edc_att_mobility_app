@@ -55,6 +55,12 @@
       "group": "eox"
     },
     {
+      "name": "edc-att-sweol",
+      "label": "SW EOL",
+      "icon": "hardware.svg",
+      "group": "eox"
+    },
+    {
       "name": "URL_Link_Template_1",
       "label": "AI Assitant",
       "icon": "rda.svg",
