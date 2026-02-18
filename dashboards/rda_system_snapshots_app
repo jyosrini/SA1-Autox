@@ -1,26 +1,40 @@
 {
-  "name": "rda_system_snapshots_app",
-  "label": "RDA Artfact Snapshots Management",
-  "description": "Robotic Data Automation Administration",
-  "version": "1.0.0",
+  "name": "license-grouping-app",
+  "label": "Smart License",
+  "description": "Smart License",
+  "dashboard_folder": "Default",
+  "version": "23.8.1.1",
   "enabled": true,
-  "live_edit": true,
   "dashboard_filters": {
     "time_filter": false,
     "columns_filter": []
   },
   "dashboard_type": "app",
-  "dashboard_folder": "System",
+  "dashboard_sections": [
+    {
+      "title": "Example"
+    }
+  ],
   "dashboard_pages": [
     {
-      "name": "rda_system_snapshots_main",
-      "label": "Snapshot List",
-      "icon": "Analytics.svg"
+      "name": "smart_licence_summary_consolidate",
+      "label": "License Summary",
+      "icon": "status.svg"
     },
     {
-      "name": "rda_system_snapshots_details",
-      "label": "Snapshot Manifests",
-      "icon": "Analytics.svg"
+      "name": "smart_license_alerts",
+      "label": "License Alerts",
+      "icon": "status.svg"
+    },
+    {
+      "name": "smart_licence__device_details_grv",
+      "label": "Device Inventory",
+      "icon": "status.svg"
+    }
+  ],
+  "pstream_dashboards": [
+    {
+      "title": "Example"
     }
   ]
 }
