@@ -1,13 +1,31 @@
 {
-  "name": "smart_licence_devices_api",
+  "name": "oia-ml-metrics-meta-output",
   "datastore_type": "OS",
   "read_only": false,
   "attrs": {
-    "retention_days": 30,
     "unique_keys": [
-      "reports_key"
-    ]
+      "asset_id",
+      "metric_id",
+      "timestamp"
+    ],
+    "drop_columns": [],
+    "_mappings": {
+      "properties": {
+        "metric_timestamp": {
+          "type": "date"
+        },
+        "value": {
+          "type": "double"
+        },
+        "anomaly_score": {
+          "type": "double"
+        }
+      }
+    },
+    "default_values": {},
+    "retention_days": 30,
+    "case_insensitive": true
   },
   "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-9ec881b3-smart_licence_devices_api-replace-4f55ce88"
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-14adf596-oia-ml-metrics-meta-output"
 }
