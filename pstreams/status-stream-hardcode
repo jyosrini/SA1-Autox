@@ -1,13 +1,30 @@
 {
-  "name": "status-stream-hardcode",
+  "name": "oia-event-trail-stream",
   "datastore_type": "OS",
   "read_only": false,
   "attrs": {
-    "search_case_insensitive": true,
     "unique_keys": [
-      "pipeline_name"
-    ]
+      "et_id"
+    ],
+    "computed_columns": {
+      "customer_id": {
+        "expr": "et_customerid"
+      },
+      "project_id": {
+        "expr": "et_projectid"
+      }
+    },
+    "_mappings": {
+      "properties": {
+        "et_createdat": {
+          "type": "date"
+        }
+      }
+    },
+    "retention_days": 3,
+    "retention_purge_extra_filter": "et_status != 'Failed'",
+    "case_insensitive": true
   },
   "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-75a8b93a-status-stream-hardcode"
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-c5df7709-oia-event-trail-stream"
 }
