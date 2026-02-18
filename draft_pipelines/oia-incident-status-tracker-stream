@@ -1,9 +1,13 @@
-@dm:recall name='sa-raw-data'
- --> @dm:eval unique_key="unique_key"
- ## --> @dm:to-type columns='customer,product_name,product_id,sw_version,sw_os_type,advisoryId,PsirtID' and type='str'
 
- --> @dm:implode key_columns='unique_key' and merge_columns='AdvisoryId,PsirtID,product_name,product_id' and dedup_merge_values='no' and keep_columns='AdvisoryId,PsirtID'
- --> @dm:eval transaction_id_list="str(product_id).split(',')"
- --> @dm:eval record_count = "len(transaction_id_list)"
- --> *dm:filter record_count > 1
- --> @dm:save name="test-implode-sw"
+ ## oia-incident-status-tracker-stream
+@c:new-block
+ --> @exec:get-input
+ --> @dm:save name="temp-status-in"
+ --> @dm:add-missing-columns columns = 'pipeline,step,stage,incident_id,project_id,room_id,incidentid,projectid,roomid,status_comments,status,projectId,roomId,incidentId,row_id'
+ --> @dm:eval room_id = "room_id if room_id else (roomid if roomid else (roomId if roomId else ''))"
+ --> @dm:eval project_id = "project_id if project_id else (projectid if projectid else (projectId if projectId else ''))"
+ --> @dm:eval incident_id = "incident_id if incident_id else (incidentid if incidentid else (incidentId if incidentId else ''))"
+ --> @dm:eval project_id = "project_id if (project_id and project_id != '') else room_id"
+ --> @dm:selectcolumns include="pipeline|step|stage|incident_id|project_id|status|row_id"
+ --> @rn:write-stream compression="auto" & name="oia-incident-status-data-stream"
+ --> @dm:recall name="temp-status-in"
