@@ -385,7 +385,7 @@
       "widgets": [
         {
           "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> Software EOL Report </a></h2></div>",
+          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> AT&T SW EOX (for Covered devices) </a></h2></div>",
           "min_width": 12,
           "height": 0.3,
           "max_width": 12,
@@ -1137,7 +1137,7 @@
       "widgets": [
         {
           "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> Software EOL Report </a></h2></div>",
+          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> AT&T SW EOX (for Covered devices) </a></h2></div>",
           "min_width": 12,
           "height": 0.3,
           "max_width": 12,
