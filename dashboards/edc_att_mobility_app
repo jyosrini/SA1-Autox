@@ -45,7 +45,7 @@
   "dashboard_pages": [
     {
       "name": "edc_mobility_project_inv",
-      "label": "Inventory-ATT-Mobility",
+      "label": "Inventory",
       "icon": "overall.svg"
     },
     {
