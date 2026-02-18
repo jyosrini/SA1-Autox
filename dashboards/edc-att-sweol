@@ -201,19 +201,6 @@
     "group_filters": [
       {
         "stream": "edc_customer_inventory",
-        "title": "Project Name",
-        "group_by": [
-          "project_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
         "title": "Customer Name",
         "group_by": [
           "customer_name"
@@ -237,6 +224,19 @@
         "agg": "sum",
         "column": "count_",
         "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
+        "title": "Contract Name",
+        "group_by": [
+          "contract_name"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 1000,
+        "agg": "sum",
+        "column": "count_",
+        "type": "str"
       },
       {
         "stream": "edc_customer_inventory",
@@ -546,14 +546,11 @@
               "sw_status": "asc"
             },
             {
-              "combination_count_sum": "desc"
-            },
-            {
               "customer": "asc"
             }
           ],
           "columns": {
-            "product_name": "Product Name",
+            "product_id": "Product ID",
             "product_family": {
               "title": "Product Family",
               "type": "TEXT",
@@ -569,6 +566,11 @@
               "title": "Customer Name",
               "type": "TEXT",
               "visible": false
+            },
+            "sw_version": {
+              "title": "SW Version",
+              "type": "TEXT",
+              "visible": true
             },
             "sw_status": {
               "title": "SW Status",
@@ -601,7 +603,8 @@
             "pivot_type": "advanced",
             "group_by": [
               "customer_name",
-              "product_name",
+              "product_id",
+              "sw_version",
               "sw_status"
             ],
             "series": [
@@ -695,11 +698,6 @@
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "columns": {
-            "combination_count_sum": {
-              "title": "Total Count",
-              "type": "TEXT",
-              "hidden": true
-            },
             "product_name": {
               "title": "Product Name",
               "type": "TEXT",
@@ -950,11 +948,6 @@
           ],
           "remote_searchable": true,
           "columns": {
-            "combination_count_sum": {
-              "title": "Total Count",
-              "type": "DOUBLE",
-              "visible": true
-            },
             "customer_name": {
               "title": "Customer Name",
               "type": "TEXT",
@@ -1305,14 +1298,11 @@
               "sw_status": "asc"
             },
             {
-              "combination_count_sum": "desc"
-            },
-            {
               "customer": "asc"
             }
           ],
           "columns": {
-            "product_name": "Product Name",
+            "product_id": "Product ID",
             "product_family": {
               "title": "Product Family",
               "type": "TEXT",
@@ -1328,6 +1318,11 @@
               "title": "Customer Name",
               "type": "TEXT",
               "visible": false
+            },
+            "sw_version": {
+              "title": "SW Version",
+              "type": "TEXT",
+              "visible": true
             },
             "sw_status": {
               "title": "SW Status",
@@ -1360,7 +1355,8 @@
             "pivot_type": "advanced",
             "group_by": [
               "customer_name",
-              "product_name",
+              "product_id",
+              "sw_version",
               "sw_status"
             ],
             "series": [
@@ -1454,11 +1450,6 @@
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "columns": {
-            "combination_count_sum": {
-              "title": "Total Count",
-              "type": "TEXT",
-              "hidden": true
-            },
             "product_name": {
               "title": "Product Name",
               "type": "TEXT",
@@ -1709,11 +1700,6 @@
           ],
           "remote_searchable": true,
           "columns": {
-            "combination_count_sum": {
-              "title": "Total Count",
-              "type": "DOUBLE",
-              "visible": true
-            },
             "customer_name": {
               "title": "Customer Name",
               "type": "TEXT",
