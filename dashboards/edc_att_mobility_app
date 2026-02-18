@@ -1,7 +1,7 @@
 {
   "name": "edc_att_mobility_app",
-  "label": "ATT Mobility Operational Insights",
-  "description": "Network Operational Insights",
+  "label": "ATT Mobility Assets Management",
+  "description": "Assets Management",
   "dashboard_folder": "OI-C",
   "version": "2025-09-03_1",
   "enabled": true,
