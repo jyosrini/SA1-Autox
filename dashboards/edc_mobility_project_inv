@@ -434,19 +434,6 @@
         "agg": "sum",
         "column": "count_",
         "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Network",
-        "group_by": [
-          "network"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 10,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
       }
     ]
   },
