@@ -219,6 +219,20 @@
       },
       {
         "stream": "edc_customer_inventory",
+        "title": "Product Name",
+        "extra_filter1": "source in 'inventory'",
+        "group_by": [
+          "product_name"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 800,
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "edc_customer_inventory",
         "title": "Product Family",
         "extra_filter1": null,
         "group_by": [
