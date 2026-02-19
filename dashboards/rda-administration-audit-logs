@@ -1,444 +1,369 @@
 {
-  "name": "onboarded_customer_list",
-  "label": "Onboarded Customers",
-  "description": "Onboarded Customers List",
-  "version": "2024.03.16",
+  "name": "rda-administration-audit-logs",
+  "label": "Audit Logs",
+  "description": "User Activity and Change Audit Logs",
+  "dashboard_folder": "System",
+  "version": "23.9.5.1",
   "enabled": false,
-  "live_edit": true,
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "template_variables": {
-    "PROJ_ID": {
-      "contextId": "project_id"
-    },
-    "CUST_TAG": {
-      "contextId": "tag1"
-    }
-  },
-  "stream": "rda_system_organizations",
+  "stream": "rda_system_audit_logs",
+  "dashboard_type": "dashboard",
   "dashboard_filters": {
     "time_filter": true,
     "default_time_filter_labels": [
-      "Last 12 months"
+      "Last 1 week"
     ],
-    "default_time_filter_non_removable": true,
     "columns_filter": [
       {
-        "id": "customerId",
-        "label": "ID",
+        "id": "timestamp",
+        "label": "Timestamp",
+        "type": "DATETIME"
+      },
+      {
+        "id": "artifact_name",
+        "label": "Artifact Name",
         "type": "TEXT"
       },
       {
-        "id": "customer_tag",
-        "label": "Customer",
+        "id": "artifact_type",
+        "label": "Artifact Type",
         "type": "TEXT"
       },
       {
-        "id": "tag1",
-        "label": "Customer Label",
+        "id": "description",
+        "label": "Description",
         "type": "TEXT"
       },
       {
-        "id": "projectId",
-        "label": "Project ID",
+        "id": "operation",
+        "label": "Operation",
         "type": "TEXT"
       },
       {
-        "id": "inventory",
-        "label": "Total Devices",
-        "type": "DOUBLE"
+        "id": "service",
+        "label": "Service",
+        "type": "TEXT"
       },
       {
-        "id": "id",
-        "label": "ID",
-        "type": "FIXED_VALUE"
+        "id": "user_id",
+        "label": "User Id",
+        "type": "TEXT"
+      }
+    ],
+    "group_filters": [
+      {
+        "stream": "rda_system_audit_logs",
+        "title": "User Id",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "user_id"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_system_audit_logs",
+        "title": "Artifact Type",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "artifact_type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_system_audit_logs",
+        "title": "Operation",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "operation"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Customers",
+      "title": "Audit Logs",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>List of Customers</a></h1></div>",
-          "widget_id": "33317e49"
+          "widget_type": "bar_chart",
+          "title": "Artifact Type",
+          "duration_hours": 1080,
+          "stream": "rda_system_audit_logs",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "limit": 20,
+          "group_by": [
+            "artifact_type"
+          ],
+          "chartProperties": {
+            "yAxisLabel": null,
+            "xAxisLabel": "",
+            "stacked": true,
+            "legendLocation": "none",
+            "orientation": "horizontal"
+          },
+          "type": "int",
+          "min_width": 3,
+          "height": 5,
+          "max_width": 6,
+          "widget_id": "598abe54"
         },
         {
-          "title": "Customers",
-          "widget_type": "tabular",
-          "ts_column": "createdAt",
-          "stream": "rda_system_organizations",
-          "extra_filter": "customerName is not 'cfx_rda_quarantine'",
-          "max_width": 12,
-          "height": 12,
-          "min_width": 12,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "tag1"
+          "widget_type": "bar_chart",
+          "title": "Operation",
+          "duration_hours": 1080,
+          "stream": "rda_system_audit_logs",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "operation"
           ],
-          "columns": {
-            "customerId": {
-              "title": "ID",
-              "type": "TEXT",
-              "key": true,
-              "visible": false
-            },
-            "tag1": {
-              "title": "Customer",
-              "type": "TEXT",
-              "key": true,
-              "visible": true
-            },
-            "customer_tag": {
-              "title": "Customer Tag",
-              "type": "TEXT",
-              "key": true,
-              "visible": false
-            },
-            "projectId": {
-              "title": "Project ID",
-              "type": "TEXT",
-              "key": true,
-              "visible": false
-            },
-            "createdAt": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "visible": false
+          "chartProperties": {
+            "yAxisLabel": null,
+            "xAxisLabel": "",
+            "stacked": true,
+            "legendLocation": "none",
+            "orientation": "horizontal"
+          },
+          "style": {
+            "color-map": {
+              "LOGOUT": "#B3B3B3",
+              "LOGIN": "#9E9E9E",
+              "LOGIN_FAILED": "#BA0000",
+              "DELETE": "#AA3030",
+              "ADD": "#30FA30",
+              "UPDATE": "#FF9800"
             }
           },
-          "custom_columns": [
+          "type": "int",
+          "min_width": 3,
+          "height": 5,
+          "max_width": 6,
+          "widget_id": "4de13388"
+        },
+        {
+          "title": "Logs",
+          "widget_type": "tabular",
+          "duration_hours": 1080,
+          "max_width": 12,
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "sorting": [
             {
-              "id": "adminApp",
-              "label": "Customer Admin App",
-              "expr": "'Admin App'",
-              "visible": true,
-              "key": true
-            },
-            {
-              "id": "opsApp",
-              "label": "Customer Ops App",
-              "expr": "'Ops App'",
-              "visible": true,
-              "key": true
+              "timestamp": "desc"
             }
           ],
-          "actions": [
-            {
-              "appName": "user-dashboard/customer_ops_application",
-              "permission": "aia:page:view",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "projectId",
-                    "paramId": "project_id"
-                  },
-                  {
-                    "paramKey": "customerId",
-                    "paramId": "customer_id"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "a_en_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "attrs_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customerTag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customer_tag"
-                  }
-                ]
-              },
-              "drillDownLinkField": "tag1",
-              "identifier": "tag1",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Details",
-              "type": "GO_TO_APP_STATE"
+          "showRowSummary": true,
+          "stream": "rda_system_audit_logs",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "columns": {
+            "user_id": {
+              "title": "User Id",
+              "type": "TEXT",
+              "hidden": false
             },
-            {
-              "appName": "user-dashboard/customer_ops_application",
-              "permission": "rda:page:view",
-              "drillDownLinkField": "opsApp",
-              "identifier": "customerName",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Customer Ops App",
-              "type": "GO_TO_APP_STATE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "projectId",
-                    "paramId": "project_id"
-                  },
-                  {
-                    "paramKey": "customerId",
-                    "paramId": "customer_id"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "a_en_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "attrs_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customerTag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customer_tag"
-                  }
-                ]
+            "operationColor": {
+              "title": "opColor",
+              "type": "COLOR-MAP",
+              "source-column": "operation",
+              "color-map": {
+                "LOGOUT": "#B3B3B3",
+                "LOGIN": "#9E9E9E",
+                "LOGIN_FAILED": "#BA0000",
+                "DELETE": "#AA3030",
+                "ADD": "#30AA30",
+                "UPDATE": "#FF9800"
               }
             },
-            {
-              "appName": "user-dashboard/rda-packs-customer-all",
-              "permission": "rda:page:view",
-              "identifier": "tag1",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "drillDownLinkField": "adminApp",
-              "title": "Customer Admin",
-              "type": "GO_TO_APP_STATE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "projectId",
-                    "paramId": "project_id"
-                  },
-                  {
-                    "paramKey": "customerId",
-                    "paramId": "customer_id"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "a_en_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "attrs_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customerTag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customer_tag"
-                  }
-                ]
-              }
+            "operation": {
+              "title": "Operation",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{row.operationColor}}' > {{ row.operation }} </span>"
+            },
+            "artifact_type": {
+              "title": "Artifact Type",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "artifact_name": {
+              "title": "Artifact Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "description": {
+              "title": "Description",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "service": {
+              "title": "Service",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME",
+              "hidden": false
             }
-          ],
-          "widget_id": "79ae514e"
+          },
+          "widget_id": "e968b556"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Customers",
+      "title": "Audit Logs",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>List of Customers</a></h1></div>",
-          "widget_id": "33317e49"
+          "widget_type": "bar_chart",
+          "title": "Artifact Type",
+          "duration_hours": 1080,
+          "stream": "rda_system_audit_logs",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "limit": 20,
+          "group_by": [
+            "artifact_type"
+          ],
+          "chartProperties": {
+            "yAxisLabel": null,
+            "xAxisLabel": "",
+            "stacked": true,
+            "legendLocation": "none",
+            "orientation": "horizontal"
+          },
+          "type": "int",
+          "min_width": 3,
+          "height": 5,
+          "max_width": 6,
+          "widget_id": "598abe54"
         },
         {
-          "title": "Customers",
-          "widget_type": "tabular",
-          "ts_column": "createdAt",
-          "stream": "rda_system_organizations",
-          "extra_filter": "customerName is not 'cfx_rda_quarantine'",
-          "max_width": 12,
-          "height": 12,
-          "min_width": 12,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "tag1"
+          "widget_type": "bar_chart",
+          "title": "Operation",
+          "duration_hours": 1080,
+          "stream": "rda_system_audit_logs",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "operation"
           ],
-          "columns": {
-            "customerId": {
-              "title": "ID",
-              "type": "TEXT",
-              "key": true,
-              "visible": false
-            },
-            "tag1": {
-              "title": "Customer",
-              "type": "TEXT",
-              "key": true,
-              "visible": true
-            },
-            "customer_tag": {
-              "title": "Customer Tag",
-              "type": "TEXT",
-              "key": true,
-              "visible": false
-            },
-            "projectId": {
-              "title": "Project ID",
-              "type": "TEXT",
-              "key": true,
-              "visible": false
-            },
-            "createdAt": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "visible": false
+          "chartProperties": {
+            "yAxisLabel": null,
+            "xAxisLabel": "",
+            "stacked": true,
+            "legendLocation": "none",
+            "orientation": "horizontal"
+          },
+          "style": {
+            "color-map": {
+              "LOGOUT": "#B3B3B3",
+              "LOGIN": "#9E9E9E",
+              "LOGIN_FAILED": "#BA0000",
+              "DELETE": "#AA3030",
+              "ADD": "#30FA30",
+              "UPDATE": "#FF9800"
             }
           },
-          "custom_columns": [
+          "type": "int",
+          "min_width": 3,
+          "height": 5,
+          "max_width": 6,
+          "widget_id": "4de13388"
+        },
+        {
+          "title": "Logs",
+          "widget_type": "tabular",
+          "duration_hours": 1080,
+          "max_width": 12,
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "sorting": [
             {
-              "id": "adminApp",
-              "label": "Customer Admin App",
-              "expr": "'Admin App'",
-              "visible": true,
-              "key": true
-            },
-            {
-              "id": "opsApp",
-              "label": "Customer Ops App",
-              "expr": "'Ops App'",
-              "visible": true,
-              "key": true
+              "timestamp": "desc"
             }
           ],
-          "actions": [
-            {
-              "appName": "user-dashboard/customer_ops_application",
-              "permission": "aia:page:view",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "projectId",
-                    "paramId": "project_id"
-                  },
-                  {
-                    "paramKey": "customerId",
-                    "paramId": "customer_id"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "a_en_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "attrs_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customerTag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customer_tag"
-                  }
-                ]
-              },
-              "drillDownLinkField": "tag1",
-              "identifier": "tag1",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Details",
-              "type": "GO_TO_APP_STATE"
+          "showRowSummary": true,
+          "stream": "rda_system_audit_logs",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "columns": {
+            "user_id": {
+              "title": "User Id",
+              "type": "TEXT",
+              "hidden": false
             },
-            {
-              "appName": "user-dashboard/customer_ops_application",
-              "permission": "rda:page:view",
-              "drillDownLinkField": "opsApp",
-              "identifier": "customerName",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Customer Ops App",
-              "type": "GO_TO_APP_STATE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "projectId",
-                    "paramId": "project_id"
-                  },
-                  {
-                    "paramKey": "customerId",
-                    "paramId": "customer_id"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "a_en_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "attrs_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customerTag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customer_tag"
-                  }
-                ]
+            "operationColor": {
+              "title": "opColor",
+              "type": "COLOR-MAP",
+              "source-column": "operation",
+              "color-map": {
+                "LOGOUT": "#B3B3B3",
+                "LOGIN": "#9E9E9E",
+                "LOGIN_FAILED": "#BA0000",
+                "DELETE": "#AA3030",
+                "ADD": "#30AA30",
+                "UPDATE": "#FF9800"
               }
             },
-            {
-              "appName": "user-dashboard/rda-packs-customer-all",
-              "permission": "rda:page:view",
-              "identifier": "tag1",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "drillDownLinkField": "adminApp",
-              "title": "Customer Admin",
-              "type": "GO_TO_APP_STATE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "projectId",
-                    "paramId": "project_id"
-                  },
-                  {
-                    "paramKey": "customerId",
-                    "paramId": "customer_id"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "a_en_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "attrs_customer_tag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customerTag"
-                  },
-                  {
-                    "paramKey": "tag1",
-                    "paramId": "customer_tag"
-                  }
-                ]
-              }
+            "operation": {
+              "title": "Operation",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{row.operationColor}}' > {{ row.operation }} </span>"
+            },
+            "artifact_type": {
+              "title": "Artifact Type",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "artifact_name": {
+              "title": "Artifact Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "description": {
+              "title": "Description",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "service": {
+              "title": "Service",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME",
+              "hidden": false
             }
-          ],
-          "widget_id": "79ae514e"
+          },
+          "widget_id": "e968b556"
         }
       ]
     }
