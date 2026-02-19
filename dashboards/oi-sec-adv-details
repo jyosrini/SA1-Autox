@@ -1,13 +1,13 @@
 {
-  "name": "oi-sec-adv-details",
+  "name": "sec_adv_details",
   "label": "Product Alerts - Security Advisories Details",
   "description": "BCS Product Alerts Security Advisories dashboard",
-  "version": "2025-09-01-01",
+  "version": "2023-07-13-05",
   "enabled": false,
   "debug": false,
   "stream": "edc_sec_adv_data_enriched",
   "live_edit": true,
-  "dashboard_folder": "OI",
+  "dashboard_folder": "Default",
   "dashboard_style": "auto",
   "dashboard_type": "template",
   "template_variables": {
@@ -17,14 +17,14 @@
     "STATUS": {
       "contextId": "secAdv_matchConfidence"
     },
-    "Psirt": {
-      "contextId": "PsirtID"
+    "PsirtID": {
+      "contextId": "a_PsirtID"
     },
     "Bulletin_Title": {
-      "contextId": "secAdv_bulletinTitle"
+      "contextId": "a_bulletinTitle"
     },
-    "BulletinURL": {
-      "contextId": "BulletinURL"
+    "BulletinURL1": {
+      "contextId": "a_BulletinURL"
     }
   },
   "dashboard_pages": [],
@@ -94,21 +94,7 @@
       },
       {
         "stream": "edc_sec_adv_data_enriched",
-        "title": "Product ID",
-        "extra_filter": "(`secAdv_matchConfidence` not in [\"Not Vulnerable\",\"Not Available\"])",
-        "group_by": [
-          "product_id"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "combination_count_sum",
-        "type": "int"
-      },
-      {
-        "stream": "edc_sec_adv_data_enriched",
-        "title": "SW OS Type",
+        "title": "SW Type",
         "extra_filter": "(secAdv_matchConfidence is not 'Not Available')  and secAdv_securityImpactRating is not empty",
         "group_by": [
           "sw_os_type"
@@ -126,6 +112,20 @@
         "extra_filter": "(`secAdv_matchConfidence` not in [\"Not Vulnerable\",\"Not Available\"])",
         "group_by": [
           "sw_version"
+        ],
+        "ts_column": "timestamp",
+        "duration_hours": 1080,
+        "limit": 200,
+        "agg": "sum",
+        "column": "combination_count_sum",
+        "type": "int"
+      },
+      {
+        "stream": "edc_sec_adv_data_enriched",
+        "title": "Product ID",
+        "extra_filter": "(`secAdv_matchConfidence` not in [\"Not Vulnerable\",\"Not Available\"])",
+        "group_by": [
+          "product_id"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
@@ -169,9 +169,9 @@
       "widgets": [
         {
           "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;color:#0066ff'><h2> Security Advisory </h2><br><a style='text-decoration:none;color:#90CAF9;font-size:20px' target='_blank'>  {{Bulletin_Title}}</a></div>",
+          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'>{{Bulletin_Title}} </a></h2></div>",
           "min_width": 12,
-          "height": 2,
+          "height": 0.3,
           "max_width": 12,
           "widget_id": "dd3ae8ae"
         },
@@ -180,7 +180,7 @@
           "max_width": 6,
           "height": 4,
           "min_width": 6,
-          "label": "<div style='text-align:center;width:100%;'><br><br><br><br><p>PSirtID<br><b><a style='text-decoration:none;color:#90CAF9;font-size:35px' target='_blank'>{{Psirt}}</a></p></div>",
+          "label": "<div style='text-align:center;width:100%;'><br><br><br><br><p>PSirtID<br><b><a style='text-decoration:none;color:#90CAF9;font-size:35px' target='_blank'>{{PsirtID}}</a></p></div>",
           "widget_id": "b0186542"
         },
         {
@@ -211,15 +211,10 @@
           "duration_hours": 10800000,
           "ts_column": "timestamp",
           "columns": {
-            "combination_count_sum": {
-              "title": "Total Count",
+            "BulletinURL": {
+              "title": "URL",
               "type": "TEXT",
-              "key": true,
-              "visible": true
-            },
-            "CveId": {
-              "title": "CVE IDs",
-              "type": "TEXT"
+              "visible": false
             },
             "securityAdvisoryId": {
               "title": "Security Advisory ID",
@@ -261,30 +256,9 @@
               "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
               "visible": true
             },
-            "CvssScore": {
-              "title": "Cvss Score",
-              "type": "TEXT",
-              "visible": true
-            },
-            "matchInfo": {
-              "title": "Match Info",
-              "type": "TEXT",
-              "visible": true
-            },
-            "RevisionNumber": {
-              "title": "Revision Number",
-              "type": "TEXT",
-              "visible": true
-            },
-            "PublishedDate": {
-              "title": "Published Date",
-              "type": "DATE",
-              "visible": true
-            },
-            "RevisedDate": {
-              "title": "Last Updated",
-              "type": "TEXT",
-              "visible": true
+            "CveId": {
+              "title": "CVE IDs",
+              "type": "TEXT"
             },
             "item_type": {
               "title": "Equipment Type",
@@ -306,6 +280,12 @@
             },
             "sw_version": {
               "title": "SW Version",
+              "type": "TEXT",
+              "key": true,
+              "visible": true
+            },
+            "combination_count_sum": {
+              "title": "Total Qty",
               "type": "TEXT",
               "key": true,
               "visible": true
@@ -323,9 +303,9 @@
       "widgets": [
         {
           "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;color:#0066ff'><h2> Security Advisory </h2><br><a style='text-decoration:none;color:#90CAF9;font-size:20px' target='_blank'>  {{Bulletin_Title}}</a></div>",
+          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'>{{Bulletin_Title}} </a></h2></div>",
           "min_width": 12,
-          "height": 2,
+          "height": 0.3,
           "max_width": 12,
           "widget_id": "dd3ae8ae"
         },
@@ -334,7 +314,7 @@
           "max_width": 6,
           "height": 4,
           "min_width": 6,
-          "label": "<div style='text-align:center;width:100%;'><br><br><br><br><p>PSirtID<br><b><a style='text-decoration:none;color:#90CAF9;font-size:35px' target='_blank'>{{Psirt}}</a></p></div>",
+          "label": "<div style='text-align:center;width:100%;'><br><br><br><br><p>PSirtID<br><b><a style='text-decoration:none;color:#90CAF9;font-size:35px' target='_blank'>{{PsirtID}}</a></p></div>",
           "widget_id": "b0186542"
         },
         {
@@ -365,15 +345,10 @@
           "duration_hours": 10800000,
           "ts_column": "timestamp",
           "columns": {
-            "combination_count_sum": {
-              "title": "Total Count",
+            "BulletinURL": {
+              "title": "URL",
               "type": "TEXT",
-              "key": true,
-              "visible": true
-            },
-            "CveId": {
-              "title": "CVE IDs",
-              "type": "TEXT"
+              "visible": false
             },
             "securityAdvisoryId": {
               "title": "Security Advisory ID",
@@ -415,30 +390,9 @@
               "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
               "visible": true
             },
-            "CvssScore": {
-              "title": "Cvss Score",
-              "type": "TEXT",
-              "visible": true
-            },
-            "matchInfo": {
-              "title": "Match Info",
-              "type": "TEXT",
-              "visible": true
-            },
-            "RevisionNumber": {
-              "title": "Revision Number",
-              "type": "TEXT",
-              "visible": true
-            },
-            "PublishedDate": {
-              "title": "Published Date",
-              "type": "DATE",
-              "visible": true
-            },
-            "RevisedDate": {
-              "title": "Last Updated",
-              "type": "TEXT",
-              "visible": true
+            "CveId": {
+              "title": "CVE IDs",
+              "type": "TEXT"
             },
             "item_type": {
               "title": "Equipment Type",
@@ -460,6 +414,12 @@
             },
             "sw_version": {
               "title": "SW Version",
+              "type": "TEXT",
+              "key": true,
+              "visible": true
+            },
+            "combination_count_sum": {
+              "title": "Total Qty",
               "type": "TEXT",
               "key": true,
               "visible": true

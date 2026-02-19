@@ -1,123 +1,104 @@
 {
-  "name": "Authentication Servers",
-  "description": "Authentication Servers",
-  "label": "Authentication Servers",
-  "enabled": false,
+  "name": "user-permissions",
+  "label": "User Permissions",
+  "description": "User Permissions",
+  "enabled": true,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "template_variables": null,
-  "version": "23.2.7.1",
+  "dashboard_style": "auto",
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Servers",
+      "title": "RDA Permissions",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Authentication Servers",
+          "title": "RDA",
           "widget_type": "portal_tabular",
-          "reportId": "remote.server.settings",
-          "height": 5,
+          "reportId": "rda.saas.rda.permissions.tabular",
+          "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "afdcd593"
-        },
-        {
-          "title": "SSO Details",
-          "widget_type": "portal_tabular",
-          "reportId": "rda.saas.sso.details.list.tabular",
-          "height": 5,
-          "min_wdith": 12,
-          "paginated": true,
-          "widget_id": "533f4d05"
+          "widget_id": "2d42c959"
         }
       ]
     },
     {
-      "title": "User Groups",
+      "title": "AIOps Permissions",
       "show_filter": false,
       "widgets": [
         {
-          "title": "AD User Groups",
+          "title": "AIOps",
           "widget_type": "portal_tabular",
-          "reportId": "rda.saas.ad.user.group.list.tabular",
+          "reportId": "rda.saas.oia.permissions.tabular",
           "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "af69b0ed"
+          "widget_id": "cc89a6d1"
         }
       ]
     },
     {
-      "title": "Users",
+      "title": "Asset Permissions",
       "show_filter": false,
       "widgets": [
         {
-          "title": "AD Users",
+          "title": "Asset",
           "widget_type": "portal_tabular",
-          "reportId": "rda.saas.ad.user.group.members.list.tabular",
+          "reportId": "rda.saas.aia.permissions.tabular",
           "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "e462054a"
+          "widget_id": "f03021c4"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Servers",
+      "title": "RDA Permissions",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Authentication Servers",
+          "title": "RDA",
           "widget_type": "portal_tabular",
-          "reportId": "remote.server.settings",
-          "height": 5,
+          "reportId": "rda.saas.rda.permissions.tabular",
+          "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "afdcd593"
-        },
-        {
-          "title": "SSO Details",
-          "widget_type": "portal_tabular",
-          "reportId": "rda.saas.sso.details.list.tabular",
-          "height": 5,
-          "min_wdith": 12,
-          "paginated": true,
-          "widget_id": "533f4d05"
+          "widget_id": "2d42c959"
         }
       ]
     },
     {
-      "title": "User Groups",
+      "title": "AIOps Permissions",
       "show_filter": false,
       "widgets": [
         {
-          "title": "AD User Groups",
+          "title": "AIOps",
           "widget_type": "portal_tabular",
-          "reportId": "rda.saas.ad.user.group.list.tabular",
+          "reportId": "rda.saas.oia.permissions.tabular",
           "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "af69b0ed"
+          "widget_id": "cc89a6d1"
         }
       ]
     },
     {
-      "title": "Users",
+      "title": "Asset Permissions",
       "show_filter": false,
       "widgets": [
         {
-          "title": "AD Users",
+          "title": "Asset",
           "widget_type": "portal_tabular",
-          "reportId": "rda.saas.ad.user.group.members.list.tabular",
+          "reportId": "rda.saas.aia.permissions.tabular",
           "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "e462054a"
+          "widget_id": "f03021c4"
         }
       ]
     }

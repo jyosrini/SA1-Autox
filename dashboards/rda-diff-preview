@@ -1,47 +1,89 @@
 {
-  "name": "rda-diff-preview",
-  "label": "Git Diff",
-  "description": "Preview dashboard to view the diffs in html",
-  "enabled": false,
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "template_variables": {
-    "FILENAME": {
-      "contextId": "filename"
+  "name": "ai_administration_app",
+  "label": "AI Administration",
+  "description": "Manage AI on RDAF",
+  "version": "25.6.3",
+  "enabled": true,
+  "status_poller": {},
+  "dashboard_type": "app",
+  "dashboard_folder": "AI",
+  "template_variables": {},
+  "custom_context": {
+    "rda-dashboard-live-edit": true
+  },
+  "dashboard_groups": {
+    "personas": {
+      "icon": "team.svg",
+      "label": "AI Personas"
     },
-    "DIFF_HTML": {
-      "contextId": "diff_html"
+    "models": {
+      "icon": "jobs.svg",
+      "label": "AI Models"
+    },
+    "mcp": {
+      "icon": "ml.svg",
+      "label": "MCP"
+    },
+    "agents": {
+      "icon": "bots.svg",
+      "label": "Agents"
     }
   },
-  "dashboard_sections": [
+  "dashboard_pages": [
     {
-      "title": "Diff",
-      "widgets": [
-        {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 3,
-          "label": "<div style='overflow: auto'>{{DIFF_HTML}}</div>",
-          "widget_id": "cc11f713"
-        }
-      ]
-    }
-  ],
-  "pstream_dashboards": [
+      "name": "agentic-ai-analytics",
+      "label": "Manage Agents",
+      "group": "agents"
+    },
     {
-      "title": "Diff",
-      "widgets": [
-        {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 3,
-          "label": "<div style='overflow: auto'>{{DIFF_HTML}}</div>",
-          "widget_id": "cc11f713"
-        }
-      ]
+      "name": "atoaserver-dashboard",
+      "label": "A2A Servers",
+      "group": "agents"
+    },
+    {
+      "name": "discoveragents-dashboard",
+      "label": "Discovered Agents",
+      "group": "agents"
+    },
+    {
+      "name": "ai-admin-page-personas",
+      "label": "Manage Personas",
+      "group": "personas"
+    },
+    {
+      "name": "ai-admin-manage-user-group",
+      "label": "Manage User Group",
+      "group": "personas"
+    },
+    {
+      "name": "ai-llm-page-credentials",
+      "label": "LLMs",
+      "group": "models"
+    },
+    {
+      "name": "ai-guardrails-page-credentials",
+      "label": "Guardrails",
+      "group": "models"
+    },
+    {
+      "name": "ai-placeholder-dashboard",
+      "label": "Managed Domains",
+      "group": "mcp"
+    },
+    {
+      "name": "externalmcp-dashboard",
+      "label": "External",
+      "group": "mcp"
+    },
+    {
+      "name": "mcp_prompt_templates",
+      "label": "Prompt Templates",
+      "group": "mcp"
+    },
+    {
+      "name": "NIM_Benchmarking_duplicate_dashboard",
+      "label": "NIM Benchmarking",
+      "icon": "Analytics.svg"
     }
   ]
 }
