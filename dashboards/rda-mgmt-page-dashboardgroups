@@ -1,24 +1,45 @@
 {
-  "name": "incident-details-logs",
-  "description": "Logs",
-  "label": "Logs",
-  "enabled": true,
-  "dashboard_type": "service-dashboard",
-  "dashboard_folder": "Default",
-  "api-endpoint": {
-    "service-name": "cfxdimensions-app-irm_service",
-    "namespace": "io.cfx.dimensions.app",
-    "version": "*",
-    "methodName": "invokeAppApi:getIncidentLogsDashboard",
-    "useReportContext": true,
-    "stringified-params": true,
-    "parse-output": true,
-    "params": [
-      {
-        "logs_regression_stream": "oia-logs-regression-output",
-        "logs_stream": "syslog_udp_event_stream_all"
-      }
-    ]
+  "name": "rda-mgmt-page-dashboardgroups",
+  "label": "Dashboards",
+  "description": " User Dashboard Management Page",
+  "enabled": false,
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
+  "dashboard_filters": {
+    "time_filter": false
   },
-  "dashboard_sections": []
+  "dashboard_sections": [
+    {
+      "title": "Dashboard Groups",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Dashboard Groups",
+          "widget_type": "portal_tabular",
+          "reportId": "dashboard.groups.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "c821f1a3"
+        }
+      ]
+    }
+  ],
+  "pstream_dashboards": [
+    {
+      "title": "Dashboard Groups",
+      "show_filter": false,
+      "widgets": [
+        {
+          "title": "Dashboard Groups",
+          "widget_type": "portal_tabular",
+          "reportId": "dashboard.groups.list.tabular",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
+          "widget_id": "c821f1a3"
+        }
+      ]
+    }
+  ]
 }

@@ -1,1481 +1,377 @@
-{
-  "name": "edc-customer-snap-storyboard-saummond",
-  "label": "ASP Inventory per Project",
-  "description": "Inv with customer data",
-  "version": "2025-05-28-1",
-  "stream": "edc_customer_inventory",
-  "enabled": false,
-  "dashboard_folder": "OI",
-  "dashboard_style": "auto",
-  "live_edit": true,
-  "dashboard_type": "dashboard",
-  "use_storyboard": true,
-  "dashboard_pages": [],
-  "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 2 weeks"
-    ],
-    "custom_time_filters": [
-      "24h",
-      "2d",
-      "3d",
-      "1w",
-      "2w",
-      "3w",
-      "1M",
-      "2M",
-      "3M",
-      "6M",
-      "12M"
-    ],
-    "columns_filter": [
-      {
-        "id": "hwEOL_endOfNewServiceAttachmentDate",
-        "label": "HW End Of New Svc Attachment Dt",
-        "type": "DATETIME"
-      },
-      {
-        "id": "hwEOL_endOfServiceContractRenewalDate",
-        "label": "HW End Of Svc Contract Rnwl Dt",
-        "type": "DATETIME"
-      },
-      {
-        "id": "hwEOL_endOfLifeAnnouncementDate",
-        "label": "HW Eol External Announce Dt",
-        "type": "DATETIME"
-      },
-      {
-        "id": "hwEOL_endOfSaleDate",
-        "label": "HW Last Date Of Sale",
-        "type": "DATETIME"
-      },
-      {
-        "id": "hwEOL_lastDayOfSupportDate",
-        "label": "HW Last Date Of Support",
-        "type": "DATETIME"
-      },
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      },
-      {
-        "id": "portfolio_desc",
-        "label": "Portfolio",
-        "type": "TEXT"
-      },
-      {
-        "id": "contract_number",
-        "label": "Contract Number",
-        "type": "TEXT"
-      },
-      {
-        "id": "coverage",
-        "label": "Coverage",
-        "type": "TEXT"
-      },
-      {
-        "id": "covered_line_status",
-        "label": "Covered Line Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "hwEOL_endOfRoutineFailureAnalysisDate",
-        "label": "HW End Of Routine Fail Anlysys Dt",
-        "type": "TEXT"
-      },
-      {
-        "id": "hwEOL_endOfSoftwareMaintenanceReleasesDate",
-        "label": "HW End Of Software Maintenance Dt",
-        "type": "TEXT"
-      },
-      {
-        "id": "eol_product_name",
-        "label": "Eol Product Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "gu_name",
-        "label": "GU Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "hw_expiring_qtr",
-        "label": "Hw Expiring Qtr",
-        "type": "TEXT"
-      },
-      {
-        "id": "hw_expiring_year",
-        "label": "Hw Expiring Year",
-        "type": "TEXT"
-      },
-      {
-        "id": "hw_status",
-        "label": "Hw Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "item_type",
-        "label": "Equipment Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "product_description",
-        "label": "Product Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "product_family",
-        "label": "Product Family",
-        "type": "TEXT"
-      },
-      {
-        "id": "product_family_description",
-        "label": "Product Family Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "product_name",
-        "label": "Product Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "product_type",
-        "label": "Product Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "sw_version",
-        "label": "SW Version",
-        "type": "TEXT"
-      },
-      {
-        "id": "serial_number",
-        "label": "SERIAL NUMBER",
-        "type": "TEXT"
-      },
-      {
-        "id": "sw_os_type",
-        "label": "OS Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "match_inv",
-        "label": "Overlay",
-        "type": "TEXT"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Project Name",
-        "group_by": [
-          "project_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Contract",
-        "group_by": [
-          "contract_number"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 1000,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Portfolio",
-        "group_by": [
-          "portfolio_desc"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 1000,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Product Name",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "product_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 800,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Product Family",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "product_family"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 800,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Product Description",
-        "extra_filter1": "source in 'inventory'",
-        "show_counts": false,
-        "group_by": [
-          "product_description"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 800,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Equipment Type",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "item_type"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Product Type",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "product_type"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Coverage",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "coverage"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Coverage Status",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "covered_line_status"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "HW Status",
-        "group_by": [
-          "hw_status"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "SW Status",
-        "group_by": [
-          "sw_status"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "SW Version",
-        "group_by": [
-          "sw_version"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Business Sub-Entity",
-        "group_by": [
-          "business_sub_entity"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "OS Type",
-        "group_by": [
-          "sw_os_type"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 10,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Overlay",
-        "group_by": [
-          "match_inv"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 10,
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      }
-    ]
-  },
-  "dashboard_sections": [
-    {
-      "title": "Assets",
-      "show_filter": true,
-      "widgets": [
-        {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 1,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0B182B;' target='_blank'> Assets Inventory - Project Based</a></h1></div>",
-          "label1": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#B22222;' target='_blank'> Data is on the way. Work in progress! </a></h1></div>",
-          "label2": "<div style='text-align:center;width:100%;'><h1>{% if latest_end_time %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Assets Inventory</a></h1></div>\"}}{% else %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0B182B;' target='_blank'>Data is on the way. Work in progress!</a></h1></div>\"}}{% endif %}</h1></div>",
-          "segments": [
-            {
-              "stream": "edc_customer_inventory",
-              "variable": "latest_end_time",
-              "ts_column": "timestamp",
-              "duration_hours": 1080,
-              "agg": "cardinality",
-              "group_by": "customer_name",
-              "column": "timestamp"
-            }
-          ],
-          "widget_id": "18bbda1c"
-        },
-        {
-          "title": "Network vs IB Data",
-          "widget_type": "pie_chart",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "formatting": {
-            "notation": "compact",
-            "signDisplay": "always"
-          },
-          "group_by": [
-            "match_inv"
-          ],
-          "style": {
-            "color-map": {
-              "IB Only": [
-                "#2A5FF6"
-              ]
-            }
-          },
-          "column": "count_",
-          "agg": "sum",
-          "widget_id": "e8ad597a"
-        },
-        {
-          "title": "By Family",
-          "widget_type": "pie_chart",
-          "stream": "edc_customer_inventory",
-          "extra_filter": null,
-          "column": "count_",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "agg": "sum",
-          "group_by": [
-            "product_family"
-          ],
-          "style": {
-            "color-map": {
-              "Others": "#2A5FF6"
-            },
-            "formatting": {
-              "notation": "compact"
-            },
-            "type": "str",
-            "min_width": 3,
-            "height": 4,
-            "max_width": 3
-          },
-          "widget_id": "edfd3dc0"
-        },
-        {
-          "title": "Assets by Coverage Status",
-          "widget_type": "multi_bar_chart",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "extra_filter1": "source in 'inventory'",
-          "min_width": 3.5,
-          "height": 4,
-          "max_width": 3.5,
-          "limit": 10,
-          "chartProperties": {
-            "xAxisLabel": "Count",
-            "stacked": false,
-            "legendLocation": "bottom",
-            "orientation": "horizontal"
-          },
-          "formatting": {
-            "notation": "compact"
-          },
-          "groups_meta": {
-            "type": "custom",
-            "order": [
-              "ACTIVE",
-              "OVERDUE",
-              "SIGNED",
-              "EXPIRED",
-              "TERMINATED",
-              "Not Available"
-            ]
-          },
-          "style": {
-            "color-map": {
-              "EXPIRED": "#BB0000",
-              "OVERDUE": "#F6C309",
-              "SIGNED": "#b700ff",
-              "Not Available": "#808080",
-              "TERMINATED": "#753e07",
-              "ACTIVE": "#00BB00"
-            }
-          },
-          "group_by": [
-            "covered_line_status",
-            "coverage"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "widget_id": "0dc9"
-        },
-        {
-          "widget_type": "label",
-          "min_width": 2.5,
-          "height": 3,
-          "max_width": 2.5,
-          "sorting": [
-            {
-              "last_updated_time": "asc"
-            }
-          ],
-          "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<center><h4 style='color:#ADADAD; font-size:24px ;'>Last Collected at {{prime_latest_data.get(\"latest\")}} (UTC)</h4></center>",
-          "label0": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center><br><div><a style='text-decoration:none;color:#ADADAD;' target='_blank'><i><b>***</b> Current data showcases assets shipped from 2017 onwards. Data from before 2017 will be available soon</i></a></div>",
-          "segments": [
-            {
-              "stream": "edc_customer_inventory",
-              "variable": "latest_end_time",
-              "ts_column": "timestamp",
-              "extra_filter1": "portfolio_desc is not null",
-              "duration_hours": 1080,
-              "agg": "cardinality",
-              "group_by": "last_updated_time",
-              "column": "gu_name"
-            }
-          ],
-          "widget_id": "ebecd631"
-        },
-        {
-          "title": "Product Family OS Versions",
-          "widget_type": "multi_bar_chart",
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "min_width": 12,
-          "height": 4,
-          "max_width": 12,
-          "group_by": [
-            "sw_version",
-            "product_family"
-          ],
-          "formatting": {
-            "notation": "compact"
-          },
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": "Product Family",
-            "stacked": true,
-            "legendLocation": "right",
-            "orientation": "vertical",
-            "barThickness": 100
-          },
-          "style": {
-            "color-map": {
-              "Not Available": "#808080",
-              "Others": "#2A5FF6"
-            }
-          },
-          "limit": 15,
-          "column": "count_",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "7d1c4f04"
-        },
-        {
-          "title": "By HW EoX(Last day of Support)",
-          "widget_type": "pie_chart",
-          "description": "Breakdown by HW Last Day of Support",
-          "duration_hours": 1080,
-          "formatting": {
-            "notation": "compact"
-          },
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "extra_filter1": "source in 'inventory'",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "top_n1": 2,
-          "group_by": [
-            "hw_status"
-          ],
-          "style": {
-            "color-map": {
-              "Expired": "#BB0000",
-              "Expiring in a Quarter": "#F6C309",
-              "Expiring in 4 Quarters": "#FF9800",
-              "Expiring in 8 Quarters": "#1ECBE1",
-              "Expiring after 8 Quarters": "#009688",
-              "No EOL": "#2A5FF6",
-              "Not Available": "#8c8c8c"
-            }
-          },
-          "groups_meta": {
-            "type": "custom",
-            "order": [
-              "Expired",
-              "Expiring in a Quarter",
-              "Expiring in 4 Quarters",
-              "Expiring in 8 Quarters",
-              "Expiring after 8 Quarters"
-            ]
-          },
-          "column": "count_",
-          "agg": "value_count",
-          "widget_id": "86505f9d"
-        },
-        {
-          "title": "By SW EOL",
-          "widget_type": "pie_chart",
-          "description": "Breakdown by SW Last Day of Support",
-          "duration_hours": 1080,
-          "formatting": {
-            "notation": "compact"
-          },
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "extra_filter1": "source in 'inventory'",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "top_n1": 2,
-          "group_by": [
-            "sw_status"
-          ],
-          "style": {
-            "color-map": {
-              "Expired": "#BB0000",
-              "Expiring in a Quarter": "#F6C309",
-              "Expiring in 4 Quarters": "#FF9800",
-              "Expiring in 8 Quarters": "#1ECBE1",
-              "Expiring after 8 Quarters": "#009688",
-              "No EOL": "#00BB00",
-              "Not Available": "#2A5FF6"
-            }
-          },
-          "groups_meta": {
-            "type": "custom",
-            "order": [
-              "Expired",
-              "Expiring in a Quarter",
-              "Expiring in 4 Quarters",
-              "Expiring in 8 Quarters",
-              "Expiring after 8 Quarters"
-            ]
-          },
-          "column": "count_",
-          "agg": "sum",
-          "widget_id": "5e16f543"
-        },
-        {
-          "widget_type": "bar_chart",
-          "title": "HW Expiry by QTR and Year",
-          "duration_hours": 1080,
-          "stream": "edc_oi_inventory_enriched",
-          "extra_filter": "hw_expiring_qtr  is not null and hw_expiring_qtr  does not contain '199' and  hw_expiring_qtr  does not contain '200' and hw_expiring_qtr  does not contain '201' and hw_expiring_qtr  does not contain '2020' and hw_expiring_qtr  does not contain '2021'  and hw_expiring_qtr  does not contain '2022' and hw_expiring_qtr  does not contain '2023' and hw_expiring_qtr  does not contain '2024'",
-          "description": "HW expiration on earlier date, has been ommited of graph",
-          "ts_column": "timestamp",
-          "min_width": 6,
-          "height": 6,
-          "max_width": 6,
-          "group_by": [
-            "hw_expiring_qtr"
-          ],
-          "column": "combination_count",
-          "agg": "sum",
-          "others_spec": {
-            "limit": 14,
-            "label": "After",
-            "show_others": false,
-            "hw_expiring_qtr": {
-              "largest": false,
-              "name_based_limit": true
-            }
-          },
-          "style": {
-            "color-map": {
-              "Expired": "#BB0000",
-              "Expiring in a Quarter": "#F6C309",
-              "Expiring in 4 Quarters": "#FF9800",
-              "Expiring in 8 Quarters": "#1ECBE1",
-              "Expiring after 8 Quarters": "#009688",
-              "No EOL": "#00BB00",
-              "After": "#2A5FF6"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "9f150b67"
-        },
-        {
-          "widget_type": "bar_chart",
-          "title": "SW Expiry by QTR and Year",
-          "duration_hours": 1080,
-          "stream": "edc_sweol_data",
-          "extra_filter": "sw_expiring_qtr is not null and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024'",
-          "ts_column": "timestamp",
-          "min_width": 6,
-          "height": 6,
-          "max_width": 6,
-          "group_by": [
-            "sw_expiring_qtr"
-          ],
-          "column": "combination_count",
-          "agg": "sum",
-          "style": {
-            "color-map": {
-              "Expired": "#BB0000",
-              "Expiring in a Quarter": "#F6C309",
-              "Expiring in 4 Quarters": "#FF9800",
-              "Expiring in 8 Quarters": "#1ECBE1",
-              "Expiring after 8 Quarters": "#009688",
-              "No EOL": "#00BB00",
-              "2026 Q3": "#0A60FF"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "eefc044c"
-        },
-        {
-          "title": "Product List Count per BE",
-          "widget_type": "pie_chart",
-          "duration_hours": 1080,
-          "stream": "edc_oi_inventory_enriched",
-          "ts_column": "timestamp",
-          "extra_filter1": "source in 'inventory'",
-          "min_width": 12,
-          "height": 4,
-          "max_width": 12,
-          "limit": 15,
-          "group_by": [
-            "business_entity"
-          ],
-          "style": {
-            "color-map": {
-              "Enterprise Routing": "#2A5FF6",
-              "Enterprise swithching": "#FF007F",
-              "Internet Infrastructure": "#FF9000"
-            }
-          },
-          "column": "count_",
-          "agg": "value_count",
-          "widget_id": "55e4bcd6"
-        },
-        {
-          "title": "Asset Details",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "preview_dashboard": "oi-inventory-template",
-          "preview_width": 600,
-          "preview_height": 600,
-          "sorting": [
-            {
-              "count_": "desc"
-            }
-          ],
-          "remote_searchable": true,
-          "extra_filter": null,
-          "columns": {
-            "customer_name": {
-              "title": "Customer Name",
-              "type": "TEXT",
-              "visible": false
-            },
-            "product_name": {
-              "title": "Product ID",
-              "type": "TEXT",
-              "key": true
-            },
-            "serial_number": "Serial Number",
-            "match_inv": {
-              "title": "Source",
-              "type": "TEXT",
-              "visible": false
-            },
-            "sw_os_type": "OS Type",
-            "sw_version": "SW Version",
-            "product_family": "Product Family",
-            "product_description": {
-              "title": "Product Description",
-              "type": "TEXT",
-              "visible": false
-            },
-            "product_family_description": {
-              "title": "Product Family Description",
-              "type": "TEXT",
-              "visible": false
-            },
-            "item_type": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "product_type": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "contract_number": {
-              "title": "Contract Number",
-              "type": "FLOAT",
-              "visible": true,
-              "key": true
-            },
-            "portfolio_desc": {
-              "title": "Portfolio",
-              "type": "TEXT",
-              "visible": false
-            },
-            "usage_code": {
-              "title": "Usage Code",
-              "type": "TEXT",
-              "visible": false
-            },
-            "coverage": {
-              "title": "Coverage",
-              "type": "TEXT",
-              "visible": true,
-              "key": true
-            },
-            "covered_line_status": {
-              "title": "Covered Line Status",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "gu_name": {
-              "title": "GU Name",
-              "type": "TEXT",
-              "visible": false
-            },
-            "business_entity": {
-              "title": "Business Entity",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "business_sub_entity": {
-              "title": "Business Sub Entity",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "product_list_price": {
-              "title": "Product List Price",
-              "type": "DOUBLE",
-              "uiProperties": {
-                "formatting": {
-                  "locale": "en-US",
-                  "style": "currency",
-                  "currency": "USD",
-                  "minimumFractionDigits": 2
-                }
-              },
-              "visible": false,
-              "key": true
-            },
-            "hw_status_color": {
-              "type": "COLOR-MAP",
-              "source-column": "hw_status",
-              "color-map": {
-                "Expired": "#BB0000",
-                "Expiring in a Quarter": "#F6C309",
-                "Expiring in 4 Quarters": "#FF9800",
-                "Expiring in 8 Quarters": "#1ECBE1",
-                "Expiring after 8 Quarters": "#009688",
-                "No EOL": "#00BB00"
-              }
-            },
-            "hw_status": {
-              "title": "HW Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.hw_status_color }}' > {{ row.hw_status }} </span>"
-            },
-            "sw_status_color": {
-              "type": "COLOR-MAP",
-              "source-column": "sw_status",
-              "color-map": {
-                "Expired": "#BB0000",
-                "Expiring in a Quarter": "#F6C309",
-                "Expiring in 4 Quarters": "#FF9800",
-                "Expiring in 8 Quarters": "#1ECBE1",
-                "Expiring after 8 Quarters": "#009688",
-                "No EOL": "#00BB00"
-              }
-            },
-            "sw_status": {
-              "title": "SW Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>",
-              "visible": true
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "visible": false
-            }
-          },
-          "widget_id": "f5221fe7"
-        }
-      ],
-      "saved_time": "2025-05-09T06:51:12.699107"
-    }
-  ],
-  "default_storyboard": "Main Storyboard",
-  "storyboards": [
-    {
-      "name": "Main Storyboard",
-      "value": "{\n    \"stage\": {\n        \"size\": {\n            \"width\": 1920,\n            \"height\": 2540\n        },\n        \"background\": {\n            \"fill\": null,\n            \"src\": \"/iconpub/storyboard\",\n            \"gradient\": null\n        },\n        \"theme\": \"dark\",\n        \"autoFitByDefault\": true\n    },\n    \"widgets\": [\n        {\n            \"widget_id\": \"7d1c4f04\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 911.29,\n                \"height\": 272.58,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-36\",\n                \"draggable\": true,\n                \"x\": 937.38,\n                \"y\": 250.72,\n                \"id\": \"cfx-d63154e9-cf49-4bdb-8017-b33fb160213d\"\n            }\n        },\n        {\n            \"widget_id\": \"edfd3dc0\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 395.61,\n                \"height\": 273.27,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-37\",\n                \"draggable\": true,\n                \"x\": 506.52,\n                \"y\": 252.54000000000002,\n                \"id\": \"cfx-c920f5cf-b87e-4e6f-8f37-fb87aabcd823\"\n            }\n        },\n        {\n            \"widget_id\": \"e8ad597a\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 409.35,\n                \"height\": 299.1,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-38\",\n                \"draggable\": true,\n                \"x\": 92.41893780710586,\n                \"y\": 241.45443768010733,\n                \"id\": \"cfx-28d456dd-9140-46e3-f175-03c4843796dd\"\n            }\n        },\n        {\n            \"widget_id\": \"0dc9\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 1245.06,\n                \"height\": 264.43,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-39\",\n                \"draggable\": true,\n                \"x\": 559.33,\n                \"y\": 1654.06,\n                \"id\": \"cfx-179f7a28-719a-46ef-cd29-dc666f2ce59c\"\n            }\n        },\n        {\n            \"widget_id\": \"ebecd631\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 507,\n                \"height\": 33,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#FFFFFF00\",\n                \"opacity\": 1,\n                \"name\": \"widget-40\",\n                \"draggable\": true,\n                \"x\": 1347,\n                \"y\": 15,\n                \"id\": \"cfx-6918d39d-4704-4afa-d296-5b2d56c5decb\"\n            }\n        },\n        {\n            \"widget_id\": \"86505f9d\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 618.75,\n                \"height\": 285.82,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-41\",\n                \"draggable\": true,\n                \"x\": 88.59047549386314,\n                \"y\": 750.5931678997682,\n                \"id\": \"cfx-89e16dd0-7e2b-4684-971e-e26a0261abc3\"\n            }\n        },\n        {\n            \"widget_id\": \"5e16f543\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 458.69,\n                \"height\": 318.58,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-42\",\n                \"draggable\": true,\n                \"x\": 148.14455897299663,\n                \"y\": 1097.9166442965723,\n                \"id\": \"cfx-845dcdc5-51d7-4e75-89e5-5a94af5e95ac\"\n            }\n        },\n        {\n            \"widget_id\": \"9f150b67\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 1023.76,\n                \"height\": 282.17,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-43\",\n                \"draggable\": true,\n                \"x\": 779.97,\n                \"y\": 751.05,\n                \"id\": \"cfx-e3a02fec-ae50-47c4-f7a4-bc4380a71244\"\n            }\n        },\n        {\n            \"widget_id\": \"eefc044c\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 1025.89,\n                \"height\": 276.78,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-44\",\n                \"draggable\": true,\n                \"x\": 804.88,\n                \"y\": 1129.44,\n                \"id\": \"cfx-d9baf968-58fe-42df-a442-79fc1e943779\"\n            }\n        },\n        {\n            \"widget_id\": \"55e4bcd6\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 395.42,\n                \"height\": 293.02,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#282f3900\",\n                \"opacity\": 1,\n                \"name\": \"widget-45\",\n                \"draggable\": true,\n                \"x\": 113.42904901227381,\n                \"y\": 1658.9672756116013,\n                \"id\": \"cfx-70a41042-9d47-4186-bb6c-2a9c16ed9799\"\n            }\n        },\n        {\n            \"widget_id\": \"f5221fe7\",\n            \"layoutConfig\": {\n                \"rotation\": 0,\n                \"width\": 1704.4,\n                \"height\": 471.16,\n                \"scaleX\": 1,\n                \"scaleY\": 1,\n                \"fill\": \"#FFFFFF00\",\n                \"opacity\": 1,\n                \"name\": \"widget-46\",\n                \"draggable\": true,\n                \"x\": 98.47,\n                \"y\": 1995.07,\n                \"id\": \"cfx-99984fbd-855e-4deb-bad5-2c5b347b036a\"\n            }\n        }\n    ],\n    \"shapes\": [\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1920,\n            \"height\": 60,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#FFFFFF\",\n            \"name\": \"shape-0\",\n            \"draggable\": true,\n            \"x\": 1,\n            \"y\": 5,\n            \"id\": \"cfx-75a76022-c96d-4aed-9e9f-2667f235c173\",\n            \"fillPriority\": \"color\",\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1801,\n            \"height\": 474,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#FFFFFF00\",\n            \"name\": \"shape-1\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 57,\n            \"y\": 99,\n            \"id\": \"cfx-c39e64cb-2bc1-4cf9-d514-2ccdcb6921e3\",\n            \"stroke\": \"#2B4E12\",\n            \"strokeWidth\": 1,\n            \"fillPriority\": \"color\",\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1800,\n            \"height\": 1038.75,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#FFFFFF00\",\n            \"name\": \"shape-2\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 53.45,\n            \"y\": 1480.59,\n            \"id\": \"cfx-c39e64cb-2bc1-4cf9-d514-2ccdcb6921e3\",\n            \"stroke\": \"#2B4E12\",\n            \"strokeWidth\": 1,\n            \"fillPriority\": \"color\",\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 922,\n            \"height\": 339,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-3\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 906,\n            \"y\": 706,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1800,\n            \"height\": 831.32,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#FFFFFF00\",\n            \"name\": \"shape-4\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 54,\n            \"y\": 608,\n            \"id\": \"cfx-c39e64cb-2bc1-4cf9-d514-2ccdcb6921e3\",\n            \"stroke\": \"#2B4E12\",\n            \"strokeWidth\": 1,\n            \"fillPriority\": \"color\",\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"width\": 135.48,\n            \"height\": 99.55,\n            \"draggable\": true,\n            \"compType\": \"vImage\",\n            \"name\": \"image-6\",\n            \"x\": 8,\n            \"y\": -17,\n            \"src\": \"/iconlib/cisco-icon\",\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0,\n            \"image\": {}\n        },\n        {\n            \"fill\": \"#0B182B\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-7\",\n            \"text\": \"Assets Inventory - Project Based\",\n            \"align\": \"left\",\n            \"fontSize\": 32,\n            \"fontFamily\": \"Roboto\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": -745.3937654194817,\n            \"y\": 1316.802258293361,\n            \"id\": \"cfx-30d49647-7356-4418-b500-429fd911cdec\",\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"fill\": \"#0B182B\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-8\",\n            \"text\": \"Assets Inventory - Project Based\",\n            \"align\": \"left\",\n            \"fontSize\": 34,\n            \"fontFamily\": \"Roboto\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 98,\n            \"y\": 116,\n            \"id\": \"cfx-df04a6cf-b317-42c9-d0b6-58f2a71cbbc9\",\n            \"width\": 310,\n            \"height\": 46\n        },\n        {\n            \"fill\": \"#0B182B\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-9\",\n            \"text\": \"Assets Inventory - Project Based\",\n            \"align\": \"left\",\n            \"fontSize\": 35,\n            \"fontFamily\": \"Roboto\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 201.97299271641054,\n            \"y\": 20.861351379259705,\n            \"id\": \"cfx-141f5e1e-e6ca-47e5-8dc6-9a0c969b9ede\",\n            \"width\": 724.4,\n            \"height\": 40,\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1760,\n            \"height\": 50,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#FFFFFF\",\n            \"name\": \"shape-10\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 74,\n            \"y\": 108,\n            \"id\": \"cfx-26a0a44a-8abb-447f-8852-3f686b9702d7\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 0\n        },\n        {\n            \"fill\": \"#0B182B\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-11\",\n            \"text\": \"Inventory Overview\",\n            \"align\": \"left\",\n            \"fontSize\": 30,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 98,\n            \"y\": 116,\n            \"id\": \"cfx-996c4080-5365-4a2f-ebdd-3e395a94a629\",\n            \"width\": 310,\n            \"height\": 46\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 410,\n            \"height\": 340,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-12\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 75,\n            \"y\": 194,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 409.29,\n            \"height\": 340,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-13\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 506.71,\n            \"y\": 194,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 901,\n            \"height\": 337.92,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-14\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 938.39,\n            \"y\": 195.64,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0,\n            \"gradientRotation\": 90,\n            \"fillLinearGradientColorStops\": [\n                0,\n                \"#000000\",\n                1,\n                \"#cccccc\"\n            ],\n            \"fillLinearGradientStartPointX\": 0,\n            \"fillLinearGradientStartPointY\": 169.99999999999997,\n            \"fillLinearGradientEndPointX\": 898,\n            \"fillLinearGradientEndPointY\": 170.00000000000003\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1760,\n            \"height\": 50,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#FFFFFF\",\n            \"name\": \"shape-15\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 74,\n            \"y\": 623,\n            \"id\": \"cfx-26a0a44a-8abb-447f-8852-3f686b9702d7\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 0,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"fill\": \"#0B182B\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-16\",\n            \"text\": \"EOX Overview\",\n            \"align\": \"left\",\n            \"fontSize\": 30,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 98,\n            \"y\": 635,\n            \"id\": \"cfx-996c4080-5365-4a2f-ebdd-3e395a94a629\",\n            \"width\": 224,\n            \"height\": 46,\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 657.56,\n            \"height\": 340,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-17\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 76.29,\n            \"y\": 705,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 435.13,\n            \"height\": 340,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-18\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 79.46,\n            \"y\": 1599.44,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1760,\n            \"height\": 50,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#FFFFFF\",\n            \"name\": \"shape-19\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 70.02309260678587,\n            \"y\": 1507.2942834049923,\n            \"id\": \"cfx-26a0a44a-8abb-447f-8852-3f686b9702d7\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 0,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1070.5,\n            \"height\": 340,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-20\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 759.74,\n            \"y\": 705.47,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"fill\": \"#0B182B\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-21\",\n            \"text\": \"Assets Inventory\",\n            \"align\": \"left\",\n            \"fontSize\": 30,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 79.17914552494902,\n            \"y\": 1517.5832498409138,\n            \"id\": \"cfx-996c4080-5365-4a2f-ebdd-3e395a94a629\",\n            \"width\": 268,\n            \"height\": 46,\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 657.56,\n            \"height\": 340,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-22\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 77.2,\n            \"y\": 1070.36,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1070.5,\n            \"height\": 332.78,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-23\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 761.13,\n            \"y\": 1073.18,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1284.12,\n            \"height\": 335.19,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-24\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 542.78,\n            \"y\": 1603.36,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vRect\",\n            \"rotation\": 0,\n            \"width\": 1748.76,\n            \"height\": 516.94,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"fill\": \"#0B182A\",\n            \"name\": \"shape-25\",\n            \"cornerRadius\": 10,\n            \"draggable\": true,\n            \"x\": 76.54,\n            \"y\": 1972.27,\n            \"id\": \"cfx-647bddc3-6ecd-4e60-83db-d909f8f6cdfd\",\n            \"stroke\": \"#2B4E12\",\n            \"fillPriority\": \"color\",\n            \"strokeWidth\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"compType\": \"vLine\",\n            \"rotation\": 0,\n            \"x\": 169,\n            \"y\": 10.5,\n            \"points\": [\n                0,\n                0,\n                0,\n                49\n            ],\n            \"width\": 100,\n            \"height\": 100,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"strokeWidth\": 1,\n            \"stroke\": \"#707070\",\n            \"name\": \"shape-26\",\n            \"draggable\": true,\n            \"id\": \"cfx-3eb2ffc7-32c1-43b8-bffd-1ce1e3c74e1f\"\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-27\",\n            \"text\": \"Network vs IB data\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 98.76054969107555,\n            \"y\": 205.6521225090508,\n            \"id\": \"cfx-874e5652-4a58-42b6-e2d3-36310848f2ce\",\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-28\",\n            \"text\": \"By Family\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 532.6370425290204,\n            \"y\": 206.2198944213478,\n            \"id\": \"cfx-af12cf6e-fd0e-4db6-f6ce-d5062dd54c1e\"\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-29\",\n            \"text\": \"Product Family OS Version\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 962.526863824007,\n            \"y\": 209.65212250905068,\n            \"id\": \"cfx-b33cef26-3daa-44e8-e9e4-f8d73f524540\"\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-30\",\n            \"text\": \"By HW EoX (Last day of Support)\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 95.88627024630753,\n            \"y\": 719.1353749257607,\n            \"id\": \"cfx-36018d36-1ccd-4970-9054-c86a3ce55a4f\"\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-31\",\n            \"text\": \"By SW EOL\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 96.77742919679645,\n            \"y\": 1084.3189078191376,\n            \"id\": \"cfx-cfe564bd-812e-454d-a9cd-27c0c46c655d\"\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-32\",\n            \"text\": \"Assets by Coverage Status\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 558.6672504917831,\n            \"y\": 1616.165328135616,\n            \"id\": \"cfx-fea19f59-1c60-46ef-acf6-f8a0be92782e\"\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-33\",\n            \"text\": \"SW Expiry by QTR and Year\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 775.7192266644479,\n            \"y\": 1089.087271749282,\n            \"id\": \"cfx-cd808a68-355a-4462-b4ea-91fef3307d60\",\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-34\",\n            \"text\": \"HW Expiry by QTR and Year\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 779.3105193804871,\n            \"y\": 720.4212942748188,\n            \"id\": \"cfx-d7ff6048-b83c-483a-fe5c-42a4b718af9c\",\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        },\n        {\n            \"fill\": \"#FFFFFF\",\n            \"compType\": \"vText\",\n            \"name\": \"shape-35\",\n            \"text\": \"Product List Count Per BE\",\n            \"align\": \"left\",\n            \"fontSize\": 25,\n            \"fontFamily\": \"Arial\",\n            \"fontStyle\": \"normal\",\n            \"textDecoration\": [],\n            \"draggable\": true,\n            \"x\": 95.16925697503649,\n            \"y\": 1615.1382960782894,\n            \"id\": \"cfx-460c7317-f9ff-4894-f878-8355ba3de968\",\n            \"rotation\": 0,\n            \"scaleX\": 1,\n            \"scaleY\": 1,\n            \"offsetX\": 0,\n            \"offsetY\": 0,\n            \"skewX\": 0,\n            \"skewY\": 0\n        }\n    ],\n    \"lines\": [],\n    \"sbBookmarkList\": []\n}"
-    }
-  ],
-  "pstream_dashboards": [
-    {
-      "title": "Assets",
-      "show_filter": true,
-      "widgets": [
-        {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 1,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0B182B;' target='_blank'> Assets Inventory - Project Based</a></h1></div>",
-          "label1": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#B22222;' target='_blank'> Data is on the way. Work in progress! </a></h1></div>",
-          "label2": "<div style='text-align:center;width:100%;'><h1>{% if latest_end_time %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Assets Inventory</a></h1></div>\"}}{% else %}{{\"<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0B182B;' target='_blank'>Data is on the way. Work in progress!</a></h1></div>\"}}{% endif %}</h1></div>",
-          "segments": [
-            {
-              "stream": "edc_customer_inventory",
-              "variable": "latest_end_time",
-              "ts_column": "timestamp",
-              "duration_hours": 1080,
-              "agg": "cardinality",
-              "group_by": "customer_name",
-              "column": "timestamp"
-            }
-          ],
-          "widget_id": "18bbda1c"
-        },
-        {
-          "title": "Network vs IB Data",
-          "widget_type": "pie_chart",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "formatting": {
-            "notation": "compact",
-            "signDisplay": "always"
-          },
-          "group_by": [
-            "match_inv"
-          ],
-          "style": {
-            "color-map": {
-              "IB Only": [
-                "#2A5FF6"
-              ]
-            }
-          },
-          "column": "count_",
-          "agg": "sum",
-          "widget_id": "e8ad597a"
-        },
-        {
-          "title": "By Family",
-          "widget_type": "pie_chart",
-          "stream": "edc_customer_inventory",
-          "extra_filter": null,
-          "column": "count_",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "agg": "sum",
-          "group_by": [
-            "product_family"
-          ],
-          "style": {
-            "color-map": {
-              "Others": "#2A5FF6"
-            },
-            "formatting": {
-              "notation": "compact"
-            },
-            "type": "str",
-            "min_width": 3,
-            "height": 4,
-            "max_width": 3
-          },
-          "widget_id": "edfd3dc0"
-        },
-        {
-          "title": "Assets by Coverage Status",
-          "widget_type": "multi_bar_chart",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "extra_filter1": "source in 'inventory'",
-          "min_width": 3.5,
-          "height": 4,
-          "max_width": 3.5,
-          "limit": 10,
-          "chartProperties": {
-            "xAxisLabel": "Count",
-            "stacked": false,
-            "legendLocation": "bottom",
-            "orientation": "horizontal"
-          },
-          "formatting": {
-            "notation": "compact"
-          },
-          "groups_meta": {
-            "type": "custom",
-            "order": [
-              "ACTIVE",
-              "OVERDUE",
-              "SIGNED",
-              "EXPIRED",
-              "TERMINATED",
-              "Not Available"
-            ]
-          },
-          "style": {
-            "color-map": {
-              "EXPIRED": "#BB0000",
-              "OVERDUE": "#F6C309",
-              "SIGNED": "#b700ff",
-              "Not Available": "#808080",
-              "TERMINATED": "#753e07",
-              "ACTIVE": "#00BB00"
-            }
-          },
-          "group_by": [
-            "covered_line_status",
-            "coverage"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "widget_id": "0dc9"
-        },
-        {
-          "widget_type": "label",
-          "min_width": 2.5,
-          "height": 3,
-          "max_width": 2.5,
-          "sorting": [
-            {
-              "last_updated_time": "asc"
-            }
-          ],
-          "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<center><h4 style='color:#ADADAD; font-size:24px ;'>Last Collected at {{prime_latest_data.get(\"latest\")}} (UTC)</h4></center>",
-          "label0": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center><br><div><a style='text-decoration:none;color:#ADADAD;' target='_blank'><i><b>***</b> Current data showcases assets shipped from 2017 onwards. Data from before 2017 will be available soon</i></a></div>",
-          "segments": [
-            {
-              "stream": "edc_customer_inventory",
-              "variable": "latest_end_time",
-              "ts_column": "timestamp",
-              "extra_filter1": "portfolio_desc is not null",
-              "duration_hours": 1080,
-              "agg": "cardinality",
-              "group_by": "last_updated_time",
-              "column": "gu_name"
-            }
-          ],
-          "widget_id": "ebecd631"
-        },
-        {
-          "title": "Product Family OS Versions",
-          "widget_type": "multi_bar_chart",
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "min_width": 12,
-          "height": 4,
-          "max_width": 12,
-          "group_by": [
-            "sw_version",
-            "product_family"
-          ],
-          "formatting": {
-            "notation": "compact"
-          },
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": "Product Family",
-            "stacked": true,
-            "legendLocation": "right",
-            "orientation": "vertical",
-            "barThickness": 100
-          },
-          "style": {
-            "color-map": {
-              "Not Available": "#808080",
-              "Others": "#2A5FF6"
-            }
-          },
-          "limit": 15,
-          "column": "count_",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "7d1c4f04"
-        },
-        {
-          "title": "By HW EoX(Last day of Support)",
-          "widget_type": "pie_chart",
-          "description": "Breakdown by HW Last Day of Support",
-          "duration_hours": 1080,
-          "formatting": {
-            "notation": "compact"
-          },
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "extra_filter1": "source in 'inventory'",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "top_n1": 2,
-          "group_by": [
-            "hw_status"
-          ],
-          "style": {
-            "color-map": {
-              "Expired": "#BB0000",
-              "Expiring in a Quarter": "#F6C309",
-              "Expiring in 4 Quarters": "#FF9800",
-              "Expiring in 8 Quarters": "#1ECBE1",
-              "Expiring after 8 Quarters": "#009688",
-              "No EOL": "#2A5FF6",
-              "Not Available": "#8c8c8c"
-            }
-          },
-          "groups_meta": {
-            "type": "custom",
-            "order": [
-              "Expired",
-              "Expiring in a Quarter",
-              "Expiring in 4 Quarters",
-              "Expiring in 8 Quarters",
-              "Expiring after 8 Quarters"
-            ]
-          },
-          "column": "count_",
-          "agg": "value_count",
-          "widget_id": "86505f9d"
-        },
-        {
-          "title": "By SW EOL",
-          "widget_type": "pie_chart",
-          "description": "Breakdown by SW Last Day of Support",
-          "duration_hours": 1080,
-          "formatting": {
-            "notation": "compact"
-          },
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "extra_filter1": "source in 'inventory'",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "top_n1": 2,
-          "group_by": [
-            "sw_status"
-          ],
-          "style": {
-            "color-map": {
-              "Expired": "#BB0000",
-              "Expiring in a Quarter": "#F6C309",
-              "Expiring in 4 Quarters": "#FF9800",
-              "Expiring in 8 Quarters": "#1ECBE1",
-              "Expiring after 8 Quarters": "#009688",
-              "No EOL": "#00BB00",
-              "Not Available": "#2A5FF6"
-            }
-          },
-          "groups_meta": {
-            "type": "custom",
-            "order": [
-              "Expired",
-              "Expiring in a Quarter",
-              "Expiring in 4 Quarters",
-              "Expiring in 8 Quarters",
-              "Expiring after 8 Quarters"
-            ]
-          },
-          "column": "count_",
-          "agg": "sum",
-          "widget_id": "5e16f543"
-        },
-        {
-          "widget_type": "bar_chart",
-          "title": "HW Expiry by QTR and Year",
-          "duration_hours": 1080,
-          "stream": "edc_oi_inventory_enriched",
-          "extra_filter": "hw_expiring_qtr  is not null and hw_expiring_qtr  does not contain '199' and  hw_expiring_qtr  does not contain '200' and hw_expiring_qtr  does not contain '201' and hw_expiring_qtr  does not contain '2020' and hw_expiring_qtr  does not contain '2021'  and hw_expiring_qtr  does not contain '2022' and hw_expiring_qtr  does not contain '2023' and hw_expiring_qtr  does not contain '2024'",
-          "description": "HW expiration on earlier date, has been ommited of graph",
-          "ts_column": "timestamp",
-          "min_width": 6,
-          "height": 6,
-          "max_width": 6,
-          "group_by": [
-            "hw_expiring_qtr"
-          ],
-          "column": "combination_count",
-          "agg": "sum",
-          "others_spec": {
-            "limit": 14,
-            "label": "After",
-            "show_others": false,
-            "hw_expiring_qtr": {
-              "largest": false,
-              "name_based_limit": true
-            }
-          },
-          "style": {
-            "color-map": {
-              "Expired": "#BB0000",
-              "Expiring in a Quarter": "#F6C309",
-              "Expiring in 4 Quarters": "#FF9800",
-              "Expiring in 8 Quarters": "#1ECBE1",
-              "Expiring after 8 Quarters": "#009688",
-              "No EOL": "#00BB00",
-              "After": "#2A5FF6"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "9f150b67"
-        },
-        {
-          "widget_type": "bar_chart",
-          "title": "SW Expiry by QTR and Year",
-          "duration_hours": 1080,
-          "stream": "edc_sweol_data",
-          "extra_filter": "sw_expiring_qtr is not null and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024'",
-          "ts_column": "timestamp",
-          "min_width": 6,
-          "height": 6,
-          "max_width": 6,
-          "group_by": [
-            "sw_expiring_qtr"
-          ],
-          "column": "combination_count",
-          "agg": "sum",
-          "style": {
-            "color-map": {
-              "Expired": "#BB0000",
-              "Expiring in a Quarter": "#F6C309",
-              "Expiring in 4 Quarters": "#FF9800",
-              "Expiring in 8 Quarters": "#1ECBE1",
-              "Expiring after 8 Quarters": "#009688",
-              "No EOL": "#00BB00",
-              "2026 Q3": "#0A60FF"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "eefc044c"
-        },
-        {
-          "title": "Product List Count per BE",
-          "widget_type": "pie_chart",
-          "duration_hours": 1080,
-          "stream": "edc_oi_inventory_enriched",
-          "ts_column": "timestamp",
-          "extra_filter1": "source in 'inventory'",
-          "min_width": 12,
-          "height": 4,
-          "max_width": 12,
-          "limit": 15,
-          "group_by": [
-            "business_entity"
-          ],
-          "style": {
-            "color-map": {
-              "Enterprise Routing": "#2A5FF6",
-              "Enterprise swithching": "#FF007F",
-              "Internet Infrastructure": "#FF9000"
-            }
-          },
-          "column": "count_",
-          "agg": "value_count",
-          "widget_id": "55e4bcd6"
-        },
-        {
-          "title": "Asset Details",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "preview_dashboard": "oi-inventory-template",
-          "preview_width": 600,
-          "preview_height": 600,
-          "sorting": [
-            {
-              "count_": "desc"
-            }
-          ],
-          "remote_searchable": true,
-          "extra_filter": null,
-          "columns": {
-            "customer_name": {
-              "title": "Customer Name",
-              "type": "TEXT",
-              "visible": false
-            },
-            "product_name": {
-              "title": "Product ID",
-              "type": "TEXT",
-              "key": true
-            },
-            "serial_number": "Serial Number",
-            "match_inv": {
-              "title": "Source",
-              "type": "TEXT",
-              "visible": false
-            },
-            "sw_os_type": "OS Type",
-            "sw_version": "SW Version",
-            "product_family": "Product Family",
-            "product_description": {
-              "title": "Product Description",
-              "type": "TEXT",
-              "visible": false
-            },
-            "product_family_description": {
-              "title": "Product Family Description",
-              "type": "TEXT",
-              "visible": false
-            },
-            "item_type": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "product_type": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "contract_number": {
-              "title": "Contract Number",
-              "type": "FLOAT",
-              "visible": true,
-              "key": true
-            },
-            "portfolio_desc": {
-              "title": "Portfolio",
-              "type": "TEXT",
-              "visible": false
-            },
-            "usage_code": {
-              "title": "Usage Code",
-              "type": "TEXT",
-              "visible": false
-            },
-            "coverage": {
-              "title": "Coverage",
-              "type": "TEXT",
-              "visible": true,
-              "key": true
-            },
-            "covered_line_status": {
-              "title": "Covered Line Status",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "gu_name": {
-              "title": "GU Name",
-              "type": "TEXT",
-              "visible": false
-            },
-            "business_entity": {
-              "title": "Business Entity",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "business_sub_entity": {
-              "title": "Business Sub Entity",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "product_list_price": {
-              "title": "Product List Price",
-              "type": "DOUBLE",
-              "uiProperties": {
-                "formatting": {
-                  "locale": "en-US",
-                  "style": "currency",
-                  "currency": "USD",
-                  "minimumFractionDigits": 2
-                }
-              },
-              "visible": false,
-              "key": true
-            },
-            "hw_status_color": {
-              "type": "COLOR-MAP",
-              "source-column": "hw_status",
-              "color-map": {
-                "Expired": "#BB0000",
-                "Expiring in a Quarter": "#F6C309",
-                "Expiring in 4 Quarters": "#FF9800",
-                "Expiring in 8 Quarters": "#1ECBE1",
-                "Expiring after 8 Quarters": "#009688",
-                "No EOL": "#00BB00"
-              }
-            },
-            "hw_status": {
-              "title": "HW Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.hw_status_color }}' > {{ row.hw_status }} </span>"
-            },
-            "sw_status_color": {
-              "type": "COLOR-MAP",
-              "source-column": "sw_status",
-              "color-map": {
-                "Expired": "#BB0000",
-                "Expiring in a Quarter": "#F6C309",
-                "Expiring in 4 Quarters": "#FF9800",
-                "Expiring in 8 Quarters": "#1ECBE1",
-                "Expiring after 8 Quarters": "#009688",
-                "No EOL": "#00BB00"
-              }
-            },
-            "sw_status": {
-              "title": "SW Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>",
-              "visible": true
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "visible": false
-            }
-          },
-          "widget_id": "f5221fe7"
-        }
-      ],
-      "saved_time": "2025-05-09T06:51:12.699107"
-    }
-  ]
-}
+
+ ## #########################################
+
+ ## Configure vCenter Extension Name in RDA as: vc
+
+ ## ##########################################
+
+ ## VMware vCenter VM Inventory
+@c:new-block
+ --> *vc:vms
+ --> @dm:save name = 'cfx-vm-inventory'
+ ## VMware vCenter Host Inventory
+
+ --> @c:new-block
+ --> *vc:hosts
+ --> @dm:save name = 'cfx-esxi-host-inventory'
+ ## VMware vCenter Network Inventory
+
+ --> @c:new-block
+ --> *vc:vswitches
+ --> @dm:save name = 'cfx-vswitch-inventory'
+ ## VMware vCenter Datastore Inventory
+
+ --> @c:new-block
+ --> *vc:datastores
+ --> @dm:save name = 'cfx-datastore-inventory'
+ ## VMware vCenter Storage Inventory
+
+ --> @c:new-block
+ --> *vc:host-storage-adapters
+ --> @dm:save name = 'cfx-storage-inventory'
+ ## #########################################################
+
+ ## VMware vCenter VM Inventory
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vm-inventory'
+ --> *dm:filter * get name as 'vm_name',id as 'vm_bios_id',guest as 'vm_guest_os',memorySizeMB as 'vm_memory_mb',numCpu as 'vm_cpu',path as 'vm_path',vcenter_address as 'parent_vcenter'
+ --> @dm:save name = 'temp_vm-enrich-attribute-table'
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vm-inventory'
+ --> *dm:filter * get name as 'vm_name',ipAddress as 'vm_ip_address',id as 'vm_bios_id',host as 'parent_esxi_host',cluster as 'parent_cluster',datacenter as 'parent_datacenter',vm_nic_network as 'parent_network_portgroup',vm_nic_ipaddresses,vm_nic_macAddress,network as 'configured_network_portgroup',vcenter_address as 'parent_vcenter'
+ --> @dm:fixnull columns = 'parent_network_portgroup'
+ --> @dm:eval parent_network_portgroup = "configured_network_portgroup if parent_network_portgroup == '' else parent_network_portgroup"
+ --> @dm:dedup columns = 'vm_bios_id,vm_nic_macAddress'
+ --> @dm:explode column = 'vm_nic_ipaddresses'
+ --> *dm:filter vm_nic_ipaddresses does not contain '::'
+ --> @dm:explode column = 'configured_network_portgroup'
+ --> @dm:explode column = 'parent_network_portgroup'
+ --> @dm:map attr = 'parent_network_portgroup' & func = 'strip'
+ --> @dm:dedup columns = 'vm_bios_id,parent_network_portgroup'
+ ## --> *dm:filter parent_network_portgroup is not empty
+
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'VM'
+ --> @dm:map from = 'vm_name' & to = 'node_label'
+ --> @dm:map from = 'vm_bios_id' & to = 'node_id'
+ --> @dm:map from = 'parent_network_portgroup,parent_esxi_host' & to = 'parent_network_portgroup_id' & func = 'join' & sep = '_'
+ --> @dm:save name = 'temp_vm-inventory-nodes-before-implode-network-table'
+ --> @dm:implode key_columns = 'vm_bios_id' & merge_columns = 'vm_nic_ipaddresses,vm_nic_macAddress,parent_network_portgroup,parent_network_portgroup_id' & keep_columns = 'layer,node_type,node_id,node_label,vm_ip_address,vm_bios_id,parent_esxi_host,parent_cluster,parent_datacenter,parent_network_portgroup,parent_network_portgroup_id,vm_nic_ipaddresses,vm_nic_macAddress,configured_network_portgroup,parent_vcenter'
+ --> @dm:save name = 'temp_vm-inventory-nodes-network-table'
+ --> @dm:recall name = 'cfx-vm-inventory'
+ --> *dm:filter * get name as 'vm_name',ipAddress as 'vm_ip_address',id as 'vm_bios_id',host as 'parent_esxi_host',cluster as 'parent_cluster',datacenter as 'parent_datacenter',disk_datastore as 'parent_datastore',vcenter_address as 'parent_vcenter'
+ --> @dm:dedup columns = 'vm_bios_id,parent_datastore'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'VM'
+ --> @dm:map from = 'vm_name' & to = 'node_label'
+ --> @dm:map from = 'vm_bios_id' & to = 'node_id'
+ --> @dm:map from = 'parent_datastore,parent_esxi_host' & to = 'parent_datastore_id' & func = 'join' & sep = '_'
+ --> @dm:save name = 'temp_vm-inventory-nodes-before-implode-datastore-table'
+ --> @dm:implode key_columns = 'vm_bios_id' & merge_columns = 'parent_datastore,parent_datastore_id' & keep_columns = 'layer,node_type,node_id,node_label,vm_ip_address,vm_bios_id,parent_esxi_host,parent_cluster,parent_datacenter,parent_datastore,parent_datastore_id'
+ --> @dm:save name = 'temp_vm-inventory-nodes-storage-table,parent_vcenter'
+ --> @dm:enrich dict = 'temp_vm-inventory-nodes-network-table' & src_key_cols = 'vm_bios_id' & dict_key_cols = 'vm_bios_id' & enrich_cols = 'parent_network_portgroup,parent_network_portgroup_id,vm_nic_ipaddresses,vm_nic_macAddress'
+ ## --> *dm:filter parent_network_portgroup is not empty
+
+ --> @dm:enrich dict = 'temp_vm-enrich-attribute-table' & src_key_cols = 'vm_bios_id' & dict_key_cols = 'vm_bios_id' & enrich_cols = 'parent_vcenter,vm_guest_os,vm_cpu,vm_memory_mb,vm_path'
+ --> @dm:save name = 'cfx-vm-inventory-nodes-table'
+ ## VMware vCenter ESXi Host Inventory
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-esxi-host-inventory'
+ --> *dm:filter * get host as 'esxi_host',hardware_bios_uuid as 'esxi_host_bios_id',cluster as 'parent_cluster',datacenter as 'parent_datacenter', esx_host_build as 'esxi_version',esx_host_hardware_model as 'esxi_server_model',esx_host_hardware_vendor as 'esxi_server_vendor',vcenter_address as 'parent_vcenter'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Host'
+ --> @dm:map from = 'esxi_host' & to = 'node_label'
+ --> @dm:map from = 'esxi_host' & to = 'node_id'
+ --> *dm:filter * get node_id,node_label,node_type,layer,parent_datacenter,parent_cluster,esxi_host,esxi_version,esxi_host_bios_id,esxi_server_model,esxi_server_vendor,parent_vcenter
+ --> @dm:dedup columns = 'node_id'
+ --> @dm:save name = 'cfx-esxi-host-inventory-nodes-table'
+ ## VMware vCenter Datastore Inventory
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-datastore-inventory'
+ --> *dm:filter * get name as 'datastore_name',datacenter as 'parent_datacenter',host_name as 'parent_esxi_host', type as 'storage_type',remoteHost as 'storage_array_ip',remotePath as 'storage_array_volume_export_path',multipleHostAccess,extents,capacity_GB as 'total_capacity_in_gb',freeSpace_GB as 'free_capacity_in_gb',provisioned_GB as 'provisioned_capacity_in_gb',overprovisioned_pct as 'overprovisioned_capacity_pct',vcenter_address as 'parent_vcenter'
+ --> @dm:grok column = 'extents' & pattern = '%{DATA}\.(?<storage_vendor_id>.{8})%{GREEDYDATA:storage_lun_serial}'
+ --> @dm:fixnull columns = 'storage_lun_serial' & value = ''
+ --> @dm:eval storage_lun_serial = "bytes.fromhex(storage_lun_serial).decode('unicode-escape')"
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Datastore'
+ --> @dm:map from = 'datastore_name,parent_esxi_host' & to = 'parent_datastore_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'datastore_name' & to = 'node_label'
+ --> @dm:map from = 'parent_datastore_id' & to = 'node_id'
+ --> *dm:filter * get node_id,node_label,node_type,layer,parent_esxi_host,parent_datacenter,storage_type,storage_array_ip,storage_array_volume_export_path,storage_type,multipleHostAccess as 'storage_multihost_access',extents as 'storage_serial_number',storage_lun_serial,total_capacity_in_gb,free_capacity_in_gb,provisioned_capacity_in_gb,overprovisioned_capacity_pct,parent_vcenter
+ --> @dm:dedup columns = 'node_id,parent_esxi_host'
+ --> @dm:save name = 'cfx-esxi-datastore-inventory-nodes-table'
+ ## VMware vCenter Block Storage Inventory
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-storage-inventory'
+ --> *dm:filter path_canonicalName is not empty and path_lunType is not 'enclosure' get cluster as 'parent_cluster',datacenter as 'parent_datacenter',device as 'esxi_host_hba',driver as 'esxi_hba_driver',host as 'parent_esxi_host',path_canonicalName as 'storage_serial_number',path_lunType as 'storage_type',path_model as 'remote_storage_type',path_localDisk as 'local_storage_status',path_name as 'storage_disk_path',path_pathState as 'storage_target_mode',path_vendor as 'storage_vendor',path_operationalState as 'storage_path_status',path_displayName as 'storage_disk_display_name',iScsiName as 'esxi_iscsi_hba_name',iScsiAlias as 'esxi_iscsi_hba_alias'
+ --> @dm:dedup columns = 'storage_serial_number'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Storage'
+ --> @dm:map from = 'storage_disk_display_name' & to = 'node_label'
+ --> @dm:map from = 'storage_serial_number' & to = 'node_id'
+ --> *dm:filter * get layer,node_type,node_label,node_id,parent_cluster,parent_datacenter,parent_esxi_host,storage_serial_number,esxi_host_hba,local_storage_status,storage_vendor
+ --> @dm:save name = 'cfx-esxi-block-storage-inventory-nodes-table'
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-esxi-datastore-inventory-nodes-table'
+ --> @dm:enrich dict = 'cfx-esxi-block-storage-inventory-nodes-table' & src_key_cols = 'storage_serial_number' & dict_key_cols = 'storage_serial_number' & enrich_cols = 'esxi_host_hba,local_storage_status,storage_vendor'
+ --> @dm:selectcolumns exclude = 'storage_type.1'
+ --> @dm:save name = 'cfx-esxi-datastore-inventory-nodes-enriched-table'
+ ## VMware vCenter vSwitch Inventory
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vswitch-inventory'
+ --> *dm:filter type = 'Standard' get vswitch_name,portgroup as 'stadard_portgroup',pnic as 'vswitch_uplink_int',datacenter_name as 'parent_datacenter',cluster_name as 'parent_cluster',host_name as 'parent_esxi_host',cdp_mgmtAddr as 'phy_switch_ip',cdp_hardwarePlatform as 'phy_switch_platform',cdp_devId as 'phy_switch_device_name',cdp_portId as 'phy_switch_int',vcenter_address as 'parent_vcenter'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'vSwitch'
+ --> @dm:map from = 'vswitch_name' & to = 'node_label'
+ --> @dm:map from = 'vswitch_name,parent_esxi_host' & to = 'vswitch_parent' & func = 'join' & sep = '_'
+ --> @dm:map from = 'vswitch_parent' & to = 'node_id'
+ --> *dm:filter * get node_id,node_label,node_type,layer,stadard_portgroup,parent_esxi_host,parent_datacenter,vswitch_parent,vswitch_uplink_int,phy_switch_ip,phy_switch_device_name,phy_switch_platform,phy_switch_int,parent_vcenter
+ --> @dm:dedup columns = 'node_id,parent_esxi_host,stadard_portgroup,vswitch_uplink_int'
+ --> @dm:save name = 'cfx-esxi-vswitch-inventory-nodes-table'
+ ## VMware vCenter standard portgroup
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vswitch-inventory'
+ --> *dm:filter type = 'Standard' get vswitch_name,portgroup as 'stadard_portgroup',host_name as 'parent_esxi_host',vcenter_address as 'parent_vcenter'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'vPortgroup'
+ --> @dm:map from = 'stadard_portgroup' & to = 'node_label'
+ --> @dm:map from = 'stadard_portgroup,parent_esxi_host' & to = 'parent_network_portgroup_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'vswitch_name,parent_esxi_host' & to = 'vswitch_parent' & func = 'join' & sep = '_'
+ --> @dm:map from = 'parent_network_portgroup_id' & to = 'node_id'
+ --> *dm:filter * get node_id,node_label,node_type,layer,vswitch_parent,parent_network_portgroup_id,stadard_portgroup,parent_vcenter
+ --> @dm:dedup columns = 'node_id'
+ --> @dm:save name = 'cfx-esxi-std-portgroup-inventory-nodes-table'
+ ## VMware vCenter dvSwitch Inventory
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vswitch-inventory'
+ --> *dm:filter type = 'Distributed' get vswitch_name,portgroup as 'distributed_portgroup',pnic as 'dvswitch_uplink_int',uplinks as 'dvswitch_uplink',datacenter_name as 'parent_datacenter',cluster_name as 'parent_cluster',host_name as 'parent_esxi_host',cdp_mgmtAddr as 'phy_switch_ip',cdp_hardwarePlatform as 'phy_switch_platform',cdp_devId as 'phy_switch_device_name',cdp_portId as 'phy_switch_int',vcenter_address as 'parent_vcenter'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'dvSwitch'
+ --> @dm:map from = 'vswitch_name' & to = 'node_label'
+ --> @dm:map from = 'vswitch_name,parent_esxi_host' & to = 'vswitch_parent' & func = 'join' & sep = '_'
+ --> @dm:map from = 'vswitch_parent' & to = 'node_id'
+ ## --> @dm:map from = 'vswitch_name' & to = 'node_id'
+
+ ## --> @dm:map from = 'vswitch_name' & to = 'vswitch_parent'
+
+ --> *dm:filter * get node_id,node_label,node_type,layer,distributed_portgroup,vswitch_parent,parent_esxi_host,parent_datacenter,dvswitch_uplink_int,dvswitch_uplink,phy_switch_ip,phy_switch_device_name,phy_switch_platform,phy_switch_int,parent_vcenter
+ --> @dm:dedup columns = 'node_id,parent_esxi_host,distributed_portgroup,dvswitch_uplink_int'
+ --> @dm:save name = 'cfx-esxi-dvswitch-inventory-nodes-table'
+ ## VMware vCenter distributed portgroup
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vswitch-inventory'
+ --> *dm:filter type = 'Distributed' get vswitch_name,portgroup as 'distributed_portgroup',host_name as 'parent_esxi_host',vcenter_address as 'parent_vcenter'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'dvPortgroup'
+ --> @dm:map from = 'distributed_portgroup' & to = 'node_label'
+ --> @dm:map from = 'distributed_portgroup,parent_esxi_host' & to = 'parent_network_portgroup_id' & func = 'join' & sep = '_'
+ --> @dm:map from = 'vswitch_name,parent_esxi_host' & to = 'vswitch_parent' & func = 'join' & sep = '_'
+ --> @dm:map from = 'parent_network_portgroup_id' & to = 'node_id'
+ ## --> @dm:map from = 'distributed_portgroup' & to = 'node_id'
+
+ --> *dm:filter * get node_id,node_label,node_type,layer,vswitch_name,parent_esxi_host,parent_network_portgroup_id,vswitch_parent,distributed_portgroup,parent_vcenter
+ --> @dm:dedup columns = 'node_id,vswitch_name'
+ --> @dm:save name = 'cfx-esxi-distributed-portgroup-inventory-nodes-table'
+ ## VMware vCenter - ESXi Host Physical NIC Inventory
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vswitch-inventory'
+ --> *dm:filter type = 'Standard' get pnic as 'physical_nic',vswitch_name,host_name as 'parent_esxi_host',cdp_mgmtAddr as 'phy_switch_ip',cdp_hardwarePlatform as 'phy_switch_platform',cdp_devId as 'phy_switch_device_name',cdp_portId as 'phy_switch_int',vcenter_address as 'parent_vcenter'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'NIC'
+ --> @dm:map from = 'physical_nic' & to = 'node_label'
+ --> @dm:map from = 'physical_nic,parent_esxi_host' & to = 'physical_nic_parent' & func = 'join' & sep = '_'
+ --> @dm:map from = 'physical_nic_parent' & to = 'node_id'
+ --> @dm:map from = 'vswitch_name,parent_esxi_host' & to = 'vswitch_parent' & func = 'join' & sep = '_'
+ --> *dm:filter * get node_id,node_label,node_type,layer,vswitch_name,vswitch_parent,physical_nic_parent,parent_esxi_host,phy_switch_device_name,phy_switch_int,parent_vcenter
+ --> @dm:dedup columns = 'node_id,vswitch_name,parent_esxi_host'
+ --> @dm:save name = 'temp-vswitch-pnic-inventory-nodes-table'
+ --> @dm:recall name = 'cfx-vswitch-inventory'
+ --> *dm:filter type = 'Distributed' get pnic as 'physical_nic',vswitch_name,host_name as 'parent_esxi_host',cdp_mgmtAddr as 'phy_switch_ip',cdp_hardwarePlatform as 'phy_switch_platform',cdp_devId as 'phy_switch_device_name',cdp_portId as 'phy_switch_int',vcenter_address as 'parent_vcenter'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Virtualization'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'NIC'
+ --> @dm:map from = 'physical_nic' & to = 'node_label'
+ --> @dm:map from = 'physical_nic,parent_esxi_host' & to = 'physical_nic_parent' & func = 'join' & sep = '_'
+ --> @dm:map from = 'physical_nic_parent' & to = 'node_id'
+ --> @dm:map from = 'vswitch_name,parent_esxi_host' & to = 'vswitch_parent' & func = 'join' & sep = '_'
+ --> *dm:filter * get node_id,node_label,node_type,layer,vswitch_name,vswitch_parent,physical_nic_parent,parent_esxi_host,phy_switch_device_name,phy_switch_int,parent_vcenter
+ --> @dm:dedup columns = 'node_id,vswitch_name,parent_esxi_host'
+ --> @dm:save name = 'temp-dvswitch-pnic-inventory-nodes-table'
+ --> @c:new-block
+ --> @dm:concat names = 'temp-vswitch-pnic-inventory-nodes-table|temp-dvswitch-pnic-inventory-nodes-table'
+ --> @dm:save name = 'cfx-esxi-pnic-inventory-nodes-table'
+ ## VMware vCenter - ESXi Host Physical Switch Inventory
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vswitch-inventory'
+ --> *dm:filter * get cdp_mgmtAddr as 'phy_switch_ip',cdp_hardwarePlatform as 'phy_switch_platform',cdp_devId as 'phy_switch_device_name',cdp_portId as 'phy_switch_int',vswitch_name,pnic as 'vswitch_uplink_int',vcenter_address as 'parent_vcenter'
+ --> @dm:map to = 'layer' & func = 'fixed' & value = 'Network'
+ --> @dm:map to = 'node_type' & func = 'fixed' & value = 'Switch'
+ --> @dm:map from = 'phy_switch_device_name' & to = 'node_label'
+ --> @dm:map from = 'phy_switch_device_name' & to = 'node_id'
+ --> *dm:filter * get node_id,node_label,node_type,layer,vswitch_name,vswitch_uplink_int,phy_switch_ip,phy_switch_platform,phy_switch_int,parent_vcenter
+ --> @dm:dedup columns = 'node_id,vswitch_name,vswitch_uplink_int'
+ --> @dm:save name = 'cfx-esxi-pswitch-inventory-nodes-table'
+ ## ######################################################################################################
+
+ ## VMware vCenter Node Inventory Consolidation
+
+ --> @c:new-block
+ --> @dm:concat names = 'cfx-vm-inventory-nodes-table|cfx-esxi-host-inventory-nodes-table|cfx-esxi-datastore-inventory-nodes-enriched-table|cfx-esxi-vswitch-inventory-nodes-table|cfx-esxi-dvswitch-inventory-nodes-table|cfx-esxi-pswitch-inventory-nodes-table|cfx-esxi-pnic-inventory-nodes-table|cfx-esxi-std-portgroup-inventory-nodes-table|cfx-esxi-distributed-portgroup-inventory-nodes-table'
+ --> @dm:save name = 'cfx-vcenter-nodes-table'
+ ## ######################################################################################################
+
+ ## VMware vCenter Relationship table
+
+ ## VM to Host relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'VM' get node_label,node_id,parent_esxi_host
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get parent_esxi_host as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'cfx-vm-to-host-relationship-table'
+ ## Host to Cluster relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'Host' get node_label,node_id,parent_cluster
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'member-of'
+ --> *dm:filter * get node_id as 'left',relation_type,parent_cluster as 'right'
+ --> @dm:save name = 'cfx-host-to-cluster-relationship-table'
+ ## VM to Datastore relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'temp_vm-inventory-nodes-before-implode-datastore-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'VM' get node_label,node_id,parent_datastore_id
+ --> @dm:explode column = 'parent_datastore_id'
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'used-by'
+ --> *dm:filter * get parent_datastore_id as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'cfx-vm-to-storage-relationship-table'
+ ## VM to Network Portgroup relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'temp_vm-inventory-nodes-before-implode-network-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'VM' get node_label,node_id,parent_network_portgroup_id
+ --> @dm:explode column = 'parent_network_portgroup_id'
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'used-by'
+ --> *dm:filter * get parent_network_portgroup_id as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'cfx-vm-to-portgroup-relationship-table'
+ ## Network Portgroup to vSwitch relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'vPortgroup' get node_label,node_id,stadard_portgroup,parent_network_portgroup_id,vswitch_parent
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get vswitch_parent as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'cfx-portgroup-to-vswitch-relationship-table'
+ ## Network dvPortgroup to vSwitch relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'dvPortgroup' get node_label,node_id,distributed_portgroup,vswitch_parent
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'contains'
+ --> *dm:filter * get vswitch_parent as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'cfx-portgroup-to-dvswitch-relationship-table'
+ ## vSwitch to Host relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'vSwitch' get node_label,node_id,parent_esxi_host
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'member-of'
+ --> *dm:filter * get node_id as 'left',relation_type,parent_esxi_host as 'right'
+ --> @dm:save name = 'cfx-vswitch-to-host-relationship-table'
+ ## dvSwitch to Host relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'dvSwitch' get node_label,node_id,parent_esxi_host
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'member-of'
+ --> *dm:filter * get node_id as 'left',relation_type,parent_esxi_host as 'right'
+ --> @dm:save name = 'cfx-dvswitch-to-host-relationship-table'
+ ## vSwitch to Physical NIC relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'NIC' get node_label,node_id,vswitch_name,vswitch_parent
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'used-by'
+ --> *dm:filter * get node_id as 'left',relation_type,vswitch_parent as 'right'
+ --> @dm:save name = 'cfx-vswitch-to-physical-nic-relationship-table'
+ ## Physical NIC to Physical Switch relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ --> *dm:filter node_type = 'NIC' get node_label,node_id,phy_switch_device_name
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'used-by'
+ --> *dm:filter * get phy_switch_device_name as 'left',relation_type,node_id as 'right'
+ --> @dm:save name = 'cfx-physical-nic-to-switch-relationship-table'
+ ## Datastore to Host relationship
+
+ --> @c:new-block
+ --> @dm:recall name = 'cfx-vcenter-nodes-table' & empty_as_null = 'no'
+ ## --> *dm:filter node_type = 'Datastore' and storage_multihost_access = 'False' and storage_type = 'VMFS' get node_id,node_label,parent_esxi_host,parent_datastore,parent_datastore_id
+
+ --> *dm:filter node_type = 'Datastore' get node_id,node_label,parent_esxi_host,parent_datastore,parent_datastore_id
+ --> @dm:map to = 'relation_type' & func = 'fixed' & value = 'used-by'
+ --> *dm:filter * get node_id as 'left',relation_type,parent_esxi_host as 'right'
+ --> @dm:save name = 'cfx-datastore-to-host-relationship-table'
+ ## ###########################################################################################
+
+ ## Consolidate VMware vCenter relationship data
+
+ --> @c:new-block
+ --> @dm:concat names = 'cfx-vm-to-host-relationship-table|cfx-host-to-cluster-relationship-table|cfx-vm-to-storage-relationship-table|cfx-vm-to-portgroup-relationship-table|cfx-portgroup-to-vswitch-relationship-table|cfx-portgroup-to-dvswitch-relationship-table|cfx-vswitch-to-host-relationship-table|cfx-dvswitch-to-host-relationship-table|cfx-vswitch-to-physical-nic-relationship-table|cfx-physical-nic-to-switch-relationship-table|cfx-datastore-to-host-relationship-table'
+ --> @dm:dropnull columns = 'left,right'
+ --> @dm:dedup
+ --> @dm:map from = 'left' & to = 'left_id'
+ --> @dm:map from = 'right' & to = 'right_id'
+ --> @dm:save name = 'cfx-vcenter-relationship-table'
+ ## #########################################
+
+ ## # vCenter Stacks - Topology Pipeline
+
+ ## #########################################
+
+ --> @c:new-block
+ --> @dm:stack-create topology_nodes='cfx-vcenter-nodes-table' and topology_edges='cfx-vcenter-relationship-table' and name = 'vcenter_stack'
+ --> @dm:stack-save name='vcenter_topology_stacks'
+ ## #########################################
+
+ ## # Create pstreams if not existing already
+
+ ## #########################################
+
+ --> @dm:create-persistent-stream name = 'vcenter_topology_nodes' and retention_days=0 and unique_cols= "node_id"
+ --> @exec:retry-loop retries is 30 and retry_delay_millis is 5000
+ --> @dm:empty
+ --> @dm:addrow name is "vcenter_topology_nodes" and limit is 1
+ --> #dm:query-persistent-stream
+ --> @exec:end-loop
+ --> @dm:create-persistent-stream name = 'vcenter_topology_edges' and retention_days=0 and unique_cols= "left_id,right_id"
+ --> @exec:retry-loop retries is 30 and retry_delay_millis is 5000
+ --> @dm:empty
+ --> @dm:addrow name is "vcenter_topology_edges" and limit is 1
+ --> #dm:query-persistent-stream
+ --> @exec:end-loop
+ ## #####################
+
+ ## Save nodes and edges data to dynamic pstreams
+
+ ## #####################
+
+ --> @c:new-block
+ --> @dm:recall name="cfx-vcenter-nodes-table"
+ --> @dm:map to = 'stack_type' & func = 'fixed' & value = 'VCenter'
+ --> @dm:add-missing-columns columns = 'iconURL' & value = 'Not Available'
+ --> @rn:write-stream name="vcenter_topology_nodes"
+ --> @dm:recall name="cfx-vcenter-relationship-table"
+ --> @dm:map to = 'stack_type' & func = 'fixed' & value = 'VCenter'
+ --> @rn:write-stream name="vcenter_topology_edges"
