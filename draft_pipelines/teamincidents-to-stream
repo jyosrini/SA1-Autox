@@ -1,10 +1,6 @@
-
- ## One time Migration
-
- ## teamincidents-to-stream
 @c:new-block
- --> @dm:empty
- --> @dm:addrow table is 'teamincident' and dbname is '335b7f8cb56d46419c3e7c70286c4b19_cfxdimensions_app_collaboratio'
- --> #mysqlv2:read order by shared_time desc
- --> @dm:change-time-format columns="shared_time" & from_format="datetimestr" & to_format="ms"
- --> @rn:write-stream name="oia-incidents-external-tickets-stream"
+ --> @dm:recall name='added-sw-data'
+ --> @dm:enrich dict='test-sweol' and src_key_cols='sw_os_type,sw_version,product_id' and dict_key_cols='sw_os_type,sw_version,product_id' and enrich_cols='SoftwareEOXId,BulletinNumber,BulletinHeadline,BulletinURL,EndOfSaleDate,EndOfEngineeringDate,EndOfLifeDate,PostDate,EndOfLifeInternalAnnouncementDate,EndOfLifeExternalAnnouncementDate,EndOfLastHardwareShipDate,EndOfHardwareNewServiceAttachmentDate,EndOfHardwareRoutineFailureAnalysisDate,EndOfBUEngineeringSupportTACDate,EndOfHardwareServiceContractRenewalDate,EndOfSignatureReleasesDate,EndOfSoftwareAvailabilityDate,EndOfSoftwareLicenseAvailabilityDate,EndOfSoftwareVulnerabilityOrSecuritySupportDate,created,customerVisible,external_text,external_title,firstIcAlertId,groups,icIssueId,icProblemId,ignored,lastIcAlertId,eoXAlertType,name,openedOn,resultType,severity,severityText,state,updated,deviceSN,source,runType,filename,icType,atticaStatus,cdetsList,retry,associatedGroups'
+ ## --> @dm:manipulate-string from="customer,contract_number,product_id" and func="concat_columns" and to="enrich_ingestion_id"
+
+ --> @dm:save name='sw_raw_data'
