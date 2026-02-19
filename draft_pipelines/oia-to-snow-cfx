@@ -1,68 +1,47 @@
-{
-  "name": "customer_ops_application",
-  "label": "Customer Ops App",
-  "description": "Customer Operations App",
-  "version": "24.12.22",
-  "dashboard_folder": "Onboarding",
-  "enabled": true,
-  "custom_context": {
-    "rda-dashboard-live-edit": true
-  },
-  "dashboard_filters": {
-    "time_filter": true,
-    "columns_filter": []
-  },
-  "dashboard_generator": {
-    "attachment": "add_pages_for_activated_packs"
-  },
-  "dashboard_sections": [],
-  "dashboard_type": "app",
-  "dashboard_groups": {
-    "groupAlerts": {
-      "icon": "alert.svg",
-      "label": "Alerts and Incidents"
-    },
-    "groupPolicies": {
-      "icon": "alert.svg",
-      "label": "Policies"
-    },
-    "groupMetrics": {
-      "icon": "topology.svg",
-      "label": "Metrics"
-    },
-    "groupTopo": {
-      "icon": "topology.svg",
-      "label": "Topology"
-    },
-    "groupInventory": {
-      "icon": "hardware.svg",
-      "label": "Inventory"
-    },
-    "groupData": {
-      "icon": "overall.svg",
-      "label": "Events"
-    },
-    "groupDiscovery": {
-      "icon": "activities.svg",
-      "label": "Onboarding"
-    }
-  },
-  "dashboard_pages": [
-    {
-      "name": "rda-mgmt-page-credentials-test",
-      "label": "Credentials",
-      "icon": "credentials.svg"
-    },
-    {
-      "name": "rda-mgmt-page-blueprints-test",
-      "label": "Blueprints",
-      "icon": "blueprint.svg"
-    }
-  ],
-  "attachments": [
-    {
-      "name": "add_pages_for_activated_packs",
-      "value": "{%- set existing_groups = dashboard[\"dashboard_groups\"] -%}\n{%- set d_pages = [] -%}\n{%- set d_groups = [] -%}\n{%- set customer_tag = customerTag -%}\n\n{%- set dlist = engine.query_stream_data(stream=\"rda_packs_dynamic_groups_and_pages\", cfxql_query=\"customer_tag is '\" ~ customer_tag ~ \"'\") or [] -%}\n\n{%- if dlist -%}\n\n\n            {# Process the dlist to populate dashboard groups and pages #}\n            {%- for i in dlist -%}\n                {%- set dgroup_ = {\n                    \"g_name\": i[\"dashboard_group_name\"],\n                    \"g_label\": i[\"dashboard_group_label\"],\n                    \"g_icon\": i[\"dashboard_group_icon\"]\n                } -%}\n                {{ d_groups.append(dgroup_) }}\n\n                {%- set dpage_ = {\n                    \"name\": i[\"dashboard_page_name\"],\n                    \"label\": i[\"dashboard_page_label\"],\n                    \"icon\": i[\"dashboard_page_icon\"],\n                    \"group\": i[\"dashboard_page_group\"]\n                } -%}\n                {{ d_pages.append(dpage_) }}\n            {%- endfor -%}\n\n            {# Update dashboard groups #}\n            {%- for group in d_groups -%}\n                {%- if group.g_name not in existing_groups | map(attribute='g_name') | list -%}\n                    {%- set _ = dashboard[\"dashboard_groups\"].update({\n                        group.g_name: {\n                            \"icon\": group.g_icon,\n                            \"label\": group.g_label\n                        }\n                    }) -%}\n                {%- endif -%}\n\n            {%- endfor -%}\n\n            {# Update dashboard pages #}\n            {%- for page in d_pages -%}\n                {%- set _ = dashboard[\"dashboard_pages\"].append({\n                    \"name\": page.name,\n                    \"label\": page.label,\n                    \"icon\": page.icon,\n                    \"group\": page.group\n                }) -%}\n            {%- endfor -%}\n\n{%- endif -%}"
-    }
-  ]
-}
+
+ ## oia-to-snow-cfx
+
+ ## All debugging is captured on oia-to-snow-debug-stream
+
+ ## 
+
+ ## A work around is to mention all child and dependent pipelines here.
+@c:new-block
+ --> @dm:empty
+ --> @dm:skip-block-if-shape row_count = 0 & column_count = 0
+ --> @exec:run-pipeline name="oia-to-snow-cfx-processor" & ignore_failures="no"
+ --> @exec:run-pipeline name="oia-incident-status-tracker-stream" & ignore_failures="no"
+ ## Read from Stream
+
+ --> @c:bookmark-loop bookmark = 'oia-to-snow-cfx-bkmrk' & initial_value = '-1 minute'
+ --> @dm:empty
+ --> @dm:addrow name="oia-incidents-delta-stream" & max_rows="1000"
+ --> @dm:sleep seconds=5
+ ## Query records from Stream
+
+ ## Change-Here: Pulse to what ever you want
+
+ --> #dm:query-persistent-stream timestamp is after '${bookmark}' & (i_source contains 'SNMP_TRAP_Notifications' or i_source contains 'Syslog_udp_Notifications' or i_source contains 'Alert Group') & i_state != 'Closed' & i_state != 'Cancelled'
+ --> @dm:skip-block-if-shape row_count = 0
+ ## Change-Here: Temp workaround. Flow is NOT gracefully coming back from post exec:run-pipeline
+
+ --> @dm:save_bookmark name = 'oia-to-snow-cfx-bkmrk' & value_column = 'timestamp' & value_type = 'timestamp' & value_func = 'max'
+ --> @dm:save name="temp-qresults"
+ ## Debug
+
+ --> @dm:map to="step" & func="fixed" & value="temp-query-stream-results-${bookmark}"
+ --> @rn:write-stream compression="auto" & name="oia-to-snow-debug-stream"
+ ## Record The Step
+
+ --> @dm:eval pipeline="'oia-to-snow-cfx'" & step="'query-persistent-stream'" & stage="'bookmark ${bookmark}'" & status_comments="'Incident:' + incident_id + ',State:' + i_state + ',Delta:' + str(delta)" & status="'INFO'"
+ --> @exec:run-pipeline name="oia-incident-status-tracker-stream" & ignore_failures="yes"
+ ## Set the Tracing Context
+
+ --> @dm:set-tracing-context-from-input columns = "project_id,incident_id"
+ --> @dm:save name="temp-query-result-cfx"
+ --> @exec:run-pipeline name="oia-to-snow-cfx-processor" & ignore_failures="no"
+ ## Save bookmark - only after finishing up processing all the records
+
+ --> @dm:recall name="temp-qresults"
+ --> @dm:save_bookmark name = 'oia-to-snow-cfx-bkmrk' & value_column = 'timestamp' & value_type = 'timestamp' & value_func = 'max'
+ --> @dm:empty

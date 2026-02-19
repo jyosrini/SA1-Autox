@@ -1,68 +1,52 @@
-{
-  "name": "customer_ops_application",
-  "label": "Customer Ops App",
-  "description": "Customer Operations App",
-  "version": "24.12.22",
-  "dashboard_folder": "Onboarding",
-  "enabled": true,
-  "custom_context": {
-    "rda-dashboard-live-edit": true
-  },
-  "dashboard_filters": {
-    "time_filter": true,
-    "columns_filter": []
-  },
-  "dashboard_generator": {
-    "attachment": "add_pages_for_activated_packs"
-  },
-  "dashboard_sections": [],
-  "dashboard_type": "app",
-  "dashboard_groups": {
-    "groupAlerts": {
-      "icon": "alert.svg",
-      "label": "Alerts and Incidents"
-    },
-    "groupPolicies": {
-      "icon": "alert.svg",
-      "label": "Policies"
-    },
-    "groupMetrics": {
-      "icon": "topology.svg",
-      "label": "Metrics"
-    },
-    "groupTopo": {
-      "icon": "topology.svg",
-      "label": "Topology"
-    },
-    "groupInventory": {
-      "icon": "hardware.svg",
-      "label": "Inventory"
-    },
-    "groupData": {
-      "icon": "overall.svg",
-      "label": "Events"
-    },
-    "groupDiscovery": {
-      "icon": "activities.svg",
-      "label": "Onboarding"
-    }
-  },
-  "dashboard_pages": [
-    {
-      "name": "rda-mgmt-page-credentials-test",
-      "label": "Credentials",
-      "icon": "credentials.svg"
-    },
-    {
-      "name": "rda-mgmt-page-blueprints-test",
-      "label": "Blueprints",
-      "icon": "blueprint.svg"
-    }
-  ],
-  "attachments": [
-    {
-      "name": "add_pages_for_activated_packs",
-      "value": "{%- set existing_groups = dashboard[\"dashboard_groups\"] -%}\n{%- set d_pages = [] -%}\n{%- set d_groups = [] -%}\n{%- set customer_tag = customerTag -%}\n\n{%- set dlist = engine.query_stream_data(stream=\"rda_packs_dynamic_groups_and_pages\", cfxql_query=\"customer_tag is '\" ~ customer_tag ~ \"'\") or [] -%}\n\n{%- if dlist -%}\n\n\n            {# Process the dlist to populate dashboard groups and pages #}\n            {%- for i in dlist -%}\n                {%- set dgroup_ = {\n                    \"g_name\": i[\"dashboard_group_name\"],\n                    \"g_label\": i[\"dashboard_group_label\"],\n                    \"g_icon\": i[\"dashboard_group_icon\"]\n                } -%}\n                {{ d_groups.append(dgroup_) }}\n\n                {%- set dpage_ = {\n                    \"name\": i[\"dashboard_page_name\"],\n                    \"label\": i[\"dashboard_page_label\"],\n                    \"icon\": i[\"dashboard_page_icon\"],\n                    \"group\": i[\"dashboard_page_group\"]\n                } -%}\n                {{ d_pages.append(dpage_) }}\n            {%- endfor -%}\n\n            {# Update dashboard groups #}\n            {%- for group in d_groups -%}\n                {%- if group.g_name not in existing_groups | map(attribute='g_name') | list -%}\n                    {%- set _ = dashboard[\"dashboard_groups\"].update({\n                        group.g_name: {\n                            \"icon\": group.g_icon,\n                            \"label\": group.g_label\n                        }\n                    }) -%}\n                {%- endif -%}\n\n            {%- endfor -%}\n\n            {# Update dashboard pages #}\n            {%- for page in d_pages -%}\n                {%- set _ = dashboard[\"dashboard_pages\"].append({\n                    \"name\": page.name,\n                    \"label\": page.label,\n                    \"icon\": page.icon,\n                    \"group\": page.group\n                }) -%}\n            {%- endfor -%}\n\n{%- endif -%}"
-    }
-  ]
-}
+@c:new-block
+ --> @exec:get-input
+ --> @dm:add-missing-columns columns="key" and value='key'
+ --> @dm:save name='temp-sw-data'
+ --> @dm:save name='added-sw-data-1'
+ --> @c:new-block
+ --> @dm:empty
+ --> @exec:define-function name="generate_access_token"
+ --> @dm:recall name='generate_token_creds'
+ ## --> @dm:empty
+
+ --> @exec:run-pipeline name ="edc_generate_token" & ignore_failures = "no"
+ --> @dm:addrow key='key'
+ --> @dm:eval current_time_ms="int(time_now_as_ms())"
+ --> @dm:eval token_expiry_time='current_time_ms+3000000'
+ --> @dm:save name='temp-expiry-time'
+ --> @exec:end-function
+ --> @c:new-block
+ --> @dm:recall name='temp-sw-data'
+ --> @dm:add-missing-columns columns="key" and value='key'
+ --> @dm:manipulate-string from="sw_version,sw_os_type" and func="concat_columns" and to="unique_payload_inputs"
+ --> @dm:dedup columns ='unique_payload_inputs'
+ --> @dm:eval id1='uuid()'
+ --> @dm:eval id2='uuid()'
+ --> @dm:eval id2="id2.strip().split('-')[0]"
+ --> @dm:eval id1="id1.replace('-', '')"
+ --> @dm:eval transaction_id ='id1+id2'
+ --> @dm:save name='temp-unique-sw-data'
+ --> @dm:save name='added-sw-data'
+ --> @c:new-block
+ --> @dm:empty
+ --> @exec:call-function name='generate_access_token'
+ --> @c:data-loop columns='sw_version,sw_os_type,transaction_id' and dataset='temp-unique-sw-data'
+ ## --> @dm:recall name='temp-unique-sw-data'
+
+ --> @dm:empty
+ --> @dm:addrow key='key'
+ --> @dm:eval current_time_ms_loop="int(time_now_as_ms())"
+ --> @dm:save name='temp-loop-time'
+ --> @dm:enrich dict='temp-expiry-time' and src_key_cols='key' and dict_key_cols='key' and enrich_cols='token_expiry_time,access_token,expires_in,token_type'
+ --> *exec:if-condition token_expiry_time is null or current_time_ms_loop  is greater than or equal to token_expiry_time
+ --> @exec:call-function name='generate_access_token'
+ --> @exec:end-if
+ --> @dm:add-missing-columns columns='sw_version' and value='$sw_version'
+ --> @dm:add-missing-columns columns='sw_os_type' and value='$sw_os_type'
+ --> @dm:eval sw_os_type="('IOS XR' if sw_os_type=='IOS-XR' else sw_os_type)"
+ --> @dm:add-missing-columns columns='transaction_id' and value='$transaction_id'
+ --> @exec:run-pipeline name ="edc_sw_get_data" & ignore_failures = "no"
+ --> @dm:save name='sweol-data-run-scan'
+ --> @dm:save name='test-sweol' and append='yes'
+ --> @dm:save name='temp-sweol'
+ --> @dm:save name='temp-expiry-time'
