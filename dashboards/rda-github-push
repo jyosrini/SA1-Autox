@@ -1,206 +1,145 @@
 {
-  "name": "rda-github-push",
-  "label": "RDA Artifacts in GitHub",
-  "is_template": true,
-  "description": "RDA Artifacts in GitHub",
-  "version": "23.11.7.1",
+  "name": "incident-details-remediation",
+  "label": "Incident Remediation Tools",
+  "description": "OIA Remediation Tools in Incident",
+  "version": "23.12.4",
   "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
+  "exportable": false,
   "dashboard_style": "auto",
-  "stream": "rda_github_push_stream",
+  "status_poller": {},
+  "dashboard_type": "template",
+  "template_variables": {
+    "PROJECT_ID": {
+      "default": null,
+      "contextId": "projectid"
+    },
+    "INCIDENT_ID": {
+      "default": null,
+      "contextId": "incidentid"
+    }
+  },
   "dashboard_filters": {
-    "time_filter": true,
-    "columns_filter": [
-      {
-        "id": "filepath",
-        "label": "Full Path",
-        "type": "TEXT"
-      },
-      {
-        "id": "artifact_type",
-        "label": "Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "file",
-        "label": "Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "user",
-        "label": "User",
-        "type": "TEXT"
-      },
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "rda_github_push_stream",
-        "title": "Type",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "artifact_type"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_github_push_stream",
-        "title": "User",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "user"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      }
-    ]
+    "time_filter": false,
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "RDA artifacts in GitHub",
+      "title": "Remediation Tools",
+      "show_filter": false,
+      "projects": [],
       "widgets": [
         {
-          "title": "RDA artifacts in GitHub",
-          "widget_type": "github_push_details",
-          "widget_id": "0850d622"
+          "title": "Remedial Tools",
+          "widget_type": "tabular",
+          "min_width": 6,
+          "height": 6,
+          "max_width": 6,
+          "paginated": true,
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 100,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getApplicableToolsDetails",
+            "stringified-params": true,
+            "parse-output": true,
+            "params": [
+              {
+                "type": "remedial",
+                "projectId": "{{PROJECT_ID}}"
+              }
+            ]
+          },
+          "widget_id": "network_tools"
         },
         {
-          "title": "RDA artifacts in GitHub",
+          "title": "Tools Run History",
           "widget_type": "tabular",
-          "stream": "rda_github_push_stream",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "filepath",
-            "artifact_type",
-            "file",
-            "user"
-          ],
-          "ts_column": "timestamp",
+          "min_width": 6,
+          "height": 6,
+          "max_width": 6,
           "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "columns": {
-            "filepath": {
-              "title": "Full Path"
-            },
-            "artifact_type": {
-              "title": "Type"
-            },
-            "file": {
-              "title": "Name"
-            },
-            "user": {
-              "title": "User"
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME"
-            }
-          },
-          "actions": [
-            {
-              "permission": "rda:github:push",
-              "title": "Push Now",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:push-github",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.git.push"
-                  }
-                ]
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 100,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getToolHistory",
+            "stringified-params": true,
+            "parse-output": true,
+            "params": [
+              {
+                "type": "remedial",
+                "projectId": "{{PROJECT_ID}}"
               }
-            }
-          ],
-          "widget_id": "01dc3a55"
+            ]
+          },
+          "widget_id": "tools_history"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "RDA artifacts in GitHub",
+      "title": "Remediation Tools",
+      "show_filter": false,
+      "projects": [],
       "widgets": [
         {
-          "title": "RDA artifacts in GitHub",
-          "widget_type": "github_push_details",
-          "widget_id": "0850d622"
+          "title": "Remedial Tools",
+          "widget_type": "tabular",
+          "min_width": 6,
+          "height": 6,
+          "max_width": 6,
+          "paginated": true,
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 100,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getApplicableToolsDetails",
+            "stringified-params": true,
+            "parse-output": true,
+            "params": [
+              {
+                "type": "remedial",
+                "projectId": "{{PROJECT_ID}}"
+              }
+            ]
+          },
+          "widget_id": "network_tools"
         },
         {
-          "title": "RDA artifacts in GitHub",
+          "title": "Tools Run History",
           "widget_type": "tabular",
-          "stream": "rda_github_push_stream",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "filepath",
-            "artifact_type",
-            "file",
-            "user"
-          ],
-          "ts_column": "timestamp",
+          "min_width": 6,
+          "height": 6,
+          "max_width": 6,
           "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "columns": {
-            "filepath": {
-              "title": "Full Path"
-            },
-            "artifact_type": {
-              "title": "Type"
-            },
-            "file": {
-              "title": "Name"
-            },
-            "user": {
-              "title": "User"
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME"
-            }
-          },
-          "actions": [
-            {
-              "permission": "rda:github:push",
-              "title": "Push Now",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:push-github",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.git.push"
-                  }
-                ]
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 100,
+          "api-endpoint": {
+            "service-name": "cfxdimensions-app-irm_service",
+            "namespace": "io.cfx.dimensions.app",
+            "version": "*",
+            "methodName": "invokeAppApi:getToolHistory",
+            "stringified-params": true,
+            "parse-output": true,
+            "params": [
+              {
+                "type": "remedial",
+                "projectId": "{{PROJECT_ID}}"
               }
-            }
-          ],
-          "widget_id": "01dc3a55"
+            ]
+          },
+          "widget_id": "tools_history"
         }
       ]
     }
