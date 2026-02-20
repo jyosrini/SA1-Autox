@@ -1,84 +1,65 @@
 {
-  "name": "rda-mgmt-page-tenant-pstreams",
-  "label": "Persistent Streams",
-  "description": " Persistent Streams Management Page",
+  "name": "device_inventory_from_alert_deleteme",
+  "label": "Inventory",
+  "description": "Device Inventory",
+  "dashboard_folder": "NetworkDevicePack",
+  "version": "24.12.2.2",
   "enabled": false,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
-  "stream": "rda_pstreams_meta",
+  "stream": "cisco_devices_inventory",
+  "dashboard_type": "template",
+  "template_variables": {
+    "CUST_ID": {
+      "contextId": "customerId"
+    },
+    "PROJ_ID": {
+      "contextId": "projectId"
+    },
+    "CUST_TAG": {
+      "contextId": "customer_tag"
+    },
+    "SERIAL_NUM": {
+      "contextId": "device_serial_number"
+    },
+    "DEVICE_IP": {
+      "contextId": "a_asset_ip_address"
+    }
+  },
   "dashboard_filters": {
     "time_filter": true,
-    "group_filters": [
-      {
-        "stream": "rda_pstreams_meta",
-        "title": "Datastore",
-        "duration_hours": 87600,
-        "limit": 200,
-        "group_by": [
-          "datastore_type"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
-      }
+    "extra_filter0": "(a_asset_ip_address is '{{DEVICE_IP}}' or a_asset_name is '{{DEVICE_IP}}') ",
+    "default_time_filter_labels": [
+      "Last 1 month"
     ],
     "columns_filter": [
       {
-        "id": "saved_time",
-        "label": "Saved Time",
-        "type": "DATETIME"
-      },
-      {
-        "id": "_RDA_Id",
-        "label": "_RDA_ID",
+        "id": "device_ip",
+        "label": "IP Address",
         "type": "TEXT"
       },
       {
-        "id": "attrs",
-        "label": "Attrs",
+        "id": "device_int_name",
+        "label": "Interface Name",
         "type": "TEXT"
       },
       {
-        "id": "reltime",
-        "label": "Reltime",
-        "type": "DATETIME"
-      },
-      {
-        "id": "system_defined",
-        "label": "System Defined",
+        "id": "device_interface_status",
+        "label": "Operational Status",
         "type": "TEXT"
       },
       {
-        "id": "collection_status",
-        "label": "Collection_status",
+        "id": "device_interface_admin_status",
+        "label": "Admin Status",
         "type": "TEXT"
       },
       {
-        "id": "count_",
-        "label": "Count_",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "database",
-        "label": "Database ",
+        "id": "device_int_in_octets",
+        "label": "ifHCInOctets",
         "type": "TEXT"
       },
       {
-        "id": "datastore_type",
-        "label": "Datastore Type",
-        "type": "TEXt"
-      },
-      {
-        "id": "status",
-        "label": "Status ",
+        "id": "device_int_out_octets",
+        "label": "ifHCOutOctets",
         "type": "TEXT"
-      },
-      {
-        "id": "retention_days",
-        "label": "Retention Days",
-        "type": "DOUBLE"
       },
       {
         "id": "timestamp",
@@ -86,210 +67,106 @@
         "type": "DATETIME"
       },
       {
-        "id": "name",
-        "label": "Name",
+        "id": "delta",
+        "label": "Last Polled",
+        "type": "HUMANIZE_TIME_DELTA"
+      },
+      {
+        "id": "projectId",
+        "label": "Project ID",
+        "type": "TEXT"
+      },
+      {
+        "id": "device_ip",
+        "label": "Device IP",
+        "type": "TEXT"
+      },
+      {
+        "id": "device_hostname",
+        "label": "Device Hostname",
+        "type": "TEXT"
+      },
+      {
+        "id": "device_model",
+        "label": "Device Model",
+        "type": "TEXT"
+      },
+      {
+        "id": "device_serial_number",
+        "label": "Device Serial Number",
+        "type": "TEXT"
+      },
+      {
+        "id": "device_vendor",
+        "label": "Device Vendor",
+        "type": "TEXT"
+      },
+      {
+        "id": "device_int_name",
+        "label": "Device Interface Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "device_int_shortname",
+        "label": "Device Interface Short Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "CLLI_code",
+        "label": "CLLI Code",
+        "type": "TEXT"
+      },
+      {
+        "id": "remote_device_ip",
+        "label": "Remote Device IP",
+        "type": "TEXT"
+      },
+      {
+        "id": "remote_device_id",
+        "label": "Remote Device ID",
+        "type": "TEXT"
+      },
+      {
+        "id": "remote_device_int_name",
+        "label": "Remote Interface Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "remote_device_capabilities",
+        "label": "Remote Device Capabilities",
         "type": "TEXT"
       }
-    ]
+    ],
+    "group_filters": []
   },
   "dashboard_sections": [
     {
-      "title": "Persistent Streams",
+      "title": "Device View",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Persistent Streams",
-          "widget_type": "tabular",
-          "stream": "rda_pstreams_meta",
-          "duration_hours": 87600,
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "name",
-            "datastore_type",
-            "index_name",
-            "collection_status",
-            "system_defined",
-            "database"
-          ],
-          "ts_column": "saved_time",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "columns": {
-            "name": {
-              "title": "Name",
-              "key": true
-            },
-            "datastore_type": {
-              "title": "Datastore"
-            },
-            "index_name": {
-              "title": "Index / Table Name"
-            },
-            "collection_status": {
-              "title": "Collection Status"
-            },
-            "retention_days": {
-              "title": "Retention (Days)",
-              "sortable": false
-            },
-            "system_defined": {
-              "title": "System PStream",
-              "visible": false
-            },
-            "saved_time": {
-              "title": "Saved Time",
-              "type": "DATETIME"
-            },
-            "timestamp": {
-              "title": "When",
-              "type": "HUMANIZE_TIME_DELTA",
-              "source-column": "saved_time",
-              "sortable": false
-            },
-            "ts_column": {
-              "title": "Timestamp Column",
-              "visible": false,
-              "key": true
-            }
-          },
-          "custom_columns": [
-            {
-              "id": "pstream_name",
-              "title": "PSTREAM",
-              "expr": "name",
-              "visible": false,
-              "key": true
-            },
-            {
-              "id": "database",
-              "title": "Database",
-              "expr": "'default' if not database else database"
-            },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
-              "visiblle": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
-            }
-          ],
-          "actions": [
-            {
-              "permission": "rda:pstream:view",
-              "appName": "user-dashboard/rda-pstream-app",
-              "displayLabelColumnId": "name",
-              "drillDownLinkField": "name",
-              "identifier": "launch.url.dashboard",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            }
-          ],
-          "widget_id": "09bfc7c3"
+          "widget_type": "label",
+          "max_width": 12,
+          "height": 0.5,
+          "min_width": 12,
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Inventory</a></h1></div>",
+          "widget_id": "33317e49"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Persistent Streams",
+      "title": "Device View",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Persistent Streams",
-          "widget_type": "tabular",
-          "stream": "rda_pstreams_meta",
-          "duration_hours": 87600,
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "name",
-            "datastore_type",
-            "index_name",
-            "collection_status",
-            "system_defined",
-            "database"
-          ],
-          "ts_column": "saved_time",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "columns": {
-            "name": {
-              "title": "Name",
-              "key": true
-            },
-            "datastore_type": {
-              "title": "Datastore"
-            },
-            "index_name": {
-              "title": "Index / Table Name"
-            },
-            "collection_status": {
-              "title": "Collection Status"
-            },
-            "retention_days": {
-              "title": "Retention (Days)",
-              "sortable": false
-            },
-            "system_defined": {
-              "title": "System PStream",
-              "visible": false
-            },
-            "saved_time": {
-              "title": "Saved Time",
-              "type": "DATETIME"
-            },
-            "timestamp": {
-              "title": "When",
-              "type": "HUMANIZE_TIME_DELTA",
-              "source-column": "saved_time",
-              "sortable": false
-            },
-            "ts_column": {
-              "title": "Timestamp Column",
-              "visible": false,
-              "key": true
-            }
-          },
-          "custom_columns": [
-            {
-              "id": "pstream_name",
-              "title": "PSTREAM",
-              "expr": "name",
-              "visible": false,
-              "key": true
-            },
-            {
-              "id": "database",
-              "title": "Database",
-              "expr": "'default' if not database else database"
-            },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
-              "visiblle": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
-            }
-          ],
-          "actions": [
-            {
-              "permission": "rda:pstream:view",
-              "appName": "user-dashboard/rda-pstream-app",
-              "displayLabelColumnId": "name",
-              "drillDownLinkField": "name",
-              "identifier": "launch.url.dashboard",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            }
-          ],
-          "widget_id": "09bfc7c3"
+          "widget_type": "label",
+          "max_width": 12,
+          "height": 0.5,
+          "min_width": 12,
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Inventory</a></h1></div>",
+          "widget_id": "33317e49"
         }
       ]
     }
