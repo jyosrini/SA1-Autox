@@ -1,43 +1,47 @@
 {
-  "name": "rda-mgmt-page-dashboardgroups",
-  "label": "Dashboards",
-  "description": " User Dashboard Management Page",
-  "enabled": false,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
+  "name": "rda-pstream-stats-template",
+  "label": "Persistent Stream Stats",
+  "description": "Persistent Stream Stats",
+  "enabled": true,
+  "dashboard_type": "template",
+  "dashboard_style": "auto",
+  "template_variables": {
+    "PSTREAM_NAME": {
+      "contextId": "pstream_name"
+    },
+    "TS_COLUMN": {
+      "contextId": "ts_column"
+    }
+  },
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Dashboard Groups",
+      "title": "Stats",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Dashboard Groups",
-          "widget_type": "portal_tabular",
-          "reportId": "dashboard.groups.list.tabular",
-          "height": 10,
-          "min_wdith": 12,
-          "paginated": true,
-          "widget_id": "c821f1a3"
+          "title": "Details",
+          "widget_type": "pstream_details",
+          "stream": "{{PSTREAM_NAME}}",
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Dashboard Groups",
+      "title": "Stats",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Dashboard Groups",
-          "widget_type": "portal_tabular",
-          "reportId": "dashboard.groups.list.tabular",
-          "height": 10,
-          "min_wdith": 12,
-          "paginated": true,
-          "widget_id": "c821f1a3"
+          "title": "Details",
+          "widget_type": "pstream_details",
+          "stream": "{{PSTREAM_NAME}}",
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
         }
       ]
     }
