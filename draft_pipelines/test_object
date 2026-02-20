@@ -1,3 +1,9 @@
-@exec:get-input
- --> @dm:selectcolumns include='^region_name$|^aws_access_key_id$|^aws_secret_access_key$'
- --> @diagnostictools:AwsAlarms region_name = 'region_name' and aws_access_key_id = 'aws_access_key_id' and aws_secret_access_key='aws_secret_access_key' and json_output_flag = 'True'
+@dm:object-add name = "upload_test_file" & folder = "TEST" & input_file = "'nikijosh@cisco.com/e30a7c2249004035a6ad4719b7db65a6/Stream2A.csv.zip'"
+ ## --> @dm:object-list
+
+ ## --> @dm:save name="path"
+
+ ## --> @dm:object-get name="Stream2A.csv.zip" and folder="'nikijosh@cisco.com/e30a7c2249004035a6ad4719b7db65a6/'" and save_to_dir="/root/notebooks"
+
+ --> @dm:object-get name="Stream2A.csv.zip" and folder="TEST" and save_to_file="kt.zip"
+ --> @dm:sleep seconds = 1
