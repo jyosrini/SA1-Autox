@@ -1,36 +1,60 @@
 {
-  "name": "rda-pstreams-live-stats",
-  "label": "Persistent Stream Stats",
-  "description": "Persistent Stream Stats",
-  "enabled": true,
+  "name": "rda-health-agents",
+  "label": "Agents",
+  "description": "Agents",
+  "enabled": false,
   "dashboard_type": "dashboard",
-  "dashboard_style": "auto",
   "dashboard_folder": "System",
+  "dashboard_style": "auto",
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Live Persistent Stream Stats",
+      "title": "Agents",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Live Persistent Stream Stats",
-          "widget_type": "pstreams_live_stats",
-          "widget_id": "2da925b3"
+          "title": "RDA Agents",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.agents.tabular",
+          "paginated": true,
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "c2488225"
+        },
+        {
+          "title": "Event Gateway Endpoints",
+          "widget_type": "portal_tabular",
+          "reportId": "eventgw.status.tabular",
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "9cc1d5b0"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Live Persistent Stream Stats",
+      "title": "Agents",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Live Persistent Stream Stats",
-          "widget_type": "pstreams_live_stats",
-          "widget_id": "2da925b3"
+          "title": "RDA Agents",
+          "widget_type": "portal_tabular",
+          "reportId": "registry.agents.tabular",
+          "paginated": true,
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "c2488225"
+        },
+        {
+          "title": "Event Gateway Endpoints",
+          "widget_type": "portal_tabular",
+          "reportId": "eventgw.status.tabular",
+          "height": 6,
+          "min_width": 10,
+          "widget_id": "9cc1d5b0"
         }
       ]
     }
