@@ -1,7 +1,6 @@
-@c:new-block
- --> @dm:recall name='sweol-data-run-scan'
- --> @dm:eval issues='json_dumps(issues)'
- --> @dm:explode-json column="issues"
- --> @dm:eval eoXAlert='json_dumps(eoXAlert)'
- --> @dm:explode-json column="eoXAlert"
- --> @dm:save name='test-sweol-explode'
+@exec:get-input
+ --> @dm:explode-json column='node'
+ --> @dm:add-missing-columns columns='url'
+ --> @dm:selectcolumns include='^url$'
+ --> @dm:eval tool_url = "url"
+ --> @diagnostictools:checkurl column_name_url = 'tool_url' and json_output_flag = 'True'
