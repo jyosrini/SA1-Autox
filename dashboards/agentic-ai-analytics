@@ -1,164 +1,72 @@
 {
-  "name": "agentic-ai-analytics",
-  "label": "Agentic AI",
-  "description": "Agentic AI",
+  "name": "externalmcp-dashboard",
+  "label": "External MCP",
+  "description": "External MCP details",
   "enabled": true,
-  "live_edit": true,
-  "version": "25.3.10.1",
   "dashboard_type": "template",
+  "dashboard_folder": "AI",
   "dashboard_filters": {
-    "time_filter": false,
-    "group_filters": [
-      {
-        "stream": "rda_agentic_ai_agents",
-        "title": "Agents",
-        "group_by": [
-          "agent_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 999999,
-        "agg": "value_count",
-        "column": "_id",
-        "type": "int",
-        "show_counts": false
-      }
-    ]
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Agents",
-      "show_filter": true,
+      "title": "AI",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Agents",
+          "title": "Domains",
           "widget_type": "tabular",
           "min_width": 12,
           "height": 6,
           "max_width": 12,
           "timebased": false,
           "timestamp": "timestamp",
-          "stream": "rda_agentic_ai_agents",
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
+          "stream": "mcp_external",
           "columns": {
-            "agent_id": {
-              "title": "Agent ID",
-              "key": true,
-              "hidden": true
-            },
-            "agent_name": {
+            "domain": {
               "title": "Name",
-              "defaultWidth": 150,
               "key": true
             },
             "description": {
-              "title": "Agent Task",
-              "key": true
+              "title": "Description",
+              "key": false
             },
-            "status_color": {
+            "enabled_color": {
               "type": "COLOR-MAP",
-              "source-column": "status",
+              "source-column": "enabled",
               "color-map": {
-                "CREATED": "#4CAF50",
-                "CREATING": "#FF5722",
-                "FAILED": "#B71C1C"
+                "yes": "#4CAF50",
+                "no": "#B71C1C"
               }
             },
-            "status": {
-              "title": "Status",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.status_color }}'}}' > {{'{{ row.status }}'}} </span>"
+            "enabled": {
+              "title": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.enabled_color }}'}}' > {{'{{ row.enabled }}'}} </span>",
+              "key": false
             },
-            "message": {
-              "title": "Message",
-              "key": false,
-              "formatter": "truncate"
+            "tools": {
+              "title": "Tools",
+              "key": false
+            },
+            "textResources": {
+              "title": "Resources",
+              "key": false
+            },
+            "contents": {
+              "title": "YAML",
+              "defaultWidth": 500,
+              "visible": false,
+              "key": true
             }
           },
-          "widget_id": "2630645f",
+          "widget_id": "2630645a",
           "actions": [
             {
               "permission": "rda:github:view",
-              "title": "Add Agent",
+              "title": "Add",
               "type": "POPUP_FORM",
               "selectionType": "NONE",
-              "identifier": "saas-service-action:agenticai-add-agent",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.agenticai.add.agent"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:github:view",
-              "title": "Edit Task Graph",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:agenticai-edit-task-graph",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.agenticai.edit.task.graph"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard/agentic-ai-agents-app",
-              "identifier": "launch.dashboard.agent.dashboard",
-              "drillDownLinkField": "agent_name",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "agent_name",
-                    "paramId": "agent"
-                  }
-                ]
-              },
-              "selectionType": "SINGLE",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission1": "rda:github:view",
-              "title": "Execute Agent",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:agenticai-execute",
+              "identifier": "saas-service-action:aiadministration-add-mcpserver",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -167,35 +75,112 @@
                 "params": [
                   {
                     "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Execute"
-                        }
-                      ]
+                    "formData": {
+                      "server_json": "{}"
                     },
                     "formDefinition": {
                       "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
                       "formFieldList": [
                         {
-                          "help": "Are you sure you want to execute the agent?",
+                          "help": "Enter Domain Name",
                           "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "Are you sure you want to execute the agent?",
+                          "required": true,
+                          "editable": true,
+                          "label": "MCP Domain Name",
+                          "controlType": "TEXT_FIELD",
                           "hidden": false,
-                          "fieldId": "name"
+                          "fieldId": "name",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "layout-group-id",
+                              "value": "pstream-details"
+                            }
+                          ]
+                        },
+                        {
+                          "fieldId": "contents",
+                          "label": "Domain YAML",
+                          "description": "Domain YAML",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "PYTHON_EDITOR",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "lang",
+                              "value": "yaml"
+                            }
+                          ]
                         }
                       ]
                     },
                     "actions": [
                       {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "isSync": false
+                        "permission": "rda:github:view",
+                        "title": "Add",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-add-mcpserver-addaction",
+                        "pstreamName": "mcp_external",
+                        "operation": "ADD"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-edit-mcpserver",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "form_data_field_mapping": {
+                      "contents": "contents"
+                    },
+                    "formData": {},
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "formFieldList": [
+                        {
+                          "fieldId": "contents",
+                          "label": "Domain YAML",
+                          "description": "Domain YAML",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "PYTHON_EDITOR",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "lang",
+                              "value": "yaml"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "permission": "rda:github:view",
+                        "title": "Edit",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-edit-mcpserver-editaction",
+                        "pstreamName": "mcp_external",
+                        "operation": "UPDATE",
+                        "cfxql_query": "domain contains \"{{domain}}\""
                       }
                     ]
                   }
@@ -207,7 +192,7 @@
               "title": "Delete",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "identifier": "saas-service-action:aiadministration-delete-mcpserver",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -216,499 +201,110 @@
                 "params": [
                   {
                     "formId": "rda.saas.dynamic.form",
+                    "formData": {},
                     "formDefinition": {
                       "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
                       "formFieldList": [
                         {
-                          "help": "Are you sure you want to delete the agent?",
+                          "help": "Are you sure you want to delete this MCP domain?",
                           "dataType": "string",
                           "controlType": "LABEL",
                           "required": false,
                           "editable": false,
-                          "label": "Are you sure you want to delete the agent?",
+                          "label": "Are you sure you want to delete this MCP domain?",
                           "hidden": false,
-                          "fieldId": "name"
+                          "fieldId": "delete_form_field"
                         }
                       ]
                     },
                     "actions": [
                       {
+                        "permission": "rda:github:view",
+                        "title": "Delete",
                         "type": "UPDATE_PSTREAM",
-                        "pstreamName": "rda_agentic_ai_agents",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-add-mcpserver-deleteaction",
+                        "pstreamName": "mcp_external",
                         "operation": "DELETE",
-                        "cfxql_query": "{% raw %}agent_id is '{{agent_id}}' and agent_name is '{{agent_name}}'{% endraw %}"
+                        "cfxql_query": "domain contains \"{{domain}}\""
                       }
                     ],
                     "formActionList": {
                       "formActions": [
                         {
-                          "actionLabel": "Delete",
-                          "type": "SUBMIT",
-                          "identifier": "Submit"
+                          "identifier": "Submit",
+                          "actionLabel": "Delete"
                         }
                       ]
                     }
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATING",
-                    "fieldId": "status"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "FAILED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:github:view",
-              "title": "Run Test",
-              "type": "POPUP_FORM",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "agent_id",
-                    "paramId": "agent_id"
-                  }
-                ]
-              },
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Run"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "fieldId": "run_name",
-                          "label": "Run Name",
-                          "help": "This will let the user add the name to the Test",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "Select the LLM to use.",
-                          "dataType": "string",
-                          "controlType": "COMBO_BOX",
-                          "required": true,
-                          "editable": true,
-                          "label": "LLM",
-                          "hidden": false,
-                          "fieldId": "llm",
-                          "lovSourceType": "pstream",
-                          "lovSourceParams": {
-                            "name": "rda_secrets_meta",
-                            "valueColumn": "name",
-                            "labelColumn": "name",
-                            "query": "type is llm"
-                          },
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "TestName",
-                          "dataType": "string",
-                          "required": false,
-                          "editable": true,
-                          "hidden": false,
-                          "fieldId": "selected_test",
-                          "controlType": "SELECTOR_TABLE",
-                          "controlPropertyList": [
-                            {
-                              "attribute": "column-key",
-                              "value": "test_name"
-                            },
-                            {
-                              "attribute": "selection",
-                              "value": "MULTIPLE"
-                            }
-                          ],
-                          "widget": {
-                            "title": "Tests",
-                            "timebased": false,
-                            "max_width": 12,
-                            "height": 8,
-                            "min_width": 12,
-                            "stream": "rda_agentic_ai_tests",
-                            "ts_column": "timestamp",
-                            "extra_filter": "agent_id is '$agent_id'",
-                            "sorting": [],
-                            "columns": {
-                              "test_name": {
-                                "title": "Test Name",
-                                "key": true
-                              },
-                              "test_description": {
-                                "title": "Test Description",
-                                "key": false
-                              },
-                              "test_id": {
-                                "title": "Test ID",
-                                "key": true
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "show_submission_prompt": true,
-                        "submission_title": "Executing Test Run",
-                        "submission_message": "The test run has been initiated and is currently executing in the background. Please check the Test Runs page in Test Details.",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:github:view",
-              "title": "Execute Agent",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Execute"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "fieldId": "run_name",
-                          "label": "Run Name",
-                          "help": "This will let the user add the name to the Test",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "Select the LLM to use.",
-                          "dataType": "string",
-                          "controlType": "COMBO_BOX",
-                          "required": true,
-                          "editable": true,
-                          "label": "LLM",
-                          "hidden": false,
-                          "fieldId": "llm",
-                          "lovSourceType": "pstream",
-                          "lovSourceParams": {
-                            "name": "rda_secrets_meta",
-                            "valueColumn": "name",
-                            "labelColumn": "name",
-                            "query": "type is llm"
-                          },
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "fieldId": "capture_mode",
-                          "label": "Capture Mode",
-                          "description": "Capture mode will download the stream query outputs and prepare a zip file so that it can be used for other tests.",
-                          "required": false,
-                          "default": false,
-                          "dataType": "boolean",
-                          "hidden": false,
-                          "fieldControlPropertyList": [
-                            {
-                              "fieldId": "download_label",
-                              "controlActions": [
-                                "ShowField"
-                              ],
-                              "condition": {
-                                "selectionValue": "true"
-                              }
-                            }
-                          ],
-                          "editable": true,
-                          "controlType": "BOOLEAN_FIELD"
-                        },
-                        {
-                          "help": "The output file will be availabe in My Downloads.",
-                          "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "The output file will be availabe in My Downloads.",
-                          "hidden": true,
-                          "fieldId": "download_label"
-                        },
-                        {
-                          "fieldId": "dryrun_mode",
-                          "label": "Dry Run",
-                          "description": "",
-                          "help": "In dry run mode all the steps of type write_stream and run_pipeline will be skipped",
-                          "required": false,
-                          "default": false,
-                          "dataType": "boolean",
-                          "hidden": false,
-                          "editable": true,
-                          "controlType": "BOOLEAN_FIELD"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "show_submission_prompt": true,
-                        "submission_title": "Agent Execution in Progress",
-                        "submission_message": "The agent is currently executing in the background. If capture is enabled, the captured data will be available in MyDownloads upon completion.",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
                   }
                 ]
               }
             }
           ]
         }
-      ],
-      "saved_time": "2024-11-19T07:28:36.803725"
+      ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Agents",
-      "show_filter": true,
+      "title": "AI",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Agents",
+          "title": "Domains",
           "widget_type": "tabular",
           "min_width": 12,
           "height": 6,
           "max_width": 12,
           "timebased": false,
           "timestamp": "timestamp",
-          "stream": "rda_agentic_ai_agents",
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
+          "stream": "mcp_external",
           "columns": {
-            "agent_id": {
-              "title": "Agent ID",
-              "key": true,
-              "hidden": true
-            },
-            "agent_name": {
+            "domain": {
               "title": "Name",
-              "defaultWidth": 150,
               "key": true
             },
             "description": {
-              "title": "Agent Task",
-              "key": true
+              "title": "Description",
+              "key": false
             },
-            "status_color": {
+            "enabled_color": {
               "type": "COLOR-MAP",
-              "source-column": "status",
+              "source-column": "enabled",
               "color-map": {
-                "CREATED": "#4CAF50",
-                "CREATING": "#FF5722",
-                "FAILED": "#B71C1C"
+                "yes": "#4CAF50",
+                "no": "#B71C1C"
               }
             },
-            "status": {
-              "title": "Status",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.status_color }}'}}' > {{'{{ row.status }}'}} </span>"
+            "enabled": {
+              "title": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.enabled_color }}'}}' > {{'{{ row.enabled }}'}} </span>",
+              "key": false
             },
-            "message": {
-              "title": "Message",
-              "key": false,
-              "formatter": "truncate"
+            "tools": {
+              "title": "Tools",
+              "key": false
+            },
+            "textResources": {
+              "title": "Resources",
+              "key": false
+            },
+            "contents": {
+              "title": "YAML",
+              "defaultWidth": 500,
+              "visible": false,
+              "key": true
             }
           },
-          "widget_id": "2630645f",
+          "widget_id": "2630645a",
           "actions": [
             {
               "permission": "rda:github:view",
-              "title": "Add Agent",
+              "title": "Add",
               "type": "POPUP_FORM",
               "selectionType": "NONE",
-              "identifier": "saas-service-action:agenticai-add-agent",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.agenticai.add.agent"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:github:view",
-              "title": "Edit Task Graph",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:agenticai-edit-task-graph",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.agenticai.edit.task.graph"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard/agentic-ai-agents-app",
-              "identifier": "launch.dashboard.agent.dashboard",
-              "drillDownLinkField": "agent_name",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "agent_name",
-                    "paramId": "agent"
-                  }
-                ]
-              },
-              "selectionType": "SINGLE",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE",
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission1": "rda:github:view",
-              "title": "Execute Agent",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:agenticai-execute",
+              "identifier": "saas-service-action:aiadministration-add-mcpserver",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -717,35 +313,112 @@
                 "params": [
                   {
                     "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Execute"
-                        }
-                      ]
+                    "formData": {
+                      "server_json": "{}"
                     },
                     "formDefinition": {
                       "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
                       "formFieldList": [
                         {
-                          "help": "Are you sure you want to execute the agent?",
+                          "help": "Enter Domain Name",
                           "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "Are you sure you want to execute the agent?",
+                          "required": true,
+                          "editable": true,
+                          "label": "MCP Domain Name",
+                          "controlType": "TEXT_FIELD",
                           "hidden": false,
-                          "fieldId": "name"
+                          "fieldId": "name",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "layout-group-id",
+                              "value": "pstream-details"
+                            }
+                          ]
+                        },
+                        {
+                          "fieldId": "contents",
+                          "label": "Domain YAML",
+                          "description": "Domain YAML",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "PYTHON_EDITOR",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "lang",
+                              "value": "yaml"
+                            }
+                          ]
                         }
                       ]
                     },
                     "actions": [
                       {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "isSync": false
+                        "permission": "rda:github:view",
+                        "title": "Add",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-add-mcpserver-addaction",
+                        "pstreamName": "mcp_external",
+                        "operation": "ADD"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-edit-mcpserver",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "form_data_field_mapping": {
+                      "contents": "contents"
+                    },
+                    "formData": {},
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "formFieldList": [
+                        {
+                          "fieldId": "contents",
+                          "label": "Domain YAML",
+                          "description": "Domain YAML",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "PYTHON_EDITOR",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "lang",
+                              "value": "yaml"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "permission": "rda:github:view",
+                        "title": "Edit",
+                        "type": "UPDATE_PSTREAM",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-edit-mcpserver-editaction",
+                        "pstreamName": "mcp_external",
+                        "operation": "UPDATE",
+                        "cfxql_query": "domain contains \"{{domain}}\""
                       }
                     ]
                   }
@@ -757,7 +430,7 @@
               "title": "Delete",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "identifier": "saas-service-action:aiadministration-delete-mcpserver",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -766,362 +439,49 @@
                 "params": [
                   {
                     "formId": "rda.saas.dynamic.form",
+                    "formData": {},
                     "formDefinition": {
                       "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
                       "formFieldList": [
                         {
-                          "help": "Are you sure you want to delete the agent?",
+                          "help": "Are you sure you want to delete this MCP domain?",
                           "dataType": "string",
                           "controlType": "LABEL",
                           "required": false,
                           "editable": false,
-                          "label": "Are you sure you want to delete the agent?",
+                          "label": "Are you sure you want to delete this MCP domain?",
                           "hidden": false,
-                          "fieldId": "name"
+                          "fieldId": "delete_form_field"
                         }
                       ]
                     },
                     "actions": [
                       {
+                        "permission": "rda:github:view",
+                        "title": "Delete",
                         "type": "UPDATE_PSTREAM",
-                        "pstreamName": "rda_agentic_ai_agents",
+                        "selectionType": "NONE",
+                        "identifier": "saas-service-action:aiadministration-add-mcpserver-deleteaction",
+                        "pstreamName": "mcp_external",
                         "operation": "DELETE",
-                        "cfxql_query": "{% raw %}agent_id is '{{agent_id}}' and agent_name is '{{agent_name}}'{% endraw %}"
+                        "cfxql_query": "domain contains \"{{domain}}\""
                       }
                     ],
                     "formActionList": {
                       "formActions": [
                         {
-                          "actionLabel": "Delete",
-                          "type": "SUBMIT",
-                          "identifier": "Submit"
+                          "identifier": "Submit",
+                          "actionLabel": "Delete"
                         }
                       ]
                     }
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATING",
-                    "fieldId": "status"
-                  },
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "FAILED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:github:view",
-              "title": "Run Test",
-              "type": "POPUP_FORM",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "agent_id",
-                    "paramId": "agent_id"
-                  }
-                ]
-              },
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Run"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "fieldId": "run_name",
-                          "label": "Run Name",
-                          "help": "This will let the user add the name to the Test",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "Select the LLM to use.",
-                          "dataType": "string",
-                          "controlType": "COMBO_BOX",
-                          "required": true,
-                          "editable": true,
-                          "label": "LLM",
-                          "hidden": false,
-                          "fieldId": "llm",
-                          "lovSourceType": "pstream",
-                          "lovSourceParams": {
-                            "name": "rda_secrets_meta",
-                            "valueColumn": "name",
-                            "labelColumn": "name",
-                            "query": "type is llm"
-                          },
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "TestName",
-                          "dataType": "string",
-                          "required": false,
-                          "editable": true,
-                          "hidden": false,
-                          "fieldId": "selected_test",
-                          "controlType": "SELECTOR_TABLE",
-                          "controlPropertyList": [
-                            {
-                              "attribute": "column-key",
-                              "value": "test_name"
-                            },
-                            {
-                              "attribute": "selection",
-                              "value": "MULTIPLE"
-                            }
-                          ],
-                          "widget": {
-                            "title": "Tests",
-                            "timebased": false,
-                            "max_width": 12,
-                            "height": 8,
-                            "min_width": 12,
-                            "stream": "rda_agentic_ai_tests",
-                            "ts_column": "timestamp",
-                            "extra_filter": "agent_id is '$agent_id'",
-                            "sorting": [],
-                            "columns": {
-                              "test_name": {
-                                "title": "Test Name",
-                                "key": true
-                              },
-                              "test_description": {
-                                "title": "Test Description",
-                                "key": false
-                              },
-                              "test_id": {
-                                "title": "Test ID",
-                                "key": true
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "show_submission_prompt": true,
-                        "submission_title": "Executing Test Run",
-                        "submission_message": "The test run has been initiated and is currently executing in the background. Please check the Test Runs page in Test Details.",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:github:view",
-              "title": "Execute Agent",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "params": [
-                  {
-                    "formId": "rda.saas.dynamic.form",
-                    "formActionList": {
-                      "formActions": [
-                        {
-                          "identifier": "Submit",
-                          "actionLabel": "Execute"
-                        }
-                      ]
-                    },
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "fieldId": "run_name",
-                          "label": "Run Name",
-                          "help": "This will let the user add the name to the Test",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "hidden": false,
-                          "editable": true,
-                          "required": true,
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "help": "Select the LLM to use.",
-                          "dataType": "string",
-                          "controlType": "COMBO_BOX",
-                          "required": true,
-                          "editable": true,
-                          "label": "LLM",
-                          "hidden": false,
-                          "fieldId": "llm",
-                          "lovSourceType": "pstream",
-                          "lovSourceParams": {
-                            "name": "rda_secrets_meta",
-                            "valueColumn": "name",
-                            "labelColumn": "name",
-                            "query": "type is llm"
-                          },
-                          "controlPropertyList": [
-                            {
-                              "attribute": "layout-group-id",
-                              "value": "details"
-                            },
-                            {
-                              "attribute": "layout-percent",
-                              "value": "50"
-                            }
-                          ]
-                        },
-                        {
-                          "fieldId": "capture_mode",
-                          "label": "Capture Mode",
-                          "description": "Capture mode will download the stream query outputs and prepare a zip file so that it can be used for other tests.",
-                          "required": false,
-                          "default": false,
-                          "dataType": "boolean",
-                          "hidden": false,
-                          "fieldControlPropertyList": [
-                            {
-                              "fieldId": "download_label",
-                              "controlActions": [
-                                "ShowField"
-                              ],
-                              "condition": {
-                                "selectionValue": "true"
-                              }
-                            }
-                          ],
-                          "editable": true,
-                          "controlType": "BOOLEAN_FIELD"
-                        },
-                        {
-                          "help": "The output file will be availabe in My Downloads.",
-                          "dataType": "string",
-                          "controlType": "LABEL",
-                          "required": false,
-                          "editable": false,
-                          "label": "The output file will be availabe in My Downloads.",
-                          "hidden": true,
-                          "fieldId": "download_label"
-                        },
-                        {
-                          "fieldId": "dryrun_mode",
-                          "label": "Dry Run",
-                          "description": "",
-                          "help": "In dry run mode all the steps of type write_stream and run_pipeline will be skipped",
-                          "required": false,
-                          "default": false,
-                          "dataType": "boolean",
-                          "hidden": false,
-                          "editable": true,
-                          "controlType": "BOOLEAN_FIELD"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "execute-agent",
-                        "show_submission_prompt": true,
-                        "submission_title": "Agent Execution in Progress",
-                        "submission_message": "The agent is currently executing in the background. If capture is enabled, the captured data will be available in MyDownloads upon completion.",
-                        "isSync": false
-                      }
-                    ]
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "operator": "OR",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "CREATED",
-                    "fieldId": "status"
                   }
                 ]
               }
             }
           ]
         }
-      ],
-      "saved_time": "2024-11-19T07:28:36.803725"
+      ]
     }
   ]
 }
