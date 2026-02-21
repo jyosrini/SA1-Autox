@@ -1,410 +1,814 @@
 {
-  "name": "device_syslog_from_alert_fault",
-  "description": "Device Syslog",
-  "label": "Syslogs",
-  "enabled": false,
+  "name": "oia-alert-tracking-os",
+  "label": "Open Search Based OIA Alert Tracking",
+  "description": "Open Search Based OIA Alert Tracking",
+  "version": "23.1.2",
+  "enabled": true,
+  "stream": "oia-events-stream",
+  "debug": true,
+  "dashboard_style": "tabbed",
+  "status_poller": {},
   "dashboard_type": "template",
-  "dashboard_folder": "NetworkDevicePack",
   "template_variables": {
-    "CUST_ID": {
-      "contextId": "customer_id"
-    },
-    "PROJ_ID": {
-      "contextId": "project_id"
-    },
-    "CUST_TAG": {
-      "contextId": "customer_tag"
-    },
-    "DEVICE": {
-      "contextId": "device_ip"
+    "PROJECT_ID": {
+      "default": [
+        "61ed50a5-8634-4464-a17e-adf6b40225b2"
+      ],
+      "contextId": "projectId"
     }
   },
-  "stream": "syslog_udp_event_stream_all",
-  "version": "23.9.6.2",
   "dashboard_filters": {
     "time_filter": true,
-    "extra_filter1": "(customer_tag is '{{CUST_TAG}}')",
-    "default_time_filter_labels": [
-      "Last 1 month"
-    ],
-    "group_filters": [
+    "default_time_filter_non_removable": true,
+    "show_default_time_filter": false,
+    "additional_datetime_column_filters": [
       {
-        "stream": "syslog_udp_event_stream_all",
-        "title": "Severity",
-        "duration_hours": 1080,
-        "group_by": [
-          "syslog_severity"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "count_"
+        "id": "e_createdat",
+        "label": "Created At"
       },
       {
-        "stream": "syslog_udp_event_stream_all",
-        "title": "Urgency",
-        "duration_hours": 1080,
-        "group_by": [
-          "urgency"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "count_"
-      },
-      {
-        "stream": "syslog_udp_event_stream_all",
-        "title": "Impact",
-        "duration_hours": 1080,
-        "group_by": [
-          "impact"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "count_"
+        "id": "e_updatedat",
+        "label": "Updated At"
       }
     ],
     "columns_filter": [
       {
-        "id": "cisco_code",
-        "label": "Cisco Code",
-        "type": "TEXT"
-      },
-      {
-        "id": "log_message",
+        "id": "e_label",
         "label": "Message",
         "type": "TEXT"
       },
       {
-        "id": "short_description",
-        "label": "Description",
+        "id": "e_customerid",
+        "label": "Customer ID",
         "type": "TEXT"
       },
       {
-        "id": "syslog_severity",
+        "id": "e_status",
+        "label": "Phase Status",
+        "type": "TEXT"
+      },
+      {
+        "id": "e_sourcesystemname",
+        "label": "Source",
+        "type": "TEXT"
+      },
+      {
+        "id": "e_message",
+        "label": "Comments",
+        "type": "TEXT"
+      },
+      {
+        "id": "e_projectid",
+        "label": "Organizations",
+        "type": "TEXT"
+      },
+      {
+        "id": "e_severity",
         "label": "Severity",
         "type": "TEXT"
       },
       {
-        "id": "impact",
-        "label": "Impact",
+        "id": "e_sourceeventid",
+        "label": "Source Event Id",
         "type": "TEXT"
       },
       {
-        "id": "urgency",
-        "label": "Urgency",
+        "id": "e_eventstate",
+        "label": "Phase",
         "type": "TEXT"
       },
       {
-        "id": "rda_gw_client_ip",
-        "label": "IP Address",
+        "id": "e_triggeredevent",
+        "label": "Event Type",
         "type": "TEXT"
       },
       {
-        "id": "raw",
-        "label": "Raw Event",
+        "id": "e_processedeventid",
+        "label": "Alert Id",
         "type": "TEXT"
       },
       {
-        "id": "log_message",
-        "label": "Message",
-        "type": "TEXT"
-      },
-      {
-        "id": "short_description",
-        "label": "Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "syslog_severity_num",
-        "label": "Severity Number",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "rda_stream",
-        "label": "RDA Stream",
+        "id": "e_eventkey",
+        "label": "Alert Key",
         "type": "TEXT"
       }
+    ],
+    "extra_filter": "e_projectid in {{PROJECT_ID}}",
+    "group_filters": [
+      {
+        "stream": "oia-events-stream",
+        "title": "Source",
+        "group_by": [
+          "e_sourcesystemname"
+        ],
+        "ts_column": "e_updatedat",
+        "agg": "value_count",
+        "column": "e_id",
+        "type": "str"
+      },
+      {
+        "stream": "oia-events-stream",
+        "title": "Severity",
+        "group_by": [
+          "e_severity"
+        ],
+        "ts_column": "e_updatedat",
+        "agg": "value_count",
+        "column": "e_id",
+        "type": "str"
+      },
+      {
+        "stream": "oia-events-stream",
+        "title": "Phase",
+        "group_by": [
+          "e_eventstate"
+        ],
+        "ts_column": "e_updatedat",
+        "agg": "value_count",
+        "column": "e_id",
+        "type": "str"
+      },
+      {
+        "stream": "oia-events-stream",
+        "title": "Phase Status",
+        "group_by": [
+          "e_status"
+        ],
+        "ts_column": "e_updatedat",
+        "agg": "value_count",
+        "column": "e_id",
+        "type": "str"
+      },
+      {
+        "stream": "oia-events-stream",
+        "title": "Organizations",
+        "group_by": [
+          "project_id"
+        ],
+        "ts_column": "e_updatedat",
+        "agg": "value_count",
+        "column": "e_projectid",
+        "type": "str"
+      }
+    ],
+    "default_time_filter_labels": [
+      "Last 24 hours"
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Syslog",
+      "title": "Alerts",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Syslogs</a></h1></div>",
-          "widget_id": "33317e49"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Syslogs by Severity",
-          "stream": "syslog_udp_event_stream_all",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "syslog_severity"
-          ],
-          "style": {
-            "color-map": {
-              "ERROR": "#EF5350",
-              "NOTICE": "#4DD0E1",
-              "EMERGENCY": "#B71C1C",
-              "INFORMATIONAL": "#03A9F4",
-              "WARNING": "#FFD54F",
-              "ALERT": "#FFA726",
-              "CRITICAL": "#E53935",
-              "DEBUG": "#BCAAA4"
-            }
-          },
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "widget_id": "71405983"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Syslogs by Hosts",
-          "stream": "syslog_udp_event_stream_all",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "rda_gw_client_ip"
-          ],
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "widget_id": "e18b64f1"
-        },
-        {
-          "title": "Syslog Details",
+          "title": "Alerts",
           "widget_type": "tabular",
-          "stream": "syslog_udp_event_stream_all",
-          "duration_hours": 1080,
-          "resizableColumns": false,
-          "showRowSummary": false,
-          "query": "*",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "timebased": false,
           "min_width": 12,
-          "height": 8,
+          "height": 12,
           "max_width": 12,
           "paginated": true,
-          "max_rows": 50,
-          "truncateColumns": [
-            "raw"
-          ],
+          "resizableColumns": false,
+          "refreshRequired": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "rda_gw_client_ip",
-            "syslog_severity",
-            "rda_gw_ep_type",
-            "site_code"
+            "e_processedeventid",
+            "e_label",
+            "e_severity",
+            "e_sourcesystemname",
+            "e_eventstate",
+            "e_status",
+            "e_message"
           ],
+          "max_rows": 50,
           "columns": {
-            "rda_gw_client_ip": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "key": true
-            },
-            "raw": {
-              "title": "Raw Event",
-              "type": "TEXT",
-              "key": true
-            },
-            "a_severity_color": {
-              "title": "Sev_2",
-              "type": "COLOR-MAP",
-              "source-column": "syslog_severity",
-              "color-map": {
-                "ERROR": "#EF5350",
-                "NOTICE": "#4DD0E1",
-                "EMERGENCY": "#B71C1C",
-                "INFORMATIONAL": "#03A9F4",
-                "WARNING": "#FFD54F",
-                "ALERT": "#FFA726",
-                "CRITICAL": "#E53935",
-                "DEBUG": "#BCAAA4"
-              }
-            },
-            "syslog_severity": {
-              "title": "Severity",
-              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.a_severity_color}}' > {{row.syslog_severity}} </span>{%endraw%}",
+            "e_processedeventid": {
+              "title": "Alert ID",
+              "visible": false,
+              "key": true,
               "defaultWidth": 150
             },
-            "rda_gw_ep_name": {
-              "title": "Endpoint Name",
-              "type": "TEXT",
-              "visible": false
+            "e_projectid": {
+              "title": "project Id",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             },
-            "rda_gw_ep_type": "Endpoint Type",
-            "rda_stream": {
-              "title": "RDA Stream",
-              "type": "TEXT",
-              "visible": false
+            "e_label": {
+              "title": "Message",
+              "formatter": "truncate",
+              "defaultWidth": 270
             },
-            "site_code": "Site Code",
-            "stream": {
-              "title": "Stream",
-              "type": "TEXT",
-              "visible": false
+            "e_id": {
+              "title": "Event Id",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             },
-            "syslog_severity_num": {
-              "title": "Severity Number",
-              "type": "DOUBLE"
+            "e_sourceeventid": {
+              "title": "Source Event ID",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME"
+            "e_severity_color": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "e_severity",
+              "color-map": {
+                "SEVERE": "#B71C1C",
+                "CRITICAL": "#E53935",
+                "MAJOR": "#F57C00",
+                "MINOR": "#FFA726",
+                "WARNING": "#FFD54F",
+                "NOTIFICATION": "#4DD0E1",
+                "INFORMATION": "#03A9F4"
+              }
+            },
+            "e_severity": {
+              "title": "Severity",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.e_severity_color }}'}}' > {{'{{ row.e_severity }}'}} </span>",
+              "defaultWidth": 150
+            },
+            "e_sourcesystemname": {
+              "title": "Source",
+              "defaultWidth": 150
+            },
+            "e_createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "e_updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "e_eventstate": {
+              "title": "Phase",
+              "defaultWidth": 150
+            },
+            "e_status": {
+              "title": "Phase Status",
+              "defaultWidth": 150
+            },
+            "e_message": {
+              "title": "Comments",
+              "defaultWidth": 270
+            },
+            "e_triggeredevent": {
+              "title": "Event Type",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
+            },
+            "e_eventkey": {
+              "title": "Alert Key",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             }
           },
-          "widget_id": "d211804e"
+          "actions": [
+            {
+              "permission": "oia:alert:view",
+              "title": "Alert Details",
+              "type": "GO_TO_APP_STATE",
+              "stateName": "app.featureapp",
+              "appName": "user-dashboard/tracking-event-details-app",
+              "selectionType": "SINGLE",
+              "drillDownContext": "e_label",
+              "destinationContext": "e_label",
+              "displayLabelColumnId": "e_label",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "e_projectid",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "e_projectid",
+                    "paramId": "roomid"
+                  },
+                  {
+                    "paramKey": "e_projectid",
+                    "paramId": "projectid"
+                  },
+                  {
+                    "paramKey": "e_id",
+                    "paramId": "eventid"
+                  },
+                  {
+                    "paramKey": "e_sourceeventid",
+                    "paramId": "sourceeventid"
+                  },
+                  {
+                    "paramKey": "e_eventkey",
+                    "paramId": "eventkey"
+                  },
+                  {
+                    "paramKey": "e_processedeventid",
+                    "paramId": "processedeventid"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "94a3fc11"
+        }
+      ]
+    },
+    {
+      "title": "Tracking Analytics",
+      "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
+      "widgets": [
+        {
+          "title": "Consumed Alerts",
+          "widget_type": "counter",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "column": "e_id",
+          "agg": "value_count",
+          "min_width": 6,
+          "height": 2.6,
+          "max_width": 6,
+          "type": "str",
+          "widget_id": "02be1e20"
+        },
+        {
+          "title": "Deduped Alerts",
+          "widget_type": "counter",
+          "stream": "oia-events-stream",
+          "extra_filter": "e_status is 'Deduped'",
+          "ts_column": "e_updatedat",
+          "column": "e_id",
+          "agg": "value_count",
+          "min_width": 6,
+          "height": 2.6,
+          "max_width": 6,
+          "type": "str",
+          "widget_id": "abbd680b"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Alerts By Phase Status",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "column": "e_id",
+          "agg": "value_count",
+          "group_by": [
+            "e_status"
+          ],
+          "type": "str",
+          "widget_id": "cb0706e6"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Alerts By Source",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "column": "e_id",
+          "agg": "value_count",
+          "group_by": [
+            "e_sourcesystemname"
+          ],
+          "type": "str",
+          "widget_id": "f2dc71c5"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Alerts By Phase",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "column": "e_id",
+          "agg": "value_count",
+          "group_by": [
+            "e_eventstate"
+          ],
+          "type": "str",
+          "widget_id": "89d660a9"
+        },
+        {
+          "title": "Alerts Status By Source",
+          "widget_type": "multi_bar_chart",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "Source",
+            "stacked": true,
+            "legendLocation": "right",
+            "orientation": "vertical"
+          },
+          "group_by": [
+            "e_status",
+            "e_sourcesystemname"
+          ],
+          "column": "e_id",
+          "agg": "value_count",
+          "type": "int",
+          "widget_id": "172919af"
+        },
+        {
+          "title": "Hourly Alerts by Source",
+          "widget_type": "timeseries",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "max_width": 4,
+          "height": 4,
+          "min_width": 4,
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "Hourly Alerts",
+            "legendLocation": "top"
+          },
+          "interval": "60Min",
+          "group_by": [
+            "e_sourcesystemname"
+          ],
+          "series_spec": [
+            {
+              "column": "e_id",
+              "agg": "value_count",
+              "type": "int"
+            }
+          ],
+          "widget_id": "c29bb685"
+        },
+        {
+          "title": "Hourly Alerts by Severity",
+          "widget_type": "timeseries",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "max_width": 4,
+          "height": 4,
+          "min_width": 4,
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "Hourly Alerts",
+            "legendLocation": "top"
+          },
+          "interval": "60Min",
+          "group_by": [
+            "e_severity"
+          ],
+          "series_spec": [
+            {
+              "column": "e_id",
+              "agg": "value_count",
+              "type": "int"
+            }
+          ],
+          "widget_id": "058d11cc"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Syslog",
+      "title": "Alerts",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Syslogs</a></h1></div>",
-          "widget_id": "33317e49"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Syslogs by Severity",
-          "stream": "syslog_udp_event_stream_all",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "syslog_severity"
-          ],
-          "style": {
-            "color-map": {
-              "ERROR": "#EF5350",
-              "NOTICE": "#4DD0E1",
-              "EMERGENCY": "#B71C1C",
-              "INFORMATIONAL": "#03A9F4",
-              "WARNING": "#FFD54F",
-              "ALERT": "#FFA726",
-              "CRITICAL": "#E53935",
-              "DEBUG": "#BCAAA4"
-            }
-          },
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "widget_id": "71405983"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Syslogs by Hosts",
-          "stream": "syslog_udp_event_stream_all",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "rda_gw_client_ip"
-          ],
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "widget_id": "e18b64f1"
-        },
-        {
-          "title": "Syslog Details",
+          "title": "Alerts",
           "widget_type": "tabular",
-          "stream": "syslog_udp_event_stream_all",
-          "duration_hours": 1080,
-          "resizableColumns": false,
-          "showRowSummary": false,
-          "query": "*",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "timebased": false,
           "min_width": 12,
-          "height": 8,
+          "height": 12,
           "max_width": 12,
           "paginated": true,
-          "max_rows": 50,
-          "truncateColumns": [
-            "raw"
-          ],
+          "resizableColumns": false,
+          "refreshRequired": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "rda_gw_client_ip",
-            "syslog_severity",
-            "rda_gw_ep_type",
-            "site_code"
+            "e_processedeventid",
+            "e_label",
+            "e_severity",
+            "e_sourcesystemname",
+            "e_eventstate",
+            "e_status",
+            "e_message"
           ],
+          "max_rows": 50,
           "columns": {
-            "rda_gw_client_ip": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "key": true
-            },
-            "raw": {
-              "title": "Raw Event",
-              "type": "TEXT",
-              "key": true
-            },
-            "a_severity_color": {
-              "title": "Sev_2",
-              "type": "COLOR-MAP",
-              "source-column": "syslog_severity",
-              "color-map": {
-                "ERROR": "#EF5350",
-                "NOTICE": "#4DD0E1",
-                "EMERGENCY": "#B71C1C",
-                "INFORMATIONAL": "#03A9F4",
-                "WARNING": "#FFD54F",
-                "ALERT": "#FFA726",
-                "CRITICAL": "#E53935",
-                "DEBUG": "#BCAAA4"
-              }
-            },
-            "syslog_severity": {
-              "title": "Severity",
-              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.a_severity_color}}' > {{row.syslog_severity}} </span>{%endraw%}",
+            "e_processedeventid": {
+              "title": "Alert ID",
+              "visible": false,
+              "key": true,
               "defaultWidth": 150
             },
-            "rda_gw_ep_name": {
-              "title": "Endpoint Name",
-              "type": "TEXT",
-              "visible": false
+            "e_projectid": {
+              "title": "project Id",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             },
-            "rda_gw_ep_type": "Endpoint Type",
-            "rda_stream": {
-              "title": "RDA Stream",
-              "type": "TEXT",
-              "visible": false
+            "e_label": {
+              "title": "Message",
+              "formatter": "truncate",
+              "defaultWidth": 270
             },
-            "site_code": "Site Code",
-            "stream": {
-              "title": "Stream",
-              "type": "TEXT",
-              "visible": false
+            "e_id": {
+              "title": "Event Id",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             },
-            "syslog_severity_num": {
-              "title": "Severity Number",
-              "type": "DOUBLE"
+            "e_sourceeventid": {
+              "title": "Source Event ID",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME"
+            "e_severity_color": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "e_severity",
+              "color-map": {
+                "SEVERE": "#B71C1C",
+                "CRITICAL": "#E53935",
+                "MAJOR": "#F57C00",
+                "MINOR": "#FFA726",
+                "WARNING": "#FFD54F",
+                "NOTIFICATION": "#4DD0E1",
+                "INFORMATION": "#03A9F4"
+              }
+            },
+            "e_severity": {
+              "title": "Severity",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.e_severity_color }}'}}' > {{'{{ row.e_severity }}'}} </span>",
+              "defaultWidth": 150
+            },
+            "e_sourcesystemname": {
+              "title": "Source",
+              "defaultWidth": 150
+            },
+            "e_createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "e_updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "e_eventstate": {
+              "title": "Phase",
+              "defaultWidth": 150
+            },
+            "e_status": {
+              "title": "Phase Status",
+              "defaultWidth": 150
+            },
+            "e_message": {
+              "title": "Comments",
+              "defaultWidth": 270
+            },
+            "e_triggeredevent": {
+              "title": "Event Type",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
+            },
+            "e_eventkey": {
+              "title": "Alert Key",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             }
           },
-          "widget_id": "d211804e"
+          "actions": [
+            {
+              "permission": "oia:alert:view",
+              "title": "Alert Details",
+              "type": "GO_TO_APP_STATE",
+              "stateName": "app.featureapp",
+              "appName": "user-dashboard/tracking-event-details-app",
+              "selectionType": "SINGLE",
+              "drillDownContext": "e_label",
+              "destinationContext": "e_label",
+              "displayLabelColumnId": "e_label",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "e_projectid",
+                    "paramId": "projectId"
+                  },
+                  {
+                    "paramKey": "e_projectid",
+                    "paramId": "roomid"
+                  },
+                  {
+                    "paramKey": "e_projectid",
+                    "paramId": "projectid"
+                  },
+                  {
+                    "paramKey": "e_id",
+                    "paramId": "eventid"
+                  },
+                  {
+                    "paramKey": "e_sourceeventid",
+                    "paramId": "sourceeventid"
+                  },
+                  {
+                    "paramKey": "e_eventkey",
+                    "paramId": "eventkey"
+                  },
+                  {
+                    "paramKey": "e_processedeventid",
+                    "paramId": "processedeventid"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "94a3fc11"
+        }
+      ]
+    },
+    {
+      "title": "Tracking Analytics",
+      "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
+      "widgets": [
+        {
+          "title": "Consumed Alerts",
+          "widget_type": "counter",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "column": "e_id",
+          "agg": "value_count",
+          "min_width": 6,
+          "height": 2.6,
+          "max_width": 6,
+          "type": "str",
+          "widget_id": "02be1e20"
+        },
+        {
+          "title": "Deduped Alerts",
+          "widget_type": "counter",
+          "stream": "oia-events-stream",
+          "extra_filter": "e_status is 'Deduped'",
+          "ts_column": "e_updatedat",
+          "column": "e_id",
+          "agg": "value_count",
+          "min_width": 6,
+          "height": 2.6,
+          "max_width": 6,
+          "type": "str",
+          "widget_id": "abbd680b"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Alerts By Phase Status",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "column": "e_id",
+          "agg": "value_count",
+          "group_by": [
+            "e_status"
+          ],
+          "type": "str",
+          "widget_id": "cb0706e6"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Alerts By Source",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "column": "e_id",
+          "agg": "value_count",
+          "group_by": [
+            "e_sourcesystemname"
+          ],
+          "type": "str",
+          "widget_id": "f2dc71c5"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Alerts By Phase",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "column": "e_id",
+          "agg": "value_count",
+          "group_by": [
+            "e_eventstate"
+          ],
+          "type": "str",
+          "widget_id": "89d660a9"
+        },
+        {
+          "title": "Alerts Status By Source",
+          "widget_type": "multi_bar_chart",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "min_width": 4,
+          "height": 4,
+          "max_width": 4,
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "Source",
+            "stacked": true,
+            "legendLocation": "right",
+            "orientation": "vertical"
+          },
+          "group_by": [
+            "e_status",
+            "e_sourcesystemname"
+          ],
+          "column": "e_id",
+          "agg": "value_count",
+          "type": "int",
+          "widget_id": "172919af"
+        },
+        {
+          "title": "Hourly Alerts by Source",
+          "widget_type": "timeseries",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "max_width": 4,
+          "height": 4,
+          "min_width": 4,
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "Hourly Alerts",
+            "legendLocation": "top"
+          },
+          "interval": "60Min",
+          "group_by": [
+            "e_sourcesystemname"
+          ],
+          "series_spec": [
+            {
+              "column": "e_id",
+              "agg": "value_count",
+              "type": "int"
+            }
+          ],
+          "widget_id": "c29bb685"
+        },
+        {
+          "title": "Hourly Alerts by Severity",
+          "widget_type": "timeseries",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "max_width": 4,
+          "height": 4,
+          "min_width": 4,
+          "chartProperties": {
+            "yAxisLabel": "Count",
+            "xAxisLabel": "Hourly Alerts",
+            "legendLocation": "top"
+          },
+          "interval": "60Min",
+          "group_by": [
+            "e_severity"
+          ],
+          "series_spec": [
+            {
+              "column": "e_id",
+              "agg": "value_count",
+              "type": "int"
+            }
+          ],
+          "widget_id": "058d11cc"
         }
       ]
     }
