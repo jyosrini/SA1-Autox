@@ -1,47 +1,52 @@
 {
-  "name": "rda-diff-preview",
-  "label": "Git Diff",
-  "description": "Preview dashboard to view the diffs in html",
-  "enabled": false,
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "template_variables": {
-    "FILENAME": {
-      "contextId": "filename"
-    },
-    "DIFF_HTML": {
-      "contextId": "diff_html"
-    }
+  "name": "device-bcs-inv-grouping-app-new",
+  "label": "Network Operational Insights",
+  "description": "Network Operational Insights",
+  "dashboard_folder": "Network_Operational_Insights",
+  "version": "23.8.1.1",
+  "enabled": true,
+  "dashboard_filters": {
+    "time_filter": false,
+    "columns_filter": []
+  },
+  "custom_context": {
+    "rda-dashboard-live-edit": true
   },
   "dashboard_sections": [
     {
-      "title": "Diff",
-      "widgets": [
-        {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 3,
-          "label": "<div style='overflow: auto'>{{DIFF_HTML}}</div>",
-          "widget_id": "cc11f713"
-        }
-      ]
+      "title": "Example"
+    }
+  ],
+  "dashboard_type": "app",
+  "dashboard_groups": {
+    "eox": {
+      "icon": "insights.svg",
+      "label": "EOX Notices",
+      "pageName": "EOX Notices"
+    }
+  },
+  "dashboard_pages": [
+    {
+      "name": "bcs-oi-inventory-enriched",
+      "label": "Inventory",
+      "icon": "overall.svg"
+    },
+    {
+      "name": "bcs-oi-pa-hw-eol-enriched",
+      "label": "HW EOL",
+      "icon": "hardware.svg",
+      "group": "eox"
+    },
+    {
+      "name": "bcs-oi-pa-sw-eol",
+      "label": "SW EOL",
+      "icon": "software.svg",
+      "group": "eox"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Diff",
-      "widgets": [
-        {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 3,
-          "label": "<div style='overflow: auto'>{{DIFF_HTML}}</div>",
-          "widget_id": "cc11f713"
-        }
-      ]
+      "title": "Example"
     }
   ]
 }
