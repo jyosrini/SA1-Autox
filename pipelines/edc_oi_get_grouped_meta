@@ -1,8 +1,8 @@
 folder: OI
 name: edc_oi_get_grouped
 description: test pipeline
-data_path: draft-pipelines/data/edc_oi_get_grouped/2025-04-11_1/data.json
-usecase: ''
+data_path: pipelines/data/edc_oi_get_grouped/2025-05-18_1/data.json
+usecase: Retrieve data only
 category: ''
 sources:
   snowflake:
@@ -51,6 +51,6 @@ artifacts:
 - artifact_type: rda-network-stream
   artifact_name: edc_cust_contract_pid
   access: write
-version: 2025-04-11_1
+version: 2025-05-18_1
 file_type: json
 checksum: e734ff5e
