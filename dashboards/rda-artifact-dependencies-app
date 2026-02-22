@@ -1,275 +1,543 @@
 {
-  "name": "rda-artifact-dependencies-app",
-  "label": "Artifact: {{ARTIFACT_NAME}}",
-  "is_template": true,
-  "description": "Artifact Dependencies",
-  "version": "23.10.26.1",
+  "name": "mcp_prompt_templates",
+  "label": "Prompt Templates",
+  "description": "Dashboard to manage MCP Prompt Templates",
   "enabled": true,
-  "template_variables": {
-    "ARTIFACT_NAME": {
-      "contextId": "artifact_name"
-    },
-    "ARTIFACT_TYPE": {
-      "contextId": "artifact_type"
-    }
-  },
+  "dashboard_folder": "AI",
+  "live_edit": true,
   "dashboard_filters": {
-    "time_filter": false,
-    "columns_filter": []
+    "time_filter": false
   },
-  "dashboard_type": "template",
   "dashboard_sections": [
     {
-      "title": "Using this artifact",
+      "title": "AI",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Using this artifact",
+          "title": "Prompt Templates",
           "widget_type": "tabular",
-          "stream": "rda_artifact_dependencies",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "from_artifact_type",
-            "from_artifact_name"
-          ],
-          "ts_column": "timestamp",
-          "paginated": true,
+          "min_width": 12,
           "height": 10,
-          "min_wdith": 12,
+          "max_width": 12,
+          "timebased": false,
+          "timestamp": "timestamp",
+          "stream": "mcp_prompt_templates",
           "columns": {
-            "from_artifact_type": {
-              "title": "Artifact Type"
+            "prompt_template_name": {
+              "title": "Name",
+              "key": true
             },
-            "from_artifact_name": {
-              "title": "Artifact Name"
+            "template_description": {
+              "title": "Description",
+              "key": true
+            },
+            "prompt_template": {
+              "title": "Template",
+              "defaultWidth": 500,
+              "visible": false,
+              "key": true
             }
           },
-          "custom_columns": [
-            {
-              "id": "artifact_name",
-              "label": "Artifact Name",
-              "expr": "from_artifact_name",
-              "key": true,
-              "visible": false,
-              "hidden": true,
-              "sortable": false
-            },
-            {
-              "id": "artifact_type",
-              "label": "Artifact Type",
-              "expr": "from_artifact_type",
-              "key": true,
-              "visible": false,
-              "hidden": true,
-              "sortable": false
-            }
-          ],
+          "widget_id": "2630645a",
           "actions": [
             {
-              "permission": "rda:pipeline:view",
-              "appName": "user-dashboard/rda-artifact-dependencies-app",
-              "displayLabelColumnId": "name",
-              "drillDownLinkField": "name",
-              "identifier": "launch.url.dashboard",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Dependencies",
-              "type": "GO_TO_APP_STATE"
-            }
-          ],
-          "widget_id": "01dc3a55",
-          "extra_filter": "to_artifact_type is '{{ARTIFACT_TYPE}}' and to_artifact_name is '{{ARTIFACT_NAME}}'"
-        }
-      ]
-    },
-    {
-      "title": "Used by this artifact",
-      "widgets": [
-        {
-          "title": "Used by this artifact",
-          "widget_type": "tabular",
-          "stream": "rda_artifact_dependencies",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "to_artifact_type",
-            "to_artifact_name"
-          ],
-          "ts_column": "timestamp",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "columns": {
-            "to_artifact_type": {
-              "title": "Artifact Type"
+              "permission": "rda:github:view",
+              "title": "Add",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:aiadministration-add-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "ADD"
+                      }
+                    ]
+                  }
+                ]
+              }
             },
-            "to_artifact_name": {
-              "title": "Artifact Name"
-            }
-          },
-          "custom_columns": [
             {
-              "id": "artifact_name",
-              "label": "Artifact Name",
-              "expr": "to_artifact_name",
-              "key": true,
-              "visible": false,
-              "hidden": true,
-              "sortable": false
+              "permission": "rda:github:view",
+              "title": "View Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "drillDownLinkField": "prompt_template_name",
+              "identifier": "saas-service-action:aiadministration-view-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "submitRequired": false,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
             },
             {
-              "id": "artifact_type",
-              "label": "Artifact Type",
-              "expr": "to_artifact_type",
-              "key": true,
-              "visible": false,
-              "hidden": true,
-              "sortable": false
-            }
-          ],
-          "actions": [
-            {
-              "permission": "rda:pipeline:view",
-              "appName": "user-dashboard/rda-artifact-dependencies-app",
-              "displayLabelColumnId": "name",
-              "drillDownLinkField": "name",
-              "identifier": "launch.url.dashboard",
+              "permission": "rda:github:view",
+              "title": "Edit Template",
+              "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Dependencies",
-              "type": "GO_TO_APP_STATE"
+              "identifier": "saas-service-action:aiadministration-edit-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "UPDATE",
+                        "cfxql_query": "prompt_template_name is '{{prompt_template_name}}'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Delete Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-delete-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Do you want to delete the prompt template?",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "label": "Do you want to delete the prompt template?",
+                          "hidden": false,
+                          "fieldId": "name"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "DELETE",
+                        "cfxql_query": "prompt_template_name is '{{prompt_template_name}}'"
+                      }
+                    ]
+                  }
+                ]
+              }
             }
-          ],
-          "widget_id": "1b7b32f7",
-          "extra_filter": "from_artifact_type is '{{ARTIFACT_TYPE}}' and from_artifact_name is '{{ARTIFACT_NAME}}'"
+          ]
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Using this artifact",
+      "title": "AI",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Using this artifact",
+          "title": "Prompt Templates",
           "widget_type": "tabular",
-          "stream": "rda_artifact_dependencies",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "from_artifact_type",
-            "from_artifact_name"
-          ],
-          "ts_column": "timestamp",
-          "paginated": true,
+          "min_width": 12,
           "height": 10,
-          "min_wdith": 12,
+          "max_width": 12,
+          "timebased": false,
+          "timestamp": "timestamp",
+          "stream": "mcp_prompt_templates",
           "columns": {
-            "from_artifact_type": {
-              "title": "Artifact Type"
+            "prompt_template_name": {
+              "title": "Name",
+              "key": true
             },
-            "from_artifact_name": {
-              "title": "Artifact Name"
+            "template_description": {
+              "title": "Description",
+              "key": true
+            },
+            "prompt_template": {
+              "title": "Template",
+              "defaultWidth": 500,
+              "visible": false,
+              "key": true
             }
           },
-          "custom_columns": [
-            {
-              "id": "artifact_name",
-              "label": "Artifact Name",
-              "expr": "from_artifact_name",
-              "key": true,
-              "visible": false,
-              "hidden": true,
-              "sortable": false
-            },
-            {
-              "id": "artifact_type",
-              "label": "Artifact Type",
-              "expr": "from_artifact_type",
-              "key": true,
-              "visible": false,
-              "hidden": true,
-              "sortable": false
-            }
-          ],
+          "widget_id": "2630645a",
           "actions": [
             {
-              "permission": "rda:pipeline:view",
-              "appName": "user-dashboard/rda-artifact-dependencies-app",
-              "displayLabelColumnId": "name",
-              "drillDownLinkField": "name",
-              "identifier": "launch.url.dashboard",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Dependencies",
-              "type": "GO_TO_APP_STATE"
-            }
-          ],
-          "widget_id": "01dc3a55",
-          "extra_filter": "to_artifact_type is '{{ARTIFACT_TYPE}}' and to_artifact_name is '{{ARTIFACT_NAME}}'"
-        }
-      ]
-    },
-    {
-      "title": "Used by this artifact",
-      "widgets": [
-        {
-          "title": "Used by this artifact",
-          "widget_type": "tabular",
-          "stream": "rda_artifact_dependencies",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "to_artifact_type",
-            "to_artifact_name"
-          ],
-          "ts_column": "timestamp",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "columns": {
-            "to_artifact_type": {
-              "title": "Artifact Type"
+              "permission": "rda:github:view",
+              "title": "Add",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:aiadministration-add-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "ADD"
+                      }
+                    ]
+                  }
+                ]
+              }
             },
-            "to_artifact_name": {
-              "title": "Artifact Name"
-            }
-          },
-          "custom_columns": [
             {
-              "id": "artifact_name",
-              "label": "Artifact Name",
-              "expr": "to_artifact_name",
-              "key": true,
-              "visible": false,
-              "hidden": true,
-              "sortable": false
+              "permission": "rda:github:view",
+              "title": "View Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "drillDownLinkField": "prompt_template_name",
+              "identifier": "saas-service-action:aiadministration-view-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "submitRequired": false,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
             },
             {
-              "id": "artifact_type",
-              "label": "Artifact Type",
-              "expr": "to_artifact_type",
-              "key": true,
-              "visible": false,
-              "hidden": true,
-              "sortable": false
-            }
-          ],
-          "actions": [
-            {
-              "permission": "rda:pipeline:view",
-              "appName": "user-dashboard/rda-artifact-dependencies-app",
-              "displayLabelColumnId": "name",
-              "drillDownLinkField": "name",
-              "identifier": "launch.url.dashboard",
+              "permission": "rda:github:view",
+              "title": "Edit Template",
+              "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Dependencies",
-              "type": "GO_TO_APP_STATE"
+              "identifier": "saas-service-action:aiadministration-edit-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "UPDATE",
+                        "cfxql_query": "prompt_template_name is '{{prompt_template_name}}'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Delete Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-delete-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Do you want to delete the prompt template?",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "label": "Do you want to delete the prompt template?",
+                          "hidden": false,
+                          "fieldId": "name"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "DELETE",
+                        "cfxql_query": "prompt_template_name is '{{prompt_template_name}}'"
+                      }
+                    ]
+                  }
+                ]
+              }
             }
-          ],
-          "widget_id": "1b7b32f7",
-          "extra_filter": "from_artifact_type is '{{ARTIFACT_TYPE}}' and from_artifact_name is '{{ARTIFACT_NAME}}'"
+          ]
         }
       ]
     }
