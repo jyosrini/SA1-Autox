@@ -1,691 +1,339 @@
 {
-  "name": "rda-mgmt-page-blueprints",
-  "label": "Service Blueprints",
-  "description": " Service Blueprints Management Page",
+  "name": "incident-collaboration",
+  "description": "Incident Collaboration",
+  "label": "Incident Collaboration",
   "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
+  "exportable": false,
+  "dashboard_type": "template",
   "dashboard_style": "auto",
-  "stream": "rda_blueprints_meta",
+  "version": "22.10.7.1",
+  "template_variables": {
+    "STACK_NAME": {
+      "contextId": "stack_name"
+    },
+    "PROJECT_ID": {
+      "contextId": "projectId"
+    }
+  },
+  "custom_context": {
+    "alert-context": true
+  },
   "dashboard_filters": {
-    "time_filter": false,
+    "time_filter": true,
+    "extra_filter": "projectid in {{PROJECT_ID}}",
     "columns_filter": [
       {
-        "id": "enabled",
-        "label": "Enabled",
-        "type": "BOOLEAN"
-      },
-      {
-        "id": "auto_deploy",
-        "label": "Auto Deploy",
-        "type": "BOOLEAN"
-      },
-      {
-        "id": "errors",
-        "label": "Audit Errors",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "warnings",
-        "label": "Audit Warnings",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "name",
-        "label": "Name",
+        "id": "incidentid",
+        "label": "Incident ID",
         "type": "TEXT"
       },
       {
-        "id": "id",
-        "label": "ID",
+        "id": "activity",
+        "label": "Activity",
         "type": "TEXT"
       },
       {
-        "id": "comment",
-        "label": "Description",
+        "id": "sourcesystemname",
+        "label": "Source System",
         "type": "TEXT"
       },
       {
-        "id": "category",
-        "label": "Category",
+        "id": "target",
+        "label": "Target System",
+        "type": "TEXT"
+      },
+      {
+        "id": "content",
+        "label": "Message",
+        "type": "TEXT"
+      },
+      {
+        "id": "senderid",
+        "label": "User",
+        "type": "TEXT"
+      },
+      {
+        "id": "createdat",
+        "label": "Created",
+        "type": "DATETIME"
+      },
+      {
+        "id": "subject",
+        "label": "Subject",
+        "type": "TEXT"
+      },
+      {
+        "id": "activity",
+        "label": "Activity",
         "type": "TEXT"
       }
+    ],
+    "default_time_filter_labels": [
+      "Last 24 hours"
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Service Blueprints",
+      "title": "Activity",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Service Blueprints",
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Activity",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "group_by": [
+            "activity"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "6dc8340e"
+        },
+        {
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Target",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "height": 4,
+          "max_width": 6,
+          "group_by": [
+            "target"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "e36576b7"
+        },
+        {
+          "title": "Collaboration Messages",
           "widget_type": "tabular",
-          "stream": "rda_blueprints_meta",
-          "duration_hours": 87600,
+          "max_width": 12,
+          "height": 12,
+          "min_width": 6,
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "paginated": true,
+          "resizableColumns": false,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "id",
-            "name",
-            "comment",
-            "category",
-            "note",
-            "url"
+            "subject",
+            "content",
+            "sendername",
+            "sourcesystemname",
+            "target",
+            "incidentid"
           ],
-          "ts_column": "saved_time",
-          "paginated": true,
-          "height": 10,
-          "min_width": 12,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "duration_hours": 24,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
           "columns": {
-            "id": {
-              "title": "Id",
+            "subject": "Subject",
+            "content": "Message",
+            "sendername": "User",
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME"
+            },
+            "sourcesystemname": "Source",
+            "target": "Target",
+            "incidentid": {
+              "title": "Incident ID",
               "key": true
-            },
-            "name": {
-              "title": "Name",
-              "key": true
-            },
-            "comment": {
-              "title": "Description"
-            },
-            "category": {
-              "title": "Category",
-              "key": true
-            },
-            "auto_deploy": {
-              "title": "Auto Deploy"
-            },
-            "note": {
-              "title": "Note"
-            },
-            "url": {
-              "title": "URL",
-              "key": true,
-              "visible": false
             }
           },
-          "custom_columns": [
-            {
-              "id": "enabled",
-              "label": "Enabled",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
-            },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled == 'true' else ['#9E9E9E']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "warningColor",
-              "label": "Warning Color",
-              "expr": "['#FFA726'] if warnings > 0 else ['#03A9F4']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "errorColor",
-              "label": "Error Color",
-              "expr": "['#B71C1C'] if errors > 0  else ['#03A9F4']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "errors",
-              "label": "Audit Errors",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.errorColor }}' > {{ row.errors }} </span>"
-            },
-            {
-              "id": "warnings",
-              "label": "Audit Warnings",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.warningColor }}' > {{ row.warnings }} </span>"
-            },
-            {
-              "id": "artifact_name",
-              "label": "Artifact Name",
-              "expr": "id",
-              "key": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "artifact_type",
-              "label": "Artifact Type",
-              "expr": "'blueprint'",
-              "key": true,
-              "visible": false,
-              "sortable": false
-            }
+          "severity_columns": [
+            "severity"
           ],
           "actions": [
             {
-              "permission": "rda:deploymentspec:add",
-              "title": "Add",
-              "icon": "mdi mdi-plus",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:dspec-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.add.yaml"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:import",
-              "title": "Import from Catalog",
-              "icon": "mdi mdi-plus",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:dspec-import",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.import"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:import",
-              "title": "Dashboard",
+              "title": "View Incident",
               "type": "GO_TO_APP_STATE",
-              "appName": "dynamic-dashboard",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspecs-view-dashboard",
-              "drillDownLinkField": "name"
-            },
-            {
-              "permission": "rda:deploymentspec:view",
-              "title": "View",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspecs-view-spec",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.view"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:edit",
-              "title": "Edit Layout",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspecs-edit-layout",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.edit.layout"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:edit",
-              "title": "Edit",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspecs-edit-spec",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.edit"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:delete",
-              "title": "Delete",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspec-delete",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.delete"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:enable",
-              "title": "Enable",
-              "icon": "mdi mdi-plus",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspec-activate-dspec",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.activate"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "false",
-                    "fieldId": "enabled"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:disable",
-              "title": "Disable",
-              "icon": "mdi mdi-plus",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspec-deactivate-dspec",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.deactivate"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "true",
-                    "fieldId": "enabled"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:view",
-              "appName": "user-dashboard/rda-artifact-dependencies-app",
-              "identifier": "launch.url.dashboard",
-              "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Dependencies",
-              "type": "GO_TO_APP_STATE"
+              "appName": "user-dashboard/incident-details-app",
+              "selectionType": "SINGLE",
+              "drillDownLinkField": "incidentid",
+              "drillDownContext": "incidentid",
+              "destinationContext": "incidentid",
+              "displayLabelColumnId": "Incident ID",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "incidentid",
+                    "paramId": "incidentid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "roomid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "projectId"
+                  }
+                ]
+              }
             }
           ],
-          "widget_id": "03db8d0f"
-        },
-        {
-          "title": "Deployed Blueprints",
-          "widget_type": "portal_tabular",
-          "reportId": "apps.deployed.tabular",
-          "height": 10,
-          "min_width": 12,
-          "paginated": true,
-          "widget_id": "c8689a20"
-        },
-        {
-          "title": "Service Blueprint Catalog",
-          "widget_type": "portal_tabular",
-          "reportId": "apps.available.tabular",
-          "height": 10,
-          "min_width": 12,
-          "paginated": true,
-          "widget_id": "57d54731"
+          "widget_id": "a7f6e486"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Service Blueprints",
+      "title": "Activity",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Service Blueprints",
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Activity",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "group_by": [
+            "activity"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "6dc8340e"
+        },
+        {
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Target",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "height": 4,
+          "max_width": 6,
+          "group_by": [
+            "target"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "e36576b7"
+        },
+        {
+          "title": "Collaboration Messages",
           "widget_type": "tabular",
-          "stream": "rda_blueprints_meta",
-          "duration_hours": 87600,
+          "max_width": 12,
+          "height": 12,
+          "min_width": 6,
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "paginated": true,
+          "resizableColumns": false,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "id",
-            "name",
-            "comment",
-            "category",
-            "note",
-            "url"
+            "subject",
+            "content",
+            "sendername",
+            "sourcesystemname",
+            "target",
+            "incidentid"
           ],
-          "ts_column": "saved_time",
-          "paginated": true,
-          "height": 10,
-          "min_width": 12,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "duration_hours": 24,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
           "columns": {
-            "id": {
-              "title": "Id",
+            "subject": "Subject",
+            "content": "Message",
+            "sendername": "User",
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME"
+            },
+            "sourcesystemname": "Source",
+            "target": "Target",
+            "incidentid": {
+              "title": "Incident ID",
               "key": true
-            },
-            "name": {
-              "title": "Name",
-              "key": true
-            },
-            "comment": {
-              "title": "Description"
-            },
-            "category": {
-              "title": "Category",
-              "key": true
-            },
-            "auto_deploy": {
-              "title": "Auto Deploy"
-            },
-            "note": {
-              "title": "Note"
-            },
-            "url": {
-              "title": "URL",
-              "key": true,
-              "visible": false
             }
           },
-          "custom_columns": [
-            {
-              "id": "enabled",
-              "label": "Enabled",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
-            },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled == 'true' else ['#9E9E9E']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "warningColor",
-              "label": "Warning Color",
-              "expr": "['#FFA726'] if warnings > 0 else ['#03A9F4']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "errorColor",
-              "label": "Error Color",
-              "expr": "['#B71C1C'] if errors > 0  else ['#03A9F4']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "errors",
-              "label": "Audit Errors",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.errorColor }}' > {{ row.errors }} </span>"
-            },
-            {
-              "id": "warnings",
-              "label": "Audit Warnings",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.warningColor }}' > {{ row.warnings }} </span>"
-            },
-            {
-              "id": "artifact_name",
-              "label": "Artifact Name",
-              "expr": "id",
-              "key": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "artifact_type",
-              "label": "Artifact Type",
-              "expr": "'blueprint'",
-              "key": true,
-              "visible": false,
-              "sortable": false
-            }
+          "severity_columns": [
+            "severity"
           ],
           "actions": [
             {
-              "permission": "rda:deploymentspec:add",
-              "title": "Add",
-              "icon": "mdi mdi-plus",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:dspec-add-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.add.yaml"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:import",
-              "title": "Import from Catalog",
-              "icon": "mdi mdi-plus",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:dspec-import",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.import"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:import",
-              "title": "Dashboard",
+              "title": "View Incident",
               "type": "GO_TO_APP_STATE",
-              "appName": "dynamic-dashboard",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspecs-view-dashboard",
-              "drillDownLinkField": "name"
-            },
-            {
-              "permission": "rda:deploymentspec:view",
-              "title": "View",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspecs-view-spec",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.view"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:edit",
-              "title": "Edit Layout",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspecs-edit-layout",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.edit.layout"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:edit",
-              "title": "Edit",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspecs-edit-spec",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": false,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.edit"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:delete",
-              "title": "Delete",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspec-delete",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.delete"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:enable",
-              "title": "Enable",
-              "icon": "mdi mdi-plus",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspec-activate-dspec",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.activate"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "false",
-                    "fieldId": "enabled"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:disable",
-              "title": "Disable",
-              "icon": "mdi mdi-plus",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:dspec-deactivate-dspec",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.deploymentspec.deactivate"
-                  }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "true",
-                    "fieldId": "enabled"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:deploymentspec:view",
-              "appName": "user-dashboard/rda-artifact-dependencies-app",
-              "identifier": "launch.url.dashboard",
-              "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Dependencies",
-              "type": "GO_TO_APP_STATE"
+              "appName": "user-dashboard/incident-details-app",
+              "selectionType": "SINGLE",
+              "drillDownLinkField": "incidentid",
+              "drillDownContext": "incidentid",
+              "destinationContext": "incidentid",
+              "displayLabelColumnId": "Incident ID",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "id"
+                  },
+                  {
+                    "paramKey": "incidentid",
+                    "paramId": "incidentid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "roomid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "projectId"
+                  }
+                ]
+              }
             }
           ],
-          "widget_id": "03db8d0f"
-        },
-        {
-          "title": "Deployed Blueprints",
-          "widget_type": "portal_tabular",
-          "reportId": "apps.deployed.tabular",
-          "height": 10,
-          "min_width": 12,
-          "paginated": true,
-          "widget_id": "c8689a20"
-        },
-        {
-          "title": "Service Blueprint Catalog",
-          "widget_type": "portal_tabular",
-          "reportId": "apps.available.tabular",
-          "height": 10,
-          "min_width": 12,
-          "paginated": true,
-          "widget_id": "57d54731"
+          "widget_id": "a7f6e486"
         }
       ]
     }
