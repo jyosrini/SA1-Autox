@@ -1,11 +1,7 @@
-folder: NetworkDevicePack
-name: ondemand_discovery_main
-description: test pipeline
-data_path: pipelines/data/ondemand_discovery_main/2024.03.19.2/data.json
-usecase: ''
-category: ''
-sources: {}
-artifacts: {}
-version: 2024.03.19.2
-file_type: json
-checksum: ef78c9c4
+@dm:empty
+ --> @dm:addrow name='edc_sweol_data' and limit=0
+ --> #dm:query-persistent-stream
+ ## --> @dm:save name='test_sw_data'
+
+ --> @dm:selectcolumns exclude='contarct_number'
+ --> @rn:write-stream name='edc_sweol_data' and direct_to_opensearch='yes'

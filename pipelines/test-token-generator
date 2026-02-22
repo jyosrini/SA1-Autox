@@ -1,13 +1,7 @@
-@c:new-block
- --> @dm:empty
- --> @exec:define-function name="generate_access_token"
- --> @exec:run-pipeline name ="edc_generate_token" & ignore_failures = "no"
- --> @dm:addrow key='key'
- --> @dm:eval current_time_ms="int(time_now_as_ms())"
- --> @dm:eval token_expiry_time='current_time_ms+3000000'
- --> @dm:save name='temp-expiry-time'
- --> @exec:end-function
- --> @c:new-block
- --> @dm:empty
- --> @exec:call-function name='generate_access_token'
- --> @dm:save name='temp-expiry-time'
+@dm:empty
+ --> @dm:addrow name='edc_sweol_data' and limit=0
+ --> #dm:query-persistent-stream
+ ## --> @dm:save name='test_sw_data'
+
+ --> @dm:selectcolumns exclude='contarct_number'
+ --> @rn:write-stream name='edc_sweol_data' and direct_to_opensearch='yes'

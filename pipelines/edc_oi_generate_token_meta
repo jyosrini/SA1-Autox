@@ -1,14 +1,7 @@
-folder: OI
-name: edc_oi_generate_token
-description: test pipeline
-data_path: pipelines/data/edc_oi_generate_token/2025_07_23_01/data.json
-usecase: ''
-category: ''
-sources:
-  restclient:
-    name: restclient
-    type: restclient
-artifacts: []
-version: '2025_07_23_01'
-file_type: json
-checksum: 6fee65be
+@dm:empty
+ --> @dm:addrow name='edc_sweol_data' and limit=0
+ --> #dm:query-persistent-stream
+ ## --> @dm:save name='test_sw_data'
+
+ --> @dm:selectcolumns exclude='contarct_number'
+ --> @rn:write-stream name='edc_sweol_data' and direct_to_opensearch='yes'
