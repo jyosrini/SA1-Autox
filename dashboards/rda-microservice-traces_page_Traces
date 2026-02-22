@@ -1,426 +1,78 @@
 {
-  "id": "user-dashboard-rda-microservice-traces_page_Traces",
-  "name": "rda-microservice-traces_page_Traces",
-  "description": "RDA Microservices traces, Page: Traces",
-  "label": "RDA Microservice Traces, Page: Traces",
-  "enabled": false,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "template_variables": null,
+  "name": "customer_kpi_workbench",
+  "label": "KPI Workbench",
+  "description": "Workbench for KPIs",
+  "enabled": true,
+  "version": "24.1.1.1",
+  "dashboard_type": "template",
+  "template_variables": {
+    "CUST_ID": {
+      "contextId": "customer_id"
+    },
+    "PROJ_ID": {
+      "contextId": "project_id"
+    },
+    "PROJ_ID_SINGLE": {
+      "contextId": "project_id"
+    },
+    "CUST_TAG": {
+      "contextId": "customer_tag"
+    }
+  },
+  "dashboard_folder": "NetworkDevicePack",
+  "custom_context": {
+    "formEndpoint": "dynamic_form.preview_kpi_dashboard",
+    "previewEndpoint": "preview_kpi_dashboard"
+  },
   "dashboard_filters": {
-    "time_filter": true,
-    "columns_filter": [
-      {
-        "id": "destination",
-        "label": "Destination",
-        "type": "TEXT"
-      },
-      {
-        "id": "duration",
-        "label": "Duration",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "request_type",
-        "label": "Request Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "source",
-        "label": "Source",
-        "type": "TEXT"
-      },
-      {
-        "id": "status",
-        "label": "Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "subject_type",
-        "label": "Subject Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "timeout",
-        "label": "Timeout",
-        "type": "DOUBLE"
-      }
-    ]
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Traces",
-      "show_filter": true,
+      "title": "KPI Workbench",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Traces By Destination",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there'",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "horizontal"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "destination"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "2d7432a3"
-        },
-        {
-          "title": "Traces By Source",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there'",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "horizontal"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "source"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "f4786acb"
-        },
-        {
-          "title": "By Request Type",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there'",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "horizontal"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "request_type"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "9c2a816f"
-        },
-        {
-          "title": "By Status",
-          "widget_type": "pie_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there' ",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": null,
-            "stacked": true,
-            "legendLocation": "right",
-            "orientation": "horizontal"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "status"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "a04fc0cf"
-        },
-        {
-          "title": "Service Topology",
-          "widget_type": "traces_topology",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there'",
-          "ts_column": "timestamp",
-          "min_width": 6,
-          "height": 8,
-          "chartProperties": {
-            "hasToolbar": true,
-            "shortToolbar": true
-          },
-          "widget_id": "241b09fe"
-        },
-        {
-          "title": "Slow Responses By Destination",
-          "widget_type": "timeseries",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there' and duration > 100",
-          "ts_column": "timestamp",
-          "min_width": 6,
-          "height": 8,
-          "duration_hours": 24,
-          "chartProperties": {
-            "yAxisLabel": "ms",
-            "xAxisLabel": null,
-            "legendLocation": "bottom"
-          },
-          "interval": "15Min",
-          "group_by": [
-            "destination"
-          ],
-          "series_spec": [
-            {
-              "column": "duration",
-              "agg": "max",
-              "type": "int"
-            }
-          ],
-          "widget_id": "d3a88064"
-        }
-      ]
-    },
-    {
-      "title": "Healthchecks",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Self Health Checks",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type = 'are-you-there'",
-          "ts_column": "timestamp",
+          "widget_type": "label",
+          "max_width": 12,
+          "height": 0.5,
           "min_width": 12,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": null,
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "vertical"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "source"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "7e40c948"
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Customer Metrics(Workbench)</a></h1></div>",
+          "widget_id": "33317e49"
         },
         {
-          "title": "Self Health Check Failures",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type = 'are-you-there' and status != 'ok'",
-          "ts_column": "timestamp",
-          "min_width": 12,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": null,
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "vertical"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "source"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "18944a25"
+          "title": "KPI Workbench",
+          "widget_type": "portal_html",
+          "widget_template": "app-rda/kpi-workbench",
+          "reportId": "benchmark.actions.list.tabular",
+          "height": 12,
+          "min_wdith": 12,
+          "widget_id": "d767314b"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Traces",
-      "show_filter": true,
+      "title": "KPI Workbench",
+      "show_filter": false,
       "widgets": [
         {
-          "title": "Traces By Destination",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there'",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "horizontal"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "destination"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "2d7432a3"
-        },
-        {
-          "title": "Traces By Source",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there'",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "horizontal"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "source"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "f4786acb"
-        },
-        {
-          "title": "By Request Type",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there'",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "horizontal"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "request_type"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "9c2a816f"
-        },
-        {
-          "title": "By Status",
-          "widget_type": "pie_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there' ",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": null,
-            "stacked": true,
-            "legendLocation": "right",
-            "orientation": "horizontal"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "status"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "a04fc0cf"
-        },
-        {
-          "title": "Service Topology",
-          "widget_type": "traces_topology",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there'",
-          "ts_column": "timestamp",
-          "min_width": 6,
-          "height": 8,
-          "chartProperties": {
-            "hasToolbar": true,
-            "shortToolbar": true
-          },
-          "widget_id": "241b09fe"
-        },
-        {
-          "title": "Slow Responses By Destination",
-          "widget_type": "timeseries",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type != 'are-you-there' and duration > 100",
-          "ts_column": "timestamp",
-          "min_width": 6,
-          "height": 8,
-          "duration_hours": 24,
-          "chartProperties": {
-            "yAxisLabel": "ms",
-            "xAxisLabel": null,
-            "legendLocation": "bottom"
-          },
-          "interval": "15Min",
-          "group_by": [
-            "destination"
-          ],
-          "series_spec": [
-            {
-              "column": "duration",
-              "agg": "max",
-              "type": "int"
-            }
-          ],
-          "widget_id": "d3a88064"
-        }
-      ]
-    },
-    {
-      "title": "Healthchecks",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Self Health Checks",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type = 'are-you-there'",
-          "ts_column": "timestamp",
+          "widget_type": "label",
+          "max_width": 12,
+          "height": 0.5,
           "min_width": 12,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": null,
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "vertical"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "source"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "7e40c948"
+          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Customer Metrics(Workbench)</a></h1></div>",
+          "widget_id": "33317e49"
         },
         {
-          "title": "Self Health Check Failures",
-          "widget_type": "bar_chart",
-          "stream": "rda_microservice_traces",
-          "extra_filter": "request_type = 'are-you-there' and status != 'ok'",
-          "ts_column": "timestamp",
-          "min_width": 12,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": null,
-            "stacked": true,
-            "legendLocation": "none",
-            "orientation": "vertical"
-          },
-          "duration_hours": 24,
-          "group_by": [
-            "source"
-          ],
-          "column": "duration",
-          "agg": "value_count",
-          "type": "int",
-          "widget_id": "18944a25"
+          "title": "KPI Workbench",
+          "widget_type": "portal_html",
+          "widget_template": "app-rda/kpi-workbench",
+          "reportId": "benchmark.actions.list.tabular",
+          "height": 12,
+          "min_wdith": 12,
+          "widget_id": "d767314b"
         }
       ]
     }

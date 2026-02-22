@@ -1,1205 +1,1012 @@
 {
-  "name": "bcs-oi-overall-device-enriched-drilldown",
-  "label": "Device Details",
-  "description": "BCS Device Drilldown Details",
-  "version": "2023-07-13-01",
-  "enabled": false,
-  "context_label_id": "deviceName",
-  "dashboard_folder": "bcs_oi_device_drilldown_details",
+  "name": "rda-blueprints",
+  "label": "Blueprints",
+  "description": "Blueprints",
+  "version": "23.3.30.1",
+  "enabled": true,
+  "stream": "rda_blueprints_meta",
+  "debug": true,
   "dashboard_style": "auto",
-  "live_edit": true,
   "dashboard_type": "template",
-  "dashboard_pages": [],
+  "status_poller": {},
+  "template_variables": {},
   "dashboard_filters": {
-    "time_filter": false,
-    "default_time_filter_labels": [
-      "Last 12 months"
+    "time_filter": true,
+    "default_time_filter_non_removable": true,
+    "show_default_time_filter": false,
+    "additional_datetime_column_filters": [
+      {
+        "id": "saved_time",
+        "label": "Saved Time"
+      },
+      {
+        "id": "timestamp",
+        "label": "Timestamp"
+      }
     ],
-    "columns_filter": [],
-    "group_filters": []
+    "columns_filter": [
+      {
+        "id": "id",
+        "label": "Id",
+        "type": "TEXT"
+      },
+      {
+        "id": "name",
+        "label": "Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "comment",
+        "label": "Description",
+        "type": "TEXT"
+      },
+      {
+        "id": "version",
+        "label": "Version",
+        "type": "TEXT"
+      },
+      {
+        "id": "category",
+        "label": "Category",
+        "type": "TEXT"
+      },
+      {
+        "id": "enabled",
+        "label": "Enabled",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "type",
+        "label": "Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "provider",
+        "label": "Provider",
+        "type": "TEXT"
+      },
+      {
+        "id": "saved_time",
+        "label": "Saved Time",
+        "type": "DATETIME"
+      },
+      {
+        "id": "timestamp",
+        "label": "Timestamp",
+        "type": "DATETIME"
+      },
+      {
+        "id": "count_",
+        "label": "Count",
+        "type": "TEXT"
+      },
+      {
+        "id": "_RDA_Id",
+        "label": "RDA Id",
+        "type": "TEXT"
+      }
+    ],
+    "default_time_filter_labels": [
+      "Last 1 month"
+    ],
+    "group_filters": [
+      {
+        "stream": "rda_blueprints_meta",
+        "title": "Category",
+        "group_by": [
+          "category"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "_RDA_Id",
+        "type": "str"
+      }
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Device Details",
+      "title": "Service Blueprints",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "title": "Field Notices",
+          "title": "Service Blueprints",
           "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "stream": "bcs_oi_productAlerts-enriched",
-          "duration_hours": 1080,
+          "stream": "rda_blueprints_meta",
           "ts_column": "timestamp",
-          "extra_filter": "(source in 'fieldNotices') and (`fieldNotice_matchConfidence` not in \"Not Vulnerable\")",
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
           "columns": {
-            "fieldNoticeId": {
-              "title": "Field Notice ID",
-              "type": "DOUBLE"
+            "id": {
+              "title": "Id",
+              "key": true
             },
-            "fieldnotice_confidence_color": {
-              "type": "COLOR-MAP",
-              "source-column": "fieldNotice_matchConfidence",
-              "color-map": {
-                "Not Vulnerable": "#00BB00",
-                "Vulnerable": "#BB0000",
-                "Potentially Vulnerable": "#F6C309"
-              }
+            "name": {
+              "title": "Name",
+              "key": true
             },
-            "fieldNotice_matchConfidence": {
-              "title": "Confidence",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.fieldnotice_confidence_color }}' > {{ row.fieldNotice_matchConfidence }} </span>{% endraw %}",
-              "visible": true
-            },
-            "matchConfidenceReason": "Confidence Reason",
-            "deviceId": {
-              "title": "Device ID",
-              "type": "TEXT",
-              "visible": true
-            },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product ID",
-            "serialNumber": "Serial Number",
-            "physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "productFamily": "Product Family",
-            "softwareVersion": "SW Version",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": true
-            },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "fieldNoticeType": {
-              "title": "Type",
-              "type": "TEXT"
-            },
-            "bulletinTitle": "Title",
-            "bulletinUrl": {
-              "title": "URL",
-              "type": "TEXT",
-              "visible": false
-            },
-            "problemDescription": {
+            "comment": {
               "title": "Description",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bulletinMappingCaveat": {
-              "title": "Caveat",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bulletinFirstPublishedTimestamp": {
-              "title": "FN Published Timestammp",
-              "type": "DATETIME"
-            },
-            "bulletinLastUpdatedTimestamp": {
-              "title": "FN Last Updated Timestammp",
-              "type": "DATETIME"
-            }
-          },
-          "widget_id": "6889a924"
-        },
-        {
-          "title": "Security Advisories",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "stream": "bcs_oi_productAlerts-enriched",
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "(source in 'securityAdvisories') and (`secAdv_matchConfidence` not in \"Not Vulnerable\")",
-          "columns": {
-            "securityAdvisoryColdId": {
-              "title": "Security Advisory Col ID",
-              "type": "DOUBLE"
-            },
-            "securityAdvisoryId": {
-              "title": "Security Advisory ID",
-              "type": "TEXT"
-            },
-            "bulletinTitle": "Title",
-            "secAdv_confidence_color": {
-              "type": "COLOR-MAP",
-              "source-column": "secAdv_matchConfidence",
-              "color-map": {
-                "Not Vulnerable": "#00BB00",
-                "Vulnerable": "#BB0000",
-                "Potentially Vulnerable": "#F6C309"
-              }
-            },
-            "secAdv_matchConfidence": {
-              "title": "Confidence",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_matchConfidence }} </span>{% endraw %}",
               "visible": true
             },
-            "secAdv_impact_rating_color": {
-              "type": "COLOR-MAP",
-              "source-column": "secAdv_securityImpactRating",
-              "color-map": {
-                "Critical": "#8B0000",
-                "High": "#FF4500"
-              }
+            "category": {
+              "title": "Category",
+              "key": true
             },
-            "secAdv_securityImpactRating": {
-              "title": "Impact Rating",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
+            "auto_deploy": {
+              "title": "Auto Deploy",
               "visible": true
             },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product ID",
-            "serialNumber": "Serial Number",
-            "physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
+            "enableColor": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "enabled",
+              "color-map": {
+                "yes": "#4CAF50",
+                "no": "#9E9E9E"
+              }
             },
-            "productFamily": "Product Family",
-            "softwareVersion": "SW Version",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
+            "enabled": {
+              "title": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.enableColor}}'}}' > {{'{{ row.enabled }}'}} </span>"
             },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bugIds": {
-              "title": "Bug IDs",
-              "type": "TEXT"
-            },
-            "cveIds": {
-              "title": "CVE IDs",
-              "type": "TEXT"
-            },
-            "matchConfidenceReason": "Confidence Reason",
-            "bulletinFirstPublishedTimestamp": {
-              "title": "Published",
-              "type": "DATETIME"
-            },
-            "bulletinLastUpdatedTimestamp": {
-              "title": "Last Updated",
-              "type": "DATETIME"
-            },
-            "bulletinVersion": {
-              "title": "Version",
-              "type": "TEXT"
-            },
-            "bulletinUrl": {
+            "url": {
               "title": "URL",
-              "type": "TEXT",
-              "visible": false
+              "visible": true,
+              "key": true
             },
-            "bulletinSummary": {
-              "title": "Summary",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bulletinMappingCaveat": {
-              "title": "Caveat",
-              "type": "TEXT"
-            },
-            "commonVulnerabilityScoringSystemBaseScore": {
-              "title": "Vulnerability Base Score",
-              "type": "TEXT"
-            },
-            "commonVulnerabilityScoringSystemTemporalScore": {
-              "title": "Vulnerability Temporal Score",
-              "type": "TEXT"
-            }
-          },
-          "widget_id": "df2cf4b0"
-        },
-        {
-          "title": "Software Advisories",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "stream": "bcs_oi_productAlerts-enriched",
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "source in 'softwareAdvisories'",
-          "columns": {
-            "softwareVersion": {
-              "title": "Software Version",
-              "type": "TEXT"
-            },
-            "softwareType": {
-              "title": "Software Type",
-              "type": "TEXT"
-            },
-            "swAdv_confidence_color": {
+            "errorsColor": {
+              "title": "Sev_2",
               "type": "COLOR-MAP",
-              "source-column": "swAdv_softwareAlertType",
+              "source-column": "errors",
               "color-map": {
-                "SA": "#F6C309",
-                "DF": "#BB0000"
+                "0": "#03A9F4"
               }
             },
-            "swAdv_softwareAlertType": {
-              "title": "Confidence",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.swAdv_confidence_color }}' > {{ row.swAdv_softwareAlertType }} </span>{% endraw %}",
-              "visible": true
+            "errors": {
+              "title": "Audit Errors",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.errorsColor }}'}}' > {{'{{ row.errors }}'}} </span>"
             },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product ID",
-            "serialNumber": "Serial Number",
-            "physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "productFamily": "Product Family",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "imageName": {
-              "title": "Image Name",
-              "type": "TEXT"
-            },
-            "softwareAlertUrl": {
-              "title": "Software Alert Url",
-              "type": "TEXT",
-              "visible": false
-            }
-          },
-          "widget_id": "c7e070cc"
-        },
-        {
-          "title": "HW EOLs",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "stream": "bcs_oi_productAlerts-enriched",
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "extra_filter": "source in 'hwEOL'",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "columns": {
-            "hardwareEndOfLifeId": {
-              "title": "HW EOL ID",
-              "type": "DOUBLE"
-            },
-            "hw_status_color": {
+            "warningColor": {
+              "title": "Sev_2",
               "type": "COLOR-MAP",
-              "source-column": "hw_status",
+              "source-column": "warnings",
               "color-map": {
-                "Expired": "#BB0000",
-                "Expiring in a Quarter": "#F6C309",
-                "Expiring in 8 Quarters": "#FF9800",
-                "Expiring after 8 Quarters": "#1ECBE1",
-                "No EOL": "#00BB00"
+                "0": "#03A9F4"
               }
             },
-            "hw_status": {
-              "title": "HW Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.hw_status_color }}' > {{ row.hw_status }} </span>{% endraw %}",
-              "visible": true
+            "warnings": {
+              "title": "Audit Warnings",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.warningColor }}'}}' > {{'{{ row.warnings }}'}} </span>"
             },
-            "deviceId": {
-              "title": "Device ID",
-              "type": "TEXT"
+            "count_": {
+              "title": "Count",
+              "visible": false,
+              "key": false
             },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product Id",
-            "serialNumber": "Serial Number",
-            "cfx_physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "productFamily": "Product Family",
-            "softwareVersion": "SW Version",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_currentEndOfLifeMilestone": {
-              "title": "Current EOL Milestone",
-              "type": "TEXT"
-            },
-            "hwEOL_currentEndOfLifeMilestoneDate": {
-              "title": "Current EOL",
-              "type": "DATETIME"
-            },
-            "hwEOL_nextEndOfLifeMilestone": {
-              "title": "Next EOL Milestone",
-              "type": "TEXT"
-            },
-            "hwEOL_nextEndOfLifeMilestoneDate": {
-              "title": "Next EOL",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfSaleDate": {
-              "title": "End Of Sale",
-              "type": "DATETIME"
-            },
-            "hwEOL_lastDayOfSupportDate": {
-              "title": "LDoS",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfLifeAnnouncementDate": {
-              "title": "EOL Announcement",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfServiceContractRenewalDate": {
-              "title": "End Of Service Contract Renewal",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfNewServiceAttachmentDate": {
-              "title": "End Of New Service Attachment",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfRoutineFailureAnalysisDate": {
-              "title": "End Of Routine Failure Analysis",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
-              "title": "End Of Software Maintenance Releases",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfVulnerabilitySecuritySupportDate": {
-              "title": "End Of Vulnerability Security Support",
-              "type": "DATETIME"
-            },
-            "hwEOL_lastShipDate": {
-              "title": "Last Ship Date",
+            "saved_time": {
+              "title": "Saved Time",
               "type": "DATETIME",
               "visible": false
-            }
-          },
-          "widget_id": "2ce138af"
-        },
-        {
-          "title": "SW EOLs",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "stream": "bcs_oi_productAlerts-enriched",
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "extra_filter": "source in 'swEOL'",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "columns": {
-            "softwareEndOfLifeId": {
-              "title": "SW EOL ID",
-              "type": "DOUBLE"
             },
-            "sw_status_color": {
-              "type": "COLOR-MAP",
-              "source-column": "sw_status",
-              "color-map": {
-                "Expired": "#BB0000",
-                "Expiring in a Quarter": "#F6C309",
-                "Expiring in 8 Quarters": "#FF9800",
-                "Expiring after 8 Quarters": "#1ECBE1",
-                "No EOL": "#00BB00"
-              }
+            "timestamp": {
+              "title": "Timestamp",
+              "hidden": true,
+              "key": false
             },
-            "softwareVersion": "SW Version",
-            "sw_status": {
-              "title": "SW Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>{% endraw %}",
+            "note": {
+              "title": "Note",
               "visible": true
             },
-            "deviceId": {
-              "title": "Device ID",
-              "type": "TEXT"
-            },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product Id",
-            "serialNumber": "Serial Number",
-            "cfx_physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "productFamily": "Product Family",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "swEOL_currentEndOfLifeMilestone": {
-              "title": "Current EOL Milestone",
-              "type": "TEXT"
-            },
-            "swEOL_currentEndOfLifeMilestoneDate": {
-              "title": "Current EOL",
-              "type": "DATETIME"
-            },
-            "swEOL_nextEndOfLifeMilestone": {
-              "title": "Next EOL Milestone",
-              "type": "TEXT"
-            },
-            "swEOL_nextEndOfLifeMilestoneDate": {
-              "title": "Next EOL",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfSaleDate": {
-              "title": "End Of Sale",
-              "type": "DATETIME"
-            },
-            "swEOL_lastDayOfSupportDate": {
-              "title": "LDoS",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfLifeAnnouncementDate": {
-              "title": "EOL Announcement",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfServiceContractRenewalDate": {
-              "title": "End Of Service Contract Renewal",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfNewServiceAttachmentDate": {
-              "title": "End Of New Service Attachment",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfRoutineFailureAnalysisDate": {
-              "title": "End Of Routine Failure Analysis",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfSoftwareMaintenanceReleasesDate": {
-              "title": "End Of Software Maintenance Releases",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfVulnerabilitySecuritySupportDate": {
-              "title": "End Of Vulnerability Security Support",
-              "type": "DATETIME"
-            },
-            "swEOL_lastShipDate": {
-              "title": "Last Ship Date",
-              "type": "DATETIME",
-              "visible": false
+            "_RDA_Id": {
+              "title": " RDA_Id",
+              "visible": false,
+              "hidden": false,
+              "key": false
             }
           },
-          "widget_id": "ce843ad0"
+          "actions": [
+            {
+              "permission": "rda:deploymentspec:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.add.yaml"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Import from Catalog",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-import",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.import"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Dashboard",
+              "type": "GO_TO_APP_STATE",
+              "appName": "dynamic-dashboard",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-dashboard",
+              "drillDownLinkField": "name"
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.view"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit Layout",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-layout",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit.layout"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:disable",
+              "title": "Disable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-deactivate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.deactivate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "true",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "70200583"
+        },
+        {
+          "title": "Deployed Blueprints",
+          "widget_type": "tabular",
+          "stream": "rda_blueprints_meta",
+          "ts_column": "timestamp",
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "columns": {
+            "id": {
+              "title": "App Id",
+              "key": true
+            },
+            "name": {
+              "title": "App Name",
+              "key": true
+            },
+            "comment": {
+              "title": "Description",
+              "visible": true,
+              "key": false
+            },
+            "publisher": {
+              "title": "Publisher",
+              "key": false
+            },
+            "type": {
+              "title": "Type",
+              "visible": true,
+              "key": false
+            },
+            "state": {
+              "title": "State",
+              "visible": true,
+              "key": false
+            },
+            "errorColor": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "errors",
+              "color-map": {
+                "0": "#03A9F4"
+              }
+            },
+            "errors": {
+              "title": "Audit Errors",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.errorColor }}'}}' > {{'{{ row.errors }}'}} </span>"
+            },
+            "warningColor": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "warnings",
+              "color-map": {
+                "0": "#03A9F4"
+              }
+            },
+            "warnings": {
+              "title": "Audit Warnings",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.warningColor }}'}}' > {{'{{ row.warnings }}'}} </span>"
+            },
+            "version": {
+              "title": "Version",
+              "visible": true
+            },
+            "auto_deploy": {
+              "title": "Auto Deploy",
+              "visible": true
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "hidden": true,
+              "key": false
+            },
+            "url": {
+              "title": "URL",
+              "visible": false,
+              "key": true
+            },
+            "_RDA_Id": {
+              "title": " RDA_Id",
+              "visible": false,
+              "hidden": false,
+              "key": false
+            }
+          },
+          "actions": [
+            {
+              "title": "View Dashboard",
+              "permission": "rda:deploymentspec:view",
+              "type": "GO_TO_APP_STATE",
+              "appName": "dynamic-dashboard",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-dashboard",
+              "drillDownLinkField": "name"
+            }
+          ],
+          "widget_id": "0308666c"
+        },
+        {
+          "title": "Service Blueprint Catalog",
+          "widget_type": "tabular",
+          "stream": "rda_blueprints_meta",
+          "ts_column": "timestamp",
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "columns": {
+            "id": {
+              "title": "App Id",
+              "key": true
+            },
+            "name": {
+              "title": "App Name",
+              "key": true
+            },
+            "comment": {
+              "title": "Description",
+              "visible": true,
+              "key": true
+            },
+            "publisher": {
+              "title": "Publisher",
+              "key": false
+            },
+            "type": {
+              "title": "Type",
+              "visible": true,
+              "key": false
+            },
+            "state": {
+              "title": "State",
+              "visible": true,
+              "key": false
+            },
+            "version": {
+              "title": "Version",
+              "visible": true
+            },
+            "auto_deploy": {
+              "title": "Auto Deploy",
+              "visible": true
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "hidden": true,
+              "key": false
+            },
+            "url": {
+              "title": "URL",
+              "visible": false,
+              "key": true
+            },
+            "_RDA_Id": {
+              "title": " RDA_Id",
+              "visible": false,
+              "hidden": false,
+              "key": false
+            }
+          },
+          "actions": [
+            {
+              "title": "Deploy",
+              "permission": "rda:deploymentspec:deploy",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:deploy-app",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.apps.deploy"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "d6e7b91f"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Device Details",
+      "title": "Service Blueprints",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "title": "Field Notices",
+          "title": "Service Blueprints",
           "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "stream": "bcs_oi_productAlerts-enriched",
-          "duration_hours": 1080,
+          "stream": "rda_blueprints_meta",
           "ts_column": "timestamp",
-          "extra_filter": "(source in 'fieldNotices') and (`fieldNotice_matchConfidence` not in \"Not Vulnerable\")",
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
           "columns": {
-            "fieldNoticeId": {
-              "title": "Field Notice ID",
-              "type": "DOUBLE"
+            "id": {
+              "title": "Id",
+              "key": true
             },
-            "fieldnotice_confidence_color": {
-              "type": "COLOR-MAP",
-              "source-column": "fieldNotice_matchConfidence",
-              "color-map": {
-                "Not Vulnerable": "#00BB00",
-                "Vulnerable": "#BB0000",
-                "Potentially Vulnerable": "#F6C309"
-              }
+            "name": {
+              "title": "Name",
+              "key": true
             },
-            "fieldNotice_matchConfidence": {
-              "title": "Confidence",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.fieldnotice_confidence_color }}' > {{ row.fieldNotice_matchConfidence }} </span>{% endraw %}",
-              "visible": true
-            },
-            "matchConfidenceReason": "Confidence Reason",
-            "deviceId": {
-              "title": "Device ID",
-              "type": "TEXT",
-              "visible": true
-            },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product ID",
-            "serialNumber": "Serial Number",
-            "physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "productFamily": "Product Family",
-            "softwareVersion": "SW Version",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": true
-            },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "fieldNoticeType": {
-              "title": "Type",
-              "type": "TEXT"
-            },
-            "bulletinTitle": "Title",
-            "bulletinUrl": {
-              "title": "URL",
-              "type": "TEXT",
-              "visible": false
-            },
-            "problemDescription": {
+            "comment": {
               "title": "Description",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bulletinMappingCaveat": {
-              "title": "Caveat",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bulletinFirstPublishedTimestamp": {
-              "title": "FN Published Timestammp",
-              "type": "DATETIME"
-            },
-            "bulletinLastUpdatedTimestamp": {
-              "title": "FN Last Updated Timestammp",
-              "type": "DATETIME"
-            }
-          },
-          "widget_id": "6889a924"
-        },
-        {
-          "title": "Security Advisories",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "stream": "bcs_oi_productAlerts-enriched",
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "(source in 'securityAdvisories') and (`secAdv_matchConfidence` not in \"Not Vulnerable\")",
-          "columns": {
-            "securityAdvisoryColdId": {
-              "title": "Security Advisory Col ID",
-              "type": "DOUBLE"
-            },
-            "securityAdvisoryId": {
-              "title": "Security Advisory ID",
-              "type": "TEXT"
-            },
-            "bulletinTitle": "Title",
-            "secAdv_confidence_color": {
-              "type": "COLOR-MAP",
-              "source-column": "secAdv_matchConfidence",
-              "color-map": {
-                "Not Vulnerable": "#00BB00",
-                "Vulnerable": "#BB0000",
-                "Potentially Vulnerable": "#F6C309"
-              }
-            },
-            "secAdv_matchConfidence": {
-              "title": "Confidence",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_confidence_color }}' > {{ row.secAdv_matchConfidence }} </span>{% endraw %}",
               "visible": true
             },
-            "secAdv_impact_rating_color": {
-              "type": "COLOR-MAP",
-              "source-column": "secAdv_securityImpactRating",
-              "color-map": {
-                "Critical": "#8B0000",
-                "High": "#FF4500"
-              }
+            "category": {
+              "title": "Category",
+              "key": true
             },
-            "secAdv_securityImpactRating": {
-              "title": "Impact Rating",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>{% endraw %}",
+            "auto_deploy": {
+              "title": "Auto Deploy",
               "visible": true
             },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product ID",
-            "serialNumber": "Serial Number",
-            "physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
+            "enableColor": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "enabled",
+              "color-map": {
+                "yes": "#4CAF50",
+                "no": "#9E9E9E"
+              }
             },
-            "productFamily": "Product Family",
-            "softwareVersion": "SW Version",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
+            "enabled": {
+              "title": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.enableColor}}'}}' > {{'{{ row.enabled }}'}} </span>"
             },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bugIds": {
-              "title": "Bug IDs",
-              "type": "TEXT"
-            },
-            "cveIds": {
-              "title": "CVE IDs",
-              "type": "TEXT"
-            },
-            "matchConfidenceReason": "Confidence Reason",
-            "bulletinFirstPublishedTimestamp": {
-              "title": "Published",
-              "type": "DATETIME"
-            },
-            "bulletinLastUpdatedTimestamp": {
-              "title": "Last Updated",
-              "type": "DATETIME"
-            },
-            "bulletinVersion": {
-              "title": "Version",
-              "type": "TEXT"
-            },
-            "bulletinUrl": {
+            "url": {
               "title": "URL",
-              "type": "TEXT",
-              "visible": false
+              "visible": true,
+              "key": true
             },
-            "bulletinSummary": {
-              "title": "Summary",
-              "type": "TEXT",
-              "visible": false
-            },
-            "bulletinMappingCaveat": {
-              "title": "Caveat",
-              "type": "TEXT"
-            },
-            "commonVulnerabilityScoringSystemBaseScore": {
-              "title": "Vulnerability Base Score",
-              "type": "TEXT"
-            },
-            "commonVulnerabilityScoringSystemTemporalScore": {
-              "title": "Vulnerability Temporal Score",
-              "type": "TEXT"
-            }
-          },
-          "widget_id": "df2cf4b0"
-        },
-        {
-          "title": "Software Advisories",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "stream": "bcs_oi_productAlerts-enriched",
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "source in 'softwareAdvisories'",
-          "columns": {
-            "softwareVersion": {
-              "title": "Software Version",
-              "type": "TEXT"
-            },
-            "softwareType": {
-              "title": "Software Type",
-              "type": "TEXT"
-            },
-            "swAdv_confidence_color": {
+            "errorsColor": {
+              "title": "Sev_2",
               "type": "COLOR-MAP",
-              "source-column": "swAdv_softwareAlertType",
+              "source-column": "errors",
               "color-map": {
-                "SA": "#F6C309",
-                "DF": "#BB0000"
+                "0": "#03A9F4"
               }
             },
-            "swAdv_softwareAlertType": {
-              "title": "Confidence",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.swAdv_confidence_color }}' > {{ row.swAdv_softwareAlertType }} </span>{% endraw %}",
-              "visible": true
+            "errors": {
+              "title": "Audit Errors",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.errorsColor }}'}}' > {{'{{ row.errors }}'}} </span>"
             },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product ID",
-            "serialNumber": "Serial Number",
-            "physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "productFamily": "Product Family",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "imageName": {
-              "title": "Image Name",
-              "type": "TEXT"
-            },
-            "softwareAlertUrl": {
-              "title": "Software Alert Url",
-              "type": "TEXT",
-              "visible": false
-            }
-          },
-          "widget_id": "c7e070cc"
-        },
-        {
-          "title": "HW EOLs",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "stream": "bcs_oi_productAlerts-enriched",
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "extra_filter": "source in 'hwEOL'",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "columns": {
-            "hardwareEndOfLifeId": {
-              "title": "HW EOL ID",
-              "type": "DOUBLE"
-            },
-            "hw_status_color": {
+            "warningColor": {
+              "title": "Sev_2",
               "type": "COLOR-MAP",
-              "source-column": "hw_status",
+              "source-column": "warnings",
               "color-map": {
-                "Expired": "#BB0000",
-                "Expiring in a Quarter": "#F6C309",
-                "Expiring in 8 Quarters": "#FF9800",
-                "Expiring after 8 Quarters": "#1ECBE1",
-                "No EOL": "#00BB00"
+                "0": "#03A9F4"
               }
             },
-            "hw_status": {
-              "title": "HW Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.hw_status_color }}' > {{ row.hw_status }} </span>{% endraw %}",
-              "visible": true
+            "warnings": {
+              "title": "Audit Warnings",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.warningColor }}'}}' > {{'{{ row.warnings }}'}} </span>"
             },
-            "deviceId": {
-              "title": "Device ID",
-              "type": "TEXT"
+            "count_": {
+              "title": "Count",
+              "visible": false,
+              "key": false
             },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product Id",
-            "serialNumber": "Serial Number",
-            "cfx_physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "productFamily": "Product Family",
-            "softwareVersion": "SW Version",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "hwEOL_currentEndOfLifeMilestone": {
-              "title": "Current EOL Milestone",
-              "type": "TEXT"
-            },
-            "hwEOL_currentEndOfLifeMilestoneDate": {
-              "title": "Current EOL",
-              "type": "DATETIME"
-            },
-            "hwEOL_nextEndOfLifeMilestone": {
-              "title": "Next EOL Milestone",
-              "type": "TEXT"
-            },
-            "hwEOL_nextEndOfLifeMilestoneDate": {
-              "title": "Next EOL",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfSaleDate": {
-              "title": "End Of Sale",
-              "type": "DATETIME"
-            },
-            "hwEOL_lastDayOfSupportDate": {
-              "title": "LDoS",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfLifeAnnouncementDate": {
-              "title": "EOL Announcement",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfServiceContractRenewalDate": {
-              "title": "End Of Service Contract Renewal",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfNewServiceAttachmentDate": {
-              "title": "End Of New Service Attachment",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfRoutineFailureAnalysisDate": {
-              "title": "End Of Routine Failure Analysis",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfSoftwareMaintenanceReleasesDate": {
-              "title": "End Of Software Maintenance Releases",
-              "type": "DATETIME"
-            },
-            "hwEOL_endOfVulnerabilitySecuritySupportDate": {
-              "title": "End Of Vulnerability Security Support",
-              "type": "DATETIME"
-            },
-            "hwEOL_lastShipDate": {
-              "title": "Last Ship Date",
+            "saved_time": {
+              "title": "Saved Time",
               "type": "DATETIME",
               "visible": false
-            }
-          },
-          "widget_id": "2ce138af"
-        },
-        {
-          "title": "SW EOLs",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 6,
-          "min_width": 12,
-          "stream": "bcs_oi_productAlerts-enriched",
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "deviceId"
-          ],
-          "extra_filter": "source in 'swEOL'",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "columns": {
-            "softwareEndOfLifeId": {
-              "title": "SW EOL ID",
-              "type": "DOUBLE"
             },
-            "sw_status_color": {
-              "type": "COLOR-MAP",
-              "source-column": "sw_status",
-              "color-map": {
-                "Expired": "#BB0000",
-                "Expiring in a Quarter": "#F6C309",
-                "Expiring in 8 Quarters": "#FF9800",
-                "Expiring after 8 Quarters": "#1ECBE1",
-                "No EOL": "#00BB00"
-              }
+            "timestamp": {
+              "title": "Timestamp",
+              "hidden": true,
+              "key": false
             },
-            "softwareVersion": "SW Version",
-            "sw_status": {
-              "title": "SW Status",
-              "type": "TEXT",
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.sw_status_color }}' > {{ row.sw_status }} </span>{% endraw %}",
+            "note": {
+              "title": "Note",
               "visible": true
             },
-            "deviceId": {
-              "title": "Device ID",
-              "type": "TEXT"
-            },
-            "deviceName": "Asset Name",
-            "deviceIp": "Asset IP",
-            "productId": "Product Id",
-            "serialNumber": "Serial Number",
-            "cfx_physicalAssetType": {
-              "title": "Equipment Type",
-              "type": "TEXT"
-            },
-            "productFamily": "Product Family",
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "physicalAssetId": {
-              "title": "Physical Asset ID",
-              "type": "DOUBLE",
-              "visible": false
-            },
-            "deviceType": {
-              "title": "Device Type",
-              "type": "TEXT",
-              "visible": false
-            },
-            "deviceStatus": {
-              "title": "Device Status",
-              "type": "TEXT",
-              "visible": false
-            },
-            "ipAddress": {
-              "title": "IP Address",
-              "type": "TEXT",
-              "visible": false
-            },
-            "swEOL_currentEndOfLifeMilestone": {
-              "title": "Current EOL Milestone",
-              "type": "TEXT"
-            },
-            "swEOL_currentEndOfLifeMilestoneDate": {
-              "title": "Current EOL",
-              "type": "DATETIME"
-            },
-            "swEOL_nextEndOfLifeMilestone": {
-              "title": "Next EOL Milestone",
-              "type": "TEXT"
-            },
-            "swEOL_nextEndOfLifeMilestoneDate": {
-              "title": "Next EOL",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfSaleDate": {
-              "title": "End Of Sale",
-              "type": "DATETIME"
-            },
-            "swEOL_lastDayOfSupportDate": {
-              "title": "LDoS",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfLifeAnnouncementDate": {
-              "title": "EOL Announcement",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfServiceContractRenewalDate": {
-              "title": "End Of Service Contract Renewal",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfNewServiceAttachmentDate": {
-              "title": "End Of New Service Attachment",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfRoutineFailureAnalysisDate": {
-              "title": "End Of Routine Failure Analysis",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfSoftwareMaintenanceReleasesDate": {
-              "title": "End Of Software Maintenance Releases",
-              "type": "DATETIME"
-            },
-            "swEOL_endOfVulnerabilitySecuritySupportDate": {
-              "title": "End Of Vulnerability Security Support",
-              "type": "DATETIME"
-            },
-            "swEOL_lastShipDate": {
-              "title": "Last Ship Date",
-              "type": "DATETIME",
-              "visible": false
+            "_RDA_Id": {
+              "title": " RDA_Id",
+              "visible": false,
+              "hidden": false,
+              "key": false
             }
           },
-          "widget_id": "ce843ad0"
+          "actions": [
+            {
+              "permission": "rda:deploymentspec:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.add.yaml"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Import from Catalog",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-import",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.import"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Dashboard",
+              "type": "GO_TO_APP_STATE",
+              "appName": "dynamic-dashboard",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-dashboard",
+              "drillDownLinkField": "name"
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.view"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit Layout",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-layout",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit.layout"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:disable",
+              "title": "Disable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-deactivate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.deactivate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "true",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "70200583"
+        },
+        {
+          "title": "Deployed Blueprints",
+          "widget_type": "tabular",
+          "stream": "rda_blueprints_meta",
+          "ts_column": "timestamp",
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "columns": {
+            "id": {
+              "title": "App Id",
+              "key": true
+            },
+            "name": {
+              "title": "App Name",
+              "key": true
+            },
+            "comment": {
+              "title": "Description",
+              "visible": true,
+              "key": false
+            },
+            "publisher": {
+              "title": "Publisher",
+              "key": false
+            },
+            "type": {
+              "title": "Type",
+              "visible": true,
+              "key": false
+            },
+            "state": {
+              "title": "State",
+              "visible": true,
+              "key": false
+            },
+            "errorColor": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "errors",
+              "color-map": {
+                "0": "#03A9F4"
+              }
+            },
+            "errors": {
+              "title": "Audit Errors",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.errorColor }}'}}' > {{'{{ row.errors }}'}} </span>"
+            },
+            "warningColor": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "warnings",
+              "color-map": {
+                "0": "#03A9F4"
+              }
+            },
+            "warnings": {
+              "title": "Audit Warnings",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.warningColor }}'}}' > {{'{{ row.warnings }}'}} </span>"
+            },
+            "version": {
+              "title": "Version",
+              "visible": true
+            },
+            "auto_deploy": {
+              "title": "Auto Deploy",
+              "visible": true
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "hidden": true,
+              "key": false
+            },
+            "url": {
+              "title": "URL",
+              "visible": false,
+              "key": true
+            },
+            "_RDA_Id": {
+              "title": " RDA_Id",
+              "visible": false,
+              "hidden": false,
+              "key": false
+            }
+          },
+          "actions": [
+            {
+              "title": "View Dashboard",
+              "permission": "rda:deploymentspec:view",
+              "type": "GO_TO_APP_STATE",
+              "appName": "dynamic-dashboard",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-dashboard",
+              "drillDownLinkField": "name"
+            }
+          ],
+          "widget_id": "0308666c"
+        },
+        {
+          "title": "Service Blueprint Catalog",
+          "widget_type": "tabular",
+          "stream": "rda_blueprints_meta",
+          "ts_column": "timestamp",
+          "min_width": 12,
+          "height": 12,
+          "max_width": 12,
+          "paginated": true,
+          "refreshRequired": true,
+          "timebased": false,
+          "max_rows": 50,
+          "columns": {
+            "id": {
+              "title": "App Id",
+              "key": true
+            },
+            "name": {
+              "title": "App Name",
+              "key": true
+            },
+            "comment": {
+              "title": "Description",
+              "visible": true,
+              "key": true
+            },
+            "publisher": {
+              "title": "Publisher",
+              "key": false
+            },
+            "type": {
+              "title": "Type",
+              "visible": true,
+              "key": false
+            },
+            "state": {
+              "title": "State",
+              "visible": true,
+              "key": false
+            },
+            "version": {
+              "title": "Version",
+              "visible": true
+            },
+            "auto_deploy": {
+              "title": "Auto Deploy",
+              "visible": true
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "hidden": true,
+              "key": false
+            },
+            "url": {
+              "title": "URL",
+              "visible": false,
+              "key": true
+            },
+            "_RDA_Id": {
+              "title": " RDA_Id",
+              "visible": false,
+              "hidden": false,
+              "key": false
+            }
+          },
+          "actions": [
+            {
+              "title": "Deploy",
+              "permission": "rda:deploymentspec:deploy",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:deploy-app",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.apps.deploy"
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "d6e7b91f"
         }
       ]
     }
