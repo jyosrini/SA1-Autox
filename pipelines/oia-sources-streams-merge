@@ -1,7 +1,1 @@
-@dm:empty
- --> @dm:addrow name='edc_sweol_data' and limit=0
- --> #dm:query-persistent-stream
- ## --> @dm:save name='test_sw_data'
-
- --> @dm:selectcolumns exclude='contarct_number'
- --> @rn:write-stream name='edc_sweol_data' and direct_to_opensearch='yes'
+@oia:source-event-streams-merge duration="after -24 hours"

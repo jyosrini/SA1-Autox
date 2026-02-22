@@ -1,7 +1,18 @@
-@dm:empty
- --> @dm:addrow name='edc_sweol_data' and limit=0
- --> #dm:query-persistent-stream
- ## --> @dm:save name='test_sw_data'
 
- --> @dm:selectcolumns exclude='contarct_number'
- --> @rn:write-stream name='edc_sweol_data' and direct_to_opensearch='yes'
+ ## ========================
+
+ ## Main: Get user input
+
+ ## Format time
+
+ ## ========================
+@c:new-block
+ --> @dm:empty
+ ## Get submitted form fields
+
+ --> @exec:get-input
+ ## Exclude label as it contains unneeded info that should not be written to stream later
+
+ --> @dm:selectcolumns exclude='.*_label'
+ --> @dm:save name='temp-input_data'
+ --> @dm:save name='upload-input_data'
