@@ -1,92 +1,151 @@
 {
-  "name": "incident-details-recommendation",
-  "description": "Summary and Recommendation",
-  "label": "Summary and Recommendation",
-  "enabled": true,
+  "name": "topology-details-app-with-graphdb-and-alerts",
+  "label": "Components",
+  "description": "Components",
   "dashboard_folder": "Default",
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "template_variables": {
-    "INCIDENT_ID": {
-      "default": null,
-      "contextId": "incident_id"
-    }
-  },
-  "custom_context": {
-    "alert-context": true
+  "version": "23.4.14.1",
+  "enabled": true,
+  "short_label": "Stack",
+  "context_label_id": "stack_name",
+  "dashboard_type": "navigation-dashboard",
+  "dashboard_style": "tabbed",
+  "dashboard_filters": {},
+  "navigation_dashboards": {
+    "tree_data": {
+      "column_name": "node_type",
+      "context_pstream_attr": "nodes_pstream",
+      "context_query_attr": "nodes_query"
+    },
+    "tree_detail": {
+      "context_pstream_attr": "nodes_pstream",
+      "context_query_attr": "nodes_query",
+      "display_column": "node_label"
+    },
+    "showNodeIcon": true,
+    "showSearchBox": false
   },
   "dashboard_sections": [
     {
-      "title": "Summary and Recommendation",
-      "show_filter": false,
+      "title": "Node Details",
       "widgets": [
         {
-          "title": "Incident Summary",
-          "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/incident-summary",
-          "widget_id": "784726f6"
+          "title": "Summary",
+          "widget_type": "portal_summary",
+          "reportId": "rda.saas.topology.node_details.report",
+          "max_width": 4,
+          "height": 5,
+          "min_width": 4,
+          "widget_id": "182229d8"
         },
         {
-          "widget_type": "label",
-          "min_width": 12,
+          "title": "Alerts",
+          "widget_type": "graphdb_alerts",
+          "relations_map": "Telco",
+          "gdb_alerts": "vaas_alerts_sep1",
+          "connected_neighbors_alerts": false,
+          "height": 5,
+          "min_wdith": 8,
+          "widget_id": "182287d8"
+        },
+        {
+          "title": "Relations",
+          "widget_type": "graphdb",
+          "max_width": 8,
+          "height": 12,
+          "min_width": 8,
+          "widget_id": "dc1c15a5"
+        }
+      ]
+    },
+    {
+      "title": "Topology",
+      "widgets": [
+        {
+          "title": "Topology",
+          "widget_type": "topology",
+          "register_search_endpoints": true,
+          "reportId": "rda.saas.stack.view.topo",
           "height": 10,
-          "max_width": 12,
-          "stream": "oia-incidents-stream",
-          "folder": "widget_labels",
-          "objectName": "recommendations",
-          "segments": [
-            {
-              "stream": "oia-incidents-stream",
-              "variable": "recommendations",
-              "columns": [
-                "i_recommendation"
-              ],
-              "type": "tabular",
-              "extra_filter": "incident_id is '{{INCIDENT_ID}}'",
-              "duration_hours": 100000
-            }
-          ],
-          "widget_id": "03430956"
+          "min_wdith": 12,
+          "widget_id": "61162460"
+        }
+      ]
+    },
+    {
+      "title": "Connected Neighbor Alerts",
+      "widgets": [
+        {
+          "title": "Connected Neighbor Alerts",
+          "widget_type": "graphdb_alerts",
+          "relations_map": "Telco",
+          "gdb_alerts": "vaas_alerts_sep1",
+          "connected_neighbors_alerts": true,
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "359ad4d7"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Summary and Recommendation",
-      "show_filter": false,
+      "title": "Node Details",
       "widgets": [
         {
-          "title": "Incident Summary",
-          "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/incident-summary",
-          "widget_id": "784726f6"
+          "title": "Summary",
+          "widget_type": "portal_summary",
+          "reportId": "rda.saas.topology.node_details.report",
+          "max_width": 4,
+          "height": 5,
+          "min_width": 4,
+          "widget_id": "182229d8"
         },
         {
-          "widget_type": "label",
-          "min_width": 12,
+          "title": "Alerts",
+          "widget_type": "graphdb_alerts",
+          "relations_map": "Telco",
+          "gdb_alerts": "vaas_alerts_sep1",
+          "connected_neighbors_alerts": false,
+          "height": 5,
+          "min_wdith": 8,
+          "widget_id": "182287d8"
+        },
+        {
+          "title": "Relations",
+          "widget_type": "graphdb",
+          "max_width": 8,
+          "height": 12,
+          "min_width": 8,
+          "widget_id": "dc1c15a5"
+        }
+      ]
+    },
+    {
+      "title": "Topology",
+      "widgets": [
+        {
+          "title": "Topology",
+          "widget_type": "topology",
+          "register_search_endpoints": true,
+          "reportId": "rda.saas.stack.view.topo",
           "height": 10,
-          "max_width": 12,
-          "stream": "oia-incidents-stream",
-          "folder": "widget_labels",
-          "objectName": "recommendations",
-          "segments": [
-            {
-              "stream": "oia-incidents-stream",
-              "variable": "recommendations",
-              "columns": [
-                "i_recommendation"
-              ],
-              "type": "tabular",
-              "extra_filter": "incident_id is '{{INCIDENT_ID}}'",
-              "duration_hours": 100000
-            }
-          ],
-          "widget_id": "03430956"
+          "min_wdith": 12,
+          "widget_id": "61162460"
+        }
+      ]
+    },
+    {
+      "title": "Connected Neighbor Alerts",
+      "widgets": [
+        {
+          "title": "Connected Neighbor Alerts",
+          "widget_type": "graphdb_alerts",
+          "relations_map": "Telco",
+          "gdb_alerts": "vaas_alerts_sep1",
+          "connected_neighbors_alerts": true,
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "359ad4d7"
         }
       ]
     }

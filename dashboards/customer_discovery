@@ -1,410 +1,819 @@
 {
-  "name": "device_syslog_from_alert_fault",
-  "description": "Device Syslog",
-  "label": "Syslogs",
-  "enabled": false,
-  "dashboard_type": "template",
+  "name": "customer_discovery",
+  "label": "On Demand Discovery",
+  "description": "onboarded_devices: Insights",
   "dashboard_folder": "NetworkDevicePack",
+  "version": "1.0.4",
+  "enabled": false,
+  "stream0": "onboarded_devices",
+  "dashboard_type": "template",
   "template_variables": {
     "CUST_ID": {
-      "contextId": "customer_id"
+      "contextId": "customerId"
     },
     "PROJ_ID": {
       "contextId": "project_id"
     },
     "CUST_TAG": {
-      "contextId": "customer_tag"
-    },
-    "DEVICE": {
-      "contextId": "device_ip"
+      "contextId": "customerTag"
     }
   },
-  "stream": "syslog_udp_event_stream_all",
-  "version": "23.9.6.2",
   "dashboard_filters": {
     "time_filter": true,
-    "extra_filter1": "(customer_tag is '{{CUST_TAG}}')",
     "default_time_filter_labels": [
       "Last 1 month"
     ],
-    "group_filters": [
-      {
-        "stream": "syslog_udp_event_stream_all",
-        "title": "Severity",
-        "duration_hours": 1080,
-        "group_by": [
-          "syslog_severity"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "count_"
-      },
-      {
-        "stream": "syslog_udp_event_stream_all",
-        "title": "Urgency",
-        "duration_hours": 1080,
-        "group_by": [
-          "urgency"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "count_"
-      },
-      {
-        "stream": "syslog_udp_event_stream_all",
-        "title": "Impact",
-        "duration_hours": 1080,
-        "group_by": [
-          "impact"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "count_"
-      }
-    ],
-    "columns_filter": [
-      {
-        "id": "cisco_code",
-        "label": "Cisco Code",
-        "type": "TEXT"
-      },
-      {
-        "id": "log_message",
-        "label": "Message",
-        "type": "TEXT"
-      },
-      {
-        "id": "short_description",
-        "label": "Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "syslog_severity",
-        "label": "Severity",
-        "type": "TEXT"
-      },
-      {
-        "id": "impact",
-        "label": "Impact",
-        "type": "TEXT"
-      },
-      {
-        "id": "urgency",
-        "label": "Urgency",
-        "type": "TEXT"
-      },
-      {
-        "id": "rda_gw_client_ip",
-        "label": "IP Address",
-        "type": "TEXT"
-      },
-      {
-        "id": "raw",
-        "label": "Raw Event",
-        "type": "TEXT"
-      },
-      {
-        "id": "log_message",
-        "label": "Message",
-        "type": "TEXT"
-      },
-      {
-        "id": "short_description",
-        "label": "Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "syslog_severity_num",
-        "label": "Severity Number",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "rda_stream",
-        "label": "RDA Stream",
-        "type": "TEXT"
-      }
-    ]
+    "columns_filter": [],
+    "group_filters": []
   },
   "dashboard_sections": [
     {
-      "title": "Syslog",
-      "show_filter": true,
+      "title": "Onboarded Devices",
+      "show_filters": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Syslogs</a></h1></div>",
-          "widget_id": "33317e49"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Syslogs by Severity",
-          "stream": "syslog_udp_event_stream_all",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "syslog_severity"
-          ],
-          "style": {
-            "color-map": {
-              "ERROR": "#EF5350",
-              "NOTICE": "#4DD0E1",
-              "EMERGENCY": "#B71C1C",
-              "INFORMATIONAL": "#03A9F4",
-              "WARNING": "#FFD54F",
-              "ALERT": "#FFA726",
-              "CRITICAL": "#E53935",
-              "DEBUG": "#BCAAA4"
-            }
-          },
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "widget_id": "71405983"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Syslogs by Hosts",
-          "stream": "syslog_udp_event_stream_all",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "rda_gw_client_ip"
-          ],
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "widget_id": "e18b64f1"
-        },
-        {
-          "title": "Syslog Details",
+          "title": "Discovery",
           "widget_type": "tabular",
-          "stream": "syslog_udp_event_stream_all",
-          "duration_hours": 1080,
-          "resizableColumns": false,
-          "showRowSummary": false,
-          "query": "*",
-          "min_width": 12,
-          "height": 8,
-          "max_width": 12,
-          "paginated": true,
-          "max_rows": 50,
-          "truncateColumns": [
-            "raw"
-          ],
+          "stream": "discovery",
+          "stream0": "devices_to_discover",
+          "filter0": "customer_id = '{{CUST_ID}}' and project_id = '{{PROJ_ID}}'",
+          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
+          "refreshOptions": {
+            "refreshType": "Periodic",
+            "refreshInterval": 30000
+          },
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "rda_gw_client_ip",
-            "syslog_severity",
-            "rda_gw_ep_type",
-            "site_code"
+            "device_ip",
+            "discovery_scope"
           ],
+          "ts_column": "timestamp",
+          "paginated": true,
+          "height": 10,
+          "min_wdith": 12,
           "columns": {
-            "rda_gw_client_ip": {
+            "device_ip": {
               "title": "IP Address",
-              "type": "TEXT",
               "key": true
             },
-            "raw": {
-              "title": "Raw Event",
-              "type": "TEXT",
-              "key": true
+            "discovery_scope": {
+              "title": "Discovery Scope",
+              "visible": true,
+              "key": true,
+              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.discovery_status_color }}' > {{ row.discovery_scope }} </span>{%endraw%}"
             },
-            "a_severity_color": {
-              "title": "Sev_2",
-              "type": "COLOR-MAP",
-              "source-column": "syslog_severity",
-              "color-map": {
-                "ERROR": "#EF5350",
-                "NOTICE": "#4DD0E1",
-                "EMERGENCY": "#B71C1C",
-                "INFORMATIONAL": "#03A9F4",
-                "WARNING": "#FFD54F",
-                "ALERT": "#FFA726",
-                "CRITICAL": "#E53935",
-                "DEBUG": "#BCAAA4"
-              }
-            },
-            "syslog_severity": {
-              "title": "Severity",
-              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.a_severity_color}}' > {{row.syslog_severity}} </span>{%endraw%}",
-              "defaultWidth": 150
-            },
-            "rda_gw_ep_name": {
-              "title": "Endpoint Name",
-              "type": "TEXT",
+            "customer_tag": {
+              "title": "customer_tag",
+              "key": true,
               "visible": false
             },
-            "rda_gw_ep_type": "Endpoint Type",
-            "rda_stream": {
-              "title": "RDA Stream",
-              "type": "TEXT",
+            "customer_id": {
+              "title": "customer_id",
+              "key": true,
               "visible": false
-            },
-            "site_code": "Site Code",
-            "stream": {
-              "title": "Stream",
-              "type": "TEXT",
-              "visible": false
-            },
-            "syslog_severity_num": {
-              "title": "Severity Number",
-              "type": "DOUBLE"
             },
             "timestamp": {
               "title": "Timestamp",
               "type": "DATETIME"
+            },
+            "_RDA_Id": {
+              "title": "RDA ID",
+              "key": true,
+              "visible": false
             }
           },
-          "widget_id": "d211804e"
+          "custom_columns": [
+            {
+              "id": "discovery_status_color",
+              "label": "Discovery Scope Color",
+              "key": false,
+              "visible": false,
+              "expr": "'#008000' if str(discovery_scope) in [ 'yes', 'True'] else '#FF0000'"
+            }
+          ],
+          "actions": [
+            {
+              "permission": "rda:github:view",
+              "title": "Add Devices",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "actionLabel": "Add",
+                          "identifier": "Submit"
+                        },
+                        {
+                          "actionLabel": "Cancel",
+                          "identifier": "Cancel"
+                        }
+                      ]
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "IP Address of network device",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "IP Address",
+                          "hidden": false,
+                          "fieldId": "device_ip"
+                        },
+                        {
+                          "fieldId": "discovery_scope",
+                          "label": "Add it to discovery?",
+                          "help": "Should this network device be part of discovery?",
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "required": true,
+                          "lovValues": [
+                            {
+                              "identifier": "yes",
+                              "displayName": "Yes"
+                            },
+                            {
+                              "identifier": "no",
+                              "displayName": "No"
+                            }
+                          ],
+                          "controlType": "RADIO_BUTTON"
+                        },
+                        {
+                          "help": "customer_tag",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "customer_tag",
+                          "hidden": true,
+                          "defaultValue": "{{CUST_TAG}}",
+                          "fieldId": "customer_tag"
+                        },
+                        {
+                          "help": "customer_id",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "customer_id",
+                          "hidden": true,
+                          "defaultValue": "{{CUST_ID}}",
+                          "fieldId": "customer_id"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "operation": "ADD",
+                        "pstreamName": "discovery"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Import Devices",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "CSV file format.The file should contain ip_address,  discovery_scope columns.",
+                          "dataType": "string",
+                          "required": true,
+                          "editable": true,
+                          "label": "NOTE: Required headers in CSV file: ip_address, discovery_scope",
+                          "controlType": "LABEL",
+                          "hidden": false,
+                          "fieldId": "csv_format"
+                        },
+                        {
+                          "help": "Choose csv file to upload",
+                          "dataType": "string",
+                          "required": true,
+                          "editable": true,
+                          "label": "Choose file to upload",
+                          "controlType": "FILE_UPLOAD",
+                          "hidden": false,
+                          "fieldId": "fileUpload"
+                        },
+                        {
+                          "help": "Overwrite existing onboarded data",
+                          "required": false,
+                          "editable": true,
+                          "label": "Replace Data",
+                          "hidden": false,
+                          "fieldId": "replace",
+                          "dataType": "boolean",
+                          "controlType": "BOOLEAN_FIELD",
+                          "defaultValue": false,
+                          "controlPropertyList": [
+                            {
+                              "attribute": "layout-group-id",
+                              "value": "Features"
+                            },
+                            {
+                              "attribute": "layout-percent",
+                              "value": "25"
+                            }
+                          ]
+                        },
+                        {
+                          "help": "customer_tag",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "customer_tag",
+                          "hidden": true,
+                          "defaultValue": "{{CUST_TAG}}",
+                          "fieldId": "customer_tag"
+                        },
+                        {
+                          "help": "customer_id",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "customer_id",
+                          "hidden": true,
+                          "defaultValue": "{{CUST_ID}}",
+                          "fieldId": "customer_id"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "RUN_PIPELINE",
+                        "pipelineName": "import-customer-devices",
+                        "isSync": false,
+                        "workerGroup": "{{CUST_TAG}}.*"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Edit Device",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "actionLabel": "Update",
+                          "identifier": "Submit"
+                        },
+                        {
+                          "actionLabel": "Cancel",
+                          "identifier": "Cancel"
+                        }
+                      ]
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Name of Device",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": false,
+                          "editable": false,
+                          "label": "Device Name",
+                          "hidden": false,
+                          "fieldId": "device_ip"
+                        },
+                        {
+                          "fieldId": "discovery_scope",
+                          "label": "Discovery Scope",
+                          "help": "Should this be part of device?",
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "required": true,
+                          "lovValues": [
+                            {
+                              "identifier": "yes",
+                              "displayName": "Yes"
+                            },
+                            {
+                              "identifier": "no",
+                              "displayName": "No"
+                            }
+                          ],
+                          "controlType": "RADIO_BUTTON"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "discovery",
+                        "operation": "UPDATE",
+                        "cfxql_query": "device_ip is '{%raw%}{{device_ip}}{%endraw%}'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Delete Device",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "identifier": "Submit",
+                          "actionLabel": "Delete"
+                        }
+                      ]
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Readonly field. Name of device to be deleted.",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": false,
+                          "editable": false,
+                          "label": "Device Name",
+                          "hidden": false,
+                          "fieldId": "device_ip"
+                        },
+                        {
+                          "help": "Readonly field. Discovery Scope to be deleted.",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": false,
+                          "editable": false,
+                          "label": "Discovery Scope",
+                          "hidden": false,
+                          "fieldId": "discovery_scope"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "discovery",
+                        "operation": "DELETE",
+                        "cfxql_query": "device_ip is '{%raw%}{{device_ip}}{%endraw%}'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "4ed05ae9"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Syslog",
-      "show_filter": true,
+      "title": "Onboarded Devices",
+      "show_filters": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Device Syslogs</a></h1></div>",
-          "widget_id": "33317e49"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Syslogs by Severity",
-          "stream": "syslog_udp_event_stream_all",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "syslog_severity"
-          ],
-          "style": {
-            "color-map": {
-              "ERROR": "#EF5350",
-              "NOTICE": "#4DD0E1",
-              "EMERGENCY": "#B71C1C",
-              "INFORMATIONAL": "#03A9F4",
-              "WARNING": "#FFD54F",
-              "ALERT": "#FFA726",
-              "CRITICAL": "#E53935",
-              "DEBUG": "#BCAAA4"
-            }
-          },
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "widget_id": "71405983"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Syslogs by Hosts",
-          "stream": "syslog_udp_event_stream_all",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "rda_gw_client_ip"
-          ],
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "widget_id": "e18b64f1"
-        },
-        {
-          "title": "Syslog Details",
+          "title": "Discovery",
           "widget_type": "tabular",
-          "stream": "syslog_udp_event_stream_all",
-          "duration_hours": 1080,
-          "resizableColumns": false,
-          "showRowSummary": false,
-          "query": "*",
-          "min_width": 12,
-          "height": 8,
-          "max_width": 12,
-          "paginated": true,
-          "max_rows": 50,
-          "truncateColumns": [
-            "raw"
-          ],
+          "stream": "discovery",
+          "stream0": "devices_to_discover",
+          "filter0": "customer_id = '{{CUST_ID}}' and project_id = '{{PROJ_ID}}'",
+          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
+          "refreshOptions": {
+            "refreshType": "Periodic",
+            "refreshInterval": 30000
+          },
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "rda_gw_client_ip",
-            "syslog_severity",
-            "rda_gw_ep_type",
-            "site_code"
+            "device_ip",
+            "discovery_scope"
           ],
+          "ts_column": "timestamp",
+          "paginated": true,
+          "height": 10,
+          "min_wdith": 12,
           "columns": {
-            "rda_gw_client_ip": {
+            "device_ip": {
               "title": "IP Address",
-              "type": "TEXT",
               "key": true
             },
-            "raw": {
-              "title": "Raw Event",
-              "type": "TEXT",
-              "key": true
+            "discovery_scope": {
+              "title": "Discovery Scope",
+              "visible": true,
+              "key": true,
+              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.discovery_status_color }}' > {{ row.discovery_scope }} </span>{%endraw%}"
             },
-            "a_severity_color": {
-              "title": "Sev_2",
-              "type": "COLOR-MAP",
-              "source-column": "syslog_severity",
-              "color-map": {
-                "ERROR": "#EF5350",
-                "NOTICE": "#4DD0E1",
-                "EMERGENCY": "#B71C1C",
-                "INFORMATIONAL": "#03A9F4",
-                "WARNING": "#FFD54F",
-                "ALERT": "#FFA726",
-                "CRITICAL": "#E53935",
-                "DEBUG": "#BCAAA4"
-              }
-            },
-            "syslog_severity": {
-              "title": "Severity",
-              "htmlTemplateForRow": "{%raw%}<span class='badge' style='background-color: {{ row.a_severity_color}}' > {{row.syslog_severity}} </span>{%endraw%}",
-              "defaultWidth": 150
-            },
-            "rda_gw_ep_name": {
-              "title": "Endpoint Name",
-              "type": "TEXT",
+            "customer_tag": {
+              "title": "customer_tag",
+              "key": true,
               "visible": false
             },
-            "rda_gw_ep_type": "Endpoint Type",
-            "rda_stream": {
-              "title": "RDA Stream",
-              "type": "TEXT",
+            "customer_id": {
+              "title": "customer_id",
+              "key": true,
               "visible": false
-            },
-            "site_code": "Site Code",
-            "stream": {
-              "title": "Stream",
-              "type": "TEXT",
-              "visible": false
-            },
-            "syslog_severity_num": {
-              "title": "Severity Number",
-              "type": "DOUBLE"
             },
             "timestamp": {
               "title": "Timestamp",
               "type": "DATETIME"
+            },
+            "_RDA_Id": {
+              "title": "RDA ID",
+              "key": true,
+              "visible": false
             }
           },
-          "widget_id": "d211804e"
+          "custom_columns": [
+            {
+              "id": "discovery_status_color",
+              "label": "Discovery Scope Color",
+              "key": false,
+              "visible": false,
+              "expr": "'#008000' if str(discovery_scope) in [ 'yes', 'True'] else '#FF0000'"
+            }
+          ],
+          "actions": [
+            {
+              "permission": "rda:github:view",
+              "title": "Add Devices",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "actionLabel": "Add",
+                          "identifier": "Submit"
+                        },
+                        {
+                          "actionLabel": "Cancel",
+                          "identifier": "Cancel"
+                        }
+                      ]
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "IP Address of network device",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "IP Address",
+                          "hidden": false,
+                          "fieldId": "device_ip"
+                        },
+                        {
+                          "fieldId": "discovery_scope",
+                          "label": "Add it to discovery?",
+                          "help": "Should this network device be part of discovery?",
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "required": true,
+                          "lovValues": [
+                            {
+                              "identifier": "yes",
+                              "displayName": "Yes"
+                            },
+                            {
+                              "identifier": "no",
+                              "displayName": "No"
+                            }
+                          ],
+                          "controlType": "RADIO_BUTTON"
+                        },
+                        {
+                          "help": "customer_tag",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "customer_tag",
+                          "hidden": true,
+                          "defaultValue": "{{CUST_TAG}}",
+                          "fieldId": "customer_tag"
+                        },
+                        {
+                          "help": "customer_id",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "customer_id",
+                          "hidden": true,
+                          "defaultValue": "{{CUST_ID}}",
+                          "fieldId": "customer_id"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "operation": "ADD",
+                        "pstreamName": "discovery"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Import Devices",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "CSV file format.The file should contain ip_address,  discovery_scope columns.",
+                          "dataType": "string",
+                          "required": true,
+                          "editable": true,
+                          "label": "NOTE: Required headers in CSV file: ip_address, discovery_scope",
+                          "controlType": "LABEL",
+                          "hidden": false,
+                          "fieldId": "csv_format"
+                        },
+                        {
+                          "help": "Choose csv file to upload",
+                          "dataType": "string",
+                          "required": true,
+                          "editable": true,
+                          "label": "Choose file to upload",
+                          "controlType": "FILE_UPLOAD",
+                          "hidden": false,
+                          "fieldId": "fileUpload"
+                        },
+                        {
+                          "help": "Overwrite existing onboarded data",
+                          "required": false,
+                          "editable": true,
+                          "label": "Replace Data",
+                          "hidden": false,
+                          "fieldId": "replace",
+                          "dataType": "boolean",
+                          "controlType": "BOOLEAN_FIELD",
+                          "defaultValue": false,
+                          "controlPropertyList": [
+                            {
+                              "attribute": "layout-group-id",
+                              "value": "Features"
+                            },
+                            {
+                              "attribute": "layout-percent",
+                              "value": "25"
+                            }
+                          ]
+                        },
+                        {
+                          "help": "customer_tag",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "customer_tag",
+                          "hidden": true,
+                          "defaultValue": "{{CUST_TAG}}",
+                          "fieldId": "customer_tag"
+                        },
+                        {
+                          "help": "customer_id",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "label": "customer_id",
+                          "hidden": true,
+                          "defaultValue": "{{CUST_ID}}",
+                          "fieldId": "customer_id"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "RUN_PIPELINE",
+                        "pipelineName": "import-customer-devices",
+                        "isSync": false,
+                        "workerGroup": "{{CUST_TAG}}.*"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Edit Device",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "actionLabel": "Update",
+                          "identifier": "Submit"
+                        },
+                        {
+                          "actionLabel": "Cancel",
+                          "identifier": "Cancel"
+                        }
+                      ]
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Name of Device",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": false,
+                          "editable": false,
+                          "label": "Device Name",
+                          "hidden": false,
+                          "fieldId": "device_ip"
+                        },
+                        {
+                          "fieldId": "discovery_scope",
+                          "label": "Discovery Scope",
+                          "help": "Should this be part of device?",
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "required": true,
+                          "lovValues": [
+                            {
+                              "identifier": "yes",
+                              "displayName": "Yes"
+                            },
+                            {
+                              "identifier": "no",
+                              "displayName": "No"
+                            }
+                          ],
+                          "controlType": "RADIO_BUTTON"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "discovery",
+                        "operation": "UPDATE",
+                        "cfxql_query": "device_ip is '{%raw%}{{device_ip}}{%endraw%}'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:github:view",
+              "title": "Delete Device",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "identifier": "Submit",
+                          "actionLabel": "Delete"
+                        }
+                      ]
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Readonly field. Name of device to be deleted.",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": false,
+                          "editable": false,
+                          "label": "Device Name",
+                          "hidden": false,
+                          "fieldId": "device_ip"
+                        },
+                        {
+                          "help": "Readonly field. Discovery Scope to be deleted.",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": false,
+                          "editable": false,
+                          "label": "Discovery Scope",
+                          "hidden": false,
+                          "fieldId": "discovery_scope"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "discovery",
+                        "operation": "DELETE",
+                        "cfxql_query": "device_ip is '{%raw%}{{device_ip}}{%endraw%}'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "widget_id": "4ed05ae9"
         }
       ]
     }
