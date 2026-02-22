@@ -1,87 +1,102 @@
 {
-  "name": "rda-pstream-ism-details-template",
-  "label": "Persistent Stream ISM Details",
-  "description": "Persistent Stream ISM Details",
+  "name": "topology",
+  "label": "Topology",
+  "description": " Topology",
   "enabled": true,
-  "dashboard_type": "template",
+  "dashboard_type": "dashboard",
   "dashboard_style": "auto",
-  "template_variables": {
-    "PSTREAM_NAME": {
-      "contextId": "pstream_name"
-    },
-    "TS_COLUMN": {
-      "contextId": "ts_column"
-    }
-  },
+  "dashboard_folder": "System",
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "ISM Details",
+      "title": "Topology",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Details",
-          "height": 5,
-          "widget_type": "pstream_ism_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "widget_id": "2da925b3"
-        },
+          "title": "Topology",
+          "widget_type": "topology",
+          "register_search_endpoints": true,
+          "auto_group": false,
+          "reportId": "rda.saas.stack.view.topo",
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182287d8"
+        }
+      ]
+    },
+    {
+      "title": "Nodes",
+      "show_filter": false,
+      "widgets": [
         {
-          "title": "Snapshots",
-          "height": 5,
-          "widget_type": "pstream_ism_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "purpose": "snapshot",
-          "context_filter": "ism_policy_template contains 'snapshot'",
-          "widget_id": "b56f3ac1"
-        },
+          "title": "Nodes",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.topology.nodes.report",
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182229d8"
+        }
+      ]
+    },
+    {
+      "title": "Edges",
+      "show_filter": false,
+      "widgets": [
         {
-          "title": "Closed Indices",
-          "height": 5,
-          "widget_type": "pstream_ism_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "purpose": "closed",
-          "widget_id": "b56f3ac2"
+          "title": "Edges",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.topology.edges.report",
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "612229d8"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "ISM Details",
+      "title": "Topology",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Details",
-          "height": 5,
-          "widget_type": "pstream_ism_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "widget_id": "2da925b3"
-        },
+          "title": "Topology",
+          "widget_type": "topology",
+          "register_search_endpoints": true,
+          "auto_group": false,
+          "reportId": "rda.saas.stack.view.topo",
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182287d8"
+        }
+      ]
+    },
+    {
+      "title": "Nodes",
+      "show_filter": false,
+      "widgets": [
         {
-          "title": "Snapshots",
-          "height": 5,
-          "widget_type": "pstream_ism_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "purpose": "snapshot",
-          "context_filter": "ism_policy_template contains 'snapshot'",
-          "widget_id": "b56f3ac1"
-        },
+          "title": "Nodes",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.topology.nodes.report",
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182229d8"
+        }
+      ]
+    },
+    {
+      "title": "Edges",
+      "show_filter": false,
+      "widgets": [
         {
-          "title": "Closed Indices",
-          "height": 5,
-          "widget_type": "pstream_ism_details",
-          "stream": "{{PSTREAM_NAME}}",
-          "ts_column": "{{TS_COLUMN}}",
-          "purpose": "closed",
-          "widget_id": "b56f3ac2"
+          "title": "Edges",
+          "widget_type": "portal_tabular",
+          "reportId": "rda.saas.topology.edges.report",
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "612229d8"
         }
       ]
     }

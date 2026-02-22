@@ -1,190 +1,543 @@
 {
-  "name": "rda-operations-page-trends",
-  "label": "Trends",
-  "description": "Trends",
+  "name": "mcp_prompt_templates",
+  "label": "Prompt Templates",
+  "description": "Dashboard to manage MCP Prompt Templates",
   "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
+  "dashboard_folder": "AI",
+  "live_edit": true,
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Trends",
+      "title": "AI",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Worker Job Activity",
-          "widget_type": "timeseries",
+          "title": "Prompt Templates",
+          "widget_type": "tabular",
+          "min_width": 12,
           "height": 10,
-          "min_width": 10,
-          "stream": "rda_worker_resource_usage",
-          "ts_column": "timestamp",
-          "duration_hours": 24,
-          "chartProperties": {
-            "xAxisLabel": "Timestamp",
-            "yAxisLabel": "Jobs"
+          "max_width": 12,
+          "timebased": false,
+          "timestamp": "timestamp",
+          "stream": "mcp_prompt_templates",
+          "columns": {
+            "prompt_template_name": {
+              "title": "Name",
+              "key": true
+            },
+            "template_description": {
+              "title": "Description",
+              "key": true
+            },
+            "prompt_template": {
+              "title": "Template",
+              "defaultWidth": 500,
+              "visible": false,
+              "key": true
+            }
           },
-          "interval": "60Min",
-          "group_by": [
-            "site_name"
-          ],
-          "series_spec": [
+          "widget_id": "2630645a",
+          "actions": [
             {
-              "column": "jobs_started",
-              "label": "Jobs Started",
-              "agg": "sum",
-              "type": "int"
+              "permission": "rda:github:view",
+              "title": "Add",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:aiadministration-add-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "ADD"
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
-              "column": "jobs_completed",
-              "label": "Jobs Completed",
-              "agg": "sum",
-              "type": "int"
-            }
-          ],
-          "widget_id": "0aa8d633"
-        },
-        {
-          "title": "Event Gateway Ingested Data",
-          "widget_type": "timeseries",
-          "height": 10,
-          "min_width": 10,
-          "chartProperties": {
-            "xAxisLabel": "Timestamp",
-            "yAxisLabel": "Bytes"
-          },
-          "xAxisLabel": "Timestamp",
-          "yAxisLabel": "Bytes",
-          "formatter": "ByteFormatter",
-          "stream": "rda_system_gw_endpoint_metrics",
-          "ts_column": "timestamp",
-          "duration_hours": 24,
-          "interval": "60Min",
-          "series_spec": [
+              "permission": "rda:github:view",
+              "title": "View Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "drillDownLinkField": "prompt_template_name",
+              "identifier": "saas-service-action:aiadministration-view-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "submitRequired": false,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
             {
-              "column": "byte_count",
-              "label": "Data Ingested",
-              "agg": "sum",
-              "type": "int"
-            }
-          ],
-          "widget_id": "c5297d89"
-        },
-        {
-          "title": "Event Gateway Ingested Event Count",
-          "widget_type": "timeseries",
-          "height": 10,
-          "min_width": 6,
-          "chartProperties": {
-            "xAxisLabel": "Timestamp",
-            "yAxisLabel": "Count"
-          },
-          "formatter": "CountFormatter",
-          "stream": "rda_system_gw_endpoint_metrics",
-          "ts_column": "timestamp",
-          "duration_hours": 24,
-          "interval": "60Min",
-          "series_spec": [
+              "permission": "rda:github:view",
+              "title": "Edit Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-edit-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "UPDATE",
+                        "cfxql_query": "prompt_template_name is '{{prompt_template_name}}'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
             {
-              "column": "count",
-              "label": "Event Count",
-              "agg": "sum",
-              "type": "int"
+              "permission": "rda:github:view",
+              "title": "Delete Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-delete-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Do you want to delete the prompt template?",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "label": "Do you want to delete the prompt template?",
+                          "hidden": false,
+                          "fieldId": "name"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "DELETE",
+                        "cfxql_query": "prompt_template_name is '{{prompt_template_name}}'"
+                      }
+                    ]
+                  }
+                ]
+              }
             }
-          ],
-          "widget_id": "e2e99de8"
+          ]
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Trends",
+      "title": "AI",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Worker Job Activity",
-          "widget_type": "timeseries",
+          "title": "Prompt Templates",
+          "widget_type": "tabular",
+          "min_width": 12,
           "height": 10,
-          "min_width": 10,
-          "stream": "rda_worker_resource_usage",
-          "ts_column": "timestamp",
-          "duration_hours": 24,
-          "chartProperties": {
-            "xAxisLabel": "Timestamp",
-            "yAxisLabel": "Jobs"
+          "max_width": 12,
+          "timebased": false,
+          "timestamp": "timestamp",
+          "stream": "mcp_prompt_templates",
+          "columns": {
+            "prompt_template_name": {
+              "title": "Name",
+              "key": true
+            },
+            "template_description": {
+              "title": "Description",
+              "key": true
+            },
+            "prompt_template": {
+              "title": "Template",
+              "defaultWidth": 500,
+              "visible": false,
+              "key": true
+            }
           },
-          "interval": "60Min",
-          "group_by": [
-            "site_name"
-          ],
-          "series_spec": [
+          "widget_id": "2630645a",
+          "actions": [
             {
-              "column": "jobs_started",
-              "label": "Jobs Started",
-              "agg": "sum",
-              "type": "int"
+              "permission": "rda:github:view",
+              "title": "Add",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:aiadministration-add-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "ADD"
+                      }
+                    ]
+                  }
+                ]
+              }
             },
             {
-              "column": "jobs_completed",
-              "label": "Jobs Completed",
-              "agg": "sum",
-              "type": "int"
-            }
-          ],
-          "widget_id": "0aa8d633"
-        },
-        {
-          "title": "Event Gateway Ingested Data",
-          "widget_type": "timeseries",
-          "height": 10,
-          "min_width": 10,
-          "chartProperties": {
-            "xAxisLabel": "Timestamp",
-            "yAxisLabel": "Bytes"
-          },
-          "xAxisLabel": "Timestamp",
-          "yAxisLabel": "Bytes",
-          "formatter": "ByteFormatter",
-          "stream": "rda_system_gw_endpoint_metrics",
-          "ts_column": "timestamp",
-          "duration_hours": 24,
-          "interval": "60Min",
-          "series_spec": [
+              "permission": "rda:github:view",
+              "title": "View Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "drillDownLinkField": "prompt_template_name",
+              "identifier": "saas-service-action:aiadministration-view-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "submitRequired": false,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
             {
-              "column": "byte_count",
-              "label": "Data Ingested",
-              "agg": "sum",
-              "type": "int"
-            }
-          ],
-          "widget_id": "c5297d89"
-        },
-        {
-          "title": "Event Gateway Ingested Event Count",
-          "widget_type": "timeseries",
-          "height": 10,
-          "min_width": 6,
-          "chartProperties": {
-            "xAxisLabel": "Timestamp",
-            "yAxisLabel": "Count"
-          },
-          "formatter": "CountFormatter",
-          "stream": "rda_system_gw_endpoint_metrics",
-          "ts_column": "timestamp",
-          "duration_hours": 24,
-          "interval": "60Min",
-          "series_spec": [
+              "permission": "rda:github:view",
+              "title": "Edit Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-edit-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "fieldId": "prompt_template_name",
+                          "label": "Template Name",
+                          "description": "Prompt Template Name",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": false,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "template_description",
+                          "label": "Description",
+                          "description": "Prompt Template Description",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT"
+                        },
+                        {
+                          "fieldId": "prompt_template",
+                          "label": "Prompt Template",
+                          "description": "Prompt Template",
+                          "required": true,
+                          "isSecret": false,
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "controlType": "TEXT_AREA"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "UPDATE",
+                        "cfxql_query": "prompt_template_name is '{{prompt_template_name}}'"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
             {
-              "column": "count",
-              "label": "Event Count",
-              "agg": "sum",
-              "type": "int"
+              "permission": "rda:github:view",
+              "title": "Delete Template",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:aiadministration-delete-prompt-template",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Do you want to delete the prompt template?",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "label": "Do you want to delete the prompt template?",
+                          "hidden": false,
+                          "fieldId": "name"
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "UPDATE_PSTREAM",
+                        "pstreamName": "mcp_prompt_templates",
+                        "operation": "DELETE",
+                        "cfxql_query": "prompt_template_name is '{{prompt_template_name}}'"
+                      }
+                    ]
+                  }
+                ]
+              }
             }
-          ],
-          "widget_id": "e2e99de8"
+          ]
         }
       ]
     }

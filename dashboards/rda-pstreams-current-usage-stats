@@ -1,293 +1,117 @@
 {
-  "name": "rda-pstreams-current-usage-stats",
-  "label": "Persistent Stream Current Usage Stats",
-  "description": "Persistent Stream Current Usage Stats",
-  "version": "22.9.19.1",
+  "name": "incident-details-app",
+  "label": "Incident Details",
+  "description": "Incident Details",
+  "version": "24.9.18.1",
   "enabled": true,
-  "dashboard_folder": "System",
-  "dashboard_type": "template",
-  "dashboard_style": "tabbed",
-  "dashboard_filters": {
-    "time_filter": true,
-    "columns_filter": [],
-    "group_filters": [
-      {
-        "stream": "rda_system_pstream_current_usage_stats",
-        "title": "Datastore",
-        "group_by": [
-          "datastore"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "name",
-        "type": "int"
-      },
-      {
-        "stream": "rda_system_pstream_current_usage_stats",
-        "title": "Read Only",
-        "group_by": [
-          "read_only"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "name",
-        "type": "int"
-      }
+  "exportable": false,
+  "status_poller": {},
+  "dashboard_type": "app",
+  "dashboard_folder": "Default",
+  "template_variables": {},
+  "context_enrichment": {
+    "stream": "oia-incidents-stream",
+    "enrich_columns": [
+      "i_created_ts",
+      "attrs_stack_name",
+      "attrs_node_id",
+      "attrs_metric_asset_id",
+      "i_cluster"
     ],
-    "default_time_filter_labels": [
-      "Last 1 week"
-    ]
+    "query_template": "incident_id = '$a_incident_id' or incident_id = '$incident_id'",
+    "defaultValues": {}
+  },
+  "dashboard_filters": {
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Usage Stats (updated once a day)",
-      "show_filter": true,
+      "title": "Dashboard",
       "widgets": [
         {
-          "widget_type": "custom_counter",
-          "title": "Number of Streams",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "agg": "value_count",
-          "column": "name",
-          "type": "str",
-          "widget_id": "2faa4f31"
-        },
-        {
-          "widget_type": "custom_counter",
-          "title": "Docs Count",
-          "formatter": "DescriptiveCountFormatter",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "agg": "sum",
-          "column": "docs_count",
-          "type": "int",
-          "widget_id": "2faa4f32"
-        },
-        {
-          "widget_type": "custom_counter",
-          "title": "Size (MB)",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "agg": "sum",
-          "column": "size_in_mb",
-          "type": "int",
-          "widget_id": "2faa4f33"
-        },
-        {
-          "widget_type": "custom_counter",
-          "title": "Total Shards",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "agg": "sum",
-          "column": "shards_total",
-          "type": "int",
-          "widget_id": "2faa4f34"
-        },
-        {
-          "title": "Top 10 streams by doc count",
-          "widget_type": "bar_chart",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "orientation": "horizontal",
-            "legendLocation": "none"
-          },
-          "width": 6,
-          "group_by": [
-            "name"
-          ],
-          "formatting": {
-            "notation": "compact"
-          },
-          "top_n": 10,
-          "column": "docs_count",
-          "agg": "sum",
-          "type": "int",
-          "widget_id": "f4786acz"
-        },
-        {
-          "title": "Top 10 streams by size",
-          "widget_type": "bar_chart",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Size",
-            "orientation": "horizontal",
-            "legendLocation": "none"
-          },
-          "formatting": {
-            "style": "unit",
-            "unit": "megabyte"
-          },
-          "width": 6,
-          "group_by": [
-            "name"
-          ],
-          "top_n": 10,
-          "column": "size_in_mb",
-          "agg": "sum",
-          "type": "int",
-          "widget_id": "f4786azz"
-        },
-        {
-          "title": "Usage Stats",
-          "widget_type": "tabular",
-          "showRowSummary": true,
-          "max_width": 12,
-          "height": 8,
+          "title": "Incident Summary",
           "min_width": 12,
-          "paginated": false,
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "sorting": [
-            {
-              "name": "asc"
-            }
-          ],
-          "widget_id": "72498ed8"
+          "height": 2,
+          "widget_type": "header_section",
+          "widget_template": "cfx-oia/incident-summary",
+          "widget_id": "6e64b2f1"
         }
       ]
     }
   ],
+  "dashboard_groups": {
+    "alerts": {
+      "icon": "alert.svg",
+      "label": "Alerts",
+      "pageName": "Alerts"
+    }
+  },
+  "dashboard_pages": [
+    {
+      "name": "incident-details-alerts",
+      "label": "Correlated Alerts",
+      "icon": "alert.svg",
+      "group": "alerts"
+    },
+    {
+      "name": "related-alerts",
+      "label": "Related Alerts",
+      "icon": "alert.svg",
+      "group": "alerts"
+    },
+    {
+      "name": "incident-details-topology",
+      "label": "Topology",
+      "icon": "topology.svg",
+      "context_filter": "attrs_stack_name is not None and attrs_node_id is not None"
+    },
+    {
+      "name": "incident-details-metrics",
+      "label": "Metrics",
+      "icon": "metrics.svg",
+      "context_filter": "attrs_stack_name is not None and attrs_metric_asset_id is not None"
+    },
+    {
+      "name": "incident-details-insights",
+      "label": "Insights",
+      "icon": "nextSteps.svg",
+      "context_filter": "i_cluster is not None"
+    },
+    {
+      "name": "incident-details-collaboration",
+      "label": "Collaboration",
+      "icon": "collaboration.svg"
+    },
+    {
+      "name": "incident-details-diagnostics",
+      "label": "Diagnostics",
+      "icon": "diagnostic.svg",
+      "context_filter": "attrs_stack_name is not None"
+    },
+    {
+      "name": "incident-details-remediation",
+      "label": "Remediation",
+      "icon": "remedial.svg",
+      "context_filter": "attrs_stack_name is not None"
+    },
+    {
+      "name": "incident-details-activities",
+      "label": "Activities",
+      "icon": "activities.svg",
+      "context_filter": "attrs_stack_name is not None"
+    }
+  ],
   "pstream_dashboards": [
     {
-      "title": "Usage Stats (updated once a day)",
-      "show_filter": true,
+      "title": "Dashboard",
       "widgets": [
         {
-          "widget_type": "custom_counter",
-          "title": "Number of Streams",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "agg": "value_count",
-          "column": "name",
-          "type": "str",
-          "widget_id": "2faa4f31"
-        },
-        {
-          "widget_type": "custom_counter",
-          "title": "Docs Count",
-          "formatter": "DescriptiveCountFormatter",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "agg": "sum",
-          "column": "docs_count",
-          "type": "int",
-          "widget_id": "2faa4f32"
-        },
-        {
-          "widget_type": "custom_counter",
-          "title": "Size (MB)",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "agg": "sum",
-          "column": "size_in_mb",
-          "type": "int",
-          "widget_id": "2faa4f33"
-        },
-        {
-          "widget_type": "custom_counter",
-          "title": "Total Shards",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "agg": "sum",
-          "column": "shards_total",
-          "type": "int",
-          "widget_id": "2faa4f34"
-        },
-        {
-          "title": "Top 10 streams by doc count",
-          "widget_type": "bar_chart",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Count",
-            "orientation": "horizontal",
-            "legendLocation": "none"
-          },
-          "width": 6,
-          "group_by": [
-            "name"
-          ],
-          "formatting": {
-            "notation": "compact"
-          },
-          "top_n": 10,
-          "column": "docs_count",
-          "agg": "sum",
-          "type": "int",
-          "widget_id": "f4786acz"
-        },
-        {
-          "title": "Top 10 streams by size",
-          "widget_type": "bar_chart",
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "chartProperties": {
-            "yAxisLabel": null,
-            "xAxisLabel": "Size",
-            "orientation": "horizontal",
-            "legendLocation": "none"
-          },
-          "formatting": {
-            "style": "unit",
-            "unit": "megabyte"
-          },
-          "width": 6,
-          "group_by": [
-            "name"
-          ],
-          "top_n": 10,
-          "column": "size_in_mb",
-          "agg": "sum",
-          "type": "int",
-          "widget_id": "f4786azz"
-        },
-        {
-          "title": "Usage Stats",
-          "widget_type": "tabular",
-          "showRowSummary": true,
-          "max_width": 12,
-          "height": 8,
+          "title": "Incident Summary",
           "min_width": 12,
-          "paginated": false,
-          "stream": "rda_system_pstream_current_usage_stats",
-          "ts_column": "timestamp",
-          "sorting": [
-            {
-              "name": "asc"
-            }
-          ],
-          "widget_id": "72498ed8"
+          "height": 2,
+          "widget_type": "header_section",
+          "widget_template": "cfx-oia/incident-summary",
+          "widget_id": "6e64b2f1"
         }
       ]
     }
