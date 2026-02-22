@@ -1,1233 +1,310 @@
 {
-  "name": "oia-alert-policies",
-  "label": "Oia Alert Policies",
-  "is_template": false,
-  "description": "Oia Alert Policies",
-  "live_edit": true,
-  "version": "24.07.24.1",
+  "name": "cml-topo-dashboard",
+  "label": "CML Network Topology",
+  "description": "CML Network Topology",
+  "dashboard_style": "auto",
+  "version": "23.6.12.1",
   "enabled": true,
-  "dashboard_type": "template",
-  "template_variables": {
-    "PROJECT_ID": {
-      "default": [
-        "61ed50a5-8634-4464-a17e-adf6b40225b2"
-      ],
-      "contextId": "projectid"
+  "dashboard_type": "dashboard",
+  "custom_context": {
+    "alert-context": true,
+    "node_view_params": {
+      "stream": "oia-alerts-stream",
+      "extra_filter": "a_asset_ip_address is '${node_id}' and a_status = 'ACTIVE' and a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE'",
+      "title": "Active Alerts ${node_id}",
+      "duration_hours": 1,
+      "columns": {
+        "a_asset_ip_address": {
+          "title": "Device"
+        },
+        "a_en_local_interface": {
+          "title": "Interface"
+        },
+        "a_en_remote_ip": {
+          "title": "Remote Device"
+        },
+        "a_en_remote_interface": {
+          "title": "Remote Interface"
+        },
+        "a_en_alert_name": {
+          "title": "Alert Name"
+        },
+        "a_en_link_type": {
+          "title": "Link Type"
+        },
+        "a_severity": {
+          "title": "Alert severity"
+        },
+        "a_incident_id": {
+          "title": "Incident ID"
+        },
+        "a_message": {
+          "title": "Message"
+        },
+        "timestamp": {
+          "title": "timestamp"
+        }
+      },
+      "severity_columns": [
+        "a_severity"
+      ]
+    },
+    "link_view_params": {
+      "stream": "oia-alerts-stream",
+      "extra_filter": "(a_asset_ip_address is '${source}' and a_en_remote_ip is '${target}') or (a_asset_ip_address is '${target}' and a_en_remote_ip is '${source}') and a_status = 'ACTIVE' and a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE'",
+      "title": "Active Alerts on ${source} <-> ${target}",
+      "duration_hours": 1,
+      "columns": {
+        "a_asset_ip_address": {
+          "title": "Device"
+        },
+        "a_en_local_interface": {
+          "title": "Interface"
+        },
+        "a_en_remote_ip": {
+          "title": "Remote Device"
+        },
+        "a_en_remote_interface": {
+          "title": "Remote Interface"
+        },
+        "a_en_alert_name": {
+          "title": "Alert Name"
+        },
+        "a_en_link_type": {
+          "title": "Link Type"
+        },
+        "a_severity": {
+          "title": "Alert severity"
+        },
+        "a_incident_id": {
+          "title": "Incident ID"
+        },
+        "a_message": {
+          "title": "Message"
+        },
+        "timestamp": {
+          "title": "timestamp"
+        }
+      },
+      "severity_columns": [
+        "a_severity"
+      ]
     }
   },
   "dashboard_filters": {
-    "time_filter": true
+    "time_filter": true,
+    "columns_filter": []
   },
-  "dashboard_folder": "Default",
-  "dashboard_style": "tabbed",
   "dashboard_sections": [
     {
-      "title": "Correlation Policies",
+      "title": "Topology",
       "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
       "widgets": [
         {
-          "title": "Correlaton Policies",
-          "widget_type": "tabular",
-          "stream": "oia_alertpolicy",
-          "duration_hours": 1090,
-          "ts_column": "updatedat",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [],
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 50,
-          "extra_filter": "policytype in ['CORRELATE_GROUP', 'CORRELATE_CATEGORY', 'CORRELATE_BURST']",
-          "sorting": [
-            {
-              "precedence": "desc"
-            }
-          ],
-          "custom_columns": [
-            {
-              "id": "enabled_string",
-              "label": "Enabled",
-              "expr": "'Yes' if enabled == 1 else 'No'",
-              "hidden": true
-            }
-          ],
-          "columns": {
-            "id": {
-              "title": "Id",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150
-            },
-            "projectid": {
-              "key": true,
-              "visible": false,
-              "title": "Project ID",
-              "defaultWidth": 150
-            },
-            "policytype": {
-              "key": true,
-              "visible": true,
-              "title": "Type",
-              "defaultWidth": 150
-            },
-            "precedence": {
-              "title": "Precedence",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "overrideprecedence": {
-              "title": "Precedence Override",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150
-            },
-            "name": {
-              "title": "Name",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "description": {
-              "title": "Description",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "criteriastring": {
-              "title": "Filter",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "groupby": {
-              "title": "GroupBy",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150,
-              "formatter": "ip"
-            },
-            "enabled_string": {
-              "title": "Enabled",
-              "type": "TEXT",
-              "visible": true,
-              "key": true,
-              "defaultValue": "No",
-              "uiProperties": {
-                "valueMap": {
-                  "editType": "switch",
-                  "trueValue": "Yes",
-                  "falseValue": "No",
-                  "defaultValue": "Yes",
-                  "editable": true,
-                  "showLabel": false
-                },
-                "editEndpoint": {
-                  "service-name": "alert-processor",
-                  "namespace": "io.cfx.dimensions.app",
-                  "methodName": "invokeAppApi:enableDisablePolicy",
-                  "stringified-params": true,
-                  "parse-output": false,
-                  "params": [
-                    {
-                      "is_pstream_dashboard": true,
-                      "context": {}
-                    }
-                  ]
-                }
-              }
-            },
-            "createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            }
-          },
+          "widget_type": "topology",
+          "title": "Topology",
           "actions": [
             {
-              "permission": "oia:groupPolicy:add",
-              "title": "Correlation Policy",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "NONE",
-              "identifier": "alert-processor:cfx.correlation.policy.upsert",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.correlation.policy.upsert",
-                    "is_pstream_dashboard": true,
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:groupPolicy:top",
-              "title": "Top Policies",
-              "type": "POPUP_REPORT",
-              "selectionType": "NONE",
-              "identifier": "alert-processor:cfx.correlation.top.policies",
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getTopPolicies",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "context": {},
-                    "filters": []
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:groupPolicy:delete",
-              "title": "Delete Policy",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "alert-processor:cfx.policy.delete",
               "actionCondition": {
                 "actionControl": "SHOW_IF",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "0",
-                    "fieldId": "enabled"
-                  }
-                ]
-              },
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
+                    "conditionValue": "Network",
+                    "fieldId": "layer"
                   }
                 ]
               },
               "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
+                "service-name": "saas-reports",
+                "methodName": "getReport",
+                "stringified-params": false,
                 "parse-output": false,
                 "params": [
                   {
-                    "form_id": "cfx.policy.delete",
-                    "is_pstream_dashboard": true,
-                    "context": {}
+                    "reportId": "rda.saas.topology.stream.nodes.alerts"
                   }
                 ]
-              }
-            },
-            {
-              "permission": "oia:groupPolicy:edit",
-              "title": "Edit Policy",
-              "type": "POPUP_FORM",
+              },
               "icon": "mdi mdi-plus",
+              "identifier": "rda.saas.topology.stream.nodes.alerts.view",
               "selectionType": "SINGLE",
-              "identifier": "alert-processor:cfx.correlation.policy.upsert",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.correlation.policy.upsert",
-                    "is_pstream_dashboard": true,
-                    "context": {}
-                  }
-                ]
-              }
+              "title": "Show Node Alerts",
+              "type": "POPUP_REPORT"
             },
             {
-              "permission": "oia:groupPolicy:alerts",
-              "title": "View Alerts",
-              "type": "GO_TO_APP_STATE",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "appName": "user-dashboard/oia-view-alerts-policy-os",
-              "drillDownLinkField": "alerts",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "rulename"
-            },
-            {
-              "permission": "oia:groupPolicy:groups",
-              "title": "View Groups",
-              "type": "GO_TO_APP_STATE",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "appName": "user-dashboard/oia-alert-groups-policy-os",
-              "drillDownLinkField": "groups",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "rulename"
-            },
-            {
-              "permission": "oia:groupPolicy:performance",
-              "title": "View Performance",
-              "type": "POPUP_CHART",
-              "chart-type": "TIMESERIES_LINE_CHART",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getPolicyPerformanceTrend",
-                "parse-output": false,
-                "params": [
-                  {}
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "GREATER_THAN",
-                    "conditionValue": "0",
-                    "fieldId": "alerts"
-                  }
-                ]
-              }
-            }
-          ],
-          "widget_id": "94a3fc11"
-        }
-      ]
-    },
-    {
-      "title": "Suppression Policies",
-      "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
-      "widgets": [
-        {
-          "title": "Suppression Policies",
-          "widget_type": "tabular",
-          "stream": "oia_alertpolicy",
-          "ts_column": "createdat",
-          "duration_hours": 1090,
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "remote_searchable": true,
-          "extra_filter": "policytype in ['SUPPRESS', 'SUPPRESS_FLAPPING']",
-          "sorting": [
-            {
-              "precedence": "desc"
-            }
-          ],
-          "remote_searchable_cols": [],
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 50,
-          "custom_columns": [
-            {
-              "id": "enabled_string",
-              "label": "Enabled",
-              "expr": "'Yes' if enabled == 1 else 'No'",
-              "hidden": true
-            }
-          ],
-          "columns": {
-            "id": {
-              "title": "id",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150
-            },
-            "projectid": {
-              "key": true,
-              "visible": false,
-              "title": "Project ID",
-              "defaultWidth": 150
-            },
-            "policytype": {
-              "key": true,
-              "visible": true,
-              "title": "Type",
-              "defaultWidth": 150
-            },
-            "precedence": {
-              "title": "Precedence",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "overrideprecedence": {
-              "title": "Precedence Override",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150
-            },
-            "name": {
-              "title": "Name",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "description": {
-              "title": "Description",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "criteriastring": {
-              "title": "Filter",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "selecteddataset": {
-              "title": "Dataset Name",
-              "type": "TEXT",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "pstreamnamestring": {
-              "title": "Pstream Name",
-              "type": "TEXT",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "enabled_string": {
-              "title": "Enabled",
-              "type": "TEXT",
-              "visible": true,
-              "key": true,
-              "defaultValue": "No",
-              "uiProperties": {
-                "valueMap": {
-                  "editType": "switch",
-                  "trueValue": "Yes",
-                  "falseValue": "No",
-                  "defaultValue": "Yes",
-                  "editable": true,
-                  "showLabel": false
-                },
-                "editEndpoint": {
-                  "service-name": "alert-processor",
-                  "namespace": "io.cfx.dimensions.app",
-                  "methodName": "invokeAppApi:enableDisablePolicy",
-                  "stringified-params": true,
-                  "parse-output": false,
-                  "params": [
-                    {
-                      "is_pstream_dashboard": true,
-                      "context": {}
-                    }
-                  ]
-                }
-              }
-            },
-            "createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            }
-          },
-          "actions": [
-            {
-              "permission": "oia:supressionPolicy:upsert",
-              "title": "Suppression Policy",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "NONE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "identifier": "alert-processor:cfx.suppression.policy.upsert",
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.suppression.policy.upsert",
-                    "is_pstream_dashboard": true,
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:supressionPolicy:delete",
-              "title": "Delete Policy",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "identifier": "alert-processor:cfx.policy.delete",
               "actionCondition": {
                 "actionControl": "SHOW_IF",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "0",
-                    "fieldId": "enabled"
+                    "conditionValue": "connects-to",
+                    "fieldId": "edgeType"
                   }
                 ]
               },
               "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
+                "service-name": "saas-reports",
+                "methodName": "getReport",
+                "stringified-params": false,
                 "parse-output": false,
                 "params": [
                   {
-                    "form_id": "cfx.policy.delete",
-                    "context": {}
+                    "reportId": "rda.saas.topology.stream.links.alerts",
+                    "hello": "world SIRI"
                   }
                 ]
-              }
-            },
-            {
-              "permission": "oia:supressionPolicy:upsert",
-              "title": "Edit Policy",
-              "type": "POPUP_FORM",
+              },
               "icon": "mdi mdi-plus",
+              "identifier": "rda.saas.topology.stream.links.alerts.view",
               "selectionType": "SINGLE",
-              "identifier": "alert-processor:cfx.suppression.policy.upsert",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.suppression.policy.upsert",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:supressionPolicy:alerts",
-              "title": "View Alerts",
-              "type": "GO_TO_APP_STATE",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "appName": "user-dashboard/oia-view-alerts-policy-os",
-              "drillDownLinkField": "alerts",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "rulename"
+              "title": "Show Link Alerts",
+              "type": "POPUP_REPORT"
             }
           ],
-          "widget_id": "dbdd0d31"
+          "chartProperties": {
+            "hasToolbar": true,
+            "shortToolbar": true,
+            "userZoomingEnabled": false
+          },
+          "stack": "cml_topo_stack",
+          "max_width": 12,
+          "min_width": 12,
+          "height": 12,
+          "alert_source": {
+            "stream": "oia-alerts-stream",
+            "group_by": [
+              "a_asset_ip_address",
+              "a_severity",
+              "a_status"
+            ],
+            "ts_column": "timestamp",
+            "duration_hours": 1,
+            "agg": "value_count",
+            "column": "_id",
+            "type": "int",
+            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
+          },
+          "link_alert_source": {
+            "stream": "trap_alert_stream",
+            "group_by": [
+              "left_id",
+              "right_id"
+            ],
+            "agg": "min",
+            "column": "alert_severity_num",
+            "ts_column": "timestamp",
+            "duration_hours": 1440,
+            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
+          },
+          "widget_id": "9db5a36f"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Correlation Policies",
+      "title": "Topology",
       "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
       "widgets": [
         {
-          "title": "Correlaton Policies",
-          "widget_type": "tabular",
-          "stream": "oia_alertpolicy",
-          "duration_hours": 1090,
-          "ts_column": "updatedat",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [],
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 50,
-          "extra_filter": "policytype in ['CORRELATE_GROUP', 'CORRELATE_CATEGORY', 'CORRELATE_BURST']",
-          "sorting": [
-            {
-              "precedence": "desc"
-            }
-          ],
-          "custom_columns": [
-            {
-              "id": "enabled_string",
-              "label": "Enabled",
-              "expr": "'Yes' if enabled == 1 else 'No'",
-              "hidden": true
-            }
-          ],
-          "columns": {
-            "id": {
-              "title": "Id",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150
-            },
-            "projectid": {
-              "key": true,
-              "visible": false,
-              "title": "Project ID",
-              "defaultWidth": 150
-            },
-            "policytype": {
-              "key": true,
-              "visible": true,
-              "title": "Type",
-              "defaultWidth": 150
-            },
-            "precedence": {
-              "title": "Precedence",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "overrideprecedence": {
-              "title": "Precedence Override",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150
-            },
-            "name": {
-              "title": "Name",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "description": {
-              "title": "Description",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "criteriastring": {
-              "title": "Filter",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "groupby": {
-              "title": "GroupBy",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150,
-              "formatter": "ip"
-            },
-            "enabled_string": {
-              "title": "Enabled",
-              "type": "TEXT",
-              "visible": true,
-              "key": true,
-              "defaultValue": "No",
-              "uiProperties": {
-                "valueMap": {
-                  "editType": "switch",
-                  "trueValue": "Yes",
-                  "falseValue": "No",
-                  "defaultValue": "Yes",
-                  "editable": true,
-                  "showLabel": false
-                },
-                "editEndpoint": {
-                  "service-name": "alert-processor",
-                  "namespace": "io.cfx.dimensions.app",
-                  "methodName": "invokeAppApi:enableDisablePolicy",
-                  "stringified-params": true,
-                  "parse-output": false,
-                  "params": [
-                    {
-                      "is_pstream_dashboard": true,
-                      "context": {}
-                    }
-                  ]
-                }
-              }
-            },
-            "createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            }
-          },
+          "widget_type": "topology",
+          "title": "Topology",
           "actions": [
             {
-              "permission": "oia:groupPolicy:add",
-              "title": "Correlation Policy",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "NONE",
-              "identifier": "alert-processor:cfx.correlation.policy.upsert",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.correlation.policy.upsert",
-                    "is_pstream_dashboard": true,
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:groupPolicy:top",
-              "title": "Top Policies",
-              "type": "POPUP_REPORT",
-              "selectionType": "NONE",
-              "identifier": "alert-processor:cfx.correlation.top.policies",
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getTopPolicies",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "context": {},
-                    "filters": []
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:groupPolicy:delete",
-              "title": "Delete Policy",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "identifier": "alert-processor:cfx.policy.delete",
               "actionCondition": {
                 "actionControl": "SHOW_IF",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "0",
-                    "fieldId": "enabled"
-                  }
-                ]
-              },
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
+                    "conditionValue": "Network",
+                    "fieldId": "layer"
                   }
                 ]
               },
               "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
+                "service-name": "saas-reports",
+                "methodName": "getReport",
+                "stringified-params": false,
                 "parse-output": false,
                 "params": [
                   {
-                    "form_id": "cfx.policy.delete",
-                    "is_pstream_dashboard": true,
-                    "context": {}
+                    "reportId": "rda.saas.topology.stream.nodes.alerts"
                   }
                 ]
-              }
-            },
-            {
-              "permission": "oia:groupPolicy:edit",
-              "title": "Edit Policy",
-              "type": "POPUP_FORM",
+              },
               "icon": "mdi mdi-plus",
+              "identifier": "rda.saas.topology.stream.nodes.alerts.view",
               "selectionType": "SINGLE",
-              "identifier": "alert-processor:cfx.correlation.policy.upsert",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.correlation.policy.upsert",
-                    "is_pstream_dashboard": true,
-                    "context": {}
-                  }
-                ]
-              }
+              "title": "Show Node Alerts",
+              "type": "POPUP_REPORT"
             },
             {
-              "permission": "oia:groupPolicy:alerts",
-              "title": "View Alerts",
-              "type": "GO_TO_APP_STATE",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "appName": "user-dashboard/oia-view-alerts-policy-os",
-              "drillDownLinkField": "alerts",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "rulename"
-            },
-            {
-              "permission": "oia:groupPolicy:groups",
-              "title": "View Groups",
-              "type": "GO_TO_APP_STATE",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "appName": "user-dashboard/oia-alert-groups-policy-os",
-              "drillDownLinkField": "groups",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "rulename"
-            },
-            {
-              "permission": "oia:groupPolicy:performance",
-              "title": "View Performance",
-              "type": "POPUP_CHART",
-              "chart-type": "TIMESERIES_LINE_CHART",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getPolicyPerformanceTrend",
-                "parse-output": false,
-                "params": [
-                  {}
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "GREATER_THAN",
-                    "conditionValue": "0",
-                    "fieldId": "alerts"
-                  }
-                ]
-              }
-            }
-          ],
-          "widget_id": "94a3fc11"
-        }
-      ]
-    },
-    {
-      "title": "Suppression Policies",
-      "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
-      "widgets": [
-        {
-          "title": "Suppression Policies",
-          "widget_type": "tabular",
-          "stream": "oia_alertpolicy",
-          "ts_column": "createdat",
-          "duration_hours": 1090,
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "remote_searchable": true,
-          "extra_filter": "policytype in ['SUPPRESS', 'SUPPRESS_FLAPPING']",
-          "sorting": [
-            {
-              "precedence": "desc"
-            }
-          ],
-          "remote_searchable_cols": [],
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 50,
-          "custom_columns": [
-            {
-              "id": "enabled_string",
-              "label": "Enabled",
-              "expr": "'Yes' if enabled == 1 else 'No'",
-              "hidden": true
-            }
-          ],
-          "columns": {
-            "id": {
-              "title": "id",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150
-            },
-            "projectid": {
-              "key": true,
-              "visible": false,
-              "title": "Project ID",
-              "defaultWidth": 150
-            },
-            "policytype": {
-              "key": true,
-              "visible": true,
-              "title": "Type",
-              "defaultWidth": 150
-            },
-            "precedence": {
-              "title": "Precedence",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "overrideprecedence": {
-              "title": "Precedence Override",
-              "key": true,
-              "visible": false,
-              "defaultWidth": 150
-            },
-            "name": {
-              "title": "Name",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "description": {
-              "title": "Description",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "criteriastring": {
-              "title": "Filter",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "selecteddataset": {
-              "title": "Dataset Name",
-              "type": "TEXT",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "pstreamnamestring": {
-              "title": "Pstream Name",
-              "type": "TEXT",
-              "key": true,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "enabled_string": {
-              "title": "Enabled",
-              "type": "TEXT",
-              "visible": true,
-              "key": true,
-              "defaultValue": "No",
-              "uiProperties": {
-                "valueMap": {
-                  "editType": "switch",
-                  "trueValue": "Yes",
-                  "falseValue": "No",
-                  "defaultValue": "Yes",
-                  "editable": true,
-                  "showLabel": false
-                },
-                "editEndpoint": {
-                  "service-name": "alert-processor",
-                  "namespace": "io.cfx.dimensions.app",
-                  "methodName": "invokeAppApi:enableDisablePolicy",
-                  "stringified-params": true,
-                  "parse-output": false,
-                  "params": [
-                    {
-                      "is_pstream_dashboard": true,
-                      "context": {}
-                    }
-                  ]
-                }
-              }
-            },
-            "createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            },
-            "updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "key": false,
-              "visible": true,
-              "defaultWidth": 150
-            }
-          },
-          "actions": [
-            {
-              "permission": "oia:supressionPolicy:upsert",
-              "title": "Suppression Policy",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "NONE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "identifier": "alert-processor:cfx.suppression.policy.upsert",
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.suppression.policy.upsert",
-                    "is_pstream_dashboard": true,
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:supressionPolicy:delete",
-              "title": "Delete Policy",
-              "type": "POPUP_FORM",
-              "icon": "mdi mdi-plus",
-              "selectionType": "SINGLE",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "identifier": "alert-processor:cfx.policy.delete",
               "actionCondition": {
                 "actionControl": "SHOW_IF",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "0",
-                    "fieldId": "enabled"
+                    "conditionValue": "connects-to",
+                    "fieldId": "edgeType"
                   }
                 ]
               },
               "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
+                "service-name": "saas-reports",
+                "methodName": "getReport",
+                "stringified-params": false,
                 "parse-output": false,
                 "params": [
                   {
-                    "form_id": "cfx.policy.delete",
-                    "context": {}
+                    "reportId": "rda.saas.topology.stream.links.alerts",
+                    "hello": "world SIRI"
                   }
                 ]
-              }
-            },
-            {
-              "permission": "oia:supressionPolicy:upsert",
-              "title": "Edit Policy",
-              "type": "POPUP_FORM",
+              },
               "icon": "mdi mdi-plus",
+              "identifier": "rda.saas.topology.stream.links.alerts.view",
               "selectionType": "SINGLE",
-              "identifier": "alert-processor:cfx.suppression.policy.upsert",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "{{PROJECT_ID}}",
-                    "paramId": "projectId"
-                  },
-                  {
-                    "paramKey": "id",
-                    "paramId": "policyid"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "alert-processor",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "cfx.suppression.policy.upsert",
-                    "context": {}
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "oia:supressionPolicy:alerts",
-              "title": "View Alerts",
-              "type": "GO_TO_APP_STATE",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "appName": "user-dashboard/oia-view-alerts-policy-os",
-              "drillDownLinkField": "alerts",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "rulename"
+              "title": "Show Link Alerts",
+              "type": "POPUP_REPORT"
             }
           ],
-          "widget_id": "dbdd0d31"
+          "chartProperties": {
+            "hasToolbar": true,
+            "shortToolbar": true,
+            "userZoomingEnabled": false
+          },
+          "stack": "cml_topo_stack",
+          "max_width": 12,
+          "min_width": 12,
+          "height": 12,
+          "alert_source": {
+            "stream": "oia-alerts-stream",
+            "group_by": [
+              "a_asset_ip_address",
+              "a_severity",
+              "a_status"
+            ],
+            "ts_column": "timestamp",
+            "duration_hours": 1,
+            "agg": "value_count",
+            "column": "_id",
+            "type": "int",
+            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
+          },
+          "link_alert_source": {
+            "stream": "trap_alert_stream",
+            "group_by": [
+              "left_id",
+              "right_id"
+            ],
+            "agg": "min",
+            "column": "alert_severity_num",
+            "ts_column": "timestamp",
+            "duration_hours": 1440,
+            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
+          },
+          "widget_id": "9db5a36f"
         }
       ]
     }
