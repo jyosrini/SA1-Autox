@@ -1,14 +1,14 @@
 {
-  "name": "vmware-topology-app-without-graphdb",
-  "label": "VMWare Asset Navigator",
-  "description": "VMWare Asset Navigato",
-  "dashboard_folder": "VMWare",
-  "version": "23.4.14.1",
+  "name": "telco-standalone-topology",
+  "label": "Telco Asset Navigator",
+  "description": "Telco Asset Navigator",
   "enabled": true,
+  "dashboard_style": "auto",
+  "dashboard_type": "template",
+  "dashboard_folder": "Telco",
+  "version": "23.8.10.1",
   "short_label": "Stack",
   "context_label_id": "stack_name",
-  "dashboard_type": "template",
-  "dashboard_style": "tabbed",
   "dashboard_filters": {},
   "template_variables": {
     "NODE_ID": {
@@ -22,8 +22,8 @@
   "navigation_dashboards": {
     "tree_data": {
       "column_name": "node_type",
-      "pstream_name": "cfx_rdaf_topology_nodes",
-      "cfxql_query": "timestamp is after -12 months"
+      "pstream_name": "telco_nodes",
+      "cfxql_query": "timestamp is after -30d"
     },
     "tree_detail": {
       "display_column": "node_label",
@@ -31,8 +31,8 @@
         "node_id": "Node Id",
         "node_label": "Node Name"
       },
-      "pstream_name": "cfx_rdaf_topology_nodes",
-      "cfxql_query": "timestamp is after -12 months"
+      "pstream_name": "telco_nodes",
+      "cfxql_query": "timestamp is after -30d"
     },
     "showNodeIcon": true,
     "showSearchBox": false
@@ -51,22 +51,27 @@
           "widget_id": "182229d8"
         },
         {
-          "title": "Edges Summary",
-          "widget_type": "tabular",
-          "stream": "cfx_rdaf_topology_edges",
-          "query": "timestamp is after -12 months and left_id is '{{NODE_ID}}' or right_id is '{{NODE_ID}}'",
+          "title": "Relations",
+          "widget_type": "graphdb",
+          "gdb_nodes": "Telco_Nodes",
+          "gdb_edges": "Telco_Edges",
+          "relations_map": "Telco",
           "max_width": 8,
-          "height": 5,
+          "height": 12,
           "min_width": 8,
-          "widget_id": "4bc96241"
-        },
+          "widget_id": "cfc76d7f"
+        }
+      ]
+    },
+    {
+      "title": "Topology",
+      "widgets": [
         {
           "title": "Topology",
           "widget_type": "topology",
           "register_search_endpoints": true,
-          "auto_group": false,
           "reportId": "rda.saas.stack.view.topo",
-          "stack": "vmware_vcenter_topology",
+          "stack": "Telco Stack",
           "height": 10,
           "min_wdith": 12,
           "widget_id": "182287d8"
@@ -88,22 +93,27 @@
           "widget_id": "182229d8"
         },
         {
-          "title": "Edges Summary",
-          "widget_type": "tabular",
-          "stream": "cfx_rdaf_topology_edges",
-          "query": "timestamp is after -12 months and left_id is '{{NODE_ID}}' or right_id is '{{NODE_ID}}'",
+          "title": "Relations",
+          "widget_type": "graphdb",
+          "gdb_nodes": "Telco_Nodes",
+          "gdb_edges": "Telco_Edges",
+          "relations_map": "Telco",
           "max_width": 8,
-          "height": 5,
+          "height": 12,
           "min_width": 8,
-          "widget_id": "4bc96241"
-        },
+          "widget_id": "cfc76d7f"
+        }
+      ]
+    },
+    {
+      "title": "Topology",
+      "widgets": [
         {
           "title": "Topology",
           "widget_type": "topology",
           "register_search_endpoints": true,
-          "auto_group": false,
           "reportId": "rda.saas.stack.view.topo",
-          "stack": "vmware_vcenter_topology",
+          "stack": "Telco Stack",
           "height": 10,
           "min_wdith": 12,
           "widget_id": "182287d8"
