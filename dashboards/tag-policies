@@ -1,7 +1,7 @@
 {
-  "name": "rda-mgmt-page-bundles",
-  "label": "Bundles",
-  "description": "Bundles Page",
+  "name": "tag-policies",
+  "label": "Tag Policies",
+  "description": "Tag Policies",
   "enabled": true,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
@@ -11,34 +11,34 @@
   },
   "dashboard_sections": [
     {
-      "title": "Bundles",
+      "title": "Tag Policies",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Bundles",
+          "title": "Tag Policies",
           "widget_type": "portal_tabular",
-          "reportId": "bundles.list.tabular",
+          "reportId": "tags.list.tabular",
           "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "bc99fdf5"
+          "widget_id": "9bbba44a"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Bundles",
+      "title": "Tag Policies",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Bundles",
+          "title": "Tag Policies",
           "widget_type": "portal_tabular",
-          "reportId": "bundles.list.tabular",
+          "reportId": "tags.list.tabular",
           "height": 10,
           "min_wdith": 12,
           "paginated": true,
-          "widget_id": "bc99fdf5"
+          "widget_id": "9bbba44a"
         }
       ]
     }
