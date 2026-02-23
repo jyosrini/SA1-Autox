@@ -1,2 +1,6 @@
-@dm:recall name='fileupload_alerts'
- --> @cfxml:regression ts_column='raisedat' and frequency='1H' and agg_func='count' and job_name='FileUpload Alerts'
+@dm:empty
+ --> @dm:addrow name="edc_customer_inventory"
+ --> #dm:query-persistent-stream *
+ --> *dm:filter sw_os_type is null and serial_number is not null
+ --> @dm:groupby columns="product_name"
+ --> @dm:save name="filter2_sss"
