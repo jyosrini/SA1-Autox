@@ -1,44 +1,43 @@
 {
-  "name": "rda-mgmt-page-templates",
-  "label": "Formatting Templates",
-  "description": " Formatting Templates Management Page",
-  "enabled": true,
+  "name": "tenant-info",
+  "description": "MSP Info",
+  "label": "MSP Info",
+  "enabled": false,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "dashboard_style": "auto",
+  "template_variables": null,
+  "version": "23.2.7.1",
   "dashboard_filters": {
     "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Formatting Templates",
+      "title": "Information",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Formatting Templates",
+          "title": "MSP Details",
           "widget_type": "portal_tabular",
-          "reportId": "ft.list.tabular",
+          "reportId": "tenant.details.tabular",
           "height": 10,
           "min_wdith": 12,
-          "paginated": true,
-          "widget_id": "40edcc00"
+          "widget_id": "1e85b253"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Formatting Templates",
+      "title": "Information",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Formatting Templates",
+          "title": "MSP Details",
           "widget_type": "portal_tabular",
-          "reportId": "ft.list.tabular",
+          "reportId": "tenant.details.tabular",
           "height": 10,
           "min_wdith": 12,
-          "paginated": true,
-          "widget_id": "40edcc00"
+          "widget_id": "1e85b253"
         }
       ]
     }

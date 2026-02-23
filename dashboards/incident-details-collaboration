@@ -1,140 +1,127 @@
 {
-  "name": "incident-details-collaboration",
-  "description": "Incident Collaboration Details",
-  "label": "Incident Collaboration Details",
+  "name": "rda-pstreams-archives",
+  "label": "Archives",
+  "description": "Pstream Archives Page",
   "enabled": true,
-  "exportable": false,
-  "dashboard_type": "template",
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "version": "22.10.7.1",
-  "template_variables": {
-    "INCIDENT_ID": {
-      "contextId": "incident_id"
-    },
-    "PROJECT_ID": {
-      "contextId": "project_id"
-    }
-  },
-  "custom_context": {
-    "alert-context": true
-  },
   "dashboard_filters": {
-    "time_filter": false
+    "time_filter": true,
+    "default_time_filter_labels": [
+      "Last 12 months"
+    ],
+    "columns_filter": [
+      {
+        "id": "stream",
+        "label": "Name",
+        "type": "TEXT"
+      }
+    ]
   },
+  "sorting": [
+    {
+      "stream": "asc"
+    }
+  ],
   "dashboard_sections": [
     {
-      "title": "Collaboration",
-      "show_filter": false,
+      "title": "Archives",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Teams",
-          "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/collaboration-teams",
-          "reportId": "dummy-report-id",
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-collaboration",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getIRTeams",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "url": "uri:///inline-report/cfxdimensions-app-collaboration/Teams",
-                "filters": []
-              }
-            ]
-          },
-          "widget_id": "6e67b2f1"
-        },
-        {
-          "title": "Collaboration Activity",
-          "widget_type": "portal_list",
-          "widget_template": "cfx-oia/collaboration",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
+          "title": "Archives",
+          "widget_type": "tabular",
+          "stream": "rda_system_pstream_archival_metadata",
           "paginated": true,
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 100,
-          "exportSupported": false,
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-collaboration",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getIncidentMessageHistory",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
+          "columns": {
+            "stream": {
+              "title": "Stream Name",
+              "key": true
+            },
+            "archive_date": {
+              "title": "Archive Date",
+              "visible": false
+            }
+          },
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "2ea74a7d",
+          "pivot": {
+            "pivot_type": "advanced",
+            "group_by": [
+              "stream"
+            ],
+            "series": [
               {
-                "url": "uri:///inline-report/cfxdimensions-app-collaboration/Collaboration-Activity",
-                "filters": []
+                "column": "stream",
+                "label": "Archives Count",
+                "agg": "value_count"
               }
             ]
           },
-          "widget_id": "6e69b2f1"
+          "actions": [
+            {
+              "permission": "rda:pstream:archives",
+              "appName": "user-dashboard/rda-pstream-archives-app",
+              "title": "View Archives",
+              "type": "GO_TO_APP_STATE",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "identifier": "saas-service-action:pstream-archive"
+            }
+          ]
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Collaboration",
-      "show_filter": false,
+      "title": "Archives",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Teams",
-          "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/collaboration-teams",
-          "reportId": "dummy-report-id",
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-collaboration",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getIRTeams",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "url": "uri:///inline-report/cfxdimensions-app-collaboration/Teams",
-                "filters": []
-              }
-            ]
-          },
-          "widget_id": "6e67b2f1"
-        },
-        {
-          "title": "Collaboration Activity",
-          "widget_type": "portal_list",
-          "widget_template": "cfx-oia/collaboration",
-          "min_width": 12,
-          "height": 12,
-          "max_width": 12,
+          "title": "Archives",
+          "widget_type": "tabular",
+          "stream": "rda_system_pstream_archival_metadata",
           "paginated": true,
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 100,
-          "exportSupported": false,
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-collaboration",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getIncidentMessageHistory",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
+          "columns": {
+            "stream": {
+              "title": "Stream Name",
+              "key": true
+            },
+            "archive_date": {
+              "title": "Archive Date",
+              "visible": false
+            }
+          },
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "2ea74a7d",
+          "pivot": {
+            "pivot_type": "advanced",
+            "group_by": [
+              "stream"
+            ],
+            "series": [
               {
-                "url": "uri:///inline-report/cfxdimensions-app-collaboration/Collaboration-Activity",
-                "filters": []
+                "column": "stream",
+                "label": "Archives Count",
+                "agg": "value_count"
               }
             ]
           },
-          "widget_id": "6e69b2f1"
+          "actions": [
+            {
+              "permission": "rda:pstream:archives",
+              "appName": "user-dashboard/rda-pstream-archives-app",
+              "title": "View Archives",
+              "type": "GO_TO_APP_STATE",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "identifier": "saas-service-action:pstream-archive"
+            }
+          ]
         }
       ]
     }
