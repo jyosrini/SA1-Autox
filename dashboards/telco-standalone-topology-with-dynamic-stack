@@ -1,92 +1,165 @@
 {
-  "name": "incident-details-recommendation",
-  "description": "Summary and Recommendation",
-  "label": "Summary and Recommendation",
+  "name": "telco-standalone-topology-with-dynamic-stack",
+  "label": "Telco Asset Navigator",
+  "description": "Telco Asset Navigator",
   "enabled": true,
-  "dashboard_folder": "Default",
   "dashboard_style": "auto",
   "dashboard_type": "template",
+  "dashboard_folder": "Telco",
+  "version": "23.8.10.1",
+  "short_label": "Stack",
+  "context_label_id": "stack_name",
+  "dashboard_filters": {},
   "template_variables": {
-    "INCIDENT_ID": {
-      "default": null,
-      "contextId": "incident_id"
+    "NODE_ID": {
+      "contextId": [
+        "navigatorSelectionContexts",
+        "secondaryListSelection",
+        "node_id"
+      ]
     }
   },
-  "custom_context": {
-    "alert-context": true
+  "navigation_dashboards": {
+    "tree_data": {
+      "column_name": "node_type",
+      "pstream_name": "telco_nodes",
+      "cfxql_query": "timestamp is after -30d"
+    },
+    "tree_detail": {
+      "display_column": "node_label",
+      "selected_columns": {
+        "node_id": "Node Id",
+        "node_label": "Node Name"
+      },
+      "pstream_name": "telco_nodes",
+      "cfxql_query": "timestamp is after -30d"
+    },
+    "showNodeIcon": true,
+    "showSearchBox": false
   },
   "dashboard_sections": [
     {
-      "title": "Summary and Recommendation",
-      "show_filter": false,
+      "title": "Node Details",
       "widgets": [
         {
-          "title": "Incident Summary",
-          "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/incident-summary",
-          "widget_id": "784726f6"
+          "title": "Summary",
+          "widget_type": "portal_summary",
+          "reportId": "rda.saas.topology.node_details.report",
+          "max_width": 4,
+          "height": 5,
+          "min_width": 4,
+          "widget_id": "182229d8"
         },
         {
-          "widget_type": "label",
-          "min_width": 12,
-          "height": 10,
-          "max_width": 12,
-          "stream": "oia-incidents-stream",
-          "folder": "widget_labels",
-          "objectName": "recommendations",
-          "segments": [
-            {
-              "stream": "oia-incidents-stream",
-              "variable": "recommendations",
-              "columns": [
-                "i_recommendation"
-              ],
-              "type": "tabular",
-              "extra_filter": "incident_id is '{{INCIDENT_ID}}'",
-              "duration_hours": 100000
+          "title": "Relations",
+          "widget_type": "graphdb",
+          "gdb_nodes": "Telco_Nodes",
+          "gdb_edges": "Telco_Edges",
+          "relations_map": "Telco",
+          "max_width": 8,
+          "height": 12,
+          "min_width": 8,
+          "widget_id": "0aa61c28"
+        }
+      ]
+    },
+    {
+      "title": "Topology",
+      "widgets": [
+        {
+          "title": "Topology",
+          "widget_type": "topology",
+          "register_search_endpoints": true,
+          "reportId": "rda.saas.stack.view.topo",
+          "stack_type": "dynamic",
+          "stack_definition": {
+            "name": "Telco Stack",
+            "description": "",
+            "saved_time": "2023-09-12T21:08:31.418255",
+            "is_dynamic": true,
+            "hierarchical": false,
+            "dynamic_nodes": {
+              "stream": "telco_nodes",
+              "query": "timestamp is after -3 month",
+              "limit": 0,
+              "sorting": null,
+              "gdb_nodes": "Telco_Nodes"
+            },
+            "dynamic_relationships": {
+              "stream": "telco_edges",
+              "query": "timestamp is after -3 month",
+              "limit": 0,
+              "sorting": null,
+              "gdb_edges": "Telco_Edges"
             }
-          ],
-          "widget_id": "03430956"
+          },
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182287d8"
         }
       ]
     }
   ],
+  "menu_folder": "Top Level > AIOps",
   "pstream_dashboards": [
     {
-      "title": "Summary and Recommendation",
-      "show_filter": false,
+      "title": "Node Details",
       "widgets": [
         {
-          "title": "Incident Summary",
-          "min_width": 12,
-          "height": 2,
-          "widget_type": "portal_html",
-          "widget_template": "cfx-oia/incident-summary",
-          "widget_id": "784726f6"
+          "title": "Summary",
+          "widget_type": "portal_summary",
+          "reportId": "rda.saas.topology.node_details.report",
+          "max_width": 4,
+          "height": 5,
+          "min_width": 4,
+          "widget_id": "182229d8"
         },
         {
-          "widget_type": "label",
-          "min_width": 12,
-          "height": 10,
-          "max_width": 12,
-          "stream": "oia-incidents-stream",
-          "folder": "widget_labels",
-          "objectName": "recommendations",
-          "segments": [
-            {
-              "stream": "oia-incidents-stream",
-              "variable": "recommendations",
-              "columns": [
-                "i_recommendation"
-              ],
-              "type": "tabular",
-              "extra_filter": "incident_id is '{{INCIDENT_ID}}'",
-              "duration_hours": 100000
+          "title": "Relations",
+          "widget_type": "graphdb",
+          "gdb_nodes": "Telco_Nodes",
+          "gdb_edges": "Telco_Edges",
+          "relations_map": "Telco",
+          "max_width": 8,
+          "height": 12,
+          "min_width": 8,
+          "widget_id": "0aa61c28"
+        }
+      ]
+    },
+    {
+      "title": "Topology",
+      "widgets": [
+        {
+          "title": "Topology",
+          "widget_type": "topology",
+          "register_search_endpoints": true,
+          "reportId": "rda.saas.stack.view.topo",
+          "stack_type": "dynamic",
+          "stack_definition": {
+            "name": "Telco Stack",
+            "description": "",
+            "saved_time": "2023-09-12T21:08:31.418255",
+            "is_dynamic": true,
+            "hierarchical": false,
+            "dynamic_nodes": {
+              "stream": "telco_nodes",
+              "query": "timestamp is after -3 month",
+              "limit": 0,
+              "sorting": null,
+              "gdb_nodes": "Telco_Nodes"
+            },
+            "dynamic_relationships": {
+              "stream": "telco_edges",
+              "query": "timestamp is after -3 month",
+              "limit": 0,
+              "sorting": null,
+              "gdb_edges": "Telco_Edges"
             }
-          ],
-          "widget_id": "03430956"
+          },
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182287d8"
         }
       ]
     }
