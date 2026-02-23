@@ -1,578 +1,312 @@
 {
-  "name": "edc-cust-pid-sw",
-  "label": "SW Data",
-  "description": "Upload SW Data",
-  "version": "2025-04-11-4",
-  "stream": "edc_cust_pid_sw",
-  "enabled": false,
-  "dashboard_folder": "OI",
+  "name": "cml-topo-dashboard",
+  "label": "CML Network Topology",
+  "description": "CML Network Topology",
   "dashboard_style": "auto",
-  "live_edit": true,
+  "version": "23.6.12.1",
+  "enabled": true,
   "dashboard_type": "dashboard",
-  "stream_query_mapping": {
-    "edc_oi_inventory_enriched": {},
-    "edc_cust_contract_pid": {
-      "coverage": null
-    }
-  },
-  "computedContext": {
-    "show_pid_grp": {
-      "expr": "'yes' if str(show_pid_grp) in [ 'yes', 'True'] else 'no'",
-      "defaultValue": "error"
+  "custom_context": {
+    "alert-context": true,
+    "node_view_params": {
+      "stream": "oia-alerts-stream",
+      "extra_filter": "a_asset_ip_address is '${node_id}' and a_status = 'ACTIVE' and a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE'",
+      "title": "Active Alerts ${node_id}",
+      "duration_hours": 1,
+      "columns": {
+        "a_asset_ip_address": {
+          "title": "Device"
+        },
+        "a_en_local_interface": {
+          "title": "Interface"
+        },
+        "a_en_remote_ip": {
+          "title": "Remote Device"
+        },
+        "a_en_remote_interface": {
+          "title": "Remote Interface"
+        },
+        "a_en_alert_name": {
+          "title": "Alert Name"
+        },
+        "a_en_link_type": {
+          "title": "Link Type"
+        },
+        "a_severity": {
+          "title": "Alert severity"
+        },
+        "a_incident_id": {
+          "title": "Incident ID"
+        },
+        "a_message": {
+          "title": "Message"
+        },
+        "timestamp": {
+          "title": "timestamp"
+        }
+      },
+      "severity_columns": [
+        "a_severity"
+      ]
     },
-    "all_context": {
-      "expr": "",
-      "defaultValue": "Unknown"
+    "link_view_params": {
+      "stream": "oia-alerts-stream",
+      "extra_filter": "(a_asset_ip_address is '${source}' and a_en_remote_ip is '${target}') or (a_asset_ip_address is '${target}' and a_en_remote_ip is '${source}') and a_status = 'ACTIVE' and a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE'",
+      "title": "Active Alerts on ${source} <-> ${target}",
+      "duration_hours": 1,
+      "columns": {
+        "a_asset_ip_address": {
+          "title": "Device"
+        },
+        "a_en_local_interface": {
+          "title": "Interface"
+        },
+        "a_en_remote_ip": {
+          "title": "Remote Device"
+        },
+        "a_en_remote_interface": {
+          "title": "Remote Interface"
+        },
+        "a_en_alert_name": {
+          "title": "Alert Name"
+        },
+        "a_en_link_type": {
+          "title": "Link Type"
+        },
+        "a_severity": {
+          "title": "Alert severity"
+        },
+        "a_incident_id": {
+          "title": "Incident ID"
+        },
+        "a_message": {
+          "title": "Message"
+        },
+        "timestamp": {
+          "title": "timestamp"
+        }
+      },
+      "severity_columns": [
+        "a_severity"
+      ]
     }
   },
-  "dashboard_pages": [],
   "dashboard_filters": {
     "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 2 weeks"
-    ],
-    "custom_time_filters": [
-      "24h",
-      "2d",
-      "3d",
-      "1w",
-      "2w",
-      "3w",
-      "1M",
-      "2M",
-      "3M",
-      "6M",
-      "12M"
-    ],
-    "columns_filter": [
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      },
-      {
-        "id": "contract_number",
-        "label": "Contract Number",
-        "type": "TEXT"
-      },
-      {
-        "id": "product_name",
-        "label": "Product Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "product_id",
-        "label": "Product ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "customer",
-        "label": "Customer",
-        "type": "TEXT"
-      },
-      {
-        "id": "sw_version",
-        "label": "SW Version",
-        "type": "TEXT"
-      },
-      {
-        "id": "sw_os_type",
-        "label": "SW OS Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "transaction_id",
-        "label": "Transaction ID",
-        "type": "TEXT"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "edc_cust_pid_sw",
-        "title": "Customer Name",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "customer"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_cust_pid_sw",
-        "title": "Product ID",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "product_id"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 200,
-        "agg": "value_count",
-        "column": "count_",
-        "type": "text"
-      },
-      {
-        "stream": "edc_cust_pid_sw",
-        "title": "Contract Number",
-        "group_by": [
-          "contract_number"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 500,
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_cust_pid_sw",
-        "title": "SW Version",
-        "group_by": [
-          "sw_version"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 500,
-        "agg": "value_count",
-        "column": "count_",
-        "type": "str"
-      },
-      {
-        "stream": "edc_cust_pid_sw",
-        "title": "SW OS Type",
-        "extra_filter1": "source in 'inventory'",
-        "group_by": [
-          "sw_os_type"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 400,
-        "agg": "value_count",
-        "column": "count_",
-        "type": "str"
-      }
-    ]
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Assets",
+      "title": "Topology",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Unique Product IDs (for COVERED Produc Type: ROUTER, SWITCH , FUNCSYSTM, MULTIPROD)",
-          "context_filter1": "show_pid_grp is 'yes'",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "edc_cust_pid_sw",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "remote_searchable": true,
-          "columns": {
-            "customer": {
-              "title": "Customer",
-              "type": "TEXT",
-              "visible": true,
-              "key": true
-            },
-            "product_name": {
-              "title": "Product_Name",
-              "type": "TEXT",
-              "visible": true,
-              "key": true
-            },
-            "Qty": {
-              "title": "Qty",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "contract_number": {
-              "title": "Contract_Number",
-              "type": "FLOAT",
-              "visible": true,
-              "key": true
-            },
-            "unique_key": {
-              "title": "Unique_Key",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "ingestion_id": {
-              "title": "Ingestion_ID",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "product_id": {
-              "title": "Product_ID",
-              "type": "TEXT",
-              "key": true
-            },
-            "sw_os_type": {
-              "title": "SW_OS_Type",
-              "type": "TEXT",
-              "key": true
-            },
-            "sw_version": {
-              "title": "SW_Version",
-              "type": "TEXT",
-              "key": true
-            }
-          },
+          "widget_type": "topology",
+          "title": "Topology",
           "actions": [
             {
-              "permission": "rda:github:view",
-              "title": "Add",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "Network",
+                    "fieldId": "layer"
+                  }
+                ]
+              },
               "api-endpoint": {
                 "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
+                "methodName": "getReport",
+                "stringified-params": false,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dynamic.form",
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Choose file to upload",
-                          "dataType": "string",
-                          "required": true,
-                          "editable": true,
-                          "label": "Choose file to upload",
-                          "controlType": "FILE_UPLOAD",
-                          "hidden": false,
-                          "fieldId": "fileUpload"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "edc_oi_call_product_alerts",
-                        "isSync": false
-                      }
-                    ]
+                    "reportId": "rda.saas.topology.stream.nodes.alerts"
                   }
                 ]
-              }
+              },
+              "icon": "mdi mdi-plus",
+              "identifier": "rda.saas.topology.stream.nodes.alerts.view",
+              "selectionType": "SINGLE",
+              "title": "Show Node Alerts",
+              "type": "POPUP_REPORT"
             },
             {
-              "permission": "rda:github:view",
-              "title": "Edit",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "connects-to",
+                    "fieldId": "edgeType"
+                  }
+                ]
+              },
               "api-endpoint": {
                 "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
+                "methodName": "getReport",
+                "stringified-params": false,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dynamic.form",
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Customer",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Customer",
-                          "hidden": false,
-                          "fieldId": "customer_name"
-                        },
-                        {
-                          "help": "Contract Number",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Contract Number",
-                          "hidden": false,
-                          "fieldId": "contract_number"
-                        },
-                        {
-                          "help": "Product ID",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Product ID",
-                          "hidden": false,
-                          "fieldId": "product_id"
-                        },
-                        {
-                          "help": "Unique Key",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": true,
-                          "label": "Unique Key",
-                          "hidden": false,
-                          "fieldId": "unique_key"
-                        },
-                        {
-                          "help": "SW OS Type",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "SW OS Type",
-                          "hidden": false,
-                          "fieldId": "sw_os_type"
-                        },
-                        {
-                          "help": "SW Version",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "SW Version",
-                          "hidden": false,
-                          "fieldId": "sw_version"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "test-input-data",
-                        "isSync": true
-                      }
-                    ]
+                    "reportId": "rda.saas.topology.stream.links.alerts",
+                    "hello": "world SIRI"
                   }
                 ]
-              }
+              },
+              "icon": "mdi mdi-plus",
+              "identifier": "rda.saas.topology.stream.links.alerts.view",
+              "selectionType": "SINGLE",
+              "title": "Show Link Alerts",
+              "type": "POPUP_REPORT"
             }
           ],
-          "widget_id": "826a4aad"
+          "chartProperties": {
+            "hasToolbar": true,
+            "shortToolbar": true,
+            "userZoomingEnabled": false
+          },
+          "stack": "cml_topo_stack",
+          "max_width": 12,
+          "min_width": 12,
+          "height": 12,
+          "alert_source": {
+            "stream": "oia-alerts-stream",
+            "group_by": [
+              "a_asset_ip_address",
+              "a_severity",
+              "a_status"
+            ],
+            "ts_column": "timestamp",
+            "duration_hours": 1,
+            "agg": "value_count",
+            "column": "_id",
+            "type": "int",
+            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
+          },
+          "link_alert_source": {
+            "stream": "trap_alert_stream",
+            "group_by": [
+              "left_id",
+              "right_id"
+            ],
+            "agg": "min",
+            "column": "alert_severity_num",
+            "ts_column": "timestamp",
+            "duration_hours": 1440,
+            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
+          },
+          "widget_id": "9db5a36f"
         }
-      ],
-      "saved_time": "2025-05-09T06:51:12.699107"
+      ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Assets",
+      "title": "Topology",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Unique Product IDs (for COVERED Produc Type: ROUTER, SWITCH , FUNCSYSTM, MULTIPROD)",
-          "context_filter1": "show_pid_grp is 'yes'",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "edc_cust_pid_sw",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "remote_searchable": true,
-          "columns": {
-            "customer": {
-              "title": "Customer",
-              "type": "TEXT",
-              "visible": true,
-              "key": true
-            },
-            "product_name": {
-              "title": "Product_Name",
-              "type": "TEXT",
-              "visible": true,
-              "key": true
-            },
-            "Qty": {
-              "title": "Qty",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "contract_number": {
-              "title": "Contract_Number",
-              "type": "FLOAT",
-              "visible": true,
-              "key": true
-            },
-            "unique_key": {
-              "title": "Unique_Key",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "ingestion_id": {
-              "title": "Ingestion_ID",
-              "type": "TEXT",
-              "visible": false,
-              "key": true
-            },
-            "product_id": {
-              "title": "Product_ID",
-              "type": "TEXT",
-              "key": true
-            },
-            "sw_os_type": {
-              "title": "SW_OS_Type",
-              "type": "TEXT",
-              "key": true
-            },
-            "sw_version": {
-              "title": "SW_Version",
-              "type": "TEXT",
-              "key": true
-            }
-          },
+          "widget_type": "topology",
+          "title": "Topology",
           "actions": [
             {
-              "permission": "rda:github:view",
-              "title": "Add",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "Network",
+                    "fieldId": "layer"
+                  }
+                ]
+              },
               "api-endpoint": {
                 "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
+                "methodName": "getReport",
+                "stringified-params": false,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dynamic.form",
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Choose file to upload",
-                          "dataType": "string",
-                          "required": true,
-                          "editable": true,
-                          "label": "Choose file to upload",
-                          "controlType": "FILE_UPLOAD",
-                          "hidden": false,
-                          "fieldId": "fileUpload"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "edc_oi_call_product_alerts",
-                        "isSync": false
-                      }
-                    ]
+                    "reportId": "rda.saas.topology.stream.nodes.alerts"
                   }
                 ]
-              }
+              },
+              "icon": "mdi mdi-plus",
+              "identifier": "rda.saas.topology.stream.nodes.alerts.view",
+              "selectionType": "SINGLE",
+              "title": "Show Node Alerts",
+              "type": "POPUP_REPORT"
             },
             {
-              "permission": "rda:github:view",
-              "title": "Edit",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "connects-to",
+                    "fieldId": "edgeType"
+                  }
+                ]
+              },
               "api-endpoint": {
                 "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
+                "methodName": "getReport",
+                "stringified-params": false,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dynamic.form",
-                    "formDefinition": {
-                      "id": "rda.saas.dynamic.form",
-                      "refreshRequired": true,
-                      "formFieldList": [
-                        {
-                          "help": "Customer",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Customer",
-                          "hidden": false,
-                          "fieldId": "customer_name"
-                        },
-                        {
-                          "help": "Contract Number",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Contract Number",
-                          "hidden": false,
-                          "fieldId": "contract_number"
-                        },
-                        {
-                          "help": "Product ID",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": false,
-                          "label": "Product ID",
-                          "hidden": false,
-                          "fieldId": "product_id"
-                        },
-                        {
-                          "help": "Unique Key",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": false,
-                          "editable": true,
-                          "label": "Unique Key",
-                          "hidden": false,
-                          "fieldId": "unique_key"
-                        },
-                        {
-                          "help": "SW OS Type",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "SW OS Type",
-                          "hidden": false,
-                          "fieldId": "sw_os_type"
-                        },
-                        {
-                          "help": "SW Version",
-                          "dataType": "string",
-                          "controlType": "TEXT_FIELD",
-                          "required": true,
-                          "editable": true,
-                          "label": "SW Version",
-                          "hidden": false,
-                          "fieldId": "sw_version"
-                        }
-                      ]
-                    },
-                    "actions": [
-                      {
-                        "type": "RUN_PIPELINE",
-                        "pipelineName": "test-input-data",
-                        "isSync": true
-                      }
-                    ]
+                    "reportId": "rda.saas.topology.stream.links.alerts",
+                    "hello": "world SIRI"
                   }
                 ]
-              }
+              },
+              "icon": "mdi mdi-plus",
+              "identifier": "rda.saas.topology.stream.links.alerts.view",
+              "selectionType": "SINGLE",
+              "title": "Show Link Alerts",
+              "type": "POPUP_REPORT"
             }
           ],
-          "widget_id": "826a4aad"
+          "chartProperties": {
+            "hasToolbar": true,
+            "shortToolbar": true,
+            "userZoomingEnabled": false
+          },
+          "stack": "cml_topo_stack",
+          "max_width": 12,
+          "min_width": 12,
+          "height": 12,
+          "alert_source": {
+            "stream": "oia-alerts-stream",
+            "group_by": [
+              "a_asset_ip_address",
+              "a_severity",
+              "a_status"
+            ],
+            "ts_column": "timestamp",
+            "duration_hours": 1,
+            "agg": "value_count",
+            "column": "_id",
+            "type": "int",
+            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
+          },
+          "link_alert_source": {
+            "stream": "trap_alert_stream",
+            "group_by": [
+              "left_id",
+              "right_id"
+            ],
+            "agg": "min",
+            "column": "alert_severity_num",
+            "ts_column": "timestamp",
+            "duration_hours": 1440,
+            "extra_filter": "a_en_link_type is not empty and a_source_systemname is not 'Alert Group' and a_correlation_status is not 'AGGREGATE' and a_status = 'ACTIVE' and a_asset_ip_address is in ['9.3.252.38','9.3.252.32','9.3.252.35','9.3.252.36','9.3.252.37','9.3.252.31','9.3.252.33','9.3.252.34', '9.3.252.91', '9.3.252.92', '9.3.252.93', '9.3.252.94']"
+          },
+          "widget_id": "9db5a36f"
         }
-      ],
-      "saved_time": "2025-05-09T06:51:12.699107"
+      ]
     }
   ]
 }
