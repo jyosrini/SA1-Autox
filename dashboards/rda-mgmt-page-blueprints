@@ -1,477 +1,691 @@
 {
-  "name": "customer_SNMP_Traps",
-  "label": "SNMP Traps",
-  "description": "SNMP traps dashboard",
-  "version": "2024.02.27",
+  "name": "rda-mgmt-page-blueprints",
+  "label": "Service Blueprints",
+  "description": " Service Blueprints Management Page",
   "enabled": true,
-  "dashboard_folder": "NetworkDevicePack",
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "template_variables": {
-    "CUST_ID": {
-      "contextId": "customer_id"
-    },
-    "PROJ_ID": {
-      "contextId": "projectId"
-    },
-    "CUST_TAG": {
-      "contextId": "customer_tag"
-    }
-  },
-  "status_poller": {
-    "stream": "snmp_trap_event_stream_all",
-    "frequency": 10,
-    "columns": [
-      "timestamp"
-    ],
-    "sorting": [
-      {
-        "timestamp": "desc"
-      }
-    ],
-    "query": "timestamp is after '${timestamp}'",
-    "defaults": {
-      "timestamp": "$UTCNOW"
-    },
-    "action": "refresh"
-  },
+  "stream": "rda_blueprints_meta",
   "dashboard_filters": {
-    "default_time_filter_labels": [
-      "Last 24 hours"
-    ],
-    "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-    "time_filter": true,
+    "time_filter": false,
     "columns_filter": [
       {
-        "id": "rda_gw_client_ip",
-        "label": "Device IP",
+        "id": "enabled",
+        "label": "Enabled",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "auto_deploy",
+        "label": "Auto Deploy",
+        "type": "BOOLEAN"
+      },
+      {
+        "id": "errors",
+        "label": "Audit Errors",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "warnings",
+        "label": "Audit Warnings",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "name",
+        "label": "Name",
         "type": "TEXT"
       },
       {
-        "id": "device_hostname",
-        "label": "Device Hostname",
+        "id": "id",
+        "label": "ID",
         "type": "TEXT"
       },
       {
-        "id": "message",
-        "label": "Message",
+        "id": "comment",
+        "label": "Description",
         "type": "TEXT"
       },
       {
-        "id": "snmpVersion",
-        "label": "SNMP Version",
+        "id": "category",
+        "label": "Category",
         "type": "TEXT"
-      },
-      {
-        "id": "device_vendor",
-        "label": "Device Vendor",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_status",
-        "label": "Device Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "snmpTrapDescription",
-        "label": "MIB Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "snmpTrapName",
-        "label": "Trap Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "device_fw_version",
-        "label": "OS Version",
-        "type": "TEXT"
-      },
-      {
-        "id": "snmpTrapOID",
-        "label": "Trap OID",
-        "type": "TEXT"
-      },
-      {
-        "id": "snmpTrapMIB",
-        "label": "MIB Name",
-        "type": "TEXT"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "snmp_trap_event_stream_all",
-        "title": "Vendor",
-        "group_by": [
-          "device_vendor"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_"
-      },
-      {
-        "stream": "snmp_trap_event_stream_all",
-        "title": "Status",
-        "group_by": [
-          "device_status"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_"
-      },
-      {
-        "stream": "snmp_trap_event_stream_all",
-        "title": "Trap Name",
-        "group_by": [
-          "snmpTrapName"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_"
-      },
-      {
-        "stream": "snmp_trap_event_stream_all",
-        "title": "MIB Name",
-        "group_by": [
-          "snmpTrapMIB"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "snmp details",
+      "title": "Service Blueprints",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Customer SNMP Traps</a></h1></div>",
-          "widget_id": "33317e49"
-        },
-        {
-          "title": "Total Traps",
-          "widget_type": "custom_counter",
-          "formatter": "DescriptiveCountFormatter",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter0": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "column": "_id",
-          "agg": "value_count",
-          "type": "int",
-          "max_width": 3,
-          "height": 4,
-          "min_width": 3,
-          "style": {
-            "color-list": [
-              "#215CC3"
-            ]
-          },
-          "widget_id": "df82078f"
-        },
-        {
-          "title": "By Trap",
-          "widget_type": "pie_chart",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "group_by": [
-            "snmpTrapName"
-          ],
-          "column": "count_",
-          "agg": "value_count",
-          "type": "int",
-          "min_width": 5,
-          "height": 4,
-          "max_width": 5,
-          "widget_id": "43799fef"
-        },
-        {
-          "title": "Traps by IP",
-          "widget_type": "pie_chart",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "rda_gw_client_ip"
-          ],
-          "type": "str",
-          "min_width": 4,
-          "height": 4,
-          "max_width": 8,
-          "widget_id": "5d627f3e"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Traps by Managed Status",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "device_status"
-          ],
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "widget_id": "b9f66b8"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Assets by Managed Status ",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "column": "rda_gw_client_ip",
-          "agg": "cardinality",
-          "group_by": [
-            "device_status"
-          ],
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "widget_id": "b2266b8"
-        },
-        {
-          "title": "Unmanaged Devices",
+          "title": "Service Blueprints",
           "widget_type": "tabular",
-          "max_width": 4,
-          "height": 4,
-          "min_width": 4,
-          "extra_filter": "device_status contains 'UNMANAGED' and (project_id in {{PROJ_ID}} or project_id is empty)",
-          "stream": "snmp_trap_event_stream_all",
-          "ts_column": "timestamp",
-          "columns": {
-            "rda_gw_client_ip": "IP Address"
-          },
-          "pivot": {
-            "group_by": [
-              "rda_gw_client_ip"
-            ],
-            "column": "count_",
-            "agg": "value_count"
-          },
-          "widget_id": "kz1MoAWD"
-        },
-        {
-          "title": "SNMP Traps",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "resizableColumns": false,
-          "max_rows": 100,
-          "showRowSummary": true,
-          "sorting": [
-            {
-              "timestamp": "desc"
-            }
-          ],
+          "stream": "rda_blueprints_meta",
+          "duration_hours": 87600,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "rda_gw_client_ip",
-            "snmpTrapOID",
-            "device_vendor",
-            "device_status",
-            "snmpTrapMIB",
-            "snmpVersion",
-            "rda_gw_client_ip",
-            "snmpTrapName"
+            "id",
+            "name",
+            "comment",
+            "category",
+            "note",
+            "url"
           ],
+          "ts_column": "saved_time",
+          "paginated": true,
+          "height": 10,
+          "min_width": 12,
           "columns": {
-            "timestamp": "Timestamp",
-            "rda_gw_client_ip": "Device",
-            "device_hostname": "Device Hostname",
-            "message": "Message",
-            "snmpVersion": "SNMP Version",
-            "device_vendor": "Vendor",
-            "device_status": "Status",
-            "snmpTrapDescription": "MIB Description",
-            "snmpTrapName": "Trap Name",
-            "snmpTrapMIB": "MIB Name",
-            "device_fw_version": "OS Version",
-            "snmpTrapOID": "Trap OID"
+            "id": {
+              "title": "Id",
+              "key": true
+            },
+            "name": {
+              "title": "Name",
+              "key": true
+            },
+            "comment": {
+              "title": "Description"
+            },
+            "category": {
+              "title": "Category",
+              "key": true
+            },
+            "auto_deploy": {
+              "title": "Auto Deploy"
+            },
+            "note": {
+              "title": "Note"
+            },
+            "url": {
+              "title": "URL",
+              "key": true,
+              "visible": false
+            }
           },
-          "widget_id": "46a6b5b6"
+          "custom_columns": [
+            {
+              "id": "enabled",
+              "label": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
+            },
+            {
+              "id": "enableColor",
+              "label": "Enable Color",
+              "expr": "['#4CAF50'] if enabled == 'true' else ['#9E9E9E']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "warningColor",
+              "label": "Warning Color",
+              "expr": "['#FFA726'] if warnings > 0 else ['#03A9F4']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "errorColor",
+              "label": "Error Color",
+              "expr": "['#B71C1C'] if errors > 0  else ['#03A9F4']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "errors",
+              "label": "Audit Errors",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.errorColor }}' > {{ row.errors }} </span>"
+            },
+            {
+              "id": "warnings",
+              "label": "Audit Warnings",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.warningColor }}' > {{ row.warnings }} </span>"
+            },
+            {
+              "id": "artifact_name",
+              "label": "Artifact Name",
+              "expr": "id",
+              "key": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "artifact_type",
+              "label": "Artifact Type",
+              "expr": "'blueprint'",
+              "key": true,
+              "visible": false,
+              "sortable": false
+            }
+          ],
+          "actions": [
+            {
+              "permission": "rda:deploymentspec:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.add.yaml"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Import from Catalog",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-import",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.import"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Dashboard",
+              "type": "GO_TO_APP_STATE",
+              "appName": "dynamic-dashboard",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-dashboard",
+              "drillDownLinkField": "name"
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.view"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit Layout",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-layout",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit.layout"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:enable",
+              "title": "Enable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-activate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.activate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "false",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:disable",
+              "title": "Disable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-deactivate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.deactivate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "true",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "appName": "user-dashboard/rda-artifact-dependencies-app",
+              "identifier": "launch.url.dashboard",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "View Dependencies",
+              "type": "GO_TO_APP_STATE"
+            }
+          ],
+          "widget_id": "03db8d0f"
+        },
+        {
+          "title": "Deployed Blueprints",
+          "widget_type": "portal_tabular",
+          "reportId": "apps.deployed.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "c8689a20"
+        },
+        {
+          "title": "Service Blueprint Catalog",
+          "widget_type": "portal_tabular",
+          "reportId": "apps.available.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "57d54731"
         }
       ]
     }
   ],
-  "dashboard_type": "template",
-  "dashboard_pages": [],
   "pstream_dashboards": [
     {
-      "title": "snmp details",
+      "title": "Service Blueprints",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Customer SNMP Traps</a></h1></div>",
-          "widget_id": "33317e49"
-        },
-        {
-          "title": "Total Traps",
-          "widget_type": "custom_counter",
-          "formatter": "DescriptiveCountFormatter",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter0": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "column": "_id",
-          "agg": "value_count",
-          "type": "int",
-          "max_width": 3,
-          "height": 4,
-          "min_width": 3,
-          "style": {
-            "color-list": [
-              "#215CC3"
-            ]
-          },
-          "widget_id": "df82078f"
-        },
-        {
-          "title": "By Trap",
-          "widget_type": "pie_chart",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "group_by": [
-            "snmpTrapName"
-          ],
-          "column": "count_",
-          "agg": "value_count",
-          "type": "int",
-          "min_width": 5,
-          "height": 4,
-          "max_width": 5,
-          "widget_id": "43799fef"
-        },
-        {
-          "title": "Traps by IP",
-          "widget_type": "pie_chart",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "rda_gw_client_ip"
-          ],
-          "type": "str",
-          "min_width": 4,
-          "height": 4,
-          "max_width": 8,
-          "widget_id": "5d627f3e"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Traps by Managed Status",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "device_status"
-          ],
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "widget_id": "b9f66b8"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Assets by Managed Status ",
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "column": "rda_gw_client_ip",
-          "agg": "cardinality",
-          "group_by": [
-            "device_status"
-          ],
-          "min_width": 4,
-          "height": 4,
-          "max_width": 4,
-          "widget_id": "b2266b8"
-        },
-        {
-          "title": "Unmanaged Devices",
+          "title": "Service Blueprints",
           "widget_type": "tabular",
-          "max_width": 4,
-          "height": 4,
-          "min_width": 4,
-          "extra_filter": "device_status contains 'UNMANAGED' and (project_id in {{PROJ_ID}} or project_id is empty)",
-          "stream": "snmp_trap_event_stream_all",
-          "ts_column": "timestamp",
-          "columns": {
-            "rda_gw_client_ip": "IP Address"
-          },
-          "pivot": {
-            "group_by": [
-              "rda_gw_client_ip"
-            ],
-            "column": "count_",
-            "agg": "value_count"
-          },
-          "widget_id": "kz1MoAWD"
-        },
-        {
-          "title": "SNMP Traps",
-          "widget_type": "tabular",
-          "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "snmp_trap_event_stream_all",
-          "extra_filter": "project_id in {{PROJ_ID}} or project_id is empty",
-          "ts_column": "timestamp",
-          "resizableColumns": false,
-          "max_rows": 100,
-          "showRowSummary": true,
-          "sorting": [
-            {
-              "timestamp": "desc"
-            }
-          ],
+          "stream": "rda_blueprints_meta",
+          "duration_hours": 87600,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "rda_gw_client_ip",
-            "snmpTrapOID",
-            "device_vendor",
-            "device_status",
-            "snmpTrapMIB",
-            "snmpVersion",
-            "rda_gw_client_ip",
-            "snmpTrapName"
+            "id",
+            "name",
+            "comment",
+            "category",
+            "note",
+            "url"
           ],
+          "ts_column": "saved_time",
+          "paginated": true,
+          "height": 10,
+          "min_width": 12,
           "columns": {
-            "timestamp": "Timestamp",
-            "rda_gw_client_ip": "Device",
-            "device_hostname": "Device Hostname",
-            "message": "Message",
-            "snmpVersion": "SNMP Version",
-            "device_vendor": "Vendor",
-            "device_status": "Status",
-            "snmpTrapDescription": "MIB Description",
-            "snmpTrapName": "Trap Name",
-            "snmpTrapMIB": "MIB Name",
-            "device_fw_version": "OS Version",
-            "snmpTrapOID": "Trap OID"
+            "id": {
+              "title": "Id",
+              "key": true
+            },
+            "name": {
+              "title": "Name",
+              "key": true
+            },
+            "comment": {
+              "title": "Description"
+            },
+            "category": {
+              "title": "Category",
+              "key": true
+            },
+            "auto_deploy": {
+              "title": "Auto Deploy"
+            },
+            "note": {
+              "title": "Note"
+            },
+            "url": {
+              "title": "URL",
+              "key": true,
+              "visible": false
+            }
           },
-          "widget_id": "46a6b5b6"
+          "custom_columns": [
+            {
+              "id": "enabled",
+              "label": "Enabled",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
+            },
+            {
+              "id": "enableColor",
+              "label": "Enable Color",
+              "expr": "['#4CAF50'] if enabled == 'true' else ['#9E9E9E']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "warningColor",
+              "label": "Warning Color",
+              "expr": "['#FFA726'] if warnings > 0 else ['#03A9F4']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "errorColor",
+              "label": "Error Color",
+              "expr": "['#B71C1C'] if errors > 0  else ['#03A9F4']",
+              "hidden": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "errors",
+              "label": "Audit Errors",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.errorColor }}' > {{ row.errors }} </span>"
+            },
+            {
+              "id": "warnings",
+              "label": "Audit Warnings",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.warningColor }}' > {{ row.warnings }} </span>"
+            },
+            {
+              "id": "artifact_name",
+              "label": "Artifact Name",
+              "expr": "id",
+              "key": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "artifact_type",
+              "label": "Artifact Type",
+              "expr": "'blueprint'",
+              "key": true,
+              "visible": false,
+              "sortable": false
+            }
+          ],
+          "actions": [
+            {
+              "permission": "rda:deploymentspec:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.add.yaml"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Import from Catalog",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:dspec-import",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.import"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:import",
+              "title": "Dashboard",
+              "type": "GO_TO_APP_STATE",
+              "appName": "dynamic-dashboard",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-dashboard",
+              "drillDownLinkField": "name"
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-view-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.view"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit Layout",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-layout",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit.layout"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:edit",
+              "title": "Edit",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspecs-edit-spec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": false,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:enable",
+              "title": "Enable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-activate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.activate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "false",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:disable",
+              "title": "Disable",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:dspec-deactivate-dspec",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.deploymentspec.deactivate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "true",
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:deploymentspec:view",
+              "appName": "user-dashboard/rda-artifact-dependencies-app",
+              "identifier": "launch.url.dashboard",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "View Dependencies",
+              "type": "GO_TO_APP_STATE"
+            }
+          ],
+          "widget_id": "03db8d0f"
+        },
+        {
+          "title": "Deployed Blueprints",
+          "widget_type": "portal_tabular",
+          "reportId": "apps.deployed.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "c8689a20"
+        },
+        {
+          "title": "Service Blueprint Catalog",
+          "widget_type": "portal_tabular",
+          "reportId": "apps.available.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "57d54731"
         }
       ]
     }
