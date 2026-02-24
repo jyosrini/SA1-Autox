@@ -1,3 +1,8 @@
-@dm:recall name='hw-eol-details'
- --> *dm:filter product_id in ['CRS-FP140-E','CRS-8-FANTRAY-B','CRS-8/S-B','CRS-16LCC400-B','CRS-16/S-B'] and contract_number=='3610020'
- --> @dm:save name='enrich-inv'
+@dm:empty
+ --> @dm:addrow name='edc_sweol_data' and limit=0
+ --> #dm:query-persistent-stream
+ --> @dm:save name='date-sweol'
+ --> @c:new-block
+ --> @dm:recall name='date-sweol'
+ --> @dm:eval created='str(created)'
+ --> @rn:write-stream name='test_ingest_2'
