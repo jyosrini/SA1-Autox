@@ -1,17 +1,32 @@
 {
-  "name": "oia-collab-messagesharing-stream",
+  "name": "edc_sw_raw_data",
   "datastore_type": "OS",
   "read_only": false,
   "attrs": {
     "_mappings": {
       "properties": {
-        "shared_time": {
-          "type": "date"
+        "contract_number": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "last_updated_time": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
         }
       }
     },
-    "case_insensitive": true
+    "unique_keys": [
+      "unique_key"
+    ]
   },
   "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-dd91ac9f-oia-collab-messagesharing-stream"
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-c09834b1-edc_sw_raw_data"
 }
