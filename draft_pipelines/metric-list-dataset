@@ -1,155 +1,146 @@
-@exec:get-input
- --> @dm:skip-pipeline-if-shape row_count=0
- --> @dm:save name='temp-incidents'
- ## get impacted assets for the incidents
-
- --> @c:data-loop columns='incident_id,project_id' and dataset='temp-incidents'
- --> @dm:empty
- --> @dm:addrow name='oia-alerts-stream' and aggs='cardinality:a_en_metric_asset_id' and groupby='a_incident_id,project_id,a_en_metric_asset_id'
- --> #dm:query-persistent-stream a_incident_id is '$incident_id' and project_id is '$project_id'
- --> @dm:implode key_columns='a_incident_id' and merge_columns='a_en_metric_asset_id' and keep_columns='a_incident_id'
- --> @dm:eval assetIds="a_en_metric_asset_id.split(',')"
- --> @dm:eval asset_count='len(assetIds)'
- --> @dm:add-missing-columns columns='incident_id' and value="$incident_id"
- --> @dm:save name='temp-incident-impacted-assets' and append='yes'
- --> *exec:if-shape num_rows=0
- --> @dm:empty
- --> @dm:addrow incident_id="$incident_id" and asset_count=0
- --> @dm:save name='temp-incident-impacted-assets' and append='yes'
- --> @exec:end-if
- ## enrich the incidents with impacted assets
+@dm:empty
+ --> @dm:save name='oia-meapm-metrics-list'
+ ## filter metric selection rules
 
  --> @c:new-block
- --> @dm:recall name='temp-incidents'
- --> @dm:enrich dict='temp-incident-impacted-assets' and src_key_cols='incident_id' and dict_key_cols='incident_id' and enrich_cols='assetIds,asset_count'
- --> @dm:save name='temp-incidents'
- ## get alerts for incident
+ --> @dm:recall name='oia-metric_selection_rules'
+ --> *dm:filter metric_source='me-apm'
+ --> @dm:selectcolumns include="^metric_filter$"
+ --> @dm:save name='temp-meapm-metric-selection-rules'
+ ## ME-APM Metric List Pipeline
 
+ --> @c:data-loop columns="metric_filter" and dataset='temp-meapm-metric-selection-rules'
+ --> *me-apm:metric-list
+ --> @dm:eval asset_id = 'RESOURCENAME if RESOURCENAME else PARENT_RESOURCENAME if PARENT_RESOURCENAME else None'
+ --> *dm:filter asset_id is not None and asset_id != ''
+ --> @dm:dns-name-to-ip from_cols = 'asset_id' and to_cols = 'asset_id' and keep_value = 'yes'
+ --> @dm:map to = '_tmp_metric_label' & from = 'DESCRIPTION: ,DISPLAYNAME' & func='join' & sep=' : '
+ --> @dm:map to = '_tmp_metric_label_child' & from = 'PARENT_DESCRIPTION: ,CHILDMONITORS_DISPLAYNAME,CHILDMONITORINFO_DISPLAYNAME' & func='join' & sep=' : '
+ --> @dm:eval metric_label = "_tmp_metric_label_child if _type == 'CHILD' else _tmp_metric_label"
+ --> *dm:filter ($metric_filter)
+ --> @dm:map to = 'metric_label' and from = 'metric_label,Units' and func='join' and sep=' '
+ --> @dm:map to = 'unit' & from = 'Units'
+ --> @dm:fixnull columns= 'unit' & value = 'Count' & apply_for_empty = 'yes'
+ --> @dm:manipulate-string func='strip' and to='unit' and from='unit'
+ --> @dm:eval unit = "unit if (unit != '') else 'Count'"
+ --> @dm:selectcolumns include="^asset_id$|^RESOURCEID$|^AttributeID$|^metric_label$|^unit$"
+ --> @dm:save name = 'oia-meapm-metrics-list'
+ ## Prometheus Metric List Pipeline
+
+ ## filter metric selection rules
+
+ --> @dm:empty
+ --> @dm:save name='oia-prometheus-metrics-list'
+ --> @c:new-block
+ --> @dm:recall name='oia-metric_selection_rules'
+ --> *dm:filter metric_source='prometheus'
+ --> @dm:selectcolumns include="^metric_filter$"
+ --> @dm:save name='temp-prometheus-metric-selection-rules'
+ --> @c:data-loop columns="metric_filter" and dataset='temp-prometheus-metric-selection-rules'
+ --> *prometheus:metric-metadata
+ --> *dm:filter ($metric_filter)
+ --> @dm:map from = 'help' and to = 'metric_label'
+ --> @dm:fixnull columns= 'unit' & value = 'Count' & apply_for_empty = 'yes'
+ --> @dm:save name is 'temp-prom-metric-meta'
+ --> @c:new-block
+ --> *prometheus:targets
+ --> @dm:save name is 'temp-prom-targets'
  --> @c:new-block
  --> @dm:empty
- --> @exec:define-function name="get_alerts_for_incident"
- --> @exec:set-variable name="incident"
+ --> @dm:save name is 'temp-oia-prometheus-metrics-list'
+ --> @c:data-loop dataset is 'temp-prom-targets' and columns is 'instance'
+ --> @dm:recall name is 'temp-prom-metric-meta'
+ --> @dm:eval asset_id = "'$instance'"
+ --> @dm:eval instance = "'$instance'"
+ --> @dm:map from = 'help' and to = 'metric_label'
+ --> @dm:map from = 'asset_id' and to = 'port' and func = 'split' and sep = ':'
+ --> @dm:eval asset_id = 'port[0]'
+ --> @dm:eval metric_id = 'metric'
+ --> @dm:selectcolumns include="^asset_id$|^instance$|^metric_id$|^metric_label$|^unit$"
+ --> @dm:save name is 'temp-oia-prometheus-metrics-list' and append is yes
+ --> @c:new-block
+ --> @dm:recall name='temp-oia-prometheus-metrics-list'
+ --> @dm:save name='oia-prometheus-metrics-list'
+ ## vRops Metric List Pipeline
+
  --> @dm:empty
- --> @dm:addrow name="oia-alerts-stream" & max_rows=1000 & limit=0
- --> #dm:query-persistent-stream a_incident_id is "{{v.incident.row['incident_id']}}" and a_source_systemname is not 'Alert Group'
- --> @dm:save name='temp-incident-alerts' and append='yes'
- --> *exec:if-shape num_rows=0
- --> @dm:empty
- --> @dm:addrow a_incident_id="{{v.incident.row['incident_id']}}"
- --> @dm:save name='temp-incident-alerts' and append='yes'
- --> @exec:end-if
- --> @exec:end-function
- ## run diagnostic tool for impacted assets
+ --> @dm:save name='oia-vrops-metrics-list'
+ ## vm summary
 
  --> @c:new-block
- --> @dm:empty
- --> @exec:define-function name="run_diagnostic_tool_for_impacted_assets"
- --> @exec:set-variable name="incident"
- --> @dm:empty
- --> @dm:addrow asset_count={{v.incident.row['asset_count']}} and assetIds="{{v.incident.row['assetIds']}}"
- --> *exec:if-condition asset_count > 0
- --> @dm:eval ip=`assetIds[1:-1].replace("'","").replace(" ","")`
- --> @diagnostictools:ping column_name_host = 'ip'
- --> @dm:add-missing-columns columns='incident_id' and value="{{v.incident.row['incident_id']}}"
- --> @dm:save name='temp-incident-diagnostic-tool-output' and append='yes'
- --> @exec:end-if
- --> *exec:if-condition asset_count = 0
- --> @dm:empty
- --> @dm:addrow incident_id="{{v.incident.row['incident_id']}}"
- --> @dm:save name='temp-incident-diagnostic-tool-output' and append='yes'
- --> @exec:end-if
- --> @exec:end-function
- ## get metric anomalies for incident
+ --> *vrops:vm-summary
+ --> @dm:save name='temp-vm-summary'
+ ## filter metric selection rules
 
  --> @c:new-block
- --> @dm:empty
- --> @exec:define-function name="get_metric_anomalies_for_incident"
- --> @exec:set-variable name="incident"
- --> *exec:if-condition asset_count = 0
- --> @dm:empty
- --> @dm:addrow incident_id="{{v.incident.row['incident_id']}}"
- --> @dm:save name='temp-incident-anomalies' and append='yes'
- --> @exec:end-if
- --> *exec:if-condition asset_count > 0
- --> @dm:empty
- --> @dm:addrow name="oia-ml-metrics-regression-output" & max_rows=1000 & limit=0
- --> #dm:query-persistent-stream asset_id in {{v.incident.row['assetIds']}} and timestamp is after "{{v.incident.row['fromTime']}}" and timestamp is before "{{v.incident.row['toTime']}}" and anomalies_severity is 'High' GET timestamp,anomalies,upperBound,lowerBound,asset_id,asset_name,metric_source,metric_id,metric_label
- --> @dm:add-missing-columns columns='incident_id' and value="{{v.incident.row['incident_id']}}"
- --> @dm:save name='temp-incident-anomalies' and append='yes'
- --> @exec:end-if
- --> @exec:end-function
- ## get change requests for incident
+ --> @dm:recall name='oia-metric_selection_rules'
+ --> *dm:filter metric_source='vRops'
+ --> @dm:selectcolumns include="^metric_filter$"
+ --> @dm:save name='temp-vrops-metric-selection-rules'
+ ## metrics list
 
- --> @c:new-block
- --> @dm:empty
- --> @exec:define-function name="get_change_requests_for_incident"
- --> @exec:set-variable name="incident"
- --> *exec:if-condition asset_count = 0
- --> @dm:empty
- --> @dm:addrow incident_id="{{v.incident.row['incident_id']}}"
- --> @dm:save name='temp-incident-change-requests' and append='yes'
- --> @exec:end-if
- --> *exec:if-condition asset_count > 0
- --> @dm:empty
- --> @dm:addrow name="change_requests_stream" & max_rows=1000 & limit=0
- --> #dm:query-persistent-stream asset_id in {{v.incident.row['assetIds']}} and timestamp is after "{{v.incident.row['fromTime']}}" and timestamp is before "{{v.incident.row['toTime']}}"
- --> @dm:add-missing-columns columns='incident_id' and value="{{v.incident.row['incident_id']}}"
- --> @dm:save name='temp-incident-change-requests' and append='yes'
- --> @exec:end-if
- --> @exec:end-function
- ## get recommendation for incident from OpenAI
+ --> @c:data-loop columns="metric_filter" and dataset='temp-vrops-metric-selection-rules'
+ --> *vrops:metric-list
+ --> *dm:filter ($metric_filter)
+ --> @dm:eval metric_id='key' and metric_name='name'
+ --> @dm:save name='temp-vrops-metrics-list' and append='yes'
+ ## create metrics list for each resource
 
- --> @c:new-block
- --> @dm:empty
- --> @exec:define-function name="get_incident_recommendations"
- --> @exec:set-variable name="incident"
- --> @dm:empty
- --> @dm:addrow name='temp-incident-alerts' and description='Alerts for the incident' and query='a_incident_id is "{{v.incident.row['incident_id']}}"'
- --> @dm:addrow name='temp-incident-anomalies' and description='Anomalies for the incident' and query='incident_id is "{{v.incident.row['incident_id']}}"'
- --> @dm:addrow name='temp-incident-change-requests' and description='Change requests for the incident' and query='incident_id is "{{v.incident.row['incident_id']}}"'
- --> @dm:addrow name='temp-incident-diagnostic-tool-output' and description='Diagnostic tool output for the impacted assets' and query='incident_id is "{{v.incident.row['incident_id']}}"'
- --> @dm:save name='temp-meta-df'
- --> @gpt:prompt prompt = 'Summarize the incident and provide recommendations by analyzing and correlating the above alerts, output of diagnostic tool, metric anomalies, and change requests for the impacted assets. ' &
-prefix = "Please generate a response in simple HTML format based on the provided CSV data, which includes a list of alerts, diagnostic tool outputs, metric anomalies, and change requests for the impacted assets. Follow these guidelines:\n Bold important keywords and numbers.\n Use appropriate labels instead of exact column names.\n Beautify the response with bullet points.\n Structure the response using only these HTML tags: <html>, <body>, <p>, <b>, <ul>, <li>, <br>.\n Provide a summary of the data in a paragraph, without detailed explanations of each alert and anomaly.\n If there is no data for any section (alerts, diagnostic tool outputs, metric anomalies, or change requests), mention that there is no data for that section.\n Do not print the response in a single line or use tables" and
-attach_datasets = 'temp-meta-df' and debug='yes' and temperature=0.7
- --> @dm:add-missing-columns columns='incident_id' and value="{{v.incident.row['incident_id']}}"
- --> @dm:rename-columns i_recommendation='response_content'
- --> @exec:end-function
- ## clear temp datasets
+ --> @c:data-loop columns='metric_id,metric_name,unit' and dataset='temp-vrops-metrics-list'
+ --> @dm:recall name='temp-vm-summary'
+ --> @dm:eval metric_id="'$metric_id'" and metric_label="'$metric_name'" and unit="'$unit'"
+ --> @dm:map from='identifier' and to='resource_id'
+ --> *dm:filter guest_ip_adress is not empty
+ --> @dm:map from='guest_ip_adress' and to='asset_id'
+ --> @dm:map from='name' and to='asset_name'
+ --> @dm:fixnull columns= 'unit' & value = 'Count' & apply_for_empty = 'yes'
+ --> @dm:selectcolumns include='^asset_id$|^asset_name$|^resource_id$|^metric_id$|^metric_label$|^unit$'
+ --> @dm:save name='temp-oia-vrops-metrics-list' and append='yes'
+ ## create empty dataset for vrops metrics list
 
  --> @c:new-block
  --> @dm:empty
- --> @exec:define-function name="clear_temp_datasets"
- --> @dm:empty
- --> @dm:save name='temp-incident-alerts'
- --> @dm:save name='temp-incident-diagnostic-tool-output'
- --> @dm:save name='temp-incident-anomalies'
- --> @dm:save name='temp-incident-change-requests'
- --> @dm:save name='temp-recommendations'
- --> @exec:end-function
- --> @c:data-loop columns='incident_id' and dataset='temp-incidents'
- --> @dm:recall-query name='temp-incidents' and query="incident_id is '$incident_id'"
- --> @exec:call-function name='get_alerts_for_incident'
- --> @dm:recall-query name='temp-incidents' and query="incident_id is '$incident_id'"
- --> @exec:call-function name='run_diagnostic_tool_for_impacted_assets'
- --> @dm:recall-query name='temp-incidents' and query="incident_id is '$incident_id'"
- --> @exec:call-function name='get_metric_anomalies_for_incident'
- --> @dm:recall-query name='temp-incidents' and query="incident_id is '$incident_id'"
- --> @exec:call-function name='get_change_requests_for_incident'
- --> @dm:recall-query name='temp-incidents' and query="incident_id is '$incident_id'"
- --> @exec:call-function name='get_incident_recommendations'
- --> @dm:save name='temp-recommendations' and append='yes'
+ --> @dm:save name='oia-vrops-metrics-list'
+ ## create final metrics list for all resources
+
  --> @c:new-block
- --> @exec:call-function name='clear_temp_datasets'
- --> @dm:recall name='temp-incidents'
- --> @dm:selectcolumns exclude="^i_recommendation$"
- --> @dm:enrich dict='temp-recommendations' and src_key_cols='incident_id' and dict_key_cols='incident_id' and enrich_cols='i_recommendation'
- --> @dm:rename-columns roomid='project_id' and incidentid='incident_id'
- --> @dm:eval name="'i_recommendation'" and value='i_recommendation'
- --> @dm:to-json include_columns='^name$|^value$' and output_column='recommendation_value' and keep_original_columns='yes'
- --> @dm:eval name="'i_recommendation_ts'" and value="int(time_now_as_seconds() * 1000)"
- --> @dm:to-json include_columns='^name$|^value$' and output_column='recommendation_ts' and keep_original_columns='yes'
- --> @dm:eval attributes='json_loads("[" + recommendation_value + "," + recommendation_ts + "]")'
- --> @dm:selectcolumns include="roomid|incidentid|attributes"
- --> @agent:agent-irm:irmagent:updateIncidents
- --> @dm:sleep seconds=10
+ --> @dm:recall name='temp-oia-vrops-metrics-list'
+ --> @dm:save name='oia-vrops-metrics-list'
+ ## Dynatrace Metric List Pipeline
+
+ --> @dm:empty
+ --> @dm:save name='oia-dynatrace-metrics-list'
+ --> @dm:save name='dynatrace-metrics-list'
+ --> @c:new-block
+ --> @dynatrace:dynatrace-entity-info
+ --> @dm:eval asset_id='entityId'
+ --> @dm:eval asset_label='displayName'
+ --> @dm:eval asset_type='type'
+ --> @dm:selectcolumns include="^asset_id$|^asset_label$|^asset_type$"
+ --> @dm:save name='dynatrace-entity-info'
+ --> @c:new-block
+ --> *dynatrace:dynatrace-metrics
+ --> @dm:eval metric_id='metricId'
+ --> @dm:eval metric_label='displayName'
+ --> @dm:eval metric_asset_type='entityType'
+ --> @dm:selectcolumns include="^metric_id$|^metric_label$|^metric_asset_type$|^unit$"
+ --> @dm:save name='dynatrace-metrics-list-raw'
+ --> @c:data-loop columns='asset_id,asset_label,asset_type' and dataset='dynatrace-entity-info'
+ --> @dm:recall name='dynatrace-metrics-list-raw'
+ --> *dm:filter metric_asset_type='[]' or metric_asset_type contains '$asset_type'
+ --> @dm:skip-block-if-shape row_count=0
+ --> @dm:eval asset_id="'$asset_id'"
+ --> @dm:eval asset_type="'$asset_type'"
+ --> @dm:save name='dynatrace-metrics-list'  and append='yes'
+ ## filter metric selection rules
+
+ --> @c:new-block
+ --> @dm:recall name='oia-metric_selection_rules'
+ --> *dm:filter metric_source='dynatrace'
+ --> @dm:selectcolumns include="^metric_filter$"
+ --> @dm:save name='temp-dynatrace-metric-selection-rules'
+ --> @c:data-loop columns="metric_filter" and dataset='temp-dynatrace-metric-selection-rules'
+ --> @dm:recall name='dynatrace-metrics-list'
+ --> *dm:filter ($metric_filter)
+ --> @dm:selectcolumns include="^asset_id$|^asset_type$|^metric_id$|^metric_label$|^unit$"
+ --> @dm:save name = 'oia-dynatrace-metrics-list' and append='yes'
