@@ -1,14 +1,7 @@
-@dm:empty
- --> @dm:recall name="10dataset"
- --> @dm:save name="test-status"
- --> @dm:sleep seconds = 20
- --> #dm:query-persistent-stream pipeline_name is "swdata-status-test" with-input name="rda_system_worker_traces"
- --> @dm:sort columns = 'timestamp' and order = "descending"
- --> @dm:head n = 1
- --> @dm:selectcolumns include = 'status_type|pipeline_name|jobid|timestamp'
- --> @dm:save name="temp-tempo"
- --> @dm:recall name="temp-tempo"
- --> @dm:enrich dict ="temp1-temp" & src_key_cols="pipeline_name" & dict_key_cols="pipeline_name" &
-enrich_cols="USER_ID,proj_name,customer_name"
- --> @dm:save name="temp1-temp" and append="no"
- --> @rn:write-stream name = "status-stream"
+@c:new-block
+ --> @dm:recall name='added-sw-data'
+ --> @dm:enrich dict='test-sweol' and src_key_cols='key' and dict_key_cols='key' and enrich_cols='SoftwareEOXId,BulletinNumber,BulletinHeadline,BulletinURL,EndOfSaleDate,EndOfEngineeringDate,EndOfLifeDate,PostDate,EndOfLifeInternalAnnouncementDate,EndOfLifeExternalAnnouncementDate,EndOfLastHardwareShipDate,EndOfHardwareNewServiceAttachmentDate,EndOfHardwareRoutineFailureAnalysisDate,EndOfBUEngineeringSupportTACDate,EndOfHardwareServiceContractRenewalDate,EndOfSignatureReleasesDate,EndOfSoftwareAvailabilityDate,EndOfSoftwareLicenseAvailabilityDate,EndOfSoftwareVulnerabilityOrSecuritySupportDate,created,customerVisible,external_text,external_title,firstIcAlertId,groups,icIssueId,icProblemId,ignored,lastIcAlertId,eoXAlertType,name,openedOn,resultType,severity,severityText,state,updated,deviceSN,source,runType,filename,icType,atticaStatus,cdetsList,retry,associatedGroups'
+and how_type='outer'
+ --> @dm:manipulate-string from="customer,contract_number,product_id" and func="concat_columns" and to="enrich_ingestion_id"
+ --> @dm:save name='test-enriched-sweol-values'
+ --> @exec:run-pipeline name='edc_sweol_enrich' and ignore_failures = "no"
