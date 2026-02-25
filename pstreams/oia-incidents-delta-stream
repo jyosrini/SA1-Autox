@@ -1,76 +1,72 @@
 {
-  "name": "oia-incidents-delta-stream",
+  "name": "crs_eox_workaround",
   "datastore_type": "OS",
   "read_only": false,
   "attrs": {
-    "drop_columns": [],
     "_mappings": {
       "properties": {
-        "i_created_ts": {
-          "type": "date"
+        "last_date_of_sale": {
+          "type": "date",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
         },
-        "i_updated_ts": {
-          "type": "date"
+        "last_date_of_support": {
+          "type": "date",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
         },
-        "i_assigned_at_ts": {
-          "type": "date"
+        "end_of_new_svc_attachment_dt": {
+          "type": "date",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
         },
-        "i_tta_millis": {
-          "type": "date"
+        "end_of_routine_fail_anlysys_dt": {
+          "type": "date",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
         },
-        "i_ttr_millis": {
-          "type": "date"
+        "end_of_software_maintenance_dt": {
+          "type": "date",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
         },
-        "i_tt_cancelled_millis": {
-          "type": "date"
+        "end_of_svc_contract_rnwl_dt": {
+          "type": "date",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
         },
-        "i_tt_closed_millis": {
-          "type": "date"
-        },
-        "i_tta_minutes": {
-          "type": "double"
-        },
-        "i_ttr_minutes": {
-          "type": "double"
-        },
-        "i_tt_cancelled_minutes": {
-          "type": "double"
-        },
-        "i_tt_closed_minutes": {
-          "type": "double"
-        },
-        "i_alert_count": {
-          "type": "double"
-        },
-        "i_resolved_at_ts": {
-          "type": "date"
-        },
-        "i_closed_at_ts": {
-          "type": "date"
-        },
-        "i_cancelled_at_ts": {
-          "type": "date"
-        },
-        "i_cfx_incident_occurred": {
-          "type": "date"
-        },
-        "i_probability": {
-          "type": "double"
-        },
-        "i_favorite": {
-          "type": "double"
-        },
-        "correlation_startat": {
-          "type": "date"
-        },
-        "correlation_exipresat": {
-          "type": "date"
+        "eol_external_announce_dt": {
+          "type": "date",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
         }
       }
     },
-    "default_values": {},
-    "case_insensitive": true
+    "unique_keys": [
+      "product_name"
+    ]
   },
   "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-2fb0e5a1-oia-incidents-delta-stream"
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-a1515935-crs_eox_workaround"
 }

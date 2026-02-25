@@ -1,26 +1,17 @@
 folder: Default
-name: run_dashboard_export_email
+name: download-appened-data
 description: test pipeline
-data_path: pipelines/data/run_dashboard_export_email/2024_08_05_1/data.json
+data_path: draft-pipelines/data/download-appened-data/2025_06_09_01/data.json
 usecase: ''
 category: ''
-sources:
-  rn:
-    name: rn
-    type: rn
-  email:
-    name: email
-    type: email_sender
+sources: {}
 artifacts:
-- artifact_type: rda-network-stream
-  artifact_name: rda_dashboard_schedule_logs
+- artifact_type: dataset
+  artifact_name: sa-sweol-data
+  access: read
+- artifact_type: dataset
+  artifact_name: test-sa-sweol-data
   access: write
-- artifact_type: rda-network-stream
-  artifact_name: dashboard_export_email_status
-  access: write
-- artifact_type: rda-network-stream
-  artifact_name: rda_dashboard_schedule_logs
-  access: write
-version: '2024_08_05_1'
+version: '2025_06_09_01'
 file_type: json
-checksum: ba479e5e
+checksum: 9e5c85b8
