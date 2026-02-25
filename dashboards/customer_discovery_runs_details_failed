@@ -1,117 +1,126 @@
 {
-  "name": "rda-mgmt-page-botlibrary",
-  "label": "Pipelines",
-  "description": " Pipelines Management Page",
-  "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
-  "exportable": false,
+  "name": "customer_discovery_runs_details_failed",
+  "label": "Failed",
+  "description": "onboarded_devices: Insights",
+  "dashboard_folder": "NetworkDevicePack",
+  "version": "1.0.3",
+  "enabled": false,
+  "dashboard_type": "template",
+  "live_edit": true,
+  "template_variables": {
+    "CUST_ID": {
+      "contextId": "customerId"
+    },
+    "PROJ_ID": {
+      "contextId": "project_id"
+    },
+    "CUST_TAG": {
+      "contextId": "customerTag"
+    },
+    "PROJ_ID_SINGLE": {
+      "contextId": "project_id"
+    },
+    "JOB_ID": {
+      "contextId": "jobid"
+    }
+  },
   "dashboard_filters": {
     "time_filter": true,
+    "extra_filter0": "(ingestion_id is '{{FILENAME}}' and auth_state is 'Failed' and source contains 'Run Details')",
+    "default_time_filter_labels0": [
+      "Last 1 month"
+    ],
     "columns_filter": [
       {
-        "id": "source",
-        "label": "Integration",
-        "type": "TEXT"
-      },
-      {
-        "id": "source_type",
-        "label": "Integration Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "tmpl",
-        "label": "Bot Capabilities",
-        "type": "TEXT"
-      },
-      {
-        "id": "bot_name",
-        "label": "Bot Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "bot_description",
-        "label": "Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "flags",
-        "label": "Flags",
-        "type": "TEXT"
-      },
-      {
-        "id": "input_type",
-        "label": "Input Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "api_model",
-        "label": "API Model",
-        "type": "TEXT"
-      },
-      {
-        "id": "is_block",
-        "label": "Is Block",
-        "type": "BOOLEAN"
-      },
-      {
-        "id": "is_source",
-        "label": "Is Source",
-        "type": "BOOLEAN"
-      },
-      {
-        "id": "is_sink",
-        "label": "Is Sink",
-        "type": "BOOLEAN"
-      },
-      {
-        "id": "formDefinition",
-        "label": "Form Definition",
-        "type": "TEXT"
-      },
-      {
-        "id": "bot_url",
-        "label": "Bot URL",
-        "type": "TEXT"
-      },
-      {
-        "id": "saved_time",
-        "label": "Saved Time",
+        "id": "timestamp",
+        "label": "Timestamp",
         "type": "DATETIME"
       }
-    ]
+    ],
+    "group_filters": []
   },
   "dashboard_sections": [
     {
-      "title": "Bot Library",
-      "show_filter": false,
+      "title": "Onboarded Devices",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Bot Library",
-          "widget_type": "portal_tabular",
-          "reportId": "bots.list",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "widget_id": "182287d1"
+          "title": "Discovery Details",
+          "widget_type": "tabular",
+          "stream": "asset_inventory_collection_status_stream",
+          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname is empty or jobname contains 'job') and type_ is 'device_status' and collection_status is 'Failed'  and jobid is '{{JOB_ID}}'",
+          "duration_hours": 1080,
+          "height": 4,
+          "max_width": 12,
+          "min_width": 12,
+          "columns": {
+            "asset_ip": "IP Address",
+            "collection_timestamp": {
+              "title": "Collection Timestamp",
+              "type": "DATETIME",
+              "visible": true
+            },
+            "reason": {
+              "title": "Reason",
+              "key": true,
+              "visible": true,
+              "hidden": false
+            },
+            "jobname": {
+              "title": "Jobname",
+              "type": "TEXT",
+              "hidden": true
+            },
+            "jobid": {
+              "title": "Job Id",
+              "type": "TEXT",
+              "hidden": true
+            }
+          },
+          "widget_id": "b2c8d81c"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Bot Library",
-      "show_filter": false,
+      "title": "Onboarded Devices",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Bot Library",
-          "widget_type": "portal_tabular",
-          "reportId": "bots.list",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
-          "widget_id": "182287d1"
+          "title": "Discovery Details",
+          "widget_type": "tabular",
+          "stream": "asset_inventory_collection_status_stream",
+          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname is empty or jobname contains 'job') and type_ is 'device_status' and collection_status is 'Failed'  and jobid is '{{JOB_ID}}'",
+          "duration_hours": 1080,
+          "height": 4,
+          "max_width": 12,
+          "min_width": 12,
+          "columns": {
+            "asset_ip": "IP Address",
+            "collection_timestamp": {
+              "title": "Collection Timestamp",
+              "type": "DATETIME",
+              "visible": true
+            },
+            "reason": {
+              "title": "Reason",
+              "key": true,
+              "visible": true,
+              "hidden": false
+            },
+            "jobname": {
+              "title": "Jobname",
+              "type": "TEXT",
+              "hidden": true
+            },
+            "jobid": {
+              "title": "Job Id",
+              "type": "TEXT",
+              "hidden": true
+            }
+          },
+          "widget_id": "b2c8d81c"
         }
       ]
     }
