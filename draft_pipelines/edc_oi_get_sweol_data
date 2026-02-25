@@ -1,715 +1,79 @@
-{
-  "name": "rda-administration-dashboard-debug-console",
-  "label": "Dashboard Debug Console",
-  "description": "rda_dashboards_debug_console: Insights",
-  "dashboard_folder": "System",
-  "version": "1.0.0",
-  "enabled": false,
-  "stream": "rda_dashboards_debug_console",
-  "dashboard_type": "dashboard",
-  "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 24 hours"
-    ],
-    "columns_filter": [
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      },
-      {
-        "id": "db_label",
-        "label": "Dashboard Label",
-        "type": "TEXT"
-      },
-      {
-        "id": "db_name",
-        "label": "Dashboard Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "error",
-        "label": "Error",
-        "type": "TEXT"
-      },
-      {
-        "id": "extra_filter",
-        "label": "Extra Filter",
-        "type": "TEXT"
-      },
-      {
-        "id": "filter",
-        "label": "Filter",
-        "type": "TEXT"
-      },
-      {
-        "id": "section",
-        "label": "Section",
-        "type": "TEXT"
-      },
-      {
-        "id": "status",
-        "label": "Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "stream",
-        "label": "Stream",
-        "type": "TEXT"
-      },
-      {
-        "id": "user_id",
-        "label": "User Id",
-        "type": "TEXT"
-      },
-      {
-        "id": "widget_title",
-        "label": "Widget Title",
-        "type": "TEXT"
-      },
-      {
-        "id": "widget_type",
-        "label": "Widget Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "duration_millis",
-        "label": "Duration Millis",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "pid",
-        "label": "Pid",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "widget_index",
-        "label": "Widget Index",
-        "type": "DOUBLE"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Widget Type",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "widget_type"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Dashboard Label",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "db_label"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Dashboard Name",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "db_name"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Section",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "section"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "Status",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "status"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_debug_console",
-        "title": "User",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "user_id"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      }
-    ]
-  },
-  "dashboard_sections": [
-    {
-      "title": "Dashboard Debug Console",
-      "show_filter": true,
-      "widgets": [
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboard Label",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "db_label"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "116802d9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboard Name",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "db_name"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "d8519019"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Widget Type",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "widget_type"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "ed5f5eea"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Section",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "section"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "17936f98"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Status",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "status"
-          ],
-          "style": {
-            "color-map": {
-              "failed": [
-                "#E91E63",
-                "#ffffff"
-              ],
-              "ok": [
-                "#4CAF50",
-                "#ffffff"
-              ]
-            }
-          },
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "2e2e2f33"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Stream",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "stream"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "78585d23"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "User",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "user_id"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "f955a777"
-        },
-        {
-          "title": "Logs",
-          "widget_type": "tabular",
-          "duration_hours": 1080,
-          "max_width": 12,
-          "height": 12,
-          "min_width": 12,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "showRowSummary": true,
-          "paginated": true,
-          "virtual_scrolling": false,
-          "extra_filter": null,
-          "sorting": [
-            {
-              "timestamp": "desc"
-            }
-          ],
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "db_label",
-            "db_name",
-            "error",
-            "status",
-            "widget_type",
-            "widget_title",
-            "stream",
-            "filter",
-            "extra_filter",
-            "user_id",
-            "context",
-            "os_queries"
-          ],
-          "columns": {
-            "db_label": {
-              "title": "Dashboard Label",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "db_name": {
-              "title": "Dashboard Name",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "widget_title": {
-              "title": "Widget Title",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "widget_type": {
-              "title": "Widget Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "status": {
-              "title": "Status",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "error": {
-              "title": "Error",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "extra_filter": {
-              "title": "Extra Filter",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "filter": {
-              "title": "Filter",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "section": {
-              "title": "Section",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "stream": {
-              "title": "Stream",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "user_id": {
-              "title": "User Id",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "duration_millis": {
-              "title": "Duration Millis",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "pid": {
-              "title": "Pid",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "widget_index": {
-              "title": "Widget Index",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "context": {
-              "title": "Context",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "os_queries": {
-              "title": "OS Queries",
-              "type": "TEXT",
-              "hidden": false
-            }
-          },
-          "widget_id": "decb12f1"
-        }
-      ]
-    }
-  ],
-  "pstream_dashboards": [
-    {
-      "title": "Dashboard Debug Console",
-      "show_filter": true,
-      "widgets": [
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboard Label",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "db_label"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "116802d9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboard Name",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "db_name"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "d8519019"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Widget Type",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "widget_type"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "ed5f5eea"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Section",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "section"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "17936f98"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Status",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "status"
-          ],
-          "style": {
-            "color-map": {
-              "failed": [
-                "#E91E63",
-                "#ffffff"
-              ],
-              "ok": [
-                "#4CAF50",
-                "#ffffff"
-              ]
-            }
-          },
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "2e2e2f33"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Stream",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "stream"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "78585d23"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "User",
-          "duration_hours": 1080,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "user_id"
-          ],
-          "type": "int",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 6,
-          "widget_id": "f955a777"
-        },
-        {
-          "title": "Logs",
-          "widget_type": "tabular",
-          "duration_hours": 1080,
-          "max_width": 12,
-          "height": 12,
-          "min_width": 12,
-          "stream": "rda_dashboards_debug_console",
-          "ts_column": "timestamp",
-          "showRowSummary": true,
-          "paginated": true,
-          "virtual_scrolling": false,
-          "extra_filter": null,
-          "sorting": [
-            {
-              "timestamp": "desc"
-            }
-          ],
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "db_label",
-            "db_name",
-            "error",
-            "status",
-            "widget_type",
-            "widget_title",
-            "stream",
-            "filter",
-            "extra_filter",
-            "user_id",
-            "context",
-            "os_queries"
-          ],
-          "columns": {
-            "db_label": {
-              "title": "Dashboard Label",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "db_name": {
-              "title": "Dashboard Name",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "widget_title": {
-              "title": "Widget Title",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "widget_type": {
-              "title": "Widget Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "status": {
-              "title": "Status",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "error": {
-              "title": "Error",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "extra_filter": {
-              "title": "Extra Filter",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "filter": {
-              "title": "Filter",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "section": {
-              "title": "Section",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "stream": {
-              "title": "Stream",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "user_id": {
-              "title": "User Id",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "duration_millis": {
-              "title": "Duration Millis",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "pid": {
-              "title": "Pid",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "widget_index": {
-              "title": "Widget Index",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "context": {
-              "title": "Context",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "os_queries": {
-              "title": "OS Queries",
-              "type": "TEXT",
-              "hidden": false
-            }
-          },
-          "widget_id": "decb12f1"
-        }
-      ]
-    }
-  ]
-}
+@dm:empty
+ --> @exec:get-input
+ --> @dm:save name='temp-sw-data'
+ --> @dm:save name='test-sweol-data'
+ ## creates a list of unique customers
+
+ --> @c:new-block
+ --> @dm:recall name='temp-sw-data'
+ --> @dm:groupby columns='customer'
+ --> @dm:save name='temp-unique-cust-name'
+ ## processes the software columns for the customer
+
+ --> @c:data-loop columns='customer' and dataset='temp-unique-cust-name'
+ --> @dm:recall name='temp-sw-data'
+ --> *dm:filter customer == '$customer'
+ --> @exec:run-pipeline name='edc_oi_process_sw_data'
+ --> @dm:to-type columns='contract_number' and type='int'
+ --> @dm:rename-columns swEOL_softwareEOXId='SoftwareEOXId' and swEOL_bulletinNumber='BulletinNumber' and swEOL_bulletinTitle='BulletinHeadline' and swEOL_bulletinUrl='BulletinURL' and swEOL_endOfSaleDate='EndOfSaleDate' and
+swEOL_endOfSoftwareMaintenanceReleasesDate='EndOfEngineeringDate' and swEOL_lastDayOfSupportDate='EndOfLifeDate' and
+swEOL_endOfVulnerabilitySecuritySupportDate='EndOfSoftwareVulnerabilityOrSecuritySupportDate' and swEOL_endOfLifeAnnouncementDate='EndOfLifeExternalAnnouncementDate'
+ --> @dm:save name='temp-sw-eol-details'
+ --> @dm:save name='test-sw-eol-details'
+ ## Queries data for the customer from edc_oi_enriched_stream
+
+ --> @c:new-block
+ --> @dm:empty
+ --> @dm:addrow name='edc_oi_inventory_enriched' and limit=0 and groupby='contract_number,customer_name,product_id' and aggs='sum:combination_count'
+ --> #dm:query-persistent-stream coverage=='COVERED' and customer_name is 'ATT'
+ --> @dm:save name='temp-hw-eol-details' and append='yes'
+ --> @c:new-block
+ --> @dm:recall name='temp-hw-eol-details'
+ --> @dm:to-type columns='contract_number' and type='int'
+ --> @dm:save name='temp-hw-eol-details'
+ ## enriches the processed columns to edc_oi_inventory_enriched
+
+ --> @c:new-block
+ --> @dm:recall name='temp-sw-eol-details'
+ ## --> @dm:eval product_name="product_id if product_name is 'Not Available' else product_name"
+
+ --> @dm:enrich dict='temp-hw-eol-details' and dict_key_cols='contract_number,customer_name,product_id' and src_key_cols='contract_number,customer,product_id' and enrich_cols='combination_count_sum' and replace_values='yes' and how_type='inner'
+ --> @dm:rename-columns unique_key_inventory='unique_key'
+ --> @dm:eval unique_key='str(customer) + str(sw_os_type) + str(sw_version) + str(contract_number) + str(product_id)'
+ --> @dm:to-type columns='combination_count_sum' and type='int'
+ --> @dm:save name='final-enrich'
+ --> @dm:save name='temp-edc-sweol-data'
+ --> @rn:write-stream name='edc_sweol_data_test'
+ ## dedup the data based on sw_status priority
+
+ --> @c:new-block
+ --> @dm:recall name='temp-sw-eol-details'
+ --> @dm:eval sw_status_score = "100 if sw_status == 'Expired' else 99 if sw_status == 'Expiring in 4 Quarters' else 98 if sw_status == 'Expiring in 8 Quarters' else 97 if sw_status == 'Expiring after 8 Quarters' else 0"
+ --> @dm:skip-block-if-shape row_count="0"
+ --> @dm:sort columns='sw_status_score' and order='descending'
+ --> @dm:dedup columns='product_id'
+ --> @dm:save name="temp-sw-dedups"
+ --> @dm:save name="test-sw-dedups"
+ --> @c:new-block
+ --> @c:data-loop columns='customer' and dataset='temp-unique-cust-name'
+ --> @dm:empty
+ --> @dm:addrow name='edc_oi_inventory_enriched' and limit=0
+ --> #dm:query-persistent-stream customer_name=='$customer'
+ --> @dm:save name='temp-inv-details'
+ --> @c:new-block
+ --> @dm:recall name='temp-inv-details'
+ --> @dm:to-type columns="contract_number" and type='int'
+ --> @dm:save name='temp-inv-details'
+ --> @c:new-block
+ --> @dm:recall name='temp-inv-details'
+ --> @dm:enrich dict='temp-sw-eol-details' and dict_key_cols='contract_number,customer,product_id' and src_key_cols='contract_number,customer_name,product_id' and enrich_cols='match'
+ --> @dm:dropnull columns='match'
+ --> @dm:selectcolumns exclude='^(swEOL_endOfLifeAnnouncementDate|swEOL_endOfVulnerabilitySecuritySupportDate|swEOL_lastDayOfSupportDate|swEOL_endOfSoftwareMaintenanceReleasesDate|swEOL_endOfSaleDate|swEOL_bulletinUrl|swEOL_bulletinTitle|swEOL_bulletinNumber|swEOL_softwareEOXId|sw_status|sw_expiring_qtr|sw_expiring_year|match|customer)$'
+ --> @dm:save name='temp-matched-inv'
+ --> @dm:save name='test-matched-inv'
+ --> @c:new-block
+ --> @dm:recall name='temp-matched-inv'
+ --> @dm:enrich dict='temp-sw-dedups' and dict_key_cols='contract_number,customer,product_id' and src_key_cols='contract_number,customer_name,product_id' and enrich_cols='swEOL_endOfLifeAnnouncementDate,swEOL_endOfVulnerabilitySecuritySupportDate,swEOL_lastDayOfSupportDate,swEOL_endOfSoftwareMaintenanceReleasesDate,swEOL_endOfSaleDate,swEOL_bulletinUrl,swEOL_bulletinTitle,swEOL_bulletinNumber,swEOL_softwareEOXId,sw_status,sw_expiring_qtr,sw_expiring_year,match' and how_type='inner'
+ --> @dm:selectcolumns exclude="^(customer_x|customer_y)"
+ --> @dm:save name='temp-final-enrich'
+ --> @rn:write-stream name='edc_sweol_data_enriched' and direct_to_opensearch='yes'
