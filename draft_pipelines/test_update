@@ -1,7 +1,9 @@
-@dm:empty
- --> @dm:addrow name="edc_customer_names" and limit=0
- --> #dm:query-persistent-stream *
- --> *dm:filter customer=="ATT"
- --> @snowflake:native-query dbname is "CX_DB" and warehouse is "CX_DMP_RPT_WH" and query is "SELECT * FROM CX_DB.CX_DMP_EBV.BV_ASSET WHERE PRODUCT_NAME = 'CRS-16-LCC-B' AND SAVM_SALES_LEVEL_4_NAME = 'STR_ASP ATT';"
- --> @dm:eval timestamp = "utc_time_now_as_isoformat()"
- --> @dm:add-missing-columns columns="execution_status"
+@c:new-block
+ --> @dm:empty
+ --> @dm:addrow name="edc_customer_inventory" & limit = '0' and sort_by_col='timestamp' and sort_type='desc'
+ --> #dm:query-persistent-stream project_name is 'ATT-Mobility'
+ --> @dm:save name='temp-customer'
+ --> @c:new-block
+ --> @dm:recall-chunked name="temp-customer" and num_rows=2000
+ --> @Kafka_grafana:write-stream name="edc_customer_inventory_1"
+ --> @dm:sleep seconds = 3

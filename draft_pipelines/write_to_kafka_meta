@@ -1,17 +1,9 @@
-folder: katturne
-name: write_to_kafka
-description: test pipeline
-data_path: draft-pipelines/data/write_to_kafka/2025-09-30_1/data.json
-usecase: ''
-category: ''
-sources:
-  Kafka_grafana:
-    name: Kafka_grafana
-    type: kafka-v2
-artifacts:
-- artifact_type: datanetwork-stream
-  artifact_name: edc_customer_inventory_1
-  access: write
-version: 2025-09-30_1
-file_type: json
-checksum: e4fe8756
+@c:new-block
+ --> @dm:empty
+ --> @dm:addrow name="edc_customer_inventory" & limit = '0' and sort_by_col='timestamp' and sort_type='desc'
+ --> #dm:query-persistent-stream project_name is 'ATT-Mobility'
+ --> @dm:save name='temp-customer'
+ --> @c:new-block
+ --> @dm:recall-chunked name="temp-customer" and num_rows=2000
+ --> @Kafka_grafana:write-stream name="edc_customer_inventory_1"
+ --> @dm:sleep seconds = 3

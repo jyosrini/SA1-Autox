@@ -1,10 +1,20 @@
-*nagios:nagios_host_group_members *
- --> @dm:save name = "nagios-host-group-members"
- --> @c:new-block
- --> @dm:empty
- --> @dm:addrow datasetname = "nagios-host-group-members" & condition = "(host_name == '$assetName')" & enrichcolumns = "group_id,hostgroup_name"
- --> @dm:save name = "alert-enrichment-definition-nagios"
- --> @c:new-block
- --> @dm:empty
- --> @dm:addrow datasetname = "alert-enrichment-definition-nagios"
- --> @rn:write-stream name = "alert-enrichment-pipeline-changes"
+folder: Default
+name: wrtie-to-stream
+description: test pipeline
+data_path: draft-pipelines/data/wrtie-to-stream/2025_05_15_01/data.json
+usecase: ''
+category: ''
+sources:
+  rn:
+    name: rn
+    type: rn
+artifacts:
+- artifact_type: dataset
+  artifact_name: edc_cust_contract_pid
+  access: read
+- artifact_type: rda-network-stream
+  artifact_name: edc_cust_contract_pid
+  access: write
+version: '2025_05_15_01'
+file_type: json
+checksum: 6912e771

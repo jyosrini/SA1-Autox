@@ -1,146 +1,715 @@
-@dm:empty
- --> @dm:save name='oia-meapm-metrics-list'
- ## filter metric selection rules
-
- --> @c:new-block
- --> @dm:recall name='oia-metric_selection_rules'
- --> *dm:filter metric_source='me-apm'
- --> @dm:selectcolumns include="^metric_filter$"
- --> @dm:save name='temp-meapm-metric-selection-rules'
- ## ME-APM Metric List Pipeline
-
- --> @c:data-loop columns="metric_filter" and dataset='temp-meapm-metric-selection-rules'
- --> *me-apm:metric-list
- --> @dm:eval asset_id = 'RESOURCENAME if RESOURCENAME else PARENT_RESOURCENAME if PARENT_RESOURCENAME else None'
- --> *dm:filter asset_id is not None and asset_id != ''
- --> @dm:dns-name-to-ip from_cols = 'asset_id' and to_cols = 'asset_id' and keep_value = 'yes'
- --> @dm:map to = '_tmp_metric_label' & from = 'DESCRIPTION: ,DISPLAYNAME' & func='join' & sep=' : '
- --> @dm:map to = '_tmp_metric_label_child' & from = 'PARENT_DESCRIPTION: ,CHILDMONITORS_DISPLAYNAME,CHILDMONITORINFO_DISPLAYNAME' & func='join' & sep=' : '
- --> @dm:eval metric_label = "_tmp_metric_label_child if _type == 'CHILD' else _tmp_metric_label"
- --> *dm:filter ($metric_filter)
- --> @dm:map to = 'metric_label' and from = 'metric_label,Units' and func='join' and sep=' '
- --> @dm:map to = 'unit' & from = 'Units'
- --> @dm:fixnull columns= 'unit' & value = 'Count' & apply_for_empty = 'yes'
- --> @dm:manipulate-string func='strip' and to='unit' and from='unit'
- --> @dm:eval unit = "unit if (unit != '') else 'Count'"
- --> @dm:selectcolumns include="^asset_id$|^RESOURCEID$|^AttributeID$|^metric_label$|^unit$"
- --> @dm:save name = 'oia-meapm-metrics-list'
- ## Prometheus Metric List Pipeline
-
- ## filter metric selection rules
-
- --> @dm:empty
- --> @dm:save name='oia-prometheus-metrics-list'
- --> @c:new-block
- --> @dm:recall name='oia-metric_selection_rules'
- --> *dm:filter metric_source='prometheus'
- --> @dm:selectcolumns include="^metric_filter$"
- --> @dm:save name='temp-prometheus-metric-selection-rules'
- --> @c:data-loop columns="metric_filter" and dataset='temp-prometheus-metric-selection-rules'
- --> *prometheus:metric-metadata
- --> *dm:filter ($metric_filter)
- --> @dm:map from = 'help' and to = 'metric_label'
- --> @dm:fixnull columns= 'unit' & value = 'Count' & apply_for_empty = 'yes'
- --> @dm:save name is 'temp-prom-metric-meta'
- --> @c:new-block
- --> *prometheus:targets
- --> @dm:save name is 'temp-prom-targets'
- --> @c:new-block
- --> @dm:empty
- --> @dm:save name is 'temp-oia-prometheus-metrics-list'
- --> @c:data-loop dataset is 'temp-prom-targets' and columns is 'instance'
- --> @dm:recall name is 'temp-prom-metric-meta'
- --> @dm:eval asset_id = "'$instance'"
- --> @dm:eval instance = "'$instance'"
- --> @dm:map from = 'help' and to = 'metric_label'
- --> @dm:map from = 'asset_id' and to = 'port' and func = 'split' and sep = ':'
- --> @dm:eval asset_id = 'port[0]'
- --> @dm:eval metric_id = 'metric'
- --> @dm:selectcolumns include="^asset_id$|^instance$|^metric_id$|^metric_label$|^unit$"
- --> @dm:save name is 'temp-oia-prometheus-metrics-list' and append is yes
- --> @c:new-block
- --> @dm:recall name='temp-oia-prometheus-metrics-list'
- --> @dm:save name='oia-prometheus-metrics-list'
- ## vRops Metric List Pipeline
-
- --> @dm:empty
- --> @dm:save name='oia-vrops-metrics-list'
- ## vm summary
-
- --> @c:new-block
- --> *vrops:vm-summary
- --> @dm:save name='temp-vm-summary'
- ## filter metric selection rules
-
- --> @c:new-block
- --> @dm:recall name='oia-metric_selection_rules'
- --> *dm:filter metric_source='vRops'
- --> @dm:selectcolumns include="^metric_filter$"
- --> @dm:save name='temp-vrops-metric-selection-rules'
- ## metrics list
-
- --> @c:data-loop columns="metric_filter" and dataset='temp-vrops-metric-selection-rules'
- --> *vrops:metric-list
- --> *dm:filter ($metric_filter)
- --> @dm:eval metric_id='key' and metric_name='name'
- --> @dm:save name='temp-vrops-metrics-list' and append='yes'
- ## create metrics list for each resource
-
- --> @c:data-loop columns='metric_id,metric_name,unit' and dataset='temp-vrops-metrics-list'
- --> @dm:recall name='temp-vm-summary'
- --> @dm:eval metric_id="'$metric_id'" and metric_label="'$metric_name'" and unit="'$unit'"
- --> @dm:map from='identifier' and to='resource_id'
- --> *dm:filter guest_ip_adress is not empty
- --> @dm:map from='guest_ip_adress' and to='asset_id'
- --> @dm:map from='name' and to='asset_name'
- --> @dm:fixnull columns= 'unit' & value = 'Count' & apply_for_empty = 'yes'
- --> @dm:selectcolumns include='^asset_id$|^asset_name$|^resource_id$|^metric_id$|^metric_label$|^unit$'
- --> @dm:save name='temp-oia-vrops-metrics-list' and append='yes'
- ## create empty dataset for vrops metrics list
-
- --> @c:new-block
- --> @dm:empty
- --> @dm:save name='oia-vrops-metrics-list'
- ## create final metrics list for all resources
-
- --> @c:new-block
- --> @dm:recall name='temp-oia-vrops-metrics-list'
- --> @dm:save name='oia-vrops-metrics-list'
- ## Dynatrace Metric List Pipeline
-
- --> @dm:empty
- --> @dm:save name='oia-dynatrace-metrics-list'
- --> @dm:save name='dynatrace-metrics-list'
- --> @c:new-block
- --> @dynatrace:dynatrace-entity-info
- --> @dm:eval asset_id='entityId'
- --> @dm:eval asset_label='displayName'
- --> @dm:eval asset_type='type'
- --> @dm:selectcolumns include="^asset_id$|^asset_label$|^asset_type$"
- --> @dm:save name='dynatrace-entity-info'
- --> @c:new-block
- --> *dynatrace:dynatrace-metrics
- --> @dm:eval metric_id='metricId'
- --> @dm:eval metric_label='displayName'
- --> @dm:eval metric_asset_type='entityType'
- --> @dm:selectcolumns include="^metric_id$|^metric_label$|^metric_asset_type$|^unit$"
- --> @dm:save name='dynatrace-metrics-list-raw'
- --> @c:data-loop columns='asset_id,asset_label,asset_type' and dataset='dynatrace-entity-info'
- --> @dm:recall name='dynatrace-metrics-list-raw'
- --> *dm:filter metric_asset_type='[]' or metric_asset_type contains '$asset_type'
- --> @dm:skip-block-if-shape row_count=0
- --> @dm:eval asset_id="'$asset_id'"
- --> @dm:eval asset_type="'$asset_type'"
- --> @dm:save name='dynatrace-metrics-list'  and append='yes'
- ## filter metric selection rules
-
- --> @c:new-block
- --> @dm:recall name='oia-metric_selection_rules'
- --> *dm:filter metric_source='dynatrace'
- --> @dm:selectcolumns include="^metric_filter$"
- --> @dm:save name='temp-dynatrace-metric-selection-rules'
- --> @c:data-loop columns="metric_filter" and dataset='temp-dynatrace-metric-selection-rules'
- --> @dm:recall name='dynatrace-metrics-list'
- --> *dm:filter ($metric_filter)
- --> @dm:selectcolumns include="^asset_id$|^asset_type$|^metric_id$|^metric_label$|^unit$"
- --> @dm:save name = 'oia-dynatrace-metrics-list' and append='yes'
+{
+  "name": "rda-administration-dashboard-debug-console",
+  "label": "Dashboard Debug Console",
+  "description": "rda_dashboards_debug_console: Insights",
+  "dashboard_folder": "System",
+  "version": "1.0.0",
+  "enabled": false,
+  "stream": "rda_dashboards_debug_console",
+  "dashboard_type": "dashboard",
+  "dashboard_filters": {
+    "time_filter": true,
+    "default_time_filter_labels": [
+      "Last 24 hours"
+    ],
+    "columns_filter": [
+      {
+        "id": "timestamp",
+        "label": "Timestamp",
+        "type": "DATETIME"
+      },
+      {
+        "id": "db_label",
+        "label": "Dashboard Label",
+        "type": "TEXT"
+      },
+      {
+        "id": "db_name",
+        "label": "Dashboard Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "error",
+        "label": "Error",
+        "type": "TEXT"
+      },
+      {
+        "id": "extra_filter",
+        "label": "Extra Filter",
+        "type": "TEXT"
+      },
+      {
+        "id": "filter",
+        "label": "Filter",
+        "type": "TEXT"
+      },
+      {
+        "id": "section",
+        "label": "Section",
+        "type": "TEXT"
+      },
+      {
+        "id": "status",
+        "label": "Status",
+        "type": "TEXT"
+      },
+      {
+        "id": "stream",
+        "label": "Stream",
+        "type": "TEXT"
+      },
+      {
+        "id": "user_id",
+        "label": "User Id",
+        "type": "TEXT"
+      },
+      {
+        "id": "widget_title",
+        "label": "Widget Title",
+        "type": "TEXT"
+      },
+      {
+        "id": "widget_type",
+        "label": "Widget Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "duration_millis",
+        "label": "Duration Millis",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "pid",
+        "label": "Pid",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "widget_index",
+        "label": "Widget Index",
+        "type": "DOUBLE"
+      }
+    ],
+    "group_filters": [
+      {
+        "stream": "rda_dashboards_debug_console",
+        "title": "Widget Type",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "widget_type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_dashboards_debug_console",
+        "title": "Dashboard Label",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "db_label"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_dashboards_debug_console",
+        "title": "Dashboard Name",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "db_name"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_dashboards_debug_console",
+        "title": "Section",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "section"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_dashboards_debug_console",
+        "title": "Status",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "status"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_dashboards_debug_console",
+        "title": "User",
+        "duration_hours": 1080,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "user_id"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      }
+    ]
+  },
+  "dashboard_sections": [
+    {
+      "title": "Dashboard Debug Console",
+      "show_filter": true,
+      "widgets": [
+        {
+          "widget_type": "pie_chart",
+          "title": "Dashboard Label",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "db_label"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "116802d9"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Dashboard Name",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "db_name"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "d8519019"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Widget Type",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "widget_type"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "ed5f5eea"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Section",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "section"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "17936f98"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Status",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "status"
+          ],
+          "style": {
+            "color-map": {
+              "failed": [
+                "#E91E63",
+                "#ffffff"
+              ],
+              "ok": [
+                "#4CAF50",
+                "#ffffff"
+              ]
+            }
+          },
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "2e2e2f33"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Stream",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "stream"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "78585d23"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "User",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "user_id"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "f955a777"
+        },
+        {
+          "title": "Logs",
+          "widget_type": "tabular",
+          "duration_hours": 1080,
+          "max_width": 12,
+          "height": 12,
+          "min_width": 12,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "showRowSummary": true,
+          "paginated": true,
+          "virtual_scrolling": false,
+          "extra_filter": null,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "db_label",
+            "db_name",
+            "error",
+            "status",
+            "widget_type",
+            "widget_title",
+            "stream",
+            "filter",
+            "extra_filter",
+            "user_id",
+            "context",
+            "os_queries"
+          ],
+          "columns": {
+            "db_label": {
+              "title": "Dashboard Label",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "db_name": {
+              "title": "Dashboard Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "widget_title": {
+              "title": "Widget Title",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "widget_type": {
+              "title": "Widget Type",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "status": {
+              "title": "Status",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "error": {
+              "title": "Error",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "extra_filter": {
+              "title": "Extra Filter",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "filter": {
+              "title": "Filter",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "section": {
+              "title": "Section",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "stream": {
+              "title": "Stream",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "user_id": {
+              "title": "User Id",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "duration_millis": {
+              "title": "Duration Millis",
+              "type": "DOUBLE",
+              "hidden": false
+            },
+            "pid": {
+              "title": "Pid",
+              "type": "DOUBLE",
+              "hidden": false
+            },
+            "widget_index": {
+              "title": "Widget Index",
+              "type": "DOUBLE",
+              "hidden": false
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME",
+              "hidden": false
+            },
+            "context": {
+              "title": "Context",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "os_queries": {
+              "title": "OS Queries",
+              "type": "TEXT",
+              "hidden": false
+            }
+          },
+          "widget_id": "decb12f1"
+        }
+      ]
+    }
+  ],
+  "pstream_dashboards": [
+    {
+      "title": "Dashboard Debug Console",
+      "show_filter": true,
+      "widgets": [
+        {
+          "widget_type": "pie_chart",
+          "title": "Dashboard Label",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "db_label"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "116802d9"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Dashboard Name",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "db_name"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "d8519019"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Widget Type",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "widget_type"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "ed5f5eea"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Section",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "section"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "17936f98"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Status",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "status"
+          ],
+          "style": {
+            "color-map": {
+              "failed": [
+                "#E91E63",
+                "#ffffff"
+              ],
+              "ok": [
+                "#4CAF50",
+                "#ffffff"
+              ]
+            }
+          },
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "2e2e2f33"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Stream",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "stream"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "78585d23"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "User",
+          "duration_hours": 1080,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "extra_filter": null,
+          "column": "count_",
+          "agg": "sum",
+          "group_by": [
+            "user_id"
+          ],
+          "type": "int",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "widget_id": "f955a777"
+        },
+        {
+          "title": "Logs",
+          "widget_type": "tabular",
+          "duration_hours": 1080,
+          "max_width": 12,
+          "height": 12,
+          "min_width": 12,
+          "stream": "rda_dashboards_debug_console",
+          "ts_column": "timestamp",
+          "showRowSummary": true,
+          "paginated": true,
+          "virtual_scrolling": false,
+          "extra_filter": null,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "db_label",
+            "db_name",
+            "error",
+            "status",
+            "widget_type",
+            "widget_title",
+            "stream",
+            "filter",
+            "extra_filter",
+            "user_id",
+            "context",
+            "os_queries"
+          ],
+          "columns": {
+            "db_label": {
+              "title": "Dashboard Label",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "db_name": {
+              "title": "Dashboard Name",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "widget_title": {
+              "title": "Widget Title",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "widget_type": {
+              "title": "Widget Type",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "status": {
+              "title": "Status",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "error": {
+              "title": "Error",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "extra_filter": {
+              "title": "Extra Filter",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "filter": {
+              "title": "Filter",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "section": {
+              "title": "Section",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "stream": {
+              "title": "Stream",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "user_id": {
+              "title": "User Id",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "duration_millis": {
+              "title": "Duration Millis",
+              "type": "DOUBLE",
+              "hidden": false
+            },
+            "pid": {
+              "title": "Pid",
+              "type": "DOUBLE",
+              "hidden": false
+            },
+            "widget_index": {
+              "title": "Widget Index",
+              "type": "DOUBLE",
+              "hidden": false
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME",
+              "hidden": false
+            },
+            "context": {
+              "title": "Context",
+              "type": "TEXT",
+              "hidden": false
+            },
+            "os_queries": {
+              "title": "OS Queries",
+              "type": "TEXT",
+              "hidden": false
+            }
+          },
+          "widget_id": "decb12f1"
+        }
+      ]
+    }
+  ]
+}
