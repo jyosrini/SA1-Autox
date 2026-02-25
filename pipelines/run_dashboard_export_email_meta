@@ -1,41 +1,26 @@
-folder: OI
-name: edc_get_license_main
+folder: Default
+name: run_dashboard_export_email
 description: test pipeline
-data_path: draft-pipelines/data/edc_get_license_main/2025-05-08_1/data.json
+data_path: pipelines/data/run_dashboard_export_email/2024_08_05_1/data.json
 usecase: ''
 category: ''
 sources:
-  snowflake:
-    name: snowflake
-    type: snowflake
+  rn:
+    name: rn
+    type: rn
+  email:
+    name: email
+    type: email_sender
 artifacts:
-- artifact_type: dataset
-  artifact_name: edc_license_domains
-  access: read
-- artifact_type: pipeline
-  artifact_name: edc_update_data
-  access: read
-- artifact_type: pipeline
-  artifact_name: edc_license_grp
-  access: read
-- artifact_type: dataset
-  artifact_name: edc_smart_accounts
-  access: read
-- artifact_type: dataset
-  artifact_name: edc-smart_acct
-  access: write
-- artifact_type: dataset
-  artifact_name: edc-smart_consumption
-  access: write
-- artifact_type: dataset
-  artifact_name: edc-smart_consumption
+- artifact_type: rda-network-stream
+  artifact_name: rda_dashboard_schedule_logs
   access: write
 - artifact_type: rda-network-stream
-  artifact_name: edc_license_details
+  artifact_name: dashboard_export_email_status
   access: write
 - artifact_type: rda-network-stream
-  artifact_name: edc_license_summary
+  artifact_name: rda_dashboard_schedule_logs
   access: write
-version: 2025-05-08_1
+version: '2024_08_05_1'
 file_type: json
-checksum: e363e3aa
+checksum: ba479e5e
