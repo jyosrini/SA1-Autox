@@ -1,28 +1,26 @@
+
+ ## declaring thrid level child pipelines
 @c:new-block
- --> @exec:get-input
- --> @dm:save name="temp-file_upload11"
- --> @dm:save name="101dataset"
- --> @dm:recall name="101dataset"
- --> @dm:selectcolumns include = 'USER_ID|proj_name|customer_name'
- --> @dm:add-missing-columns columns = 'pipeline_name' &
-value = 'swdata-status-test-hardcode'
- --> @dm:add-missing-columns columns = 'status_type' &
-value = 'Initiating'
- --> @dm:eval timestamp ='utcnow().isoformat()'
- --> @dm:save name="temp1-temp1"
- --> @rn:write-stream name = "status-stream-hardcode"
- --> @exec:run-pipeline name ="swdata-status-test-hardcode"
- --> @dm:sleep seconds = 20
- --> @dm:recall name="temp1-temp1"
- --> @dm:replace-data columns = 'status_type' &
-expr = 'Initiating' &
-replace = 'In-progress'
- --> @dm:save name="temp1-temp1"
- --> @rn:write-stream name = "status-stream-hardcode"
- --> @dm:sleep seconds = 20
- --> @dm:recall name="temp1-temp1"
- --> @dm:replace-data columns = 'status_type' &
-expr = 'In-progress' &
-replace = 'Completed'
- --> @dm:save name="temp1-temp1"
- --> @rn:write-stream name = "status-stream-hardcode"
+ --> @dm:empty
+ --> @exec:define-function name="define_child_pipelines"
+ --> @exec:run-pipeline name ="edc_generate_token" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_sw_get_data" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_sweol_enrich" & ignore_failures = "no"
+ --> @exec:run-pipeline name ="edc_processing_sw_data" & ignore_failures = "no"
+ --> @exec:end-function
+ --> @dm:empty
+ --> @dm:addrow name='edc_cust_pid_sw' and limit=0
+ --> #dm:query-persistent-stream
+ --> *dm:filter product_id is not null and sw_version is not null and sw_os_type is not null and contract_number is not null
+ --> @dm:add-missing-columns columns="source" and value='software'
+ --> @dm:save name='added-minio-file'
+ --> @exec:run-pipeline name ="edc_sw_run_scan" & ignore_failures = "no"
+ --> @dm:save name='temp-edc-sw-run-scan-op-exploded'
+ --> @c:new-block
+ --> @dm:recall name='temp-edc-sw-run-scan-op-exploded'
+ --> @rn:write-stream name='edc_sw_raw_data'
+ ## calling the enrich pipeline
+
+ --> @c:new-block
+ --> @dm:recall name='temp-edc-sw-run-scan-op-exploded'
+ --> @exec:run-pipeline name='edc_sweol_enrich' and ignore_failures = "no"
