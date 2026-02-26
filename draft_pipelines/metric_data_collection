@@ -1,2 +1,90 @@
-@snowflake:native-query dbname is "CX_DB" and warehouse is "CX_DMP_RPT_WH" and query is "WITH UniqueCombinations AS (SELECT CONTRACT_NUMBER, PRODUCT_NAME, COVERAGE, COVERED_LINE_STATUS, BUSINESS_ENTITY, BUSINESS_SUB_ENTITY, COUNT(*) AS combination_count FROM CX_DB.CX_DMP_EBV.BV_ASSET WHERE GU_NAME = 'AT&T INC' AND ASSET_TYPE = 'Hardware' GROUP BY CONTRACT_NUMBER, PRODUCT_NAME, COVERAGE, COVERED_LINE_STATUS, BUSINESS_ENTITY, BUSINESS_SUB_ENTITY ) SELECT DISTINCT a.BK_END_OF_LIFE_REQUEST_NUM, a.BK_EOL_BULLETIN_PRODUCT_TYP_CD, a.BUSINESS_ENTITY, a.BUSINESS_SUB_ENTITY, a.CONTRACT_NUMBER,a.COVERAGE, a.COVERED_LINE_STATUS, a.END_OF_NEW_SVC_ATTACHMENT_DT, a.END_OF_ROUTINE_FAIL_ANLYSYS_DT, a.END_OF_SOFTWARE_MAINTENANCE_DT, a.END_OF_SVC_CONTRACT_RNWL_DT, a.EOL_EXTERNAL_ANNOUNCE_DT, a.EOL_PRODUCT_NAME, a.GU_NAME,a.ITEM_TYPE, a.LAST_DATE_OF_SALE, a.LAST_DATE_OF_SUPPORT, a.PRODUCT_DESCRIPTION, a.PRODUCT_FAMILY, a.PRODUCT_FAMILY_DESCRIPTION, a.PRODUCT_NAME, a.PRODUCT_TYPE, u.combination_count FROM CX_DB.CX_DMP_EBV.BV_ASSET a JOIN UniqueCombinations u ON a.CONTRACT_NUMBER = u.CONTRACT_NUMBER AND a.PRODUCT_NAME = u.PRODUCT_NAME AND a.COVERAGE = u.COVERAGE AND a.COVERED_LINE_STATUS = u.COVERED_LINE_STATUS AND a.BUSINESS_ENTITY = u.BUSINESS_ENTITY AND a.BUSINESS_SUB_ENTITY = u.BUSINESS_SUB_ENTITY WHERE a.GU_NAME = 'AT&T INC' AND a.ASSET_TYPE = 'Hardware' LIMIT 10;"
- --> @rn:write-stream name is "test-stream"
+@c:data-loop dataset="oia-meapm-metrics-list" & columns="asset_id,RESOURCEID,AttributeID,metric_label,unit"
+ --> @me-apm:metrics resourceid = '$RESOURCEID' and attributeid='$AttributeID' and timestamp is after -60 min
+ --> @dm:add-missing-columns columns='collection_timestamp,AvgValue'
+ --> @dm:dropnull columns='collection_timestamp,AvgValue'
+ --> @dm:to-type columns='AvgValue' and type='float'
+ --> *dm:filter AvgValue > 0.0
+ --> @dm:skip-block-if-shape row_count=0
+ --> @dm:rename-columns metric_timestamp='collection_timestamp'
+ --> @dm:rename-columns value='AvgValue'
+ --> @dm:eval metric_source="'ManageEngine'"
+ --> @dm:eval asset_id = "'$asset_id'"
+ --> @dm:eval RESOURCEID = "'$RESOURCEID'"
+ --> @dm:eval AttributeID = "'$AttributeID'"
+ --> @dm:eval metric_label = `str("$metric_label")`
+ --> @dm:eval metric_name = "metric_label"
+ --> @dm:eval unit = "'$unit'"
+ --> @dm:map from = 'RESOURCEID,AttributeID' and to = 'metric_id' and func = "join" and sep = ' - '
+ --> @dm:eval metric_source="'ManageEngine'"
+ --> @dm:change-time-format columns='metric_timestamp' & from_format='ms' & to_format='%Y-%m-%dT%H:%M:%S'
+ --> @dm:add-missing-columns columns='asset_name' and value='Not Available'
+ --> @dm:add-missing-columns columns='customer' and value='ACME'
+ --> @dm:selectcolumns include="^asset_id$|^asset_name$|^metric_id$|^metric_label$|^metric_name$|^metric_source$|^metric_timestamp$|^unit$|^value$|^customer$"
+ --> @rn:write-stream name='oia-metrics-data'
+ --> @dm:selectcolumns include="^asset_id$|^asset_name$|^metric_id$|^metric_label$|^metric_name$|^metric_source$|^unit$|^customer$"
+ --> @rn:write-stream name='oia-selected-metrics'
+ --> @c:data-loop dataset="oia-prometheus-metrics-list" & columns="asset_id,metric_id,instance,metric_label,unit"
+ --> @prometheus:metric-range metric is `$metric_id{instance="$instance"}` and timestamp is after -60 min
+ --> @dm:add-missing-columns columns='timestamp,value'
+ --> @dm:dropnull columns='timestamp,value'
+ --> @dm:to-type columns='value' and type='float'
+ --> *dm:filter value > 0.0
+ --> @dm:skip-block-if-shape row_count=0
+ --> @dm:rename-columns metric_timestamp='timestamp'
+ --> @dm:eval metric_source = "'Prometheus'"
+ --> @dm:eval asset_id = "'$asset_id'"
+ --> @dm:eval metric_id = "'$metric_id'"
+ --> @dm:eval metric_label = `str("$metric_label")`
+ --> @dm:eval metric_name = "metric_label"
+ --> @dm:eval unit = "'$unit'"
+ --> @dm:change-time-format columns='metric_timestamp' & from_format='ms' & to_format='%Y-%m-%dT%H:%M:%S'
+ --> @dm:add-missing-columns columns='asset_name' and value='Not Available'
+ --> @dm:add-missing-columns columns='customer' and value='ACME'
+ --> @dm:selectcolumns include="^asset_id$|^asset_name$|^metric_id$|^metric_label$|^metric_name$|^metric_source$|^metric_timestamp$|^unit$|^value$|^customer$"
+ --> @rn:write-stream name='oia-metrics-data'
+ --> @dm:selectcolumns include="^asset_id$|^asset_name$|^metric_id$|^metric_label$|^metric_name$|^metric_source$|^unit$|^customer$"
+ --> @rn:write-stream name='oia-selected-metrics'
+ --> @c:data-loop dataset='oia-vrops-metrics-list' & columns='metric_id,resource_id,asset_id,asset_name,metric_label,unit'
+ --> @vrops:metrics resource_id= '$resource_id' & metric_name='$metric_id' & timestamp is after -60 min & interval is '15min' and skip_on_error='yes'
+ --> *dm:filter rda_status is 'Success'
+ --> @dm:skip-block-if-shape row_count=0
+ --> @dm:dropnull columns='timestamps,data'
+ --> @dm:to-type columns='data' and type='float'
+ --> *dm:filter data > 0.0
+ --> @dm:skip-block-if-shape row_count=0
+ --> @dm:rename-columns metric_timestamp='timestamps' & value='data'
+ --> @dm:eval metric_source = "'vROps'"
+ --> @dm:eval asset_id = "'$asset_id'"
+ --> @dm:eval asset_name = "'$asset_name'"
+ --> @dm:eval metric_id = "'$metric_id'"
+ --> @dm:eval metric_label = `str("$metric_label")`
+ --> @dm:eval metric_name = "metric_label"
+ --> @dm:eval unit = "'$unit'"
+ --> @dm:change-time-format columns='metric_timestamp' & from_format='ms' & to_format='%Y-%m-%dT%H:%M:%S'
+ --> @dm:add-missing-columns columns='asset_name' and value='Not Available'
+ --> @dm:add-missing-columns columns='customer' and value='ACME'
+ --> @dm:selectcolumns include="^asset_id$|^asset_name$|^metric_id$|^metric_label$|^metric_name$|^metric_source$|^metric_timestamp$|^unit$|^value$|^customer$"
+ --> @rn:write-stream name='oia-metrics-data'
+ --> @dm:selectcolumns include="^asset_id$|^asset_name$|^metric_id$|^metric_label$|^metric_name$|^metric_source$|^unit$|^customer$"
+ --> @rn:write-stream name='oia-selected-metrics'
+ --> @dm:empty
+ --> @dm:recall name='oia-dynatrace-metrics-list'
+ --> @dynatrace:dynatrace-bulk-metric-collection entity_id_col='asset_id' and metric_col='metric_id' and timestamp is after -1month
+ --> @dm:skip-block-if-shape row_count=0
+ --> @dm:dropnull columns='timestamp,value'
+ --> @dm:to-type columns='value' and type='float'
+ --> *dm:filter value > 0.0
+ --> @dm:add-missing-columns columns='timestamp,value'
+ --> @dm:rename-columns metric_timestamp='timestamp'
+ --> @dm:eval-multi-proc metric_source="'Dynatrace'"
+ --> @dm:enrich dict='oia-dynatrace-metrics-list' and src_key_cols='metric' and dict_key_cols='metric_id' and enrich_cols='metric_label'
+ --> @dm:map-multi-proc from = 'component' and to = 'asset_id' and func = 'split' and sep = ':'
+ --> @dm:eval-multi-proc asset_id = 'asset_id[0]'
+ --> @dm:eval-multi-proc metric_name = "metric_label"
+ --> @dm:change-time-format columns='metric_timestamp' & from_format='ms' & to_format='%Y-%m-%dT%H:%M:%S'
+ --> @dm:add-missing-columns columns='asset_name' and value='Not Available'
+ --> @dm:add-missing-columns columns='customer' and value='ACME'
+ --> @dm:selectcolumns include="^asset_id$|^asset_name$|^metric_id$|^metric_label$|^metric_name$|^metric_source$|^metric_timestamp$|^unit$|^value$|^customer$"
+ --> @rn:write-stream name='oia-metrics-data'
+ --> @dm:selectcolumns include="^asset_id$|^asset_name$|^metric_id$|^metric_label$|^metric_name$|^metric_source$|^unit$|^customer$"
+ --> @rn:write-stream name='oia-selected-metrics'
