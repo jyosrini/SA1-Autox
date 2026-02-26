@@ -1,102 +1,100 @@
 {
-  "name": "l2-l3-analytics",
-  "description": "L2-L3 Analytics",
-  "label": "Analytics - L2/L3 Users",
-  "enabled": false,
-  "dashboard_type": "dashboard",
-  "version": "22.10.7.1",
-  "template_variables": null,
+  "name": "rda-fabric-health-app",
+  "label": "Fabric Health",
+  "description": "Fabric Health Administration",
+  "version": "22.9.9.1",
+  "enabled": true,
+  "computedContext": {
+    "NOW": {
+      "expr": "now().replace(hour = 0, minute = 0, second = 0, microsecond = 0).isoformat()"
+    },
+    "DAY_1_AGO": {
+      "expr": "now().replace(hour = 0, minute = 0, second = 0, microsecond = 0).isoformat()"
+    },
+    "DAY_2_AGO": {
+      "expr": "(now().replace(hour = 0, minute = 0, second = 0, microsecond = 0) - timedelta(days=1)).isoformat()"
+    },
+    "DAY_3_AGO": {
+      "expr": "(now().replace(hour = 0, minute = 0, second = 0, microsecond = 0) - timedelta(days=2)).isoformat()"
+    },
+    "DAY_4_AGO": {
+      "expr": "(now().replace(hour = 0, minute = 0, second = 0, microsecond = 0) - timedelta(days=3)).isoformat()"
+    },
+    "TODAY": {
+      "expr": "now().strftime('%B %d, %Y')"
+    }
+  },
   "dashboard_filters": {
-    "time_filter": true,
-    "columns_filter": [
-      {
-        "id": "a_message",
-        "label": "Message",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_asset_name",
-        "label": "Asset Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_status",
-        "label": "Alert Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_severity",
-        "label": "Severity",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_source_mechanism",
-        "label": "Source",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_alert_category",
-        "label": "Alert Category",
-        "type": "TEXT"
-      },
-      {
-        "id": "a_alert_type",
-        "label": "Alert Type",
-        "type": "TEXT"
-      }
-    ],
-    "default_time_filter_labels": [
-      "Last 24 hours"
-    ]
+    "time_filter": false,
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Analytics",
-      "show_filter": true,
-      "widgets": [
-        {
-          "widget_type": "alert_heatmap",
-          "title": "Alert HeatMap",
-          "stream": "oia-alerts-stream",
-          "raised_column": "a_raised_ts",
-          "state_column": "a_status",
-          "cleared_column": "a_cleared_ts",
-          "severity_column": "a_severity",
-          "window_hours": 24,
-          "num_cells": 24,
-          "height": 24,
-          "max_width": 12,
-          "group_by": [
-            "a_asset_ip_address"
-          ],
-          "widget_id": "bf67c687"
-        }
-      ]
+      "title": "Example"
+    }
+  ],
+  "dashboard_type": "app",
+  "dashboard_folder": "System",
+  "dashboard_pages": [
+    {
+      "name": "rda-health-workers",
+      "label": "Workers",
+      "icon": "Analytics.svg"
+    },
+    {
+      "name": "rda-health-agents",
+      "label": "Agents",
+      "icon": "datasource.svg"
+    },
+    {
+      "name": "rda-health-microservices",
+      "label": "Microservices",
+      "icon": "gateway.svg"
+    },
+    {
+      "name": "rda-microservice-traces_page_Traces",
+      "label": "Traces",
+      "icon": "pipeline.svg"
+    },
+    {
+      "name": "rda-operations-page-jobs",
+      "label": "Jobs",
+      "icon": "templates.svg"
+    },
+    {
+      "name": "rda-operations-page-trends",
+      "label": "Trends",
+      "icon": "stack.svg"
+    },
+    {
+      "name": "fabric-usage",
+      "label": "Fabric Usage",
+      "icon": "experiment.svg"
+    },
+    {
+      "name": "pipeline_failure_trend",
+      "label": "Pipeline Failure Trend",
+      "icon": "bots.svg"
+    },
+    {
+      "name": "stream_error_trend",
+      "label": "Stream Error Trend",
+      "icon": "library.svg"
+    },
+    {
+      "name": "user_activity_trend",
+      "label": "User Activity",
+      "icon": "customer.svg"
+    },
+    {
+      "name": "artifact_change_trend",
+      "label": "Artifact Change Trend",
+      "icon": "file.svg"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Analytics",
-      "show_filter": true,
-      "widgets": [
-        {
-          "widget_type": "alert_heatmap",
-          "title": "Alert HeatMap",
-          "stream": "oia-alerts-stream",
-          "raised_column": "a_raised_ts",
-          "state_column": "a_status",
-          "cleared_column": "a_cleared_ts",
-          "severity_column": "a_severity",
-          "window_hours": 24,
-          "num_cells": 24,
-          "height": 24,
-          "max_width": 12,
-          "group_by": [
-            "a_asset_ip_address"
-          ],
-          "widget_id": "bf67c687"
-        }
-      ]
+      "title": "Example"
     }
   ]
 }
