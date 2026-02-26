@@ -1,13 +1,16 @@
 {
-  "name": "rda-pstream-metadata-template",
-  "label": "Persistent Stream Metadata",
-  "description": "Persistent Stream Metadata",
+  "name": "rda-pstream-stats-template",
+  "label": "Persistent Stream Stats",
+  "description": "Persistent Stream Stats",
   "enabled": true,
   "dashboard_type": "template",
   "dashboard_style": "auto",
   "template_variables": {
     "PSTREAM_NAME": {
       "contextId": "pstream_name"
+    },
+    "TS_COLUMN": {
+      "contextId": "ts_column"
     }
   },
   "dashboard_filters": {
@@ -15,30 +18,30 @@
   },
   "dashboard_sections": [
     {
-      "title": "Metadata",
+      "title": "Stats",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Metadata",
-          "widget_type": "metadata",
-          "paginated": true,
+          "title": "Details",
+          "widget_type": "pstream_details",
           "stream": "{{PSTREAM_NAME}}",
-          "widget_id": "2da925b4"
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Metadata",
+      "title": "Stats",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Metadata",
-          "widget_type": "metadata",
-          "paginated": true,
+          "title": "Details",
+          "widget_type": "pstream_details",
           "stream": "{{PSTREAM_NAME}}",
-          "widget_id": "2da925b4"
+          "ts_column": "{{TS_COLUMN}}",
+          "widget_id": "2da925b3"
         }
       ]
     }
