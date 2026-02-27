@@ -1,295 +1,185 @@
 {
-  "name": "rda-mgmt-page-tenant-pstreams",
-  "label": "Persistent Streams",
-  "description": " Persistent Streams Management Page",
-  "enabled": false,
+  "name": "rda-github-pull",
+  "label": "RDA Artifacts in GitHub",
+  "is_template": true,
+  "description": "RDA Artifacts in GitHub",
+  "version": "23.11.7.1",
+  "enabled": true,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "stream": "rda_pstreams_meta",
+  "stream": "rda_github_pull_stream",
   "dashboard_filters": {
     "time_filter": true,
-    "group_filters": [
-      {
-        "stream": "rda_pstreams_meta",
-        "title": "Datastore",
-        "duration_hours": 87600,
-        "limit": 200,
-        "group_by": [
-          "datastore_type"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
-      }
-    ],
     "columns_filter": [
       {
-        "id": "saved_time",
-        "label": "Saved Time",
-        "type": "DATETIME"
-      },
-      {
-        "id": "_RDA_Id",
-        "label": "_RDA_ID",
+        "id": "filename",
+        "label": "Full Path",
         "type": "TEXT"
       },
       {
-        "id": "attrs",
-        "label": "Attrs",
-        "type": "TEXT"
-      },
-      {
-        "id": "reltime",
-        "label": "Reltime",
-        "type": "DATETIME"
-      },
-      {
-        "id": "system_defined",
-        "label": "System Defined",
-        "type": "TEXT"
-      },
-      {
-        "id": "collection_status",
-        "label": "Collection_status",
-        "type": "TEXT"
-      },
-      {
-        "id": "count_",
-        "label": "Count_",
+        "id": "additions",
+        "label": "Additions",
         "type": "DOUBLE"
       },
       {
-        "id": "database",
-        "label": "Database ",
-        "type": "TEXT"
-      },
-      {
-        "id": "datastore_type",
-        "label": "Datastore Type",
-        "type": "TEXt"
+        "id": "deletions",
+        "label": "Deletions",
+        "type": "DOUBLE"
       },
       {
         "id": "status",
-        "label": "Status ",
+        "label": "Status",
         "type": "TEXT"
       },
       {
-        "id": "retention_days",
-        "label": "Retention Days",
-        "type": "DOUBLE"
+        "id": "position",
+        "label": "Ahead/Behind",
+        "type": "TEXT"
       },
       {
         "id": "timestamp",
         "label": "Timestamp",
         "type": "DATETIME"
-      },
+      }
+    ],
+    "group_filters": [
       {
-        "id": "name",
-        "label": "Name",
-        "type": "TEXT"
+        "stream": "rda_github_pull_stream",
+        "title": "Status",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "status"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Persistent Streams",
-      "show_filter": true,
+      "title": "RDA artifacts in GitHub",
       "widgets": [
         {
-          "title": "Persistent Streams",
+          "title": "RDA artifacts in GitHub",
+          "widget_type": "github_pull_details",
+          "height": 2,
+          "widget_id": "8ddee7d9"
+        },
+        {
+          "title": "RDA artifacts in GitHub",
           "widget_type": "tabular",
-          "stream": "rda_pstreams_meta",
-          "duration_hours": 87600,
+          "stream": "rda_github_pull_stream",
           "timebased": false,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "name",
-            "datastore_type",
-            "index_name",
-            "collection_status",
-            "system_defined",
-            "database"
+            "filename",
+            "status",
+            "position"
           ],
-          "ts_column": "saved_time",
+          "ts_column": "timestamp",
           "paginated": true,
           "height": 10,
           "min_wdith": 12,
           "columns": {
-            "name": {
-              "title": "Name",
+            "filename": {
+              "title": "Full Path",
               "key": true
             },
-            "datastore_type": {
-              "title": "Datastore"
+            "additions": {
+              "title": "Additions",
+              "type": "DOUBLE"
             },
-            "index_name": {
-              "title": "Index / Table Name"
+            "deletions": {
+              "title": "Deletions",
+              "type": "DOUBLE"
             },
-            "collection_status": {
-              "title": "Collection Status"
+            "status": {
+              "title": "Status"
             },
-            "retention_days": {
-              "title": "Retention (Days)",
-              "sortable": false
-            },
-            "system_defined": {
-              "title": "System PStream",
-              "visible": false
-            },
-            "saved_time": {
-              "title": "Saved Time",
-              "type": "DATETIME"
+            "position": {
+              "title": "Ahead/Behind"
             },
             "timestamp": {
-              "title": "When",
-              "type": "HUMANIZE_TIME_DELTA",
-              "source-column": "saved_time",
-              "sortable": false
+              "title": "Timestamp",
+              "type": "DATETIME"
             },
-            "ts_column": {
-              "title": "Timestamp Column",
-              "visible": false,
+            "diff_html": {
+              "hidden": true,
               "key": true
             }
           },
-          "custom_columns": [
-            {
-              "id": "pstream_name",
-              "title": "PSTREAM",
-              "expr": "name",
-              "visible": false,
-              "key": true
-            },
-            {
-              "id": "database",
-              "title": "Database",
-              "expr": "'default' if not database else database"
-            },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
-              "visiblle": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
-            }
-          ],
-          "actions": [
-            {
-              "permission": "rda:pstream:view",
-              "appName": "user-dashboard/rda-pstream-app",
-              "displayLabelColumnId": "name",
-              "drillDownLinkField": "name",
-              "identifier": "launch.url.dashboard",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            }
-          ],
-          "widget_id": "09bfc7c3"
+          "actions": [],
+          "widget_id": "01dc3a55",
+          "preview_dashboard": "rda-diff-preview",
+          "preview_width": 900,
+          "preview_height": 700
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Persistent Streams",
-      "show_filter": true,
+      "title": "RDA artifacts in GitHub",
       "widgets": [
         {
-          "title": "Persistent Streams",
+          "title": "RDA artifacts in GitHub",
+          "widget_type": "github_pull_details",
+          "height": 2,
+          "widget_id": "8ddee7d9"
+        },
+        {
+          "title": "RDA artifacts in GitHub",
           "widget_type": "tabular",
-          "stream": "rda_pstreams_meta",
-          "duration_hours": 87600,
+          "stream": "rda_github_pull_stream",
           "timebased": false,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "name",
-            "datastore_type",
-            "index_name",
-            "collection_status",
-            "system_defined",
-            "database"
+            "filename",
+            "status",
+            "position"
           ],
-          "ts_column": "saved_time",
+          "ts_column": "timestamp",
           "paginated": true,
           "height": 10,
           "min_wdith": 12,
           "columns": {
-            "name": {
-              "title": "Name",
+            "filename": {
+              "title": "Full Path",
               "key": true
             },
-            "datastore_type": {
-              "title": "Datastore"
+            "additions": {
+              "title": "Additions",
+              "type": "DOUBLE"
             },
-            "index_name": {
-              "title": "Index / Table Name"
+            "deletions": {
+              "title": "Deletions",
+              "type": "DOUBLE"
             },
-            "collection_status": {
-              "title": "Collection Status"
+            "status": {
+              "title": "Status"
             },
-            "retention_days": {
-              "title": "Retention (Days)",
-              "sortable": false
-            },
-            "system_defined": {
-              "title": "System PStream",
-              "visible": false
-            },
-            "saved_time": {
-              "title": "Saved Time",
-              "type": "DATETIME"
+            "position": {
+              "title": "Ahead/Behind"
             },
             "timestamp": {
-              "title": "When",
-              "type": "HUMANIZE_TIME_DELTA",
-              "source-column": "saved_time",
-              "sortable": false
+              "title": "Timestamp",
+              "type": "DATETIME"
             },
-            "ts_column": {
-              "title": "Timestamp Column",
-              "visible": false,
+            "diff_html": {
+              "hidden": true,
               "key": true
             }
           },
-          "custom_columns": [
-            {
-              "id": "pstream_name",
-              "title": "PSTREAM",
-              "expr": "name",
-              "visible": false,
-              "key": true
-            },
-            {
-              "id": "database",
-              "title": "Database",
-              "expr": "'default' if not database else database"
-            },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
-              "visiblle": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
-            }
-          ],
-          "actions": [
-            {
-              "permission": "rda:pstream:view",
-              "appName": "user-dashboard/rda-pstream-app",
-              "displayLabelColumnId": "name",
-              "drillDownLinkField": "name",
-              "identifier": "launch.url.dashboard",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            }
-          ],
-          "widget_id": "09bfc7c3"
+          "actions": [],
+          "widget_id": "01dc3a55",
+          "preview_dashboard": "rda-diff-preview",
+          "preview_width": 900,
+          "preview_height": 700
         }
       ]
     }
