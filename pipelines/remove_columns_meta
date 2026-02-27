@@ -1,11 +1,17 @@
 folder: Default
-name: db_alerts_clustering
-description: ''
-data_path: draft-pipelines/data/db_alerts_clustering/2025_12_12_1/data.json
+name: remove_columns
+description: test pipeline
+data_path: pipelines/data/remove_columns/2025_06_18_01/data.json
 usecase: ''
-category: null
-sources: []
-artifacts: []
-version: '2025_12_12_1'
+category: ''
+sources:
+  rn:
+    name: rn
+    type: rn
+artifacts:
+- artifact_type: rda-network-stream
+  artifact_name: edc_oi_inventory_enriched
+  access: write
+version: '2025_06_18_01'
 file_type: json
-checksum: 655a7a3a
+checksum: fe962199

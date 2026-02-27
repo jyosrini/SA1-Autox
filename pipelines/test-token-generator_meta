@@ -1,11 +1,14 @@
 folder: Default
-name: db_alerts_clustering
-description: ''
-data_path: draft-pipelines/data/db_alerts_clustering/2025_12_12_1/data.json
+name: test-token-generator
+description: test pipeline
+data_path: pipelines/data/test-token-generator/2025_05_23_02/data.json
 usecase: ''
-category: null
-sources: []
-artifacts: []
-version: '2025_12_12_1'
+category: ''
+sources: {}
+artifacts:
+- artifact_type: pipeline
+  artifact_name: edc_generate_token
+  access: read
+version: '2025_05_23_02'
 file_type: json
-checksum: 655a7a3a
+checksum: 5ad82d88

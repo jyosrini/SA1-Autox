@@ -1,11 +1,14 @@
-folder: Default
-name: db_alerts_clustering
-description: ''
-data_path: draft-pipelines/data/db_alerts_clustering/2025_12_12_1/data.json
+folder: OI
+name: edc_oi_generate_token
+description: test pipeline
+data_path: pipelines/data/edc_oi_generate_token/2025_07_23_01/data.json
 usecase: ''
-category: null
-sources: []
+category: ''
+sources:
+  restclient:
+    name: restclient
+    type: restclient
 artifacts: []
-version: '2025_12_12_1'
+version: '2025_07_23_01'
 file_type: json
-checksum: 655a7a3a
+checksum: 6fee65be

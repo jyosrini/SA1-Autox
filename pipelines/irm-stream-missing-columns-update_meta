@@ -1,11 +1,12 @@
 folder: Default
-name: db_alerts_clustering
-description: ''
-data_path: draft-pipelines/data/db_alerts_clustering/2025_12_12_1/data.json
+name: irm-stream-missing-columns-update
+description: Pipeline for updating missing feilds in oia-incidents-stream for existing
+  data
+data_path: pipelines/data/irm-stream-missing-columns-update/2023_02_13_1/data.json
 usecase: ''
-category: null
-sources: []
+category: irm incidents stream
+sources: {}
 artifacts: []
-version: '2025_12_12_1'
+version: '2023_02_13_1'
 file_type: json
-checksum: 655a7a3a
+checksum: 9ab7f086
