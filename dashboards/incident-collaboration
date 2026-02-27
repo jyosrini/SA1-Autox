@@ -1,353 +1,339 @@
 {
-  "name": "rda_system_snapshots_main",
-  "label": "Snapshots List",
-  "description": "Snapshots List",
-  "dashboard_folder": "System",
-  "version": "1.0.2",
-  "enabled": false,
-  "live_edit": true,
-  "stream": "rda_system_snapshots_main",
-  "dashboard_type": "dashboard",
+  "name": "incident-collaboration",
+  "description": "Incident Collaboration",
+  "label": "Incident Collaboration",
+  "enabled": true,
+  "exportable": false,
+  "dashboard_type": "template",
+  "dashboard_style": "auto",
+  "version": "22.10.7.1",
+  "template_variables": {
+    "STACK_NAME": {
+      "contextId": "stack_name"
+    },
+    "PROJECT_ID": {
+      "contextId": "projectId"
+    }
+  },
+  "custom_context": {
+    "alert-context": true
+  },
   "dashboard_filters": {
     "time_filter": true,
-    "default_time_filter_labels": [
-      "All Time"
-    ],
+    "extra_filter": "projectid in {{PROJECT_ID}}",
     "columns_filter": [
       {
-        "id": "snapshot_name",
-        "label": "Snapshot Name",
-        "key": true,
+        "id": "incidentid",
+        "label": "Incident ID",
         "type": "TEXT"
       },
       {
-        "id": "snapshot_type",
-        "label": "Snapshot Type",
+        "id": "activity",
+        "label": "Activity",
         "type": "TEXT"
       },
       {
-        "id": "status",
-        "label": "Status",
+        "id": "sourcesystemname",
+        "label": "Source System",
+        "type": "TEXT"
+      },
+      {
+        "id": "target",
+        "label": "Target System",
+        "type": "TEXT"
+      },
+      {
+        "id": "content",
+        "label": "Message",
+        "type": "TEXT"
+      },
+      {
+        "id": "senderid",
+        "label": "User",
+        "type": "TEXT"
+      },
+      {
+        "id": "createdat",
+        "label": "Created",
+        "type": "DATETIME"
+      },
+      {
+        "id": "subject",
+        "label": "Subject",
+        "type": "TEXT"
+      },
+      {
+        "id": "activity",
+        "label": "Activity",
         "type": "TEXT"
       }
     ],
-    "group_filters": [
-      {
-        "stream": "rda_system_snapshots_main",
-        "title": "Snapshot Type",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "snapshot_type"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      }
+    "default_time_filter_labels": [
+      "Last 24 hours"
     ]
   },
   "dashboard_sections": [
     {
-      "title": "rda_system_snapshots_main",
+      "title": "Activity",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Snapshots",
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Activity",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "group_by": [
+            "activity"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "6dc8340e"
+        },
+        {
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Target",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "height": 4,
+          "max_width": 6,
+          "group_by": [
+            "target"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "e36576b7"
+        },
+        {
+          "title": "Collaboration Messages",
           "widget_type": "tabular",
           "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "rda_system_snapshots_main",
+          "height": 12,
+          "min_width": 6,
+          "stream": "oia-incidents-collaboration-stream",
           "ts_column": "timestamp",
           "paginated": true,
-          "extra_filter": null,
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "subject",
+            "content",
+            "sendername",
+            "sourcesystemname",
+            "target",
+            "incidentid"
+          ],
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "duration_hours": 24,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
           "columns": {
-            "snapshot_type": {
-              "title": "Snapshot Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "snapshot_name": {
-              "title": "Snapshot Name",
-              "type": "TEXT",
-              "hidden": false,
-              "key": true
-            },
-            "description": {
-              "title": "Description",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "status": {
-              "title": "Status",
-              "type": "TEXT"
-            },
+            "subject": "Subject",
+            "content": "Message",
+            "sendername": "User",
             "timestamp": {
               "title": "Timestamp",
               "type": "DATETIME"
+            },
+            "sourcesystemname": "Source",
+            "target": "Target",
+            "incidentid": {
+              "title": "Incident ID",
+              "key": true
             }
           },
+          "severity_columns": [
+            "severity"
+          ],
           "actions": [
             {
-              "title": "Create",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "permission": "rda:dataset:add",
-              "identifier": "rda.snapshot.add",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.create.snapshot"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:dataset:import",
-              "title": "Import",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "rda.snapshot.import",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.import.snapshot"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:dataset:view",
-              "appName": "user-dashboard/rda_system_single_snapshot_details",
-              "drillDownLinkField": "snapshot_name",
-              "identifier": "user.dashboard.view",
-              "selectionType": "SINGLE",
+              "title": "View Incident",
+              "type": "GO_TO_APP_STATE",
               "stateName": "app.featureapp",
-              "title": "View Details",
-              "type": "GO_TO_APP_STATE"
-            },
-            {
-              "title": "Export",
-              "type": "POPUP_FORM",
+              "appName": "user-dashboard/incident-details-app",
               "selectionType": "SINGLE",
-              "permission": "rda:dataset:export",
-              "identifier": "rda.snapshot.export",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+              "drillDownLinkField": "incidentid",
+              "drillDownContext": "incidentid",
+              "destinationContext": "incidentid",
+              "displayLabelColumnId": "Incident ID",
+              "contextParamList": {
+                "contextParams": [
                   {
-                    "formId": "rda.saas.export.snapshot"
-                  }
-                ]
-              }
-            },
-            {
-              "title": "Review",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "rda:dataset:review",
-              "identifier": "rda.snapshot.review",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+                    "paramKey": "projectid",
+                    "paramId": "id"
+                  },
                   {
-                    "formId": "rda.saas.review.snapshot"
-                  }
-                ]
-              }
-            },
-            {
-              "title": "Delete",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "rda:dataset:delete",
-              "identifier": "rda.snapshot.delete",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+                    "paramKey": "incidentid",
+                    "paramId": "incidentid"
+                  },
                   {
-                    "formId": "rda.saas.delete.snapshot"
+                    "paramKey": "projectid",
+                    "paramId": "roomid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "projectId"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "acfb36eb"
+          "widget_id": "a7f6e486"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "rda_system_snapshots_main",
+      "title": "Activity",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Snapshots",
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Activity",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "group_by": [
+            "activity"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "6dc8340e"
+        },
+        {
+          "widget_type": "bar_chart",
+          "title": "Collaboration Messages By Target",
+          "stream": "oia-incidents-collaboration-stream",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "min_width": 6,
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "height": 4,
+          "max_width": 6,
+          "group_by": [
+            "target"
+          ],
+          "agg": "sum",
+          "column": "count_",
+          "type": "int",
+          "chartProperties": {
+            "legendLocation": "none",
+            "xAxisLabel": null,
+            "yAxisLabel": null
+          },
+          "widget_id": "e36576b7"
+        },
+        {
+          "title": "Collaboration Messages",
           "widget_type": "tabular",
           "max_width": 12,
-          "height": 8,
-          "min_width": 12,
-          "stream": "rda_system_snapshots_main",
+          "height": 12,
+          "min_width": 6,
+          "stream": "oia-incidents-collaboration-stream",
           "ts_column": "timestamp",
           "paginated": true,
-          "extra_filter": null,
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 30000
-          },
+          "resizableColumns": false,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "subject",
+            "content",
+            "sendername",
+            "sourcesystemname",
+            "target",
+            "incidentid"
+          ],
+          "extra_filter": "activity is not 'Endpoint Response' and activity is not 'Update Incident' and subject is not 'Incident Updated'",
+          "duration_hours": 24,
+          "sorting": [
+            {
+              "timestamp": "desc"
+            }
+          ],
           "columns": {
-            "snapshot_type": {
-              "title": "Snapshot Type",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "snapshot_name": {
-              "title": "Snapshot Name",
-              "type": "TEXT",
-              "hidden": false,
-              "key": true
-            },
-            "description": {
-              "title": "Description",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "status": {
-              "title": "Status",
-              "type": "TEXT"
-            },
+            "subject": "Subject",
+            "content": "Message",
+            "sendername": "User",
             "timestamp": {
               "title": "Timestamp",
               "type": "DATETIME"
+            },
+            "sourcesystemname": "Source",
+            "target": "Target",
+            "incidentid": {
+              "title": "Incident ID",
+              "key": true
             }
           },
+          "severity_columns": [
+            "severity"
+          ],
           "actions": [
             {
-              "title": "Create",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "permission": "rda:dataset:add",
-              "identifier": "rda.snapshot.add",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.create.snapshot"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:dataset:import",
-              "title": "Import",
-              "type": "POPUP_FORM",
-              "selectionType": "NONE",
-              "identifier": "rda.snapshot.import",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "formId": "rda.saas.import.snapshot"
-                  }
-                ]
-              }
-            },
-            {
-              "permission": "rda:dataset:view",
-              "appName": "user-dashboard/rda_system_single_snapshot_details",
-              "drillDownLinkField": "snapshot_name",
-              "identifier": "user.dashboard.view",
-              "selectionType": "SINGLE",
+              "title": "View Incident",
+              "type": "GO_TO_APP_STATE",
               "stateName": "app.featureapp",
-              "title": "View Details",
-              "type": "GO_TO_APP_STATE"
-            },
-            {
-              "title": "Export",
-              "type": "POPUP_FORM",
+              "appName": "user-dashboard/incident-details-app",
               "selectionType": "SINGLE",
-              "permission": "rda:dataset:export",
-              "identifier": "rda.snapshot.export",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+              "drillDownLinkField": "incidentid",
+              "drillDownContext": "incidentid",
+              "destinationContext": "incidentid",
+              "displayLabelColumnId": "Incident ID",
+              "contextParamList": {
+                "contextParams": [
                   {
-                    "formId": "rda.saas.export.snapshot"
-                  }
-                ]
-              }
-            },
-            {
-              "title": "Review",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "rda:dataset:review",
-              "identifier": "rda.snapshot.review",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+                    "paramKey": "projectid",
+                    "paramId": "id"
+                  },
                   {
-                    "formId": "rda.saas.review.snapshot"
-                  }
-                ]
-              }
-            },
-            {
-              "title": "Delete",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "rda:dataset:delete",
-              "identifier": "rda.snapshot.delete",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+                    "paramKey": "incidentid",
+                    "paramId": "incidentid"
+                  },
                   {
-                    "formId": "rda.saas.delete.snapshot"
+                    "paramKey": "projectid",
+                    "paramId": "roomid"
+                  },
+                  {
+                    "paramKey": "projectid",
+                    "paramId": "projectId"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "acfb36eb"
+          "widget_id": "a7f6e486"
         }
       ]
     }
