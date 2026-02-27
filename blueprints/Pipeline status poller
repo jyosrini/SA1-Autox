@@ -1,14 +1,16 @@
-name: Status Poller
-id: Pipeline status poller
-version: '*'
-category: Test
+name: OIA Source Stream Merger
+id: oia-sources-streams-merge
+version: '2023_04_19'
+category: OIA Stream Merger
+comment: Merges all source event streams into one single stream
 enabled: false
 type: Service
-provider: Cisco Systems
+provider: CloudFabrix Software Inc.
 scheduled_pipelines:
-- name: swdata-status-test
-  label: Status pipeline
+- name: oia-sources-streams-merge
+  label: OIA Source Stream Merger
   version: '*'
-  site: rda.*
-  cron_expression: '*/2 * * * *'
   site_type: regex
+  site: rda.*
+  cron_expression: '*/15 * * * *'
+dashboard_type: dashboard
