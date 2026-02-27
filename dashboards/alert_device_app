@@ -1,47 +1,53 @@
 {
-  "name": "rda-diff-preview",
-  "label": "Git Diff",
-  "description": "Preview dashboard to view the diffs in html",
-  "enabled": false,
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "template_variables": {
-    "FILENAME": {
-      "contextId": "filename"
-    },
-    "DIFF_HTML": {
-      "contextId": "diff_html"
-    }
+  "name": "alert_device_app",
+  "label": "Device View",
+  "description": "Device View",
+  "dashboard_folder": "NetworkDevicePack",
+  "context_label_id": "a_asset_name",
+  "version": "24.1.14.2",
+  "debug": true,
+  "enabled": true,
+  "dashboard_filters": {
+    "time_filter": true,
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Diff",
-      "widgets": [
-        {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 3,
-          "label": "<div style='overflow: auto'>{{DIFF_HTML}}</div>",
-          "widget_id": "cc11f713"
-        }
-      ]
+      "title": "Device View"
+    }
+  ],
+  "dashboard_type": "app",
+  "context_enrichment": {
+    "stream": "network_device_inventory",
+    "enrich_columns": [
+      "device_hostname",
+      "parent_sn"
+    ],
+    "query_template": "device_ip = '$a_asset_ip_address'",
+    "defaultValues": {}
+  },
+  "dashboard_groups": {
+    "from_to": {
+      "icon": "alert.svg",
+      "label": "Alerts"
+    },
+    "topo": {
+      "icon": "topology.svg",
+      "label": "Topology"
+    }
+  },
+  "dashboard_pages": [
+    {
+      "name": "topology_geomap_dashboard",
+      "label": "Topology",
+      "group": "topo",
+      "icon": "insights.svg",
+      "context_filter0": "node_type is 'edge'"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Diff",
-      "widgets": [
-        {
-          "widget_type": "label",
-          "min_width": 3,
-          "height": 3,
-          "max_width": 3,
-          "label": "<div style='overflow: auto'>{{DIFF_HTML}}</div>",
-          "widget_id": "cc11f713"
-        }
-      ]
+      "title": "Device View"
     }
   ]
 }
