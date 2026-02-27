@@ -1,167 +1,234 @@
 {
-  "name": "rda-administration-dashboard-schedule",
-  "label": "Export Schedules",
-  "description": "rda_dashboards_dashboard_schedule: Insights",
-  "dashboard_folder": "System",
-  "version": "24.5.29.1",
+  "name": "rda-mgmt-page-nonsystem-dashboards",
+  "label": "Dashboards",
+  "description": "User Dashboard Management Page",
   "enabled": false,
   "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
+  "stream": "rda_dashboards_meta",
   "dashboard_filters": {
     "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 1 month"
+    "extra_filter": "( dashboard_folder not in 'System')",
+    "group_filters": [
+      {
+        "stream": "rda_dashboards_meta",
+        "title": "Folder",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "dashboard_folder"
+        ],
+        "ts_column": "saved_time",
+        "agg": "value_count",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_dashboards_meta",
+        "title": "Type",
+        "duration_hours": 87600,
+        "limit": 200,
+        "group_by": [
+          "dashboard_type"
+        ],
+        "ts_column": "saved_time",
+        "agg": "value_count",
+        "column": "count_",
+        "type": "int"
+      }
     ],
     "columns_filter": [
       {
-        "id": "job_id",
-        "label": "RDA ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "schedule_id",
-        "label": "Job ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_name",
-        "label": "Dashboard Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_title",
-        "label": "Dashboard Label",
-        "type": "TEXT"
-      },
-      {
-        "id": "filters",
-        "label": "Condition Filters",
-        "type": "TEXT"
+        "id": "saved_time",
+        "label": "Saved Time",
+        "type": "DATETIME"
       },
       {
         "id": "name",
-        "label": "Export Filename",
+        "label": "Name",
         "type": "TEXT"
       },
       {
-        "id": "include_csv_files",
-        "label": "Include CSV Files",
+        "id": "label",
+        "label": "Label",
         "type": "TEXT"
       },
       {
-        "id": "descr",
+        "id": "dashboard_folder",
+        "label": "Folder",
+        "type": "TEXT"
+      },
+      {
+        "id": "dashboard_type",
+        "label": "Dashboard Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "_RDA_Id",
+        "label": "_RDA_ID",
+        "type": "TEXT"
+      },
+      {
+        "id": "count_",
+        "label": "Count_",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "description",
         "label": "Description",
         "type": "TEXT"
       },
       {
-        "id": "email_id",
-        "label": "Send To",
-        "type": "TEXT"
+        "id": "enabled",
+        "label": "Enabled",
+        "type": "BOOLEAN"
       },
       {
-        "id": "start_time",
-        "label": "Schedule Start Time",
+        "id": "reltime",
+        "label": "RelTime",
         "type": "DATETIME"
       },
       {
-        "id": "next_run_time",
-        "label": "Next Run Time",
+        "id": "timestamp",
+        "label": "Timestamp",
         "type": "DATETIME"
-      },
-      {
-        "id": "end_time",
-        "label": "Schedule End Time",
-        "type": "DATETIME"
-      },
-      {
-        "id": "frequency",
-        "label": "Schedule Frequency",
-        "type": "TEXT"
-      },
-      {
-        "id": "created_by",
-        "label": "Created By",
-        "type": "TEXT"
-      },
-      {
-        "id": "expired",
-        "label": "Job Expired",
-        "type": "TEXT"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Dashboard Schedules",
+      "title": "Dashboards",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Schedule Details",
+          "widget_type": "pie_chart",
+          "title": "Dashboards by Folders",
+          "stream": "rda_dashboards_meta",
+          "ts_column": "saved_time",
+          "duration_hours": 87600,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "limit": 25,
+          "column": "count_",
+          "agg": "value_count",
+          "group_by": [
+            "dashboard_folder"
+          ],
+          "type": "int",
+          "widget_id": "cb0706e6"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Dashboards by Type",
+          "stream": "rda_dashboards_meta",
+          "ts_column": "saved_time",
+          "duration_hours": 87600,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "limit": 25,
+          "column": "count_",
+          "agg": "value_count",
+          "group_by": [
+            "dashboard_type"
+          ],
+          "type": "int",
+          "widget_id": "9ec324da"
+        },
+        {
+          "title": "Dashboards",
           "widget_type": "tabular",
+          "stream": "rda_dashboards_meta",
+          "duration_hours": 87600,
+          "timebased": true,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "name",
+            "dashboard_folder",
+            "dashboard_type",
+            "label",
+            "description"
+          ],
+          "ts_column": "saved_time",
           "paginated": true,
-          "stream": "rda_dashboard_export_schedules",
           "height": 10,
-          "min_width": 12,
+          "min_wdith": 12,
           "columns": {
-            "job_id": {
-              "title": "RDA ID",
-              "key": true,
-              "visible": false
-            },
-            "schedule_id": {
-              "title": "Job ID"
-            },
-            "created_by": {
-              "title": "Created By"
-            },
-            "dashboard_name": {
-              "title": "Dashboard Name",
-              "visible": false
-            },
-            "dashboard_title": {
-              "title": "Dashboard Label"
-            },
-            "filters": {
-              "title": "Condition Filters"
-            },
             "name": {
-              "title": "Export Filename"
+              "title": "Name",
+              "key": true
             },
-            "include_csv_files": {
-              "title": "Include CSV Files"
+            "dashboard_folder": {
+              "title": "Dashboard Folder"
             },
-            "descr": {
-              "title": "Description"
+            "type": {
+              "title": "Type",
+              "type": "FIXED_VALUE",
+              "value": "Dashboard",
+              "visible": false,
+              "sortable": false
             },
-            "email_id": {
-              "title": "Send To"
+            "dashboard_type": {
+              "title": "Dashboard Type"
             },
-            "start_time": {
-              "title": "Schedule Start Time",
-              "type": "DATETIME",
-              "hidden": false
+            "label": {
+              "title": "Label",
+              "key": true
             },
-            "next_run_time": {
-              "title": "Next Run Time",
-              "type": "DATETIME",
-              "hidden": false
+            "description": {
+              "title": "description"
             },
-            "end_time": {
-              "title": "Schedule End Time",
-              "type": "DATETIME",
-              "hidden": false
+            "saved_time": {
+              "title": "Saved Time",
+              "type": "DATETIME"
             },
-            "frequency": {
-              "title": "Schedule Frequency"
+            "tags": {
+              "title": "Tags",
+              "type": "TEXT",
+              "key": true
             },
-            "expired": {
-              "title": "Job Expired"
+            "timestamp": {
+              "title": "When",
+              "type": "HUMANIZE_TIME_DELTA",
+              "source-column": "saved_time",
+              "sortable": false
+            },
+            "menu_folder": {
+              "title": "Menu Folder",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            },
+            "has_storyboard": {
+              "title": "Has Storyboard",
+              "type": "BOOLEAN",
+              "hidden": false,
+              "key": true
             }
           },
           "custom_columns": [
             {
               "id": "enabled",
               "label": "Enabled",
+              "expr": "'yes' if enabled else 'no'",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
+            },
+            {
+              "id": "id",
+              "label": "ID",
+              "expr": "'user-dashboard-' + name",
+              "visible": false,
+              "key": true,
+              "sortable": false
+            },
+            {
+              "id": "url",
+              "label": "URL",
+              "expr": "'/workspace/dashboard/user-dashboard-' + name",
+              "visible": false,
+              "sortable": false
             },
             {
               "id": "enableColor",
@@ -170,40 +237,39 @@
               "hidden": true,
               "visible": false,
               "sortable": false
-            }
-          ],
-          "0custom_columns": [
+            },
             {
-              "id": "id",
-              "label": "JOB",
-              "expr": "job_id if job_id else None",
+              "id": "rowStyleClass",
+              "hidden": true,
               "visible": false,
-              "key": true
+              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
+              "sortable": false
+            },
+            {
+              "id": "artifact_name",
+              "label": "Artifact Name",
+              "expr": "name",
+              "key": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "artifact_type",
+              "label": "Artifact Type",
+              "expr": "'dashboard'",
+              "key": true,
+              "visible": false,
+              "sortable": false
             }
           ],
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 60000
-          },
           "actions": [
             {
-              "permission": "rda:schedules:delete",
-              "title": "Delete",
+              "permission": "rda:user_dashboard:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:delete-schedule",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
-                  }
-                ]
-              },
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -211,74 +277,110 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.delete"
+                    "formId": "rda.saas.userdashboard.add.yaml"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:schedules:edit",
-              "title": "Update",
+              "permission": "rda:user_dashboard:createpack",
+              "title": "Create Pack",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:update-schedule",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  }
-                ]
-              },
+              "identifier": "saas-service-action:userdashboard-create-pack",
               "api-endpoint": {
-                "service-name": "saas-reports",
                 "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.update"
+                    "formId": "rda.saas.dashboard.create.pack"
                   }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
-                  }
-                ]
+                ],
+                "parse-output": false,
+                "service-name": "saas-reports",
+                "stringified-params": true
               }
             },
             {
-              "appName": "user-dashboard/rda-dashboard-view-logs",
-              "permission": "rda:schedules:view",
-              "identifier": "view_logs",
+              "permission": "rda:user_dashboard:view",
+              "appName": "user-dashboard",
+              "displayLabelColumnId": "id",
+              "drillDownLinkField": "name",
+              "identifier": "user.dashboard.view",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Logs",
+              "title": "Dashboard",
               "type": "GO_TO_APP_STATE"
             },
             {
-              "permission": "rda:user_dashboard:enable",
-              "title": "Enable",
-              "type": "POPUP_FORM",
+              "permission": "rda:user_dashboard:layout_editor",
+              "title": "Storyboard Editor",
+              "type": "GO_TO_APP_STATE",
+              "appName": "new-app/canvas_dashboard_editor",
+              "identifier": "user.dashboard.layout_editor",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:schedule-enable",
-              "contextParamList": {
-                "contextParams": [
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
                   {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
+                    "conditionType": "EQUAL",
+                    "conditionValue": "true",
+                    "fieldId": "use_storyboard"
                   }
                 ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:edit",
+              "title": "Menu Association",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:assign-to-menu",
+              "api-endpoint": {
+                "methodName": "getForm",
+                "params": [
+                  {
+                    "formId": "rda.saas.uimenu.associate"
+                  }
+                ],
+                "parse-output": false,
+                "service-name": "saas-reports",
+                "stringified-params": true
               },
+              "actionCondition": {
+                "actionControl": "HIDE_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "System",
+                    "fieldId": "dashboard_folder"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:assign_tag",
+              "title": "Manage Tags",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:assign-dashboard-tag",
+              "api-endpoint": {
+                "methodName": "getForm",
+                "params": [
+                  {
+                    "formId": "rda.saas.tags.assign"
+                  }
+                ],
+                "parse-output": false,
+                "service-name": "saas-reports",
+                "stringified-params": true
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:view",
+              "title": "View YAML",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-view-yaml",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -286,22 +388,83 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.enable"
+                    "formId": "rda.saas.userdashboard.view.yaml"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:view",
+              "title": "View JSON",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-view-json",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.view.json"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:edit",
+              "title": "Edit YAML",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-edit-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.edit.yaml"
                   }
                 ]
               },
               "actionCondition": {
-                "actionControl": "SHOW_IF",
+                "actionControl": "HIDE_IF",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "enabled"
-                  },
+                    "conditionValue": "System",
+                    "fieldId": "dashboard_folder"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:edit",
+              "title": "Edit JSON",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-edit-json",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.edit.json"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "HIDE_IF",
+                "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
+                    "conditionValue": "System",
+                    "fieldId": "dashboard_folder"
                   }
                 ]
               }
@@ -311,19 +474,7 @@
               "title": "Disable",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:schedule-disable",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
-                  }
-                ]
-              },
+              "identifier": "saas-service-action:userdashboard-deactivate-dashboard",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -331,7 +482,7 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.disable"
+                    "formId": "rda.saas.userdashboard.deactivate"
                   }
                 ]
               },
@@ -342,94 +493,256 @@
                     "conditionType": "EQUAL",
                     "conditionValue": "yes",
                     "fieldId": "enabled"
-                  },
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:enable",
+              "title": "Enable",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-activate-dashboard",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.activate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
                   {
                     "conditionType": "EQUAL",
                     "conditionValue": "no",
-                    "fieldId": "expired"
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-delete-dashboard",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.delete"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "HIDE_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "System",
+                    "fieldId": "dashboard_folder"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:view",
+              "appName": "user-dashboard/rda-artifact-dependencies-app",
+              "identifier": "launch.url.dashboard",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "View Dependencies",
+              "type": "GO_TO_APP_STATE"
+            },
+            {
+              "permission": "rda:user_dashboard:generate",
+              "title": "Generate Storyboard",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-generate-storyboard",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.storyboard.generate"
+                  }
+                ]
+              },
+              "actionConditions": {
+                "actionControl": "SHOW_IF",
+                "operator": "AND",
+                "actionCondition": [
+                  {
+                    "conditionalField": [
+                      {
+                        "conditionType": "EQUAL",
+                        "conditionValue": "false",
+                        "fieldId": "has_storyboard"
+                      }
+                    ]
+                  },
+                  {
+                    "conditionalField": [
+                      {
+                        "conditionType": "NOT_EQUAL",
+                        "conditionValue": "app",
+                        "fieldId": "dashboard_type"
+                      }
+                    ]
                   }
                 ]
               }
             }
           ],
-          "widget_id": "cdc398bc"
+          "widget_id": "d5b2edf0"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Dashboard Schedules",
+      "title": "Dashboards",
       "show_filter": true,
       "widgets": [
         {
-          "title": "Schedule Details",
+          "widget_type": "pie_chart",
+          "title": "Dashboards by Folders",
+          "stream": "rda_dashboards_meta",
+          "ts_column": "saved_time",
+          "duration_hours": 87600,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "limit": 25,
+          "column": "count_",
+          "agg": "value_count",
+          "group_by": [
+            "dashboard_folder"
+          ],
+          "type": "int",
+          "widget_id": "cb0706e6"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Dashboards by Type",
+          "stream": "rda_dashboards_meta",
+          "ts_column": "saved_time",
+          "duration_hours": 87600,
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "limit": 25,
+          "column": "count_",
+          "agg": "value_count",
+          "group_by": [
+            "dashboard_type"
+          ],
+          "type": "int",
+          "widget_id": "9ec324da"
+        },
+        {
+          "title": "Dashboards",
           "widget_type": "tabular",
+          "stream": "rda_dashboards_meta",
+          "duration_hours": 87600,
+          "timebased": true,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "name",
+            "dashboard_folder",
+            "dashboard_type",
+            "label",
+            "description"
+          ],
+          "ts_column": "saved_time",
           "paginated": true,
-          "stream": "rda_dashboard_export_schedules",
           "height": 10,
-          "min_width": 12,
+          "min_wdith": 12,
           "columns": {
-            "job_id": {
-              "title": "RDA ID",
-              "key": true,
-              "visible": false
-            },
-            "schedule_id": {
-              "title": "Job ID"
-            },
-            "created_by": {
-              "title": "Created By"
-            },
-            "dashboard_name": {
-              "title": "Dashboard Name",
-              "visible": false
-            },
-            "dashboard_title": {
-              "title": "Dashboard Label"
-            },
-            "filters": {
-              "title": "Condition Filters"
-            },
             "name": {
-              "title": "Export Filename"
+              "title": "Name",
+              "key": true
             },
-            "include_csv_files": {
-              "title": "Include CSV Files"
+            "dashboard_folder": {
+              "title": "Dashboard Folder"
             },
-            "descr": {
-              "title": "Description"
+            "type": {
+              "title": "Type",
+              "type": "FIXED_VALUE",
+              "value": "Dashboard",
+              "visible": false,
+              "sortable": false
             },
-            "email_id": {
-              "title": "Send To"
+            "dashboard_type": {
+              "title": "Dashboard Type"
             },
-            "start_time": {
-              "title": "Schedule Start Time",
-              "type": "DATETIME",
-              "hidden": false
+            "label": {
+              "title": "Label",
+              "key": true
             },
-            "next_run_time": {
-              "title": "Next Run Time",
-              "type": "DATETIME",
-              "hidden": false
+            "description": {
+              "title": "description"
             },
-            "end_time": {
-              "title": "Schedule End Time",
-              "type": "DATETIME",
-              "hidden": false
+            "saved_time": {
+              "title": "Saved Time",
+              "type": "DATETIME"
             },
-            "frequency": {
-              "title": "Schedule Frequency"
+            "tags": {
+              "title": "Tags",
+              "type": "TEXT",
+              "key": true
             },
-            "expired": {
-              "title": "Job Expired"
+            "timestamp": {
+              "title": "When",
+              "type": "HUMANIZE_TIME_DELTA",
+              "source-column": "saved_time",
+              "sortable": false
+            },
+            "menu_folder": {
+              "title": "Menu Folder",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            },
+            "has_storyboard": {
+              "title": "Has Storyboard",
+              "type": "BOOLEAN",
+              "hidden": false,
+              "key": true
             }
           },
           "custom_columns": [
             {
               "id": "enabled",
               "label": "Enabled",
+              "expr": "'yes' if enabled else 'no'",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
+            },
+            {
+              "id": "id",
+              "label": "ID",
+              "expr": "'user-dashboard-' + name",
+              "visible": false,
+              "key": true,
+              "sortable": false
+            },
+            {
+              "id": "url",
+              "label": "URL",
+              "expr": "'/workspace/dashboard/user-dashboard-' + name",
+              "visible": false,
+              "sortable": false
             },
             {
               "id": "enableColor",
@@ -438,40 +751,39 @@
               "hidden": true,
               "visible": false,
               "sortable": false
-            }
-          ],
-          "0custom_columns": [
+            },
             {
-              "id": "id",
-              "label": "JOB",
-              "expr": "job_id if job_id else None",
+              "id": "rowStyleClass",
+              "hidden": true,
               "visible": false,
-              "key": true
+              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
+              "sortable": false
+            },
+            {
+              "id": "artifact_name",
+              "label": "Artifact Name",
+              "expr": "name",
+              "key": true,
+              "visible": false,
+              "sortable": false
+            },
+            {
+              "id": "artifact_type",
+              "label": "Artifact Type",
+              "expr": "'dashboard'",
+              "key": true,
+              "visible": false,
+              "sortable": false
             }
           ],
-          "refreshOptions": {
-            "refreshType": "Periodic",
-            "refreshInterval": 60000
-          },
           "actions": [
             {
-              "permission": "rda:schedules:delete",
-              "title": "Delete",
+              "permission": "rda:user_dashboard:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:delete-schedule",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
-                  }
-                ]
-              },
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -479,74 +791,110 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.delete"
+                    "formId": "rda.saas.userdashboard.add.yaml"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:schedules:edit",
-              "title": "Update",
+              "permission": "rda:user_dashboard:createpack",
+              "title": "Create Pack",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:update-schedule",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  }
-                ]
-              },
+              "identifier": "saas-service-action:userdashboard-create-pack",
               "api-endpoint": {
-                "service-name": "saas-reports",
                 "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.update"
+                    "formId": "rda.saas.dashboard.create.pack"
                   }
-                ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
-                  }
-                ]
+                ],
+                "parse-output": false,
+                "service-name": "saas-reports",
+                "stringified-params": true
               }
             },
             {
-              "appName": "user-dashboard/rda-dashboard-view-logs",
-              "permission": "rda:schedules:view",
-              "identifier": "view_logs",
+              "permission": "rda:user_dashboard:view",
+              "appName": "user-dashboard",
+              "displayLabelColumnId": "id",
+              "drillDownLinkField": "name",
+              "identifier": "user.dashboard.view",
               "selectionType": "SINGLE",
               "stateName": "app.featureapp",
-              "title": "View Logs",
+              "title": "Dashboard",
               "type": "GO_TO_APP_STATE"
             },
             {
-              "permission": "rda:user_dashboard:enable",
-              "title": "Enable",
-              "type": "POPUP_FORM",
+              "permission": "rda:user_dashboard:layout_editor",
+              "title": "Storyboard Editor",
+              "type": "GO_TO_APP_STATE",
+              "appName": "new-app/canvas_dashboard_editor",
+              "identifier": "user.dashboard.layout_editor",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:schedule-enable",
-              "contextParamList": {
-                "contextParams": [
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
                   {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
+                    "conditionType": "EQUAL",
+                    "conditionValue": "true",
+                    "fieldId": "use_storyboard"
                   }
                 ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:edit",
+              "title": "Menu Association",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:assign-to-menu",
+              "api-endpoint": {
+                "methodName": "getForm",
+                "params": [
+                  {
+                    "formId": "rda.saas.uimenu.associate"
+                  }
+                ],
+                "parse-output": false,
+                "service-name": "saas-reports",
+                "stringified-params": true
               },
+              "actionCondition": {
+                "actionControl": "HIDE_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "System",
+                    "fieldId": "dashboard_folder"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:assign_tag",
+              "title": "Manage Tags",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:assign-dashboard-tag",
+              "api-endpoint": {
+                "methodName": "getForm",
+                "params": [
+                  {
+                    "formId": "rda.saas.tags.assign"
+                  }
+                ],
+                "parse-output": false,
+                "service-name": "saas-reports",
+                "stringified-params": true
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:view",
+              "title": "View YAML",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-view-yaml",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -554,22 +902,83 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.enable"
+                    "formId": "rda.saas.userdashboard.view.yaml"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:view",
+              "title": "View JSON",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-view-json",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.view.json"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:edit",
+              "title": "Edit YAML",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-edit-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.edit.yaml"
                   }
                 ]
               },
               "actionCondition": {
-                "actionControl": "SHOW_IF",
+                "actionControl": "HIDE_IF",
                 "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "enabled"
-                  },
+                    "conditionValue": "System",
+                    "fieldId": "dashboard_folder"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:edit",
+              "title": "Edit JSON",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-edit-json",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.edit.json"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "HIDE_IF",
+                "conditionalField": [
                   {
                     "conditionType": "EQUAL",
-                    "conditionValue": "no",
-                    "fieldId": "expired"
+                    "conditionValue": "System",
+                    "fieldId": "dashboard_folder"
                   }
                 ]
               }
@@ -579,19 +988,7 @@
               "title": "Disable",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:schedule-disable",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "job_id",
-                    "paramId": "id"
-                  },
-                  {
-                    "paramKey": "dashboard_title",
-                    "paramId": "dashboard_title"
-                  }
-                ]
-              },
+              "identifier": "saas-service-action:userdashboard-deactivate-dashboard",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -599,7 +996,7 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.dashboard.schedule.disable"
+                    "formId": "rda.saas.userdashboard.deactivate"
                   }
                 ]
               },
@@ -610,17 +1007,119 @@
                     "conditionType": "EQUAL",
                     "conditionValue": "yes",
                     "fieldId": "enabled"
-                  },
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:enable",
+              "title": "Enable",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-activate-dashboard",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.activate"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "SHOW_IF",
+                "conditionalField": [
                   {
                     "conditionType": "EQUAL",
                     "conditionValue": "no",
-                    "fieldId": "expired"
+                    "fieldId": "enabled"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-delete-dashboard",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.userdashboard.delete"
+                  }
+                ]
+              },
+              "actionCondition": {
+                "actionControl": "HIDE_IF",
+                "conditionalField": [
+                  {
+                    "conditionType": "EQUAL",
+                    "conditionValue": "System",
+                    "fieldId": "dashboard_folder"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:user_dashboard:view",
+              "appName": "user-dashboard/rda-artifact-dependencies-app",
+              "identifier": "launch.url.dashboard",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "title": "View Dependencies",
+              "type": "GO_TO_APP_STATE"
+            },
+            {
+              "permission": "rda:user_dashboard:generate",
+              "title": "Generate Storyboard",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:userdashboard-generate-storyboard",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.storyboard.generate"
+                  }
+                ]
+              },
+              "actionConditions": {
+                "actionControl": "SHOW_IF",
+                "operator": "AND",
+                "actionCondition": [
+                  {
+                    "conditionalField": [
+                      {
+                        "conditionType": "EQUAL",
+                        "conditionValue": "false",
+                        "fieldId": "has_storyboard"
+                      }
+                    ]
+                  },
+                  {
+                    "conditionalField": [
+                      {
+                        "conditionType": "NOT_EQUAL",
+                        "conditionValue": "app",
+                        "fieldId": "dashboard_type"
+                      }
+                    ]
                   }
                 ]
               }
             }
           ],
-          "widget_id": "cdc398bc"
+          "widget_id": "d5b2edf0"
         }
       ]
     }
