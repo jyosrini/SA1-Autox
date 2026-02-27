@@ -1,11 +1,11 @@
-folder: NetworkDevicePack
-name: ondemand_discovery_main
-description: test pipeline
-data_path: pipelines/data/ondemand_discovery_main/2024.03.19.2/data.json
+folder: Default
+name: db_alerts_clustering
+description: ''
+data_path: draft-pipelines/data/db_alerts_clustering/2025_12_12_1/data.json
 usecase: ''
-category: ''
-sources: {}
-artifacts: {}
-version: 2024.03.19.2
+category: null
+sources: []
+artifacts: []
+version: '2025_12_12_1'
 file_type: json
-checksum: ef78c9c4
+checksum: 655a7a3a

@@ -1,14 +1,11 @@
 folder: Default
-name: oia-sources-streams-merge
-description: test pipeline
-data_path: pipelines/data/oia-sources-streams-merge/2023_07_19_1/data.json
+name: db_alerts_clustering
+description: ''
+data_path: draft-pipelines/data/db_alerts_clustering/2025_12_12_1/data.json
 usecase: ''
-category: ''
-sources:
-  oia:
-    name: oia
-    type: oia
+category: null
+sources: []
 artifacts: []
-version: '2023_07_19_1'
+version: '2025_12_12_1'
 file_type: json
-checksum: 6c067ccc
+checksum: 655a7a3a

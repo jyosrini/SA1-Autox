@@ -1,11 +1,11 @@
-folder: OI
-name: edc_delete_all
-description: test pipeline
-data_path: pipelines/data/edc_delete_all/2025-04-11_02/data.json
+folder: Default
+name: db_alerts_clustering
+description: ''
+data_path: draft-pipelines/data/db_alerts_clustering/2025_12_12_1/data.json
 usecase: ''
-category: ''
-sources: {}
+category: null
+sources: []
 artifacts: []
-version: 2025-04-11_02
+version: '2025_12_12_1'
 file_type: json
-checksum: e9a484df
+checksum: 655a7a3a
