@@ -1,38 +1,50 @@
-folder: katturne
-name: test_get_sweol
+folder: Default
+name: edc_add_sw_details
 description: test pipeline
-data_path: pipelines/data/test_get_sweol/2025-06-25_1/data.json
-usecase: ''
+data_path: pipelines/data/edc_add_sw_details/2025_09_05_1/data.json
+usecase: Main pipeline triggered when uploading the software data
 category: ''
 sources:
-  snowflake:
-    name: snowflake
-    type: snowflake
-  cfxaia:
-    name: cfxaia
-    type: cfxaia
   rn:
     name: rn
     type: rn
 artifacts:
-- artifact_type: dataset
-  artifact_name: $sw_dataset
+- artifact_type: pipeline
+  artifact_name: edc_generate_token
   access: read
-- artifact_type: dataset
-  artifact_name: edc_pid_ostype_dict
+- artifact_type: pipeline
+  artifact_name: edc_sw_get_data
   access: read
-- artifact_type: dataset
-  artifact_name: test-sw-eol-details
+- artifact_type: pipeline
+  artifact_name: edc_sweol_enrich
   access: read
-- artifact_type: dataset
-  artifact_name: final-enrich
-  access: write
-- artifact_type: dataset
-  artifact_name: test-contract_data
+- artifact_type: pipeline
+  artifact_name: edc_processing_sw_data
+  access: read
+- artifact_type: pipeline
+  artifact_name: edc_get_sw_sa_details
+  access: read
+- artifact_type: pipeline
+  artifact_name: edc_sw_run_scan
+  access: read
+- artifact_type: pipeline
+  artifact_name: edc_sa_run_scan
+  access: read
+- artifact_type: pipeline
+  artifact_name: edc_sw_run_scan
+  access: read
+- artifact_type: rda-network-stream
+  artifact_name: edc_sw_raw_data
   access: write
 - artifact_type: rda-network-stream
-  artifact_name: edc_customer_inventory
+  artifact_name: edc_sec_adv_data_raw
   access: write
-version: 2025-06-25_1
+- artifact_type: pipeline
+  artifact_name: edc_sweol_enrich
+  access: read
+- artifact_type: pipeline
+  artifact_name: edc_sa_run_scan
+  access: read
+version: '2025_09_05_1'
 file_type: json
-checksum: '75563284'
+checksum: 8ef5bc77
