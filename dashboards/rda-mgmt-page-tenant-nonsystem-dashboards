@@ -1,155 +1,29 @@
 {
-  "name": "rda-mgmt-page-tenant-nonsystem-dashboards",
-  "label": "Dashboards",
-  "description": "User Dashboard Management Page",
-  "enabled": false,
+  "name": "ai-admin-page-personas",
+  "label": "AI Personas",
+  "description": "AI Personas",
+  "enabled": true,
   "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "stream": "rda_dashboards_meta",
+  "dashboard_folder": "AI",
+  "live_edit": true,
+  "dashboard_style": "auto",
+  "stream": "rda_secret_meta",
   "dashboard_filters": {
-    "time_filter": true,
-    "extra_filter": "( dashboard_folder not in 'System')",
-    "group_filters": [
-      {
-        "stream": "rda_dashboards_meta",
-        "title": "Folder",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "dashboard_folder"
-        ],
-        "ts_column": "saved_time",
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_meta",
-        "title": "Type",
-        "duration_hours": 87600,
-        "limit": 200,
-        "group_by": [
-          "dashboard_type"
-        ],
-        "ts_column": "saved_time",
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
-      }
-    ],
-    "columns_filter": [
-      {
-        "id": "saved_time",
-        "label": "Saved Time",
-        "type": "DATETIME"
-      },
-      {
-        "id": "name",
-        "label": "Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "label",
-        "label": "Label",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_folder",
-        "label": "Folder",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_type",
-        "label": "Dashboard Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "_RDA_Id",
-        "label": "_RDA_ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "count_",
-        "label": "Count_",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "description",
-        "label": "Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "reltime",
-        "label": "RelTime",
-        "type": "DATETIME"
-      },
-      {
-        "id": "enabled",
-        "label": "Enabled",
-        "type": "BOOLEAN"
-      },
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      }
-    ]
+    "time_filter": false
   },
   "dashboard_sections": [
     {
-      "title": "Dashboards",
+      "title": "Personas",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Folders",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_folder"
-          ],
-          "type": "int",
-          "widget_id": "bf50e7c9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Type",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_type"
-          ],
-          "type": "int",
-          "widget_id": "cad3aabd"
-        },
-        {
-          "title": "Dashboards",
+          "title": "Personas",
           "widget_type": "tabular",
-          "stream": "rda_dashboards_meta",
+          "stream": "rda_ai_admin_meta",
           "duration_hours": 87600,
-          "timebased": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "name",
-            "dashboard_folder",
-            "dashboard_type",
-            "label",
-            "description"
+            "name"
           ],
           "ts_column": "saved_time",
           "paginated": true,
@@ -158,108 +32,54 @@
           "columns": {
             "name": {
               "title": "Name",
-              "key": true,
-              "type": "TEXT"
-            },
-            "dashboard_folder": {
-              "title": "Dashboard Folder",
-              "type": "TEXT"
-            },
-            "type": {
-              "title": "Type",
-              "type": "FIXED_VALUE",
-              "value": "Dashboard",
-              "visible": false,
-              "sortable": false
-            },
-            "dashboard_type": {
-              "title": "Dashboard Type",
-              "type": "TEXT"
-            },
-            "label": {
-              "title": "Label",
-              "key": true,
-              "type": "TEXT"
+              "key": true
             },
             "description": {
-              "title": "description"
+              "title": "Description",
+              "key": false
+            },
+            "llms": {
+              "title": "LLMs",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.static_color }}' > {{ row.llms }} </span>"
+            },
+            "guardrails": {
+              "title": "Guardrails",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.static_color }}' > {{ row.guardrails }} </span>"
+            },
+            "color": {
+              "title": "Color",
+              "key": true,
+              "type": "DYNAMIC_HTML",
+              "htmlTemplate": "<div class='d-flex'><div style='width:18px;height:18px;margin-right:8px;' :style='{backgroundColor:rowData.color}'></div></div>"
             },
             "saved_time": {
               "title": "Saved Time",
               "type": "DATETIME"
-            },
-            "tags": {
-              "title": "Tags",
-              "type": "TEXT"
             },
             "timestamp": {
               "title": "When",
               "type": "HUMANIZE_TIME_DELTA",
               "source-column": "saved_time",
               "sortable": false
-            },
-            "menu_folder": {
-              "title": "Menu Folder",
-              "type": "TEXT",
-              "hidden": false,
-              "key": true
             }
           },
           "custom_columns": [
             {
-              "id": "enabled",
-              "label": "Enabled",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
-            },
-            {
-              "id": "id",
-              "label": "ID",
-              "expr": "'user-dashboard-' + name",
+              "id": "static_color",
+              "expr": "['#3F51B5']",
               "visible": false,
-              "key": true,
-              "sortable": false
-            },
-            {
-              "id": "url",
-              "label": "URL",
-              "expr": "'/workspace/dashboard/user-dashboard-' + name",
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled else ['#9E9E9E']",
               "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
-              "visible": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
+              "label": "Static Color"
             }
           ],
           "actions": [
             {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard",
-              "displayLabelColumnId": "id",
-              "drillDownLinkField": "name",
-              "identifier": "user.dashboard.view",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "title": "View YAML",
+              "permission": "rda:credential:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-yaml",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:personas-add",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -267,17 +87,17 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.yaml"
+                    "formId": "rda.saas.aipersona.add"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:user_dashboard:view",
-              "title": "View JSON",
+              "permission": "rda:credential:edit",
+              "title": "Edit",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-json",
+              "identifier": "saas-service-action:personas-edit",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -285,71 +105,66 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.json"
+                    "formId": "rda.saas.aipersona.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:verify",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:vault-persona-view",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.view.json"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:verify",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:vault-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.delete"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "c466cddc"
+          "widget_id": "c9d555e3"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Dashboards",
+      "title": "Personas",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Folders",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_folder"
-          ],
-          "type": "int",
-          "widget_id": "bf50e7c9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Type",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_type"
-          ],
-          "type": "int",
-          "widget_id": "cad3aabd"
-        },
-        {
-          "title": "Dashboards",
+          "title": "Personas",
           "widget_type": "tabular",
-          "stream": "rda_dashboards_meta",
+          "stream": "rda_ai_admin_meta",
           "duration_hours": 87600,
-          "timebased": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "name",
-            "dashboard_folder",
-            "dashboard_type",
-            "label",
-            "description"
+            "name"
           ],
           "ts_column": "saved_time",
           "paginated": true,
@@ -358,108 +173,54 @@
           "columns": {
             "name": {
               "title": "Name",
-              "key": true,
-              "type": "TEXT"
-            },
-            "dashboard_folder": {
-              "title": "Dashboard Folder",
-              "type": "TEXT"
-            },
-            "type": {
-              "title": "Type",
-              "type": "FIXED_VALUE",
-              "value": "Dashboard",
-              "visible": false,
-              "sortable": false
-            },
-            "dashboard_type": {
-              "title": "Dashboard Type",
-              "type": "TEXT"
-            },
-            "label": {
-              "title": "Label",
-              "key": true,
-              "type": "TEXT"
+              "key": true
             },
             "description": {
-              "title": "description"
+              "title": "Description",
+              "key": false
+            },
+            "llms": {
+              "title": "LLMs",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.static_color }}' > {{ row.llms }} </span>"
+            },
+            "guardrails": {
+              "title": "Guardrails",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.static_color }}' > {{ row.guardrails }} </span>"
+            },
+            "color": {
+              "title": "Color",
+              "key": true,
+              "type": "DYNAMIC_HTML",
+              "htmlTemplate": "<div class='d-flex'><div style='width:18px;height:18px;margin-right:8px;' :style='{backgroundColor:rowData.color}'></div></div>"
             },
             "saved_time": {
               "title": "Saved Time",
               "type": "DATETIME"
-            },
-            "tags": {
-              "title": "Tags",
-              "type": "TEXT"
             },
             "timestamp": {
               "title": "When",
               "type": "HUMANIZE_TIME_DELTA",
               "source-column": "saved_time",
               "sortable": false
-            },
-            "menu_folder": {
-              "title": "Menu Folder",
-              "type": "TEXT",
-              "hidden": false,
-              "key": true
             }
           },
           "custom_columns": [
             {
-              "id": "enabled",
-              "label": "Enabled",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
-            },
-            {
-              "id": "id",
-              "label": "ID",
-              "expr": "'user-dashboard-' + name",
+              "id": "static_color",
+              "expr": "['#3F51B5']",
               "visible": false,
-              "key": true,
-              "sortable": false
-            },
-            {
-              "id": "url",
-              "label": "URL",
-              "expr": "'/workspace/dashboard/user-dashboard-' + name",
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled else ['#9E9E9E']",
               "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
-              "visible": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
+              "label": "Static Color"
             }
           ],
           "actions": [
             {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard",
-              "displayLabelColumnId": "id",
-              "drillDownLinkField": "name",
-              "identifier": "user.dashboard.view",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "title": "View YAML",
+              "permission": "rda:credential:add",
+              "title": "Add",
+              "icon": "mdi mdi-plus",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-yaml",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:personas-add",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -467,17 +228,17 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.yaml"
+                    "formId": "rda.saas.aipersona.add"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:user_dashboard:view",
-              "title": "View JSON",
+              "permission": "rda:credential:edit",
+              "title": "Edit",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-json",
+              "identifier": "saas-service-action:personas-edit",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -485,13 +246,49 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.json"
+                    "formId": "rda.saas.aipersona.edit"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:verify",
+              "title": "View",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:vault-persona-view",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.view.json"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:credential:verify",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:vault-delete",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.aipersona.delete"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "c466cddc"
+          "widget_id": "c9d555e3"
         }
       ]
     }
