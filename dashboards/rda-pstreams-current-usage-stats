@@ -1,173 +1,293 @@
 {
-  "name": "month3CRR-stream",
-  "label": "Month3CRR",
-  "description": "month3CRR-stream: Insights",
-  "dashboard_folder": "Default",
-  "version": "1.0.0",
-  "enabled": false,
-  "stream": "month3CRR-stream",
-  "dashboard_type": "dashboard",
-  "live_edit": true,
+  "name": "rda-pstreams-current-usage-stats",
+  "label": "Persistent Stream Current Usage Stats",
+  "description": "Persistent Stream Current Usage Stats",
+  "version": "22.9.19.1",
+  "enabled": true,
+  "dashboard_folder": "System",
+  "dashboard_type": "template",
+  "dashboard_style": "tabbed",
   "dashboard_filters": {
     "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 24 hours"
-    ],
-    "columns_filter": [
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
-      },
-      {
-        "id": "gpid",
-        "label": "Gpid",
-        "type": "TEXT"
-      },
-      {
-        "id": "month3CRR",
-        "label": "Month3Crr",
-        "type": "TEXT"
-      },
-      {
-        "id": "productFamily",
-        "label": "Productfamily",
-        "type": "TEXT"
-      }
-    ],
+    "columns_filter": [],
     "group_filters": [
       {
-        "stream": "month3CRR-stream",
-        "title": "Productfamily",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
+        "stream": "rda_system_pstream_current_usage_stats",
+        "title": "Datastore",
         "group_by": [
-          "productFamily"
+          "datastore"
         ],
         "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
+        "agg": "value_count",
+        "column": "name",
+        "type": "int"
+      },
+      {
+        "stream": "rda_system_pstream_current_usage_stats",
+        "title": "Read Only",
+        "group_by": [
+          "read_only"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "name",
         "type": "int"
       }
+    ],
+    "default_time_filter_labels": [
+      "Last 1 week"
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Month3CRR",
+      "title": "Usage Stats (updated once a day)",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Productfamily",
-          "duration_hours": 1080,
-          "stream": "month3CRR-stream",
+          "widget_type": "custom_counter",
+          "title": "Number of Streams",
+          "stream": "rda_system_pstream_current_usage_stats",
           "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "productFamily"
-          ],
-          "type": "int",
           "min_width": 3,
           "height": 3,
           "max_width": 6,
-          "widget_id": "e94fda9e"
+          "agg": "value_count",
+          "column": "name",
+          "type": "str",
+          "widget_id": "2faa4f31"
         },
         {
-          "title": "Data",
+          "widget_type": "custom_counter",
+          "title": "Docs Count",
+          "formatter": "DescriptiveCountFormatter",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "agg": "sum",
+          "column": "docs_count",
+          "type": "int",
+          "widget_id": "2faa4f32"
+        },
+        {
+          "widget_type": "custom_counter",
+          "title": "Size (MB)",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "agg": "sum",
+          "column": "size_in_mb",
+          "type": "int",
+          "widget_id": "2faa4f33"
+        },
+        {
+          "widget_type": "custom_counter",
+          "title": "Total Shards",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "agg": "sum",
+          "column": "shards_total",
+          "type": "int",
+          "widget_id": "2faa4f34"
+        },
+        {
+          "title": "Top 10 streams by doc count",
+          "widget_type": "bar_chart",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "chartProperties": {
+            "yAxisLabel": null,
+            "xAxisLabel": "Count",
+            "orientation": "horizontal",
+            "legendLocation": "none"
+          },
+          "width": 6,
+          "group_by": [
+            "name"
+          ],
+          "formatting": {
+            "notation": "compact"
+          },
+          "top_n": 10,
+          "column": "docs_count",
+          "agg": "sum",
+          "type": "int",
+          "widget_id": "f4786acz"
+        },
+        {
+          "title": "Top 10 streams by size",
+          "widget_type": "bar_chart",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "chartProperties": {
+            "yAxisLabel": null,
+            "xAxisLabel": "Size",
+            "orientation": "horizontal",
+            "legendLocation": "none"
+          },
+          "formatting": {
+            "style": "unit",
+            "unit": "megabyte"
+          },
+          "width": 6,
+          "group_by": [
+            "name"
+          ],
+          "top_n": 10,
+          "column": "size_in_mb",
+          "agg": "sum",
+          "type": "int",
+          "widget_id": "f4786azz"
+        },
+        {
+          "title": "Usage Stats",
           "widget_type": "tabular",
-          "duration_hours": 1080,
+          "showRowSummary": true,
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "month3CRR-stream",
+          "paginated": false,
+          "stream": "rda_system_pstream_current_usage_stats",
           "ts_column": "timestamp",
-          "extra_filter": null,
-          "columns": {
-            "gpid": {
-              "title": "Gpid",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "month3CRR": {
-              "title": "Month3Crr",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "productFamily": {
-              "title": "Productfamily",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "hidden": false
+          "sorting": [
+            {
+              "name": "asc"
             }
-          },
-          "widget_id": "16f4decb"
+          ],
+          "widget_id": "72498ed8"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Month3CRR",
+      "title": "Usage Stats (updated once a day)",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Productfamily",
-          "duration_hours": 1080,
-          "stream": "month3CRR-stream",
+          "widget_type": "custom_counter",
+          "title": "Number of Streams",
+          "stream": "rda_system_pstream_current_usage_stats",
           "ts_column": "timestamp",
-          "extra_filter": null,
-          "column": "count_",
-          "agg": "sum",
-          "group_by": [
-            "productFamily"
-          ],
-          "type": "int",
           "min_width": 3,
           "height": 3,
           "max_width": 6,
-          "widget_id": "e94fda9e"
+          "agg": "value_count",
+          "column": "name",
+          "type": "str",
+          "widget_id": "2faa4f31"
         },
         {
-          "title": "Data",
+          "widget_type": "custom_counter",
+          "title": "Docs Count",
+          "formatter": "DescriptiveCountFormatter",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "agg": "sum",
+          "column": "docs_count",
+          "type": "int",
+          "widget_id": "2faa4f32"
+        },
+        {
+          "widget_type": "custom_counter",
+          "title": "Size (MB)",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "agg": "sum",
+          "column": "size_in_mb",
+          "type": "int",
+          "widget_id": "2faa4f33"
+        },
+        {
+          "widget_type": "custom_counter",
+          "title": "Total Shards",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "min_width": 3,
+          "height": 3,
+          "max_width": 6,
+          "agg": "sum",
+          "column": "shards_total",
+          "type": "int",
+          "widget_id": "2faa4f34"
+        },
+        {
+          "title": "Top 10 streams by doc count",
+          "widget_type": "bar_chart",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "chartProperties": {
+            "yAxisLabel": null,
+            "xAxisLabel": "Count",
+            "orientation": "horizontal",
+            "legendLocation": "none"
+          },
+          "width": 6,
+          "group_by": [
+            "name"
+          ],
+          "formatting": {
+            "notation": "compact"
+          },
+          "top_n": 10,
+          "column": "docs_count",
+          "agg": "sum",
+          "type": "int",
+          "widget_id": "f4786acz"
+        },
+        {
+          "title": "Top 10 streams by size",
+          "widget_type": "bar_chart",
+          "stream": "rda_system_pstream_current_usage_stats",
+          "ts_column": "timestamp",
+          "chartProperties": {
+            "yAxisLabel": null,
+            "xAxisLabel": "Size",
+            "orientation": "horizontal",
+            "legendLocation": "none"
+          },
+          "formatting": {
+            "style": "unit",
+            "unit": "megabyte"
+          },
+          "width": 6,
+          "group_by": [
+            "name"
+          ],
+          "top_n": 10,
+          "column": "size_in_mb",
+          "agg": "sum",
+          "type": "int",
+          "widget_id": "f4786azz"
+        },
+        {
+          "title": "Usage Stats",
           "widget_type": "tabular",
-          "duration_hours": 1080,
+          "showRowSummary": true,
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "month3CRR-stream",
+          "paginated": false,
+          "stream": "rda_system_pstream_current_usage_stats",
           "ts_column": "timestamp",
-          "extra_filter": null,
-          "columns": {
-            "gpid": {
-              "title": "Gpid",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "month3CRR": {
-              "title": "Month3Crr",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "productFamily": {
-              "title": "Productfamily",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME",
-              "hidden": false
+          "sorting": [
+            {
+              "name": "asc"
             }
-          },
-          "widget_id": "16f4decb"
+          ],
+          "widget_id": "72498ed8"
         }
       ]
     }
