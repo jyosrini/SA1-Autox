@@ -1,66 +1,30 @@
 {
-  "name": "global-service-configs",
-  "label": "Service Configurations",
-  "description": "Service Configurations",
+  "name": "rda-tenant-integrations-app",
+  "label": "RDA Integrations",
+  "description": "Robotic Data Automation Integrations",
+  "dashboard_folder": "System",
+  "version": "22.11.10.1",
   "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "administration",
-  "exportable": false,
   "dashboard_filters": {
-    "time_filter": false
+    "time_filter": false,
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Service Configurations",
-      "show_filter": false,
-      "widgets": [
-        {
-          "title": "Service Configurations",
-          "widget_type": "tabular",
-          "api-endpoint": {
-            "service-name": "configuration-service",
-            "namespace": "io.cfx.dimensions.app",
-            "methodName": "invokeAppApi:getServiceConfigurationsTabularReport",
-            "version": "*",
-            "useReportContext": true,
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "context": {}
-              }
-            ]
-          },
-          "widget_id": "bae3b367"
-        }
-      ]
+      "title": "Example"
+    }
+  ],
+  "dashboard_type": "app",
+  "dashboard_pages": [
+    {
+      "name": "rda-mgmt-page-tenant-credentials",
+      "label": "Credentials",
+      "icon": "credentials.svg"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Service Configurations",
-      "show_filter": false,
-      "widgets": [
-        {
-          "title": "Service Configurations",
-          "widget_type": "tabular",
-          "api-endpoint": {
-            "service-name": "configuration-service",
-            "namespace": "io.cfx.dimensions.app",
-            "methodName": "invokeAppApi:getServiceConfigurationsTabularReport",
-            "version": "*",
-            "useReportContext": true,
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "context": {}
-              }
-            ]
-          },
-          "widget_id": "bae3b367"
-        }
-      ]
+      "title": "Example"
     }
   ]
 }
