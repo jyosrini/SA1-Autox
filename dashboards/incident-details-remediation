@@ -1,145 +1,186 @@
 {
-  "name": "incident-details-remediation",
-  "label": "Incident Remediation Tools",
-  "description": "OIA Remediation Tools in Incident",
-  "version": "23.12.4",
+  "name": "rda-artifact-dependencies",
+  "label": "Artifact Dependencies",
+  "description": "RDA Artifact Dependencies",
   "enabled": true,
-  "exportable": false,
+  "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
   "dashboard_style": "auto",
-  "status_poller": {},
-  "dashboard_type": "template",
-  "template_variables": {
-    "PROJECT_ID": {
-      "default": null,
-      "contextId": "projectid"
-    },
-    "INCIDENT_ID": {
-      "default": null,
-      "contextId": "incidentid"
-    }
-  },
+  "stream": "rda_artifact_dependencies",
   "dashboard_filters": {
     "time_filter": false,
-    "columns_filter": []
+    "group_filters": [
+      {
+        "stream": "rda_artifact_dependencies",
+        "title": "To Type",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "to_artifact_type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_artifact_dependencies",
+        "title": "To Artifact",
+        "duration_hours": 87600,
+        "limit": 200,
+        "group_by": [
+          "to_artifact_name"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_artifact_dependencies",
+        "title": "From Type",
+        "duration_hours": 87600,
+        "limit": 200,
+        "extra_filter": null,
+        "group_by": [
+          "from_artifact_type"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      },
+      {
+        "stream": "rda_artifact_dependencies",
+        "title": "From Artifact",
+        "duration_hours": 87600,
+        "limit": 200,
+        "group_by": [
+          "from_artifact_name"
+        ],
+        "ts_column": "timestamp",
+        "agg": "sum",
+        "column": "count_",
+        "type": "int"
+      }
+    ],
+    "columns_filter": [
+      {
+        "id": "to_artifact_type",
+        "label": "To Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "to_artifact_name",
+        "label": "To Artifact",
+        "type": "TEXT"
+      },
+      {
+        "id": "from_artifact_type",
+        "label": "From Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "from_artifact_name",
+        "label": "From Artifact",
+        "type": "TEXT"
+      },
+      {
+        "id": "_RDA_Id",
+        "label": "_RDA_ID",
+        "type": "TEXT"
+      },
+      {
+        "id": "count_",
+        "label": "Count_",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "timestamp",
+        "label": "Timestamp",
+        "type": "DATETIME"
+      }
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Remediation Tools",
-      "show_filter": false,
-      "projects": [],
+      "title": "Artifact Dependencies",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Remedial Tools",
+          "title": "Artifact Dependencies",
           "widget_type": "tabular",
-          "min_width": 6,
-          "height": 6,
-          "max_width": 6,
-          "paginated": true,
-          "refreshRequired": true,
+          "stream": "rda_artifact_dependencies",
           "timebased": false,
-          "max_rows": 100,
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-irm_service",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getApplicableToolsDetails",
-            "stringified-params": true,
-            "parse-output": true,
-            "params": [
-              {
-                "type": "remedial",
-                "projectId": "{{PROJECT_ID}}"
-              }
-            ]
-          },
-          "widget_id": "network_tools"
-        },
-        {
-          "title": "Tools Run History",
-          "widget_type": "tabular",
-          "min_width": 6,
-          "height": 6,
-          "max_width": 6,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "to_artifact_type",
+            "to_artifact_name",
+            "from_artifact_type",
+            "from_artifact_name"
+          ],
+          "ts_column": "timestamp",
           "paginated": true,
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 100,
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-irm_service",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getToolHistory",
-            "stringified-params": true,
-            "parse-output": true,
-            "params": [
-              {
-                "type": "remedial",
-                "projectId": "{{PROJECT_ID}}"
-              }
-            ]
+          "height": 10,
+          "min_wdith": 12,
+          "columns": {
+            "from_artifact_type": {
+              "title": "From Type"
+            },
+            "from_artifact_name": {
+              "title": "From Artifact"
+            },
+            "to_artifact_type": {
+              "title": "To Type"
+            },
+            "to_artifact_name": {
+              "title": "To Artifact"
+            }
           },
-          "widget_id": "tools_history"
+          "actions": [],
+          "widget_id": "01dc3a55"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Remediation Tools",
-      "show_filter": false,
-      "projects": [],
+      "title": "Artifact Dependencies",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "Remedial Tools",
+          "title": "Artifact Dependencies",
           "widget_type": "tabular",
-          "min_width": 6,
-          "height": 6,
-          "max_width": 6,
-          "paginated": true,
-          "refreshRequired": true,
+          "stream": "rda_artifact_dependencies",
           "timebased": false,
-          "max_rows": 100,
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-irm_service",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getApplicableToolsDetails",
-            "stringified-params": true,
-            "parse-output": true,
-            "params": [
-              {
-                "type": "remedial",
-                "projectId": "{{PROJECT_ID}}"
-              }
-            ]
-          },
-          "widget_id": "network_tools"
-        },
-        {
-          "title": "Tools Run History",
-          "widget_type": "tabular",
-          "min_width": 6,
-          "height": 6,
-          "max_width": 6,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "to_artifact_type",
+            "to_artifact_name",
+            "from_artifact_type",
+            "from_artifact_name"
+          ],
+          "ts_column": "timestamp",
           "paginated": true,
-          "refreshRequired": true,
-          "timebased": false,
-          "max_rows": 100,
-          "api-endpoint": {
-            "service-name": "cfxdimensions-app-irm_service",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getToolHistory",
-            "stringified-params": true,
-            "parse-output": true,
-            "params": [
-              {
-                "type": "remedial",
-                "projectId": "{{PROJECT_ID}}"
-              }
-            ]
+          "height": 10,
+          "min_wdith": 12,
+          "columns": {
+            "from_artifact_type": {
+              "title": "From Type"
+            },
+            "from_artifact_name": {
+              "title": "From Artifact"
+            },
+            "to_artifact_type": {
+              "title": "To Type"
+            },
+            "to_artifact_name": {
+              "title": "To Artifact"
+            }
           },
-          "widget_id": "tools_history"
+          "actions": [],
+          "widget_id": "01dc3a55"
         }
       ]
     }
