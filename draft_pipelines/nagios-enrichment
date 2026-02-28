@@ -1,10 +1,5 @@
-*nagios:nagios_host_group_members *
- --> @dm:save name = "nagios-host-group-members"
- --> @c:new-block
- --> @dm:empty
- --> @dm:addrow datasetname = "nagios-host-group-members" & condition = "(host_name == '$assetName')" & enrichcolumns = "group_id,hostgroup_name"
- --> @dm:save name = "alert-enrichment-definition-nagios"
- --> @c:new-block
- --> @dm:empty
- --> @dm:addrow datasetname = "alert-enrichment-definition-nagios"
- --> @rn:write-stream name = "alert-enrichment-pipeline-changes"
+@dm:query-persistent-stream-from-bookmark name='oia-incidents-stream' and query="i_recommendation_ts is empty" and bookmark='incidents-genai' and offset='latest'
+ --> @dm:dedup columns='incident_id'
+ --> @dm:eval fromTime="i_cfx_incident_occurred-(12*60*60*1000)" and toTime="i_cfx_incident_occurred+(4*60*60*1000)"
+ --> @dm:change-time-format from_format='ms' and to_format='datetimestr' and columns='fromTime,toTime'
+ --> @exec:run-pipeline name='genai-incident-recommendation-child'
