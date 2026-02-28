@@ -1,12 +1,12 @@
 {
-  "name": "bcs-oi-pa-security-advisories-enriched-cfx",
-  "label": "Product Alerts - Security Advisories",
-  "description": "BCS Product Alerts Summary dashboard",
+  "name": "security-advisories-niki",
+  "label": "Test",
+  "description": "Test",
   "version": "2025-07-10-02",
   "stream": "edc_sec_adv_data_enriched",
   "enabled": false,
   "live_edit": true,
-  "dashboard_folder": "BCS_productAlerts_SecAdv_Summary",
+  "dashboard_folder": "Default",
   "dashboard_style": "tabbed",
   "dashboard_type": "dashboard",
   "stream_query_mapping": {
@@ -20,7 +20,7 @@
     "default_time_filter_labels": [
       "Last 12 months"
     ],
-    "extra_filter1": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
+    "extra_filter": "(secAdv_matchConfidence is not 'Not Available')  and secAdv_securityImpactRating is not empty",
     "columns_filter": [
       {
         "id": "deviceId",
@@ -53,8 +53,8 @@
         "type": "TEXT"
       },
       {
-        "id": "product_name",
-        "label": "Product Name",
+        "id": "product_id",
+        "label": "Product ID",
         "type": "TEXT"
       },
       {
@@ -145,7 +145,7 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "combination_count",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
@@ -159,7 +159,7 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "combination_count",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
@@ -173,21 +173,21 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "combination_count",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
         "stream": "edc_sec_adv_data_enriched",
-        "title": "Product Name",
+        "title": "Product ID",
         "extra_filter": "(`secAdv_matchConfidence` not in [\"Not Vulnerable\",\"Not Available\"])",
         "group_by": [
-          "product_name"
+          "product_id"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "combination_count",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
@@ -201,7 +201,7 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "combination_count",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
@@ -215,7 +215,7 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "combination_count",
+        "column": "combination_count_sum",
         "type": "int"
       }
     ]
@@ -223,147 +223,9 @@
   "dashboard_sections": [
     {
       "title": "Summary",
-      "scope_filter1": "(`secAdv_matchConfidence` not in [\"Not Vulnerable\",\"Not Available\"])",
+      "scope_filter": "(`secAdv_matchConfidence` not in [\"Not Vulnerable\",\"Not Available\"])",
       "show_filter": true,
       "widgets": [
-        {
-          "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> Security Advisories </a></h2></div>",
-          "min_width": 12,
-          "height": 0.3,
-          "max_width": 12,
-          "widget_id": "dd3ae8ae"
-        },
-        {
-          "title": "Total Assets Impacted",
-          "widget_type": "custom_counter",
-          "duration_hours": 1080,
-          "extra_filter1": "(cfx_physicalAssetType in 'Chassis')",
-          "stream": "edc_oi_inventory_enriched",
-          "ts_column": "timestamp",
-          "column": "combination_count",
-          "agg": "sum",
-          "type": "int",
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "style": {
-            "color-list": [
-              "#0000FF"
-            ]
-          },
-          "widget_id": "e412e074"
-        },
-        {
-          "title": "Total Sec Adv Bulletins",
-          "widget_type": "custom_counter",
-          "duration_hours": 1080,
-          "stream": "edc_sec_adv_data_enriched",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "ts_column": "timestamp",
-          "column": "securityAdvisoryId",
-          "type": "int",
-          "agg": "cardinality",
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "style": {
-            "color-list": [
-              "#0000FF"
-            ]
-          },
-          "widget_id": "52ca4890"
-        },
-        {
-          "title": "Security Advisory Severity",
-          "widget_type": "pie_chart",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "stream": "edc_sec_adv_data_enriched",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "combination_count",
-          "agg": "sum",
-          "type": "int",
-          "style": {
-            "color-map": {
-              "Critical": "#8B0000",
-              "High": "#FF4500",
-              "Medium": "#F6C309",
-              "Low": "#00BB00",
-              "Not Available": "#8c8c8c"
-            }
-          },
-          "group_by": [
-            "secAdv_securityImpactRating"
-          ],
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "widget_id": "dfd378ed"
-        },
-        {
-          "title": "Security Advisory Status",
-          "widget_type": "pie_chart",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "stream": "edc_sec_adv_data_enriched",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "combination_count",
-          "agg": "sum",
-          "type": "int",
-          "style": {
-            "color-map": {
-              "Vulnerable": [
-                "#BB0000"
-              ],
-              "Potentially Vulnerable": [
-                "#F6C309"
-              ],
-              "Not Vulnerable": [
-                "#00BB00"
-              ]
-            }
-          },
-          "group_by": [
-            "secAdv_matchConfidence"
-          ],
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "widget_id": "2fa024db"
-        },
-        {
-          "widget_type": "multi_bar_chart",
-          "title": "Security Advisory Status by Severity",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "stream": "edc_sec_adv_data_enriched",
-          "min_width": 12,
-          "height": 4,
-          "max_width": 12,
-          "limit": 20,
-          "group_by": [
-            "secAdv_matchConfidence",
-            "secAdv_securityImpactRating"
-          ],
-          "style": {
-            "color-map": {
-              "Not Vulnerable": "#00BB00",
-              "Potentially Vulnerable": "#F6C309",
-              "Vulnerable": "#BB0000"
-            }
-          },
-          "agg": "sum",
-          "column": "combination_count",
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "Impact",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "4e8e2917"
-        },
         {
           "title": "Devices Count by Security Advisories",
           "widget_type": "tabular",
@@ -372,7 +234,7 @@
           "min_width": 12,
           "duration_hours": 1080,
           "ts_column": "timestamp",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
+          "extra_filter1": "source in 'securityAdvisories' and physicalAssetSubtype not contains 'WAP' ",
           "stream": "edc_sec_adv_data_enriched",
           "remote_searchable": true,
           "remote_searchable_cols": [
@@ -382,6 +244,11 @@
             "secAdv_securityImpactRating"
           ],
           "columns": {
+            "PsirtID": {
+              "title": "PsirtID",
+              "type": "DOUBLE",
+              "visible": true
+            },
             "securityAdvisoryColdId": {
               "title": "Security Advisory Col ID",
               "type": "DOUBLE",
@@ -425,13 +292,6 @@
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>",
               "visible": true
-            },
-            "ID": {
-              "title": "ID",
-              "value": "user-dashboard-bcs-oi-overall-device-enriched-drilldown",
-              "key": true,
-              "type": "FIXED_VALUE",
-              "hidden": true
             }
           },
           "pivot": {
@@ -441,17 +301,42 @@
               "bulletinTitle",
               "secAdv_matchConfidence",
               "secAdv_securityImpactRating",
-              "BulletinURL"
+              "BulletinURL",
+              "PsirtID"
             ],
             "series": [
               {
-                "column": "Combination_count",
+                "column": "combination_count_sum",
                 "agg": "sum",
                 "type": "int",
                 "label": "Impacted Device Count"
               }
             ]
           },
+          "actions": [
+            {
+              "appName": "user-dashboard/security-advisories-niki-details",
+              "permission": "rda:user_dashboard:view",
+              "drillDownLinkField": "Impacted Device Count",
+              "identifier": "launch.dashboard.security-advisories-niki-details",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "secAdv_matchConfidence",
+                    "paramId": "a_secAdv_matchConfidence"
+                  },
+                  {
+                    "paramKey": "securityAdvisoryId",
+                    "paramId": "a_securityAdvisoryId"
+                  }
+                ]
+              },
+              "title": "View Details",
+              "type": "GO_TO_APP_STATE"
+            }
+          ],
           "widget_id": "ac6d2dd4"
         },
         {
@@ -462,11 +347,11 @@
           "min_width": 12,
           "duration_hours": 1080,
           "ts_column": "timestamp",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "stream": "edc_sec_adv_data_enriched",
+          "extra_filter1": "(secAdv_matchConfidence not in 'Not Available')",
+          "stream": "edc_oi_inventory_enriched",
           "columns": {
             "combination_count": {
-              "title": "Count",
+              "title": "Total Count",
               "type": "TEXT",
               "key": true,
               "visible": true
@@ -479,7 +364,11 @@
             "sw_version": "SW Version",
             "product_name": "Product Name",
             "product_id": "Product ID",
-            "deviceSN": "Serial Number",
+            "deviceSN": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "visible": false
+            },
             "secAdv_confidence_color": {
               "type": "COLOR-MAP",
               "source-column": "secAdv_matchConfidence",
@@ -541,7 +430,7 @@
               "type": "TEXT",
               "visible": false
             },
-            "ID": {
+            "id": {
               "title": "ID",
               "value": "user-dashboard-bcs-oi-overall-device-enriched-drilldown",
               "key": true,
@@ -566,7 +455,7 @@
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "stream": "edc_sec_adv_data_enriched",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
+          "extra_filter": "source in 'securityAdvisories'",
           "columns": {
             "securityAdvisoryColdId": {
               "title": "Security Advisory Col ID",
@@ -607,7 +496,7 @@
               "visible": true
             },
             "matchConfidenceReason": "Security Advisory Status Reason",
-            "combination_count": {
+            "combination_count_sum": {
               "title": "Count",
               "type": "TEXT",
               "key": true,
@@ -641,147 +530,9 @@
   "pstream_dashboards": [
     {
       "title": "Summary",
-      "scope_filter1": "(`secAdv_matchConfidence` not in [\"Not Vulnerable\",\"Not Available\"])",
+      "scope_filter": "(`secAdv_matchConfidence` not in [\"Not Vulnerable\",\"Not Available\"])",
       "show_filter": true,
       "widgets": [
-        {
-          "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> Security Advisories </a></h2></div>",
-          "min_width": 12,
-          "height": 0.3,
-          "max_width": 12,
-          "widget_id": "dd3ae8ae"
-        },
-        {
-          "title": "Total Assets Impacted",
-          "widget_type": "custom_counter",
-          "duration_hours": 1080,
-          "extra_filter1": "(cfx_physicalAssetType in 'Chassis')",
-          "stream": "edc_oi_inventory_enriched",
-          "ts_column": "timestamp",
-          "column": "combination_count",
-          "agg": "sum",
-          "type": "int",
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "style": {
-            "color-list": [
-              "#0000FF"
-            ]
-          },
-          "widget_id": "e412e074"
-        },
-        {
-          "title": "Total Sec Adv Bulletins",
-          "widget_type": "custom_counter",
-          "duration_hours": 1080,
-          "stream": "edc_sec_adv_data_enriched",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "ts_column": "timestamp",
-          "column": "securityAdvisoryId",
-          "type": "int",
-          "agg": "cardinality",
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "style": {
-            "color-list": [
-              "#0000FF"
-            ]
-          },
-          "widget_id": "52ca4890"
-        },
-        {
-          "title": "Security Advisory Severity",
-          "widget_type": "pie_chart",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "stream": "edc_sec_adv_data_enriched",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "combination_count",
-          "agg": "sum",
-          "type": "int",
-          "style": {
-            "color-map": {
-              "Critical": "#8B0000",
-              "High": "#FF4500",
-              "Medium": "#F6C309",
-              "Low": "#00BB00",
-              "Not Available": "#8c8c8c"
-            }
-          },
-          "group_by": [
-            "secAdv_securityImpactRating"
-          ],
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "widget_id": "dfd378ed"
-        },
-        {
-          "title": "Security Advisory Status",
-          "widget_type": "pie_chart",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "stream": "edc_sec_adv_data_enriched",
-          "ts_column": "timestamp",
-          "duration_hours": 1080,
-          "column": "combination_count",
-          "agg": "sum",
-          "type": "int",
-          "style": {
-            "color-map": {
-              "Vulnerable": [
-                "#BB0000"
-              ],
-              "Potentially Vulnerable": [
-                "#F6C309"
-              ],
-              "Not Vulnerable": [
-                "#00BB00"
-              ]
-            }
-          },
-          "group_by": [
-            "secAdv_matchConfidence"
-          ],
-          "min_width": 3,
-          "height": 4,
-          "max_width": 3,
-          "widget_id": "2fa024db"
-        },
-        {
-          "widget_type": "multi_bar_chart",
-          "title": "Security Advisory Status by Severity",
-          "duration_hours": 1080,
-          "ts_column": "timestamp",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "stream": "edc_sec_adv_data_enriched",
-          "min_width": 12,
-          "height": 4,
-          "max_width": 12,
-          "limit": 20,
-          "group_by": [
-            "secAdv_matchConfidence",
-            "secAdv_securityImpactRating"
-          ],
-          "style": {
-            "color-map": {
-              "Not Vulnerable": "#00BB00",
-              "Potentially Vulnerable": "#F6C309",
-              "Vulnerable": "#BB0000"
-            }
-          },
-          "agg": "sum",
-          "column": "combination_count",
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "Impact",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "4e8e2917"
-        },
         {
           "title": "Devices Count by Security Advisories",
           "widget_type": "tabular",
@@ -790,7 +541,7 @@
           "min_width": 12,
           "duration_hours": 1080,
           "ts_column": "timestamp",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
+          "extra_filter1": "source in 'securityAdvisories' and physicalAssetSubtype not contains 'WAP' ",
           "stream": "edc_sec_adv_data_enriched",
           "remote_searchable": true,
           "remote_searchable_cols": [
@@ -800,6 +551,11 @@
             "secAdv_securityImpactRating"
           ],
           "columns": {
+            "PsirtID": {
+              "title": "PsirtID",
+              "type": "DOUBLE",
+              "visible": true
+            },
             "securityAdvisoryColdId": {
               "title": "Security Advisory Col ID",
               "type": "DOUBLE",
@@ -843,13 +599,6 @@
               "type": "TEXT",
               "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.secAdv_impact_rating_color }}' > {{ row.secAdv_securityImpactRating }} </span>",
               "visible": true
-            },
-            "ID": {
-              "title": "ID",
-              "value": "user-dashboard-bcs-oi-overall-device-enriched-drilldown",
-              "key": true,
-              "type": "FIXED_VALUE",
-              "hidden": true
             }
           },
           "pivot": {
@@ -859,17 +608,42 @@
               "bulletinTitle",
               "secAdv_matchConfidence",
               "secAdv_securityImpactRating",
-              "BulletinURL"
+              "BulletinURL",
+              "PsirtID"
             ],
             "series": [
               {
-                "column": "Combination_count",
+                "column": "combination_count_sum",
                 "agg": "sum",
                 "type": "int",
                 "label": "Impacted Device Count"
               }
             ]
           },
+          "actions": [
+            {
+              "appName": "user-dashboard/security-advisories-niki-details",
+              "permission": "rda:user_dashboard:view",
+              "drillDownLinkField": "Impacted Device Count",
+              "identifier": "launch.dashboard.security-advisories-niki-details",
+              "selectionType": "SINGLE",
+              "stateName": "app.featureapp",
+              "contextParamList": {
+                "contextParams": [
+                  {
+                    "paramKey": "secAdv_matchConfidence",
+                    "paramId": "a_secAdv_matchConfidence"
+                  },
+                  {
+                    "paramKey": "securityAdvisoryId",
+                    "paramId": "a_securityAdvisoryId"
+                  }
+                ]
+              },
+              "title": "View Details",
+              "type": "GO_TO_APP_STATE"
+            }
+          ],
           "widget_id": "ac6d2dd4"
         },
         {
@@ -880,11 +654,11 @@
           "min_width": 12,
           "duration_hours": 1080,
           "ts_column": "timestamp",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
-          "stream": "edc_sec_adv_data_enriched",
+          "extra_filter1": "(secAdv_matchConfidence not in 'Not Available')",
+          "stream": "edc_oi_inventory_enriched",
           "columns": {
             "combination_count": {
-              "title": "Count",
+              "title": "Total Count",
               "type": "TEXT",
               "key": true,
               "visible": true
@@ -897,7 +671,11 @@
             "sw_version": "SW Version",
             "product_name": "Product Name",
             "product_id": "Product ID",
-            "deviceSN": "Serial Number",
+            "deviceSN": {
+              "title": "Serial Number",
+              "type": "TEXT",
+              "visible": false
+            },
             "secAdv_confidence_color": {
               "type": "COLOR-MAP",
               "source-column": "secAdv_matchConfidence",
@@ -959,7 +737,7 @@
               "type": "TEXT",
               "visible": false
             },
-            "ID": {
+            "id": {
               "title": "ID",
               "value": "user-dashboard-bcs-oi-overall-device-enriched-drilldown",
               "key": true,
@@ -984,7 +762,7 @@
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "stream": "edc_sec_adv_data_enriched",
-          "extra_filter": "(secAdv_matchConfidence is not 'Not Available') and (item_type is 'CHASSIS') and secAdv_securityImpactRating is not empty",
+          "extra_filter": "source in 'securityAdvisories'",
           "columns": {
             "securityAdvisoryColdId": {
               "title": "Security Advisory Col ID",
@@ -1025,7 +803,7 @@
               "visible": true
             },
             "matchConfidenceReason": "Security Advisory Status Reason",
-            "combination_count": {
+            "combination_count_sum": {
               "title": "Count",
               "type": "TEXT",
               "key": true,
