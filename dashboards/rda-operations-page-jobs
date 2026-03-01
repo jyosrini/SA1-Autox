@@ -1,259 +1,265 @@
 {
-  "name": "cnc-network-assets-inventory",
-  "label": "Network Assets",
-  "description": "Network Assets",
-  "dashboard_folder": "MOW",
-  "version": "2023-03-18_1",
-  "enabled": false,
-  "debug": true,
-  "live_edit": true,
-  "stream": "cnc_device_inventory",
+  "name": "rda-operations-page-jobs",
+  "label": "Jobs",
+  "description": "Jobs Page",
+  "enabled": true,
   "dashboard_type": "dashboard",
+  "dashboard_folder": "System",
+  "dashboard_style": "auto",
+  "stream": "rda_system_job_tracker",
   "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_labels": [
-      "Last 12 months"
-    ],
-    "extra_filter": "`item_type` is  \"ASSET\"",
+    "time_filter": false,
     "columns_filter": [
       {
-        "id": "device_ip",
-        "label": "IP Address",
+        "id": "jobid",
+        "label": "Job Id",
         "type": "TEXT"
       },
       {
-        "id": "device_family",
-        "label": "Device Family",
+        "id": "pid",
+        "label": "PID",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "pod_id",
+        "label": "Pod ID",
         "type": "TEXT"
       },
       {
-        "id": "device_serial_number",
-        "label": "Serial Number",
+        "id": "pipeline-name",
+        "label": "Pipeline",
         "type": "TEXT"
       },
       {
-        "id": "device_fw_version",
-        "label": "Software Version",
+        "id": "attributes_org_name",
+        "label": "Org Name",
         "type": "TEXT"
       },
       {
-        "id": "clli_code",
-        "label": "CLLI Code",
+        "id": "attributes_file_name",
+        "label": "File Name",
         "type": "TEXT"
-      }
-    ],
-    "group_filters": [
-      {
-        "stream": "cnc_device_inventory",
-        "title": "Manufacturer",
-        "duration_hours": 1080,
-        "extra_filter": "`item_type` is  \"ASSET\"",
-        "group_by": [
-          "manufacturer"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "_RDA_Id",
-        "type": "str"
       },
       {
-        "stream": "cnc_device_inventory",
-        "title": "Model",
-        "duration_hours": 1080,
-        "extra_filter": "`item_type` is  \"ASSET\"",
-        "group_by": [
-          "device_model"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "_RDA_Id",
-        "type": "str"
+        "id": "attributes_pipeline_version",
+        "label": "Pipeline Version",
+        "type": "TEXT"
       },
       {
-        "stream": "cnc_device_inventory",
-        "title": "SW Versions",
-        "duration_hours": 1080,
-        "extra_filter": "`item_type` is  \"ASSET\"",
-        "group_by": [
-          "device_fw_version"
-        ],
-        "ts_column": "timestamp",
-        "agg": "value_count",
-        "column": "_RDA_Id",
-        "type": "str"
+        "id": "status",
+        "label": "Status",
+        "type": "TEXT"
+      },
+      {
+        "id": "reason",
+        "label": "Reason",
+        "type": "TEXT"
+      },
+      {
+        "id": "created",
+        "label": "Job Created",
+        "type": "DATETIME"
+      },
+      {
+        "id": "ended_time",
+        "label": "Job Ended",
+        "type": "DATETIME"
+      },
+      {
+        "id": "age",
+        "label": "Duration",
+        "type": "TEXT"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Network Devices",
+      "title": "Active Jobs",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Network Assets </a></h1></div>",
-          "min_width": 12,
-          "height": 0.4,
-          "max_width": 12,
-          "widget_id": "dd3ae8ae"
-        },
-        {
-          "title": "Total Assets",
-          "widget_type": "custom_counter",
-          "duration_hours": 1080,
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "type": "int",
+          "title": "Worker Nodes",
+          "widget_type": "portal_counter",
+          "reportId": "registry.workers.counter",
+          "height": 2,
           "min_width": 2,
-          "height": 4,
-          "max_width": 2,
-          "style": {
-            "color-list": [
-              "#90CAF9"
-            ]
-          },
-          "widget_id": "f0ehB7He"
+          "widget_id": "41d076c1"
         },
         {
-          "title": "Network Assets",
-          "widget_type": "tabular",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "query": "*",
-          "max_width": 12,
-          "height": 8,
+          "title": "Sites",
+          "widget_type": "portal_counter",
+          "reportId": "registry.sites.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "c159bbb8"
+        },
+        {
+          "title": "Total CPUs",
+          "widget_type": "portal_counter",
+          "reportId": "registry.sites_cpu.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "59a12b3c"
+        },
+        {
+          "title": "Total Memory GB",
+          "widget_type": "portal_counter",
+          "reportId": "registry.sites_mem.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "d9c0327e"
+        },
+        {
+          "title": "Agents",
+          "widget_type": "portal_counter",
+          "reportId": "registry.agents.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "65e7c70f"
+        },
+        {
+          "title": "Active Jobs",
+          "widget_type": "portal_counter",
+          "reportId": "jobs.active.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "875f9e64"
+        },
+        {
+          "title": "Jobs By Pipeline",
+          "widget_type": "portal_pie_chart",
+          "reportId": "jobs.by-pipeline.ringpie",
+          "height": 4,
+          "min_width": 4,
+          "widget_id": "bgf6b5b9"
+        },
+        {
+          "title": "Jobs By Pod",
+          "widget_type": "portal_pie_chart",
+          "reportId": "jobs.by-pod.ringpie",
+          "height": 4,
+          "min_width": 4,
+          "widget_id": "abc6b5b9"
+        },
+        {
+          "title": "Jobs",
+          "widget_type": "portal_tabular",
+          "reportId": "jobs.list.tabular",
+          "height": 10,
           "min_width": 12,
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "device_ip",
-            "device_serial_number",
-            "device_family",
-            "device_fw_version"
-          ],
-          "columns": {
-            "device_name": {
-              "title": "Device Name",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_serial_number": {
-              "title": "Serial Number",
-              "type": "TEXT",
-              "visible": true
-            },
-            "device_model": {
-              "title": "Model",
-              "type": "TEXT",
-              "visible": false
-            },
-            "clli_code": {
-              "title": "CLLI Code",
-              "type": "TEXT",
-              "visible": true
-            },
-            "productName": {
-              "title": "Product Name",
-              "type": "TEXT",
-              "visible": true
-            },
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": true
-            }
-          },
-          "widget_id": "fac6548b"
+          "paginated": true,
+          "widget_id": "bbc6b5f6"
+        }
+      ]
+    },
+    {
+      "title": "All Jobs",
+      "show_filter": true,
+      "widgets": [
+        {
+          "title": "All Jobs",
+          "widget_type": "portal_tabular",
+          "reportId": "jobs.historical.list.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "bbc6b5g6"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Network Devices",
+      "title": "Active Jobs",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'> Network Assets </a></h1></div>",
-          "min_width": 12,
-          "height": 0.4,
-          "max_width": 12,
-          "widget_id": "dd3ae8ae"
-        },
-        {
-          "title": "Total Assets",
-          "widget_type": "custom_counter",
-          "duration_hours": 1080,
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "column": "_RDA_Id",
-          "agg": "value_count",
-          "type": "int",
+          "title": "Worker Nodes",
+          "widget_type": "portal_counter",
+          "reportId": "registry.workers.counter",
+          "height": 2,
           "min_width": 2,
-          "height": 4,
-          "max_width": 2,
-          "style": {
-            "color-list": [
-              "#90CAF9"
-            ]
-          },
-          "widget_id": "f0ehB7He"
+          "widget_id": "41d076c1"
         },
         {
-          "title": "Network Assets",
-          "widget_type": "tabular",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "query": "*",
-          "max_width": 12,
-          "height": 8,
+          "title": "Sites",
+          "widget_type": "portal_counter",
+          "reportId": "registry.sites.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "c159bbb8"
+        },
+        {
+          "title": "Total CPUs",
+          "widget_type": "portal_counter",
+          "reportId": "registry.sites_cpu.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "59a12b3c"
+        },
+        {
+          "title": "Total Memory GB",
+          "widget_type": "portal_counter",
+          "reportId": "registry.sites_mem.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "d9c0327e"
+        },
+        {
+          "title": "Agents",
+          "widget_type": "portal_counter",
+          "reportId": "registry.agents.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "65e7c70f"
+        },
+        {
+          "title": "Active Jobs",
+          "widget_type": "portal_counter",
+          "reportId": "jobs.active.counter",
+          "height": 2,
+          "min_width": 2,
+          "widget_id": "875f9e64"
+        },
+        {
+          "title": "Jobs By Pipeline",
+          "widget_type": "portal_pie_chart",
+          "reportId": "jobs.by-pipeline.ringpie",
+          "height": 4,
+          "min_width": 4,
+          "widget_id": "bgf6b5b9"
+        },
+        {
+          "title": "Jobs By Pod",
+          "widget_type": "portal_pie_chart",
+          "reportId": "jobs.by-pod.ringpie",
+          "height": 4,
+          "min_width": 4,
+          "widget_id": "abc6b5b9"
+        },
+        {
+          "title": "Jobs",
+          "widget_type": "portal_tabular",
+          "reportId": "jobs.list.tabular",
+          "height": 10,
           "min_width": 12,
-          "stream": "cnc_device_inventory",
-          "ts_column": "timestamp",
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "device_ip",
-            "device_serial_number",
-            "device_family",
-            "device_fw_version"
-          ],
-          "columns": {
-            "device_name": {
-              "title": "Device Name",
-              "type": "TEXT",
-              "key": true
-            },
-            "device_serial_number": {
-              "title": "Serial Number",
-              "type": "TEXT",
-              "visible": true
-            },
-            "device_model": {
-              "title": "Model",
-              "type": "TEXT",
-              "visible": false
-            },
-            "clli_code": {
-              "title": "CLLI Code",
-              "type": "TEXT",
-              "visible": true
-            },
-            "productName": {
-              "title": "Product Name",
-              "type": "TEXT",
-              "visible": true
-            },
-            "productType": {
-              "title": "Product Type",
-              "type": "TEXT",
-              "visible": true
-            }
-          },
-          "widget_id": "fac6548b"
+          "paginated": true,
+          "widget_id": "bbc6b5f6"
+        }
+      ]
+    },
+    {
+      "title": "All Jobs",
+      "show_filter": true,
+      "widgets": [
+        {
+          "title": "All Jobs",
+          "widget_type": "portal_tabular",
+          "reportId": "jobs.historical.list.tabular",
+          "height": 10,
+          "min_width": 12,
+          "paginated": true,
+          "widget_id": "bbc6b5g6"
         }
       ]
     }

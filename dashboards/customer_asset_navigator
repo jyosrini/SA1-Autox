@@ -1,506 +1,290 @@
 {
-  "name": "oia-event-tracking-view-alerts",
-  "label": "Events-View-Alerts",
-  "description": "OIA Event Tracking View Alerts",
-  "version": "23.1.2",
+  "name": "customer_asset_navigator",
+  "label": "Asset Navigator",
+  "description": "Asset Navigator",
   "enabled": true,
-  "stream": "oia-events-stream",
   "dashboard_style": "auto",
-  "status_poller": {},
   "dashboard_type": "template",
+  "dashboard_folder": "NetworkDevicePack",
+  "version": "24.1.27.2",
+  "short_label": "Stack",
+  "live_edit": true,
+  "context_label_id": "stack_name",
   "template_variables": {
-    "SOURCE_EVENT_ID": {
-      "default": null,
-      "contextId": "se_id",
-      "type": "stack"
+    "NODE_ID": {
+      "contextId": [
+        "navigatorSelectionContexts",
+        "secondaryListSelection",
+        "node_id"
+      ]
+    },
+    "PROJ_ID": {
+      "contextId": "project_id"
+    },
+    "CUST_TAG": {
+      "contextId": "customerTag"
     }
   },
   "dashboard_filters": {
-    "show_default_time_filter": false,
-    "additional_datetime_column_filters": [
-      {
-        "id": "e_createdat",
-        "label": "Created At"
+    "extra_filter0": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '' or customer_tag is 'None')"
+  },
+  "navigation_dashboards": {
+    "tree_data": {
+      "column_name": "node_type",
+      "pstream_name": "cfx_rdaf_topology_nodes",
+      "cfxql_query0": "(project_id is '{{PROJ_ID}}' and node_type != 'Gateway')",
+      "cfxql_query": "(device_object is not 'Interface'  and node_type not in ['Components', 'Gateway'] and device_status is not 'UNMANAGED') and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty)"
+    },
+    "tree_detail": {
+      "display_column": "node_label",
+      "selected_columns": {
+        "node_id": "Node Id",
+        "node_label": "Node Name"
       },
-      {
-        "id": "e_updatedat",
-        "label": "Updated At"
-      }
-    ],
-    "columns_filter": [
-      {
-        "id": "e_createdat",
-        "label": "Created At",
-        "type": "DATETIME"
-      }
-    ],
-    "time_filter": false,
-    "default_time_filter_non_removable": true
+      "pstream_name": "cfx_rdaf_topology_nodes",
+      "cfxql_query0": "node_type != 'Gateway'",
+      "cfxql_query": "(device_object is not 'Interface'  and node_type not in ['Components', 'Gateway'] and device_status is not 'UNMANAGED') and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty)",
+      "duration_hours": 24
+    },
+    "showNodeIcon": true,
+    "showSearchBox": false
+  },
+  "computedContext0": {
+    "customer_tag": {
+      "expr": "customer_tag if customer_tag else ''",
+      "defaultValue": ""
+    }
   },
   "dashboard_sections": [
     {
-      "title": "Events",
-      "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
+      "title": "Node Details",
       "widgets": [
         {
-          "title": "Event",
-          "widget_type": "summary",
-          "stream": "oia-source-events-stream",
-          "extra_filter": "se_id is '{{SOURCE_EVENT_ID}}'",
-          "ts_column": "se_updatedat",
-          "timebased": false,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "paginated": true,
-          "resizableColumns": false,
-          "refreshRequired": true,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "se_sourcesystemname",
-            "se_status",
-            "se_message",
-            "se_projectid",
-            "se_id"
-          ],
-          "max_rows": 50,
-          "columns": {
-            "se_id": {
-              "title": "Source Event ID",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "se_projectid": {
-              "title": "project Id",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "se_sourcereceivedat": {
-              "title": "Received At",
-              "type": "DATETIME",
-              "defaultWidth": 150
-            },
-            "se_sourcesystemname": {
-              "title": "Source",
-              "defaultWidth": 150
-            },
-            "se_status": {
-              "title": "Status",
-              "defaultWidth": 150
-            },
-            "se_numberofevents": {
-              "title": "No of Events",
-              "defaultWidth": 150
-            },
-            "se_message": {
-              "title": "Message",
-              "defaultWidth": 270
-            },
-            "se_createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            },
-            "se_updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            }
-          },
-          "actions": [],
-          "widget_id": "94a3fc11"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Alerts by Status",
-          "stream": "oia-events-stream",
-          "extra_filter": "e_sourceeventid is '{{SOURCE_EVENT_ID}}'",
-          "ts_column": "e_updatedat",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "column": "e_id",
-          "agg": "value_count",
-          "group_by": [
-            "e_status"
-          ],
-          "type": "str",
-          "widget_id": "cb0706e6"
-        },
-        {
-          "title": "Alerts",
-          "widget_type": "tabular",
-          "stream": "oia-events-stream",
-          "ts_column": "e_updatedat",
-          "timebased": false,
-          "min_width": 12,
-          "height": 8,
+          "widget_type": "launch_actions",
+          "dashboard_name_template": "{node_type}-view-dashboard",
+          "dashboard_name_template0": "{node_type}-alert_device_app",
+          "extra_filter": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is 'None')",
           "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "refreshRequired": true,
-          "remote_searchable": true,
-          "extra_filter": "e_sourceeventid is '{{SOURCE_EVENT_ID}}'",
-          "remote_searchable_cols": [
-            "e_label",
-            "e_severity",
-            "e_status",
-            "e_eventstate",
-            "e_message"
-          ],
-          "max_rows": 50,
+          "height": 0.25,
+          "min_width": 12,
+          "widget_id": "181129d8",
+          "context_attributes": {
+            "CHASSIS": [
+              "parent_sn",
+              "device_ip"
+            ],
+            "Edge": [
+              "edgeName",
+              "edge_ip",
+              "serialNumber",
+              "edge_id"
+            ]
+          }
+        },
+        {
+          "title": "Summary",
+          "widget_type": "portal_summary",
+          "reportId": "rda.saas.topology.node_details.report",
+          "stream0": "cfx_rdaf_topology_nodes",
+          "max_width": 4,
+          "height": 5,
+          "min_width": 4,
+          "widget_id": "182229d8"
+        },
+        {
+          "title": "Edges Summary",
+          "widget_type": "tabular",
+          "extra_filter": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is 'None')",
+          "max_width": 8,
+          "height": 5,
+          "min_width": 8,
+          "stream": "cfx_rdaf_topology_edges",
+          "timebased": false,
           "columns": {
-            "e_label": {
-              "title": "Label",
-              "formatter": "truncate",
-              "defaultWidth": 270
+            "left_label": {
+              "title": "Left Label",
+              "visible": true,
+              "key": true
             },
-            "e_severity_color": {
-              "title": "Sev_2",
-              "type": "COLOR-MAP",
-              "source-column": "e_severity",
-              "color-map": {
-                "SEVERE": "#B71C1C",
-                "CRITICAL": "#E53935",
-                "MAJOR": "#F57C00",
-                "MINOR": "#FFA726",
-                "WARNING": "#FFD54F",
-                "NOTIFICATION": "#4DD0E1",
-                "INFORMATION": "#03A9F4"
-              }
+            "right_label": {
+              "title": "Right Label",
+              "visible": true,
+              "key": true
             },
-            "e_severity": {
-              "title": "Severity",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.e_severity_color }}'}}' > {{'{{ row.e_severity }}'}} </span>",
-              "defaultWidth": 150
-            },
-            "e_status": {
-              "title": "Status",
-              "defaultWidth": 150
-            },
-            "e_eventstate": {
-              "title": "Processing State",
-              "defaultWidth": 150
-            },
-            "e_message": {
-              "title": "Comments",
-              "defaultWidth": 270
-            },
-            "e_createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            },
-            "e_updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            },
-            "e_id": {
-              "title": "Event Id",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "e_projectid": {
-              "title": "project Id",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "e_sourceeventid": {
-              "title": "Source Event ID",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "e_eventkey": {
-              "title": "Alert Key",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "e_processedeventid": {
-              "title": "Alert ID",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
+            "relation_type": {
+              "title": "Relation",
+              "visible": true,
+              "key": true
             }
           },
-          "actions": [
-            {
-              "title": "View Alert Trail",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "oia:event-tracking:view",
-              "identifier": "ingestion-tracker:cfx.view.alert.trail",
-              "drillDownLinkField": "label",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "label",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "e_processedeventid",
-                    "paramId": "processedeventid"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "ingestion-tracker",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "com.cfx.form.view.alert.trail",
-                    "context": {}
-                  }
-                ]
-              }
-            }
+          "query": "(left_id is '{{NODE_ID}}' or right_id is '{{NODE_ID}}')",
+          "duration_hours": 2160,
+          "widget_id": "dc7103e1"
+        },
+        {
+          "title": "Topology",
+          "widget_type": "topology",
+          "register_search_endpoints": true,
+          "reportId": "rda.saas.stack.view.topo",
+          "context_attributes": {
+            "CHASSIS": [
+              "parent_sn",
+              "device_ip"
+            ],
+            "Edge": [
+              "edgeName",
+              "edge_ip",
+              "serialNumber",
+              "edge_id"
+            ]
+          },
+          "limit_to_node_types": [
+            "CHASSIS",
+            "Edge",
+            "Tunnel_end_point"
           ],
-          "widget_id": "2d17f8a1"
+          "has_more_data_flag": false,
+          "stack_type": "dynamic",
+          "expand_all": true,
+          "stack_definition": {
+            "name": "Network Device Discovery Pack Stack",
+            "description": "",
+            "saved_time": "2023-09-12T21:08:31.418255",
+            "is_dynamic": true,
+            "hierarchical": false,
+            "dynamic_nodes": {
+              "stream": "cfx_rdaf_topology_nodes",
+              "query": "node_type != 'Gateway' and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '')",
+              "limit": 0,
+              "sorting": null
+            },
+            "dynamic_relationships": {
+              "stream": "cfx_rdaf_topology_edges",
+              "query": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '')",
+              "limit": 0,
+              "sorting": null
+            }
+          },
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182287d8"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Events",
-      "show_filter": true,
-      "projects": [
-        "ACME"
-      ],
+      "title": "Node Details",
       "widgets": [
         {
-          "title": "Event",
-          "widget_type": "summary",
-          "stream": "oia-source-events-stream",
-          "extra_filter": "se_id is '{{SOURCE_EVENT_ID}}'",
-          "ts_column": "se_updatedat",
-          "timebased": false,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "paginated": true,
-          "resizableColumns": false,
-          "refreshRequired": true,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "se_sourcesystemname",
-            "se_status",
-            "se_message",
-            "se_projectid",
-            "se_id"
-          ],
-          "max_rows": 50,
-          "columns": {
-            "se_id": {
-              "title": "Source Event ID",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "se_projectid": {
-              "title": "project Id",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "se_sourcereceivedat": {
-              "title": "Received At",
-              "type": "DATETIME",
-              "defaultWidth": 150
-            },
-            "se_sourcesystemname": {
-              "title": "Source",
-              "defaultWidth": 150
-            },
-            "se_status": {
-              "title": "Status",
-              "defaultWidth": 150
-            },
-            "se_numberofevents": {
-              "title": "No of Events",
-              "defaultWidth": 150
-            },
-            "se_message": {
-              "title": "Message",
-              "defaultWidth": 270
-            },
-            "se_createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            },
-            "se_updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            }
-          },
-          "actions": [],
-          "widget_id": "94a3fc11"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Alerts by Status",
-          "stream": "oia-events-stream",
-          "extra_filter": "e_sourceeventid is '{{SOURCE_EVENT_ID}}'",
-          "ts_column": "e_updatedat",
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "column": "e_id",
-          "agg": "value_count",
-          "group_by": [
-            "e_status"
-          ],
-          "type": "str",
-          "widget_id": "cb0706e6"
-        },
-        {
-          "title": "Alerts",
-          "widget_type": "tabular",
-          "stream": "oia-events-stream",
-          "ts_column": "e_updatedat",
-          "timebased": false,
-          "min_width": 12,
-          "height": 8,
+          "widget_type": "launch_actions",
+          "dashboard_name_template": "{node_type}-view-dashboard",
+          "dashboard_name_template0": "{node_type}-alert_device_app",
+          "extra_filter": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is 'None')",
           "max_width": 12,
-          "paginated": true,
-          "resizableColumns": false,
-          "refreshRequired": true,
-          "remote_searchable": true,
-          "extra_filter": "e_sourceeventid is '{{SOURCE_EVENT_ID}}'",
-          "remote_searchable_cols": [
-            "e_label",
-            "e_severity",
-            "e_status",
-            "e_eventstate",
-            "e_message"
-          ],
-          "max_rows": 50,
+          "height": 0.25,
+          "min_width": 12,
+          "widget_id": "181129d8",
+          "context_attributes": {
+            "CHASSIS": [
+              "parent_sn",
+              "device_ip"
+            ],
+            "Edge": [
+              "edgeName",
+              "edge_ip",
+              "serialNumber",
+              "edge_id"
+            ]
+          }
+        },
+        {
+          "title": "Summary",
+          "widget_type": "portal_summary",
+          "reportId": "rda.saas.topology.node_details.report",
+          "stream0": "cfx_rdaf_topology_nodes",
+          "max_width": 4,
+          "height": 5,
+          "min_width": 4,
+          "widget_id": "182229d8"
+        },
+        {
+          "title": "Edges Summary",
+          "widget_type": "tabular",
+          "extra_filter": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is 'None')",
+          "max_width": 8,
+          "height": 5,
+          "min_width": 8,
+          "stream": "cfx_rdaf_topology_edges",
+          "timebased": false,
           "columns": {
-            "e_label": {
-              "title": "Label",
-              "formatter": "truncate",
-              "defaultWidth": 270
+            "left_label": {
+              "title": "Left Label",
+              "visible": true,
+              "key": true
             },
-            "e_severity_color": {
-              "title": "Sev_2",
-              "type": "COLOR-MAP",
-              "source-column": "e_severity",
-              "color-map": {
-                "SEVERE": "#B71C1C",
-                "CRITICAL": "#E53935",
-                "MAJOR": "#F57C00",
-                "MINOR": "#FFA726",
-                "WARNING": "#FFD54F",
-                "NOTIFICATION": "#4DD0E1",
-                "INFORMATION": "#03A9F4"
-              }
+            "right_label": {
+              "title": "Right Label",
+              "visible": true,
+              "key": true
             },
-            "e_severity": {
-              "title": "Severity",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.e_severity_color }}'}}' > {{'{{ row.e_severity }}'}} </span>",
-              "defaultWidth": 150
-            },
-            "e_status": {
-              "title": "Status",
-              "defaultWidth": 150
-            },
-            "e_eventstate": {
-              "title": "Processing State",
-              "defaultWidth": 150
-            },
-            "e_message": {
-              "title": "Comments",
-              "defaultWidth": 270
-            },
-            "e_createdat": {
-              "title": "Created At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            },
-            "e_updatedat": {
-              "title": "Updated At",
-              "type": "DATETIME",
-              "defaultWidth": 180
-            },
-            "e_id": {
-              "title": "Event Id",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "e_projectid": {
-              "title": "project Id",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "e_sourceeventid": {
-              "title": "Source Event ID",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "e_eventkey": {
-              "title": "Alert Key",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
-            },
-            "e_processedeventid": {
-              "title": "Alert ID",
-              "visible": false,
-              "key": true,
-              "defaultWidth": 150
+            "relation_type": {
+              "title": "Relation",
+              "visible": true,
+              "key": true
             }
           },
-          "actions": [
-            {
-              "title": "View Alert Trail",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "permission": "oia:event-tracking:view",
-              "identifier": "ingestion-tracker:cfx.view.alert.trail",
-              "drillDownLinkField": "label",
-              "drillDownContext": "id",
-              "displayLabelColumnId": "label",
-              "contextParamList": {
-                "contextParams": [
-                  {
-                    "paramKey": "e_processedeventid",
-                    "paramId": "processedeventid"
-                  }
-                ]
-              },
-              "api-endpoint": {
-                "service-name": "ingestion-tracker",
-                "namespace": "io.cfx.dimensions.app",
-                "methodName": "invokeAppApi:getFormById",
-                "stringified-params": true,
-                "useReportContext": true,
-                "parse-output": false,
-                "params": [
-                  {
-                    "form_id": "com.cfx.form.view.alert.trail",
-                    "context": {}
-                  }
-                ]
-              }
-            }
+          "query": "(left_id is '{{NODE_ID}}' or right_id is '{{NODE_ID}}')",
+          "duration_hours": 2160,
+          "widget_id": "dc7103e1"
+        },
+        {
+          "title": "Topology",
+          "widget_type": "topology",
+          "register_search_endpoints": true,
+          "reportId": "rda.saas.stack.view.topo",
+          "context_attributes": {
+            "CHASSIS": [
+              "parent_sn",
+              "device_ip"
+            ],
+            "Edge": [
+              "edgeName",
+              "edge_ip",
+              "serialNumber",
+              "edge_id"
+            ]
+          },
+          "limit_to_node_types": [
+            "CHASSIS",
+            "Edge",
+            "Tunnel_end_point"
           ],
-          "widget_id": "2d17f8a1"
+          "has_more_data_flag": false,
+          "stack_type": "dynamic",
+          "expand_all": true,
+          "stack_definition": {
+            "name": "Network Device Discovery Pack Stack",
+            "description": "",
+            "saved_time": "2023-09-12T21:08:31.418255",
+            "is_dynamic": true,
+            "hierarchical": false,
+            "dynamic_nodes": {
+              "stream": "cfx_rdaf_topology_nodes",
+              "query": "node_type != 'Gateway' and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '')",
+              "limit": 0,
+              "sorting": null
+            },
+            "dynamic_relationships": {
+              "stream": "cfx_rdaf_topology_edges",
+              "query": "(customer_tag is '{{CUST_TAG}}' or customer_tag is empty or customer_tag is '')",
+              "limit": 0,
+              "sorting": null
+            }
+          },
+          "height": 10,
+          "min_wdith": 12,
+          "widget_id": "182287d8"
         }
       ]
     }
