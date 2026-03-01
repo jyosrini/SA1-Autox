@@ -1,35 +1,41 @@
 {
-  "name": "portal-account-user-preferences-page",
-  "label": "User Preferences",
-  "description": "User Preferences Page",
+  "name": "no-permission",
+  "label": "No Permission",
+  "description": "No Permission Landing Dashboard",
   "enabled": true,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "dashboard_style": "auto",
+  "dashboard_filters": {
+    "time_filter": false
+  },
   "dashboard_sections": [
     {
-      "title": "Preferences",
+      "title": "No Permission",
       "show_filter": false,
       "widgets": [
         {
-          "title": "",
+          "title": "No Permission",
           "widget_type": "portal_html",
-          "widget_template": "saas/my_account/UserPreference",
-          "widget_id": "50799327"
+          "widget_template": "common/access-denied-screen",
+          "height": 12,
+          "min_wdith": 12,
+          "widget_id": "186d9a0f"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Preferences",
+      "title": "No Permission",
       "show_filter": false,
       "widgets": [
         {
-          "title": "",
+          "title": "No Permission",
           "widget_type": "portal_html",
-          "widget_template": "saas/my_account/UserPreference",
-          "widget_id": "50799327"
+          "widget_template": "common/access-denied-screen",
+          "height": 12,
+          "min_wdith": 12,
+          "widget_id": "186d9a0f"
         }
       ]
     }

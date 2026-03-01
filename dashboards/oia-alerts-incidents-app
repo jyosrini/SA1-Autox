@@ -1,68 +1,53 @@
 {
-  "name": "oia-alerts-incidents-app",
-  "label": "OIA Alerts and Incidents",
-  "description": "OIA consolidated app with Alerts, Tracking and Incidents ",
-  "version": "23.4.10",
+  "name": "alert-details-app",
+  "label": "Alert Details",
+  "description": "Alert Details",
+  "version": "23.9.3.1",
   "enabled": true,
+  "status_poller": {},
+  "dashboard_type": "app",
+  "dashboard_folder": "Default",
+  "template_variables": {},
+  "dashboard_filters": {
+    "time_filter": false
+  },
   "dashboard_sections": [
     {
-      "title": "new dashboard"
+      "title": "Dashboard",
+      "widgets": [
+        {
+          "widget_type": "header_section",
+          "widget_template": "cfx-oia/alert-summary",
+          "widget_id": "078479b8"
+        }
+      ]
     }
   ],
-  "dashboard_type": "app",
-  "dashboard_groups": {
-    "incidents": {
-      "icon": "incident.svg",
-      "label": "Incidents",
-      "pageName": "Incidents"
-    },
-    "alerts": {
-      "icon": "alert.svg",
-      "label": "Alerts",
-      "pageName": "Alerts"
-    },
-    "tracking": {
-      "icon": "alert.svg",
-      "label": "Tracking",
-      "pageName": "Tracking"
-    }
-  },
   "dashboard_pages": [
     {
-      "name": "oia-incidents-os-template",
-      "label": "Incidents",
-      "icon": "incident.svg",
-      "group": "incidents"
+      "name": "alert-details-v2",
+      "label": "Alert Details",
+      "icon": "alert.svg"
     },
     {
-      "name": "oia-alerts-os",
-      "label": "Alerts",
-      "icon": "alert.svg",
-      "group": "alerts"
+      "name": "alert-trail",
+      "label": "Alert Trail"
     },
     {
-      "name": "oia-alert-groups-os",
-      "label": "Alert Groups",
-      "icon": "alertGroups.svg",
-      "group": "alerts"
-    },
-    {
-      "name": "oia-event-tracking-os",
-      "label": "Events",
-      "icon": "alert.svg",
-      "group": "tracking"
-    },
-    {
-      "name": "oia-alert-tracking-os",
-      "label": "Alerts",
-      "icon": "alert.svg",
-      "group": "tracking"
+      "name": "view-delta",
+      "label": "Alert Delta"
     }
   ],
-  "dashboard_folder": "Default",
   "pstream_dashboards": [
     {
-      "title": "new dashboard"
+      "title": "Dashboard",
+      "widgets": [
+        {
+          "widget_type": "header_section",
+          "widget_template": "cfx-oia/alert-summary",
+          "widget_id": "078479b8"
+        }
+      ]
     }
   ]
 }
