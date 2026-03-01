@@ -1,25 +1,25 @@
 {
-  "name": "smart_licence_details_grv",
-  "label": "Smart License Detail",
-  "description": "smart_license_details_grv: Insights",
-  "dashboard_folder": "gaurav",
-  "version": "1.0.0",
-  "context_label_id": "license",
-  "live_edit": true,
-  "debug": true,
+  "name": "rda-packs-view-deployed-artifacts",
+  "label": "RDA Packs Activation Status",
+  "context_label_id": "activation_status_page_label",
+  "description": "customer-rda-packs-artifacts: Insights",
+  "dashboard_folder": "System",
   "enabled": false,
-  "dashboard_pages": [],
+  "stream": "customer-rda-packs-artifacts",
+  "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
   "dashboard_style": "auto",
-  "stream": "smart_license_details_grv",
   "dashboard_type": "template",
   "template_variables": {
-    "LICENSE": {
-      "contextId": "license"
+    "ACTIVATION_ID": {
+      "contextId": "activation_id"
     }
   },
   "dashboard_filters": {
-    "time_filter": false,
-    "default_time_filter_labels": [],
+    "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
+    "time_filter": true,
+    "default_time_filter_labels": [
+      "Last 24 months"
+    ],
     "columns_filter": [
       {
         "id": "timestamp",
@@ -27,63 +27,55 @@
         "type": "DATETIME"
       },
       {
-        "id": "source",
-        "label": "Source",
+        "id": "customer",
+        "label": "Customer",
         "type": "TEXT"
       },
       {
-        "id": "expiration_status",
-        "label": "License Alerts",
+        "id": "activation_id",
+        "label": "Activation Id",
         "type": "TEXT"
       },
       {
-        "id": "license",
-        "label": "License Group",
+        "id": "version",
+        "label": "Pack Version",
         "type": "TEXT"
       },
       {
-        "id": "virtualAccount",
-        "label": "Virtualaccount",
+        "id": "art_type",
+        "label": "Artifact Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "art_name",
+        "label": "Artifact Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "art_version",
+        "label": "Artifact Version",
+        "type": "TEXT"
+      },
+      {
+        "id": "status",
+        "title": "Status",
+        "type": "TEXT"
+      },
+      {
+        "id": "message",
+        "title": "Message",
         "type": "TEXT"
       }
     ],
     "group_filters": [
       {
-        "stream": "smart_license_details_grv",
-        "title": "License Alerts",
+        "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
+        "stream": "customer-rda-packs-artifacts",
+        "title": "Artifact Type",
         "duration_hours": 1080,
         "limit": 200,
-        "extra_filter": null,
         "group_by": [
-          "expiration_status"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "smart_license_details_grv",
-        "title": "License Group",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "license"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "smart_license_details_grv",
-        "title": "Virtual Account",
-        "duration_hours": 1080,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "virtualAccount"
+          "art_type"
         ],
         "ts_column": "timestamp",
         "agg": "sum",
@@ -94,156 +86,76 @@
   },
   "dashboard_sections": [
     {
-      "title": "Smart License Detail",
+      "title": "RDA Packs Activation Status",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' > Detailed View for License Group: {{LICENSE}} </a></h1></div>",
-          "context_filter": "license is not null",
-          "widget_id": "b0186542"
-        },
-        {
-          "title": "Smart License Details",
+          "title": "Data",
           "widget_type": "tabular",
           "duration_hours": 1080,
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "license",
-            "virtualAccount"
-          ],
-          "stream": "smart_license_details_grv",
-          "sorting": [
-            {
-              "sort_number": "asc"
-            }
-          ],
+          "stream": "customer-rda-packs-artifacts",
+          "ts_column": "timestamp",
+          "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
+          "refreshOptions": {
+            "refreshType": "Periodic",
+            "refreshInterval": 30000
+          },
           "columns": {
-            "license": {
-              "title": "License Group",
+            "activation_id": {
+              "title": "Activation Id",
+              "type": "TEXT",
+              "hidden": true
+            },
+            "name": {
+              "title": "Pack Name",
               "type": "TEXT",
               "hidden": false
             },
-            "virtualAccount": {
-              "title": "Virtualaccount",
+            "version": {
+              "title": "Pack Version",
               "type": "TEXT",
               "hidden": false
             },
-            "expiration_status": {
-              "title": "License Alerts",
-              "type": "TEXT",
-              "hidden": false,
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.expiration_color }}' > {{ row.expiration_status }} </span>{% endraw %}"
-            },
-            "endDate": {
-              "title": "Enddate",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "days_to_expire": {
-              "title": "Days To Expire",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "startDate": {
-              "title": "Startdate",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "licenseSku": {
-              "title": "Licensesku",
+            "customer": {
+              "title": "Customer",
               "type": "TEXT",
               "hidden": false
             },
-            "subscriptionId": {
-              "title": "Subscriptionid",
+            "art_name": {
+              "title": "Artifact Name",
               "type": "TEXT",
               "hidden": false
             },
-            "substitutedQuantity": {
-              "title": "Substitutedquantity",
+            "art_type": {
+              "title": "Artifact Type",
               "type": "TEXT",
               "hidden": false
             },
-            "licenseType": {
-              "title": "Licensetype",
+            "art_version": {
+              "title": "Artifact Version",
               "type": "TEXT",
               "hidden": false
             },
-            "substitutedLicense": {
-              "title": "Substitutedlicense",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "substitutionType": {
-              "title": "Substitutiontype",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "ahaApps": {
-              "title": "Ahaapps",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "isPortable": {
-              "title": "Isportable",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "billingType": {
-              "title": "Billingtype",
-              "type": "TEXT",
-              "hidden": false
+            "state_color": {
+              "type": "COLOR-MAP",
+              "source-column": "status",
+              "color-map": {
+                "success": "#4CAF50",
+                "created": "#4CAF50",
+                "skipped": "#4CAF50",
+                "error": "#FF0000"
+              }
             },
             "status": {
               "title": "Status",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.state_color }}' > {{ row.status }} </span>{% endraw %}"
+            },
+            "message": {
+              "title": "Message",
               "type": "TEXT",
-              "hidden": false
-            },
-            "statusMessage": {
-              "title": "Statusmessage",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "licenseDetails": {
-              "title": "Licensedetails",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "available": {
-              "title": "Available",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "inUse": {
-              "title": "Inuse",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "pendingQuantity": {
-              "title": "Pendingquantity",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "quantity": {
-              "title": "Quantity",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "reserved": {
-              "title": "Reserved",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "totalRecords": {
-              "title": "Totalrecords",
-              "type": "DOUBLE",
               "hidden": false
             },
             "timestamp": {
@@ -252,163 +164,83 @@
               "hidden": false
             }
           },
-          "widget_id": "e8231653"
+          "widget_id": "52812fbe"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Smart License Detail",
+      "title": "RDA Packs Activation Status",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "max_width": 12,
-          "height": 0.5,
-          "min_width": 12,
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' > Detailed View for License Group: {{LICENSE}} </a></h1></div>",
-          "context_filter": "license is not null",
-          "widget_id": "b0186542"
-        },
-        {
-          "title": "Smart License Details",
+          "title": "Data",
           "widget_type": "tabular",
           "duration_hours": 1080,
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "include_context_in_query": true,
-          "include_context_keys": [
-            "license",
-            "virtualAccount"
-          ],
-          "stream": "smart_license_details_grv",
-          "sorting": [
-            {
-              "sort_number": "asc"
-            }
-          ],
+          "stream": "customer-rda-packs-artifacts",
+          "ts_column": "timestamp",
+          "extra_filter": "activation_id is '{{ACTIVATION_ID}}'",
+          "refreshOptions": {
+            "refreshType": "Periodic",
+            "refreshInterval": 30000
+          },
           "columns": {
-            "license": {
-              "title": "License Group",
+            "activation_id": {
+              "title": "Activation Id",
+              "type": "TEXT",
+              "hidden": true
+            },
+            "name": {
+              "title": "Pack Name",
               "type": "TEXT",
               "hidden": false
             },
-            "virtualAccount": {
-              "title": "Virtualaccount",
+            "version": {
+              "title": "Pack Version",
               "type": "TEXT",
               "hidden": false
             },
-            "expiration_status": {
-              "title": "License Alerts",
-              "type": "TEXT",
-              "hidden": false,
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.expiration_color }}' > {{ row.expiration_status }} </span>{% endraw %}"
-            },
-            "endDate": {
-              "title": "Enddate",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "days_to_expire": {
-              "title": "Days To Expire",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "startDate": {
-              "title": "Startdate",
-              "type": "DATETIME",
-              "hidden": false
-            },
-            "licenseSku": {
-              "title": "Licensesku",
+            "customer": {
+              "title": "Customer",
               "type": "TEXT",
               "hidden": false
             },
-            "subscriptionId": {
-              "title": "Subscriptionid",
+            "art_name": {
+              "title": "Artifact Name",
               "type": "TEXT",
               "hidden": false
             },
-            "substitutedQuantity": {
-              "title": "Substitutedquantity",
+            "art_type": {
+              "title": "Artifact Type",
               "type": "TEXT",
               "hidden": false
             },
-            "licenseType": {
-              "title": "Licensetype",
+            "art_version": {
+              "title": "Artifact Version",
               "type": "TEXT",
               "hidden": false
             },
-            "substitutedLicense": {
-              "title": "Substitutedlicense",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "substitutionType": {
-              "title": "Substitutiontype",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "ahaApps": {
-              "title": "Ahaapps",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "isPortable": {
-              "title": "Isportable",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "billingType": {
-              "title": "Billingtype",
-              "type": "TEXT",
-              "hidden": false
+            "state_color": {
+              "type": "COLOR-MAP",
+              "source-column": "status",
+              "color-map": {
+                "success": "#4CAF50",
+                "created": "#4CAF50",
+                "skipped": "#4CAF50",
+                "error": "#FF0000"
+              }
             },
             "status": {
               "title": "Status",
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.state_color }}' > {{ row.status }} </span>{% endraw %}"
+            },
+            "message": {
+              "title": "Message",
               "type": "TEXT",
-              "hidden": false
-            },
-            "statusMessage": {
-              "title": "Statusmessage",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "licenseDetails": {
-              "title": "Licensedetails",
-              "type": "TEXT",
-              "hidden": false
-            },
-            "available": {
-              "title": "Available",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "inUse": {
-              "title": "Inuse",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "pendingQuantity": {
-              "title": "Pendingquantity",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "quantity": {
-              "title": "Quantity",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "reserved": {
-              "title": "Reserved",
-              "type": "DOUBLE",
-              "hidden": false
-            },
-            "totalRecords": {
-              "title": "Totalrecords",
-              "type": "DOUBLE",
               "hidden": false
             },
             "timestamp": {
@@ -417,7 +249,7 @@
               "hidden": false
             }
           },
-          "widget_id": "e8231653"
+          "widget_id": "52812fbe"
         }
       ]
     }
