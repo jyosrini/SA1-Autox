@@ -1,45 +1,26 @@
 {
-  "name": "rda-graph-app",
-  "label": "Graph: {{GRAPH_NAME}}",
-  "is_template": true,
-  "description": "Graph App",
-  "version": "24.7.24.1",
+  "name": "rda_system_snapshots_app",
+  "label": "RDA Artfact Snapshots Management",
+  "description": "Robotic Data Automation Administration",
+  "version": "1.0.0",
   "enabled": true,
-  "template_variables": {
-    "GRAPH_NAME": {
-      "contextId": "graph_name"
-    }
-  },
+  "live_edit": true,
   "dashboard_filters": {
     "time_filter": false,
     "columns_filter": []
   },
-  "dashboard_sections": [
-    {
-      "title": "Example"
-    }
-  ],
   "dashboard_type": "app",
+  "dashboard_folder": "System",
   "dashboard_pages": [
     {
-      "name": "rda-graph-nodes-data-preview-template",
-      "label": "Nodes",
-      "icon": "enrichment.svg"
+      "name": "rda_system_snapshots_main",
+      "label": "Snapshot List",
+      "icon": "Analytics.svg"
     },
     {
-      "name": "rda-graph-edges-data-preview-template",
-      "label": "Edges",
-      "icon": "microserviceTrace.svg"
-    },
-    {
-      "name": "rda-graph-aql-editor-template",
-      "label": "AQL",
-      "icon": "collaboration.svg"
-    }
-  ],
-  "pstream_dashboards": [
-    {
-      "title": "Example"
+      "name": "rda_system_snapshots_details",
+      "label": "Snapshot Manifests",
+      "icon": "Analytics.svg"
     }
   ]
 }
