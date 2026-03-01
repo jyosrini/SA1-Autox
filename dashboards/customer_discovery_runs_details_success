@@ -1,185 +1,134 @@
 {
-  "name": "rda-github-pull",
-  "label": "RDA Artifacts in GitHub",
-  "is_template": true,
-  "description": "RDA Artifacts in GitHub",
-  "version": "23.11.7.1",
-  "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
-  "stream": "rda_github_pull_stream",
+  "name": "customer_discovery_runs_details_success",
+  "label": "Success",
+  "description": "onboarded_devices: Insights",
+  "dashboard_folder": "NetworkDevicePack",
+  "version": "1.0.4",
+  "enabled": false,
+  "live_edi0t": true,
+  "dashboard_type": "template",
+  "template_variables": {
+    "CUST_ID": {
+      "contextId": "customerId"
+    },
+    "PROJ_ID": {
+      "contextId": "project_id"
+    },
+    "PROJ_ID_SINGLE": {
+      "contextId": "project_id"
+    },
+    "CUST_TAG": {
+      "contextId": "customerTag"
+    },
+    "JOB_ID": {
+      "contextId": "jobid"
+    }
+  },
   "dashboard_filters": {
     "time_filter": true,
+    "extra_filter0": "source contains 'Run Details' and ingestion_id is '{{FILENAME}}' and (customer_tag is '{{CUST_TAG}}' or customer_tag is empty)",
+    "default_time_filter_labels0": [
+      "Last 1 month"
+    ],
     "columns_filter": [
-      {
-        "id": "filename",
-        "label": "Full Path",
-        "type": "TEXT"
-      },
-      {
-        "id": "additions",
-        "label": "Additions",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "deletions",
-        "label": "Deletions",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "status",
-        "label": "Status",
-        "type": "TEXT"
-      },
-      {
-        "id": "position",
-        "label": "Ahead/Behind",
-        "type": "TEXT"
-      },
       {
         "id": "timestamp",
         "label": "Timestamp",
         "type": "DATETIME"
       }
     ],
-    "group_filters": [
-      {
-        "stream": "rda_github_pull_stream",
-        "title": "Status",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "status"
-        ],
-        "ts_column": "timestamp",
-        "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      }
-    ]
+    "group_filters": []
   },
   "dashboard_sections": [
     {
-      "title": "RDA artifacts in GitHub",
+      "title": "Onboarded Devices",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "RDA artifacts in GitHub",
-          "widget_type": "github_pull_details",
-          "height": 2,
-          "widget_id": "8ddee7d9"
-        },
-        {
-          "title": "RDA artifacts in GitHub",
+          "title": "Discovery Details",
           "widget_type": "tabular",
-          "stream": "rda_github_pull_stream",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "filename",
-            "status",
-            "position"
-          ],
-          "ts_column": "timestamp",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
+          "stream": "asset_inventory_collection_status_stream",
+          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname does not contains '{{CUST_TAG}}') and collection_status is 'Success' and target_type is 'DEVICE' and type_ is 'device_status' and jobid is '{{JOB_ID}}' and is_duplicate is 'false'",
+          "duration_hours": 1080,
+          "height": 4,
+          "max_width": 12,
+          "min_width": 12,
           "columns": {
-            "filename": {
-              "title": "Full Path",
-              "key": true
+            "asset_ip": "IP Address",
+            "collection_status": {
+              "title": "Collection Status",
+              "type": "DATETIME",
+              "visible": true
             },
-            "additions": {
-              "title": "Additions",
-              "type": "DOUBLE"
+            "collection_timestamp": {
+              "title": "Collection Timestamp",
+              "type": "DATETIME",
+              "visible": true
             },
-            "deletions": {
-              "title": "Deletions",
-              "type": "DOUBLE"
+            "jobname": {
+              "title": "Jobname",
+              "type": "TEXT",
+              "hidden": true
             },
-            "status": {
-              "title": "Status"
+            "jobid": {
+              "title": "Job Id",
+              "type": "TEXT",
+              "hidden": true
             },
-            "position": {
-              "title": "Ahead/Behind"
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME"
-            },
-            "diff_html": {
-              "hidden": true,
-              "key": true
+            "is_duplicate": {
+              "title": "Duplicates",
+              "type": "TEXT",
+              "hidden": true
             }
           },
-          "actions": [],
-          "widget_id": "01dc3a55",
-          "preview_dashboard": "rda-diff-preview",
-          "preview_width": 900,
-          "preview_height": 700
+          "widget_id": "b2c8d81c"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "RDA artifacts in GitHub",
+      "title": "Onboarded Devices",
+      "show_filter": true,
       "widgets": [
         {
-          "title": "RDA artifacts in GitHub",
-          "widget_type": "github_pull_details",
-          "height": 2,
-          "widget_id": "8ddee7d9"
-        },
-        {
-          "title": "RDA artifacts in GitHub",
+          "title": "Discovery Details",
           "widget_type": "tabular",
-          "stream": "rda_github_pull_stream",
-          "timebased": false,
-          "remote_searchable": true,
-          "remote_searchable_cols": [
-            "filename",
-            "status",
-            "position"
-          ],
-          "ts_column": "timestamp",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
+          "stream": "asset_inventory_collection_status_stream",
+          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname does not contains '{{CUST_TAG}}') and collection_status is 'Success' and target_type is 'DEVICE' and type_ is 'device_status' and jobid is '{{JOB_ID}}' and is_duplicate is 'false'",
+          "duration_hours": 1080,
+          "height": 4,
+          "max_width": 12,
+          "min_width": 12,
           "columns": {
-            "filename": {
-              "title": "Full Path",
-              "key": true
+            "asset_ip": "IP Address",
+            "collection_status": {
+              "title": "Collection Status",
+              "type": "DATETIME",
+              "visible": true
             },
-            "additions": {
-              "title": "Additions",
-              "type": "DOUBLE"
+            "collection_timestamp": {
+              "title": "Collection Timestamp",
+              "type": "DATETIME",
+              "visible": true
             },
-            "deletions": {
-              "title": "Deletions",
-              "type": "DOUBLE"
+            "jobname": {
+              "title": "Jobname",
+              "type": "TEXT",
+              "hidden": true
             },
-            "status": {
-              "title": "Status"
+            "jobid": {
+              "title": "Job Id",
+              "type": "TEXT",
+              "hidden": true
             },
-            "position": {
-              "title": "Ahead/Behind"
-            },
-            "timestamp": {
-              "title": "Timestamp",
-              "type": "DATETIME"
-            },
-            "diff_html": {
-              "hidden": true,
-              "key": true
+            "is_duplicate": {
+              "title": "Duplicates",
+              "type": "TEXT",
+              "hidden": true
             }
           },
-          "actions": [],
-          "widget_id": "01dc3a55",
-          "preview_dashboard": "rda-diff-preview",
-          "preview_width": 900,
-          "preview_height": 700
+          "widget_id": "b2c8d81c"
         }
       ]
     }
