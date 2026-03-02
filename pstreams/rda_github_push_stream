@@ -1,16 +1,14 @@
 {
-  "name": "oia-incidents-execution-delay-stream",
+  "name": "rda_github_push_stream",
   "datastore_type": "OS",
   "read_only": false,
   "attrs": {
+    "retention_days": 1,
     "unique_keys": [
-      "projectid",
-      "incidentid",
-      "teamid"
+      "filepath"
     ],
-    "retention_days": 30,
-    "case_insensitive": true
+    "system_defined": "yes"
   },
   "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-73d7ac8d-oia-incidents-execution-delay-stream"
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-dbc9c598-rda_github_push_stream"
 }
