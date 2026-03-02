@@ -1,10 +1,9 @@
+@dm:object-add name = "upload_test_file" & folder = "TEST" & input_file = "'nikijosh@cisco.com/e30a7c2249004035a6ad4719b7db65a6/Stream2A.csv.zip'"
+ ## --> @dm:object-list
 
- ## One time Migration
+ ## --> @dm:save name="path"
 
- ## teamincidents-to-stream
-@c:new-block
- --> @dm:empty
- --> @dm:addrow table is 'teamincident' and dbname is '335b7f8cb56d46419c3e7c70286c4b19_cfxdimensions_app_collaboratio'
- --> #mysqlv2:read order by shared_time desc
- --> @dm:change-time-format columns="shared_time" & from_format="datetimestr" & to_format="ms"
- --> @rn:write-stream name="oia-incidents-external-tickets-stream"
+ ## --> @dm:object-get name="Stream2A.csv.zip" and folder="'nikijosh@cisco.com/e30a7c2249004035a6ad4719b7db65a6/'" and save_to_dir="/root/notebooks"
+
+ --> @dm:object-get name="Stream2A.csv.zip" and folder="TEST" and save_to_file="kt.zip"
+ --> @dm:sleep seconds = 1
