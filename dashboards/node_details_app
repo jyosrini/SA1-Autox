@@ -1,263 +1,92 @@
 {
-  "name": "preview_performance_dashboard",
-  "label": "Performance Workbench",
-  "description": "Performance Workbench",
-  "dashboard_folder": "Default",
+  "name": "node_details_app",
+  "label": "Node Details App",
+  "description": "Node Details App",
+  "dashboard_folder": "NetworkDevicePack",
+  "context_label_id": "a_asset_name",
+  "version": "24.1.13.2",
+  "debug": true,
   "enabled": true,
-  "dashboard_type": "dashboard",
-  "dashboard_filters": {
-    "time_filter": true,
-    "default_time_filter_non_removable": true,
-    "show_default_time_filter": true
+  "custom_context": {
+    "rda-dashboard-live-edit": true
   },
-  "dashboard_sections": [
+  "context_enrichment": [
     {
-      "title": "Ops Insights",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Time Series",
-          "widget_type": "timeseries",
-          "stream": "psl_kafka_data",
-          "ts_column": "timestamp",
-          "duration_hours": 720,
-          "max_width": 6,
-          "height": 6,
-          "min_width": 12,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": "Date",
-            "legendLocation": "top"
-          },
-          "interval": "1H",
-          "group_by": [
-            "instance"
-          ],
-          "series_spec": [
-            {
-              "column": "System_Calls_Active",
-              "agg": "max",
-              "type": "int",
-              "label": "System_Calls_Active"
-            }
-          ],
-          "widget_id": "ee43c826",
-          "extra_filter": "device in [\"'AKRNOHNF11G'\"] and `timestamp` is after -168 hours"
-        }
-      ]
+      "stream": "cfx_rdaf_topology_nodes",
+      "stream0": "mp_nodes",
+      "enrich_columns": [
+        "node_type",
+        "host_name",
+        "node_label",
+        "device_hostname_short"
+      ],
+      "query_template0": "project_id = '$project_id' and customer_tag = '$customer_tag' and (device_ip = '$device_ip' or edge_ip is '$edge_ip')",
+      "query_template": "(device_ip = '$device_ip' or edge_ip is '$edge_ip')",
+      "defaultValues": {}
+    },
+    {
+      "stream": "rda_packs_meta",
+      "enrich_columns": [
+        "name",
+        "publisher",
+        "id",
+        "customers",
+        "status"
+      ],
+      "query_template": "id contains 'Fault' & status contains 'ACTIVATED'"
     }
   ],
-  "dynamic_form": {
-    "formData": {},
-    "formDefinition": {
-      "id": "performance.benchmark.json",
-      "refreshRequired": true,
-      "formFieldList": [
-        {
-          "fieldId": "instance",
-          "label": "Device",
-          "help": "Devices",
-          "controlType": "SELECTOR_DIALOG",
-          "selectionType": "MULTIPLE",
-          "pstream": "psl_kafka_data_kpi",
-          "query_attributes": [
-            "instance"
-          ],
-          "server-validation": {
-            "clear_attributes": [
-              "ifName",
-              "name"
-            ],
-            "read_attributes": [
-              "ifName",
-              "name"
-            ]
-          }
-        },
-        {
-          "fieldId": "ifName",
-          "label": "Interface",
-          "help": "Device Interface",
-          "controlType": "SELECTOR_DIALOG",
-          "selectionType": "MULTIPLE",
-          "pstream": "psl_kafka_data_kpi",
-          "query_attributes": [
-            "instance",
-            "ifName"
-          ],
-          "server-validation": {
-            "clear_attributes": [
-              "name"
-            ],
-            "read_attributes": [
-              "name"
-            ]
-          }
-        },
-        {
-          "fieldId": "name",
-          "label": "Metrics",
-          "help": "Performance Metrics",
-          "isList": true,
-          "required": true,
-          "controlType": "SELECTOR_DIALOG",
-          "selectionType": "MULTIPLE",
-          "pstream": "psl_kafka_data_kpi",
-          "query_attributes": [
-            "instance",
-            "ifName",
-            "name"
-          ]
-        },
-        {
-          "dataType": "string",
-          "required": false,
-          "editable": true,
-          "label": "Combine All",
-          "controlType": "BOOLEAN_FIELD",
-          "hidden": false,
-          "fieldId": "combine"
-        },
-        {
-          "fieldId": "precision",
-          "label": "Rollup Precision",
-          "help": "Rollup Precision",
-          "dataType": "string",
-          "hidden": false,
-          "editable": true,
-          "required": true,
-          "controlType": "COMBO_BOX",
-          "lovValues": [
-            {
-              "identifier": "instance",
-              "displayName": "Device"
-            },
-            {
-              "identifier": "ifName",
-              "displayName": "Interface"
-            },
-            {
-              "identifier": "name",
-              "displayName": "Metric"
-            }
-          ]
-        },
-        {
-          "fieldId": "function",
-          "label": "Function",
-          "help": "Function",
-          "dataType": "string",
-          "hidden": false,
-          "editable": true,
-          "required": true,
-          "controlType": "COMBO_BOX",
-          "lovValues": [
-            {
-              "identifier": "max",
-              "displayName": "Maximum"
-            },
-            {
-              "identifier": "min",
-              "displayName": "Minimum"
-            },
-            {
-              "identifier": "mean",
-              "displayName": "Mean"
-            }
-          ]
-        },
-        {
-          "fieldId": "duration",
-          "label": "Duration",
-          "help": "Duration",
-          "dataType": "string",
-          "hidden": false,
-          "editable": true,
-          "required": true,
-          "controlType": "COMBO_BOX",
-          "lovValues": [
-            {
-              "identifier": "`timestamp` is after -24 hours",
-              "displayName": "1 Day"
-            },
-            {
-              "identifier": "`timestamp` is after -48 hours",
-              "displayName": "2 Days"
-            },
-            {
-              "identifier": "`timestamp` is after -168 hours",
-              "displayName": "7 Days"
-            },
-            {
-              "identifier": "`timestamp` is after -720 hours",
-              "displayName": "30 Days"
-            }
-          ]
-        }
-      ],
-      "formActionList": {
-        "formActions": [
-          {
-            "api-endpoint": {
-              "methodName": "submitForm",
-              "parse-output": false,
-              "params": [
-                {
-                  "formData": {},
-                  "formId": "kpi.benchmark.json"
-                }
-              ],
-              "service-name": "saas-reports",
-              "stringified-params": true
-            },
-            "actionLabel": "Save",
-            "type": "SUBMIT",
-            "identifier": "Submit"
-          },
-          {
-            "actionLabel": "Cancel",
-            "type": "CANCEL",
-            "identifier": "Cancel"
-          }
-        ]
-      }
+  "dashboard_sections": [
+    {
+      "title": "Org Ops"
+    }
+  ],
+  "dashboard_type": "app",
+  "dashboard_groups": {
+    "from_to": {
+      "icon": "alert.svg",
+      "label": "Alerts"
+    },
+    "topo": {
+      "icon": "topology.svg",
+      "label": "Topology"
     }
   },
+  "dashboard_pages": [
+    {
+      "name": "device_inventory_from_alerts",
+      "label": "Inventory",
+      "icon": "alert.svg",
+      "context_filter": "node_type is 'CHASSIS'"
+    },
+    {
+      "name": "topology_geomap_dashboard",
+      "label": "Topology",
+      "icon": "stack.svg",
+      "context_filter": "node_type is 'CHASSIS'"
+    },
+    {
+      "name": "device_alerts_from_alert_fault",
+      "label": "Alerts",
+      "icon": "alert.svg",
+      "context_filter": "id contains 'Fault'"
+    },
+    {
+      "name": "device_syslog_from_alert_fault",
+      "label": "Syslogs",
+      "icon": "trace.svg",
+      "context_filter": "id contains 'Fault'"
+    },
+    {
+      "name": "device_SNMP_Traps_from_alerts_fault",
+      "label": "SNMP Traps",
+      "icon": "trace.svg",
+      "context_filter": "id contains 'Fault'"
+    }
+  ],
   "pstream_dashboards": [
     {
-      "title": "Ops Insights",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Time Series",
-          "widget_type": "timeseries",
-          "stream": "psl_kafka_data",
-          "ts_column": "timestamp",
-          "duration_hours": 720,
-          "max_width": 6,
-          "height": 6,
-          "min_width": 12,
-          "chartProperties": {
-            "yAxisLabel": "Count",
-            "xAxisLabel": "Date",
-            "legendLocation": "top"
-          },
-          "interval": "1H",
-          "group_by": [
-            "instance"
-          ],
-          "series_spec": [
-            {
-              "column": "System_Calls_Active",
-              "agg": "max",
-              "type": "int",
-              "label": "System_Calls_Active"
-            }
-          ],
-          "widget_id": "ee43c826",
-          "extra_filter": "device in [\"'AKRNOHNF11G'\"] and `timestamp` is after -168 hours"
-        }
-      ]
+      "title": "Org Ops"
     }
   ]
 }
