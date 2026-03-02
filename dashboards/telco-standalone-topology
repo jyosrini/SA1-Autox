@@ -1,5 +1,5 @@
 {
-  "name": "telco-standalone-topology",
+  "name": "telco-standalone-topology-with-dynamic-stack",
   "label": "Telco Asset Navigator",
   "description": "Telco Asset Navigator",
   "enabled": true,
@@ -59,7 +59,7 @@
           "max_width": 8,
           "height": 12,
           "min_width": 8,
-          "widget_id": "cfc76d7f"
+          "widget_id": "0aa61c28"
         }
       ]
     },
@@ -71,7 +71,28 @@
           "widget_type": "topology",
           "register_search_endpoints": true,
           "reportId": "rda.saas.stack.view.topo",
-          "stack": "Telco Stack",
+          "stack_type": "dynamic",
+          "stack_definition": {
+            "name": "Telco Stack",
+            "description": "",
+            "saved_time": "2023-09-12T21:08:31.418255",
+            "is_dynamic": true,
+            "hierarchical": false,
+            "dynamic_nodes": {
+              "stream": "telco_nodes",
+              "query": "timestamp is after -3 month",
+              "limit": 0,
+              "sorting": null,
+              "gdb_nodes": "Telco_Nodes"
+            },
+            "dynamic_relationships": {
+              "stream": "telco_edges",
+              "query": "timestamp is after -3 month",
+              "limit": 0,
+              "sorting": null,
+              "gdb_edges": "Telco_Edges"
+            }
+          },
           "height": 10,
           "min_wdith": 12,
           "widget_id": "182287d8"
@@ -79,6 +100,7 @@
       ]
     }
   ],
+  "menu_folder": "Top Level > AIOps",
   "pstream_dashboards": [
     {
       "title": "Node Details",
@@ -101,7 +123,7 @@
           "max_width": 8,
           "height": 12,
           "min_width": 8,
-          "widget_id": "cfc76d7f"
+          "widget_id": "0aa61c28"
         }
       ]
     },
@@ -113,7 +135,28 @@
           "widget_type": "topology",
           "register_search_endpoints": true,
           "reportId": "rda.saas.stack.view.topo",
-          "stack": "Telco Stack",
+          "stack_type": "dynamic",
+          "stack_definition": {
+            "name": "Telco Stack",
+            "description": "",
+            "saved_time": "2023-09-12T21:08:31.418255",
+            "is_dynamic": true,
+            "hierarchical": false,
+            "dynamic_nodes": {
+              "stream": "telco_nodes",
+              "query": "timestamp is after -3 month",
+              "limit": 0,
+              "sorting": null,
+              "gdb_nodes": "Telco_Nodes"
+            },
+            "dynamic_relationships": {
+              "stream": "telco_edges",
+              "query": "timestamp is after -3 month",
+              "limit": 0,
+              "sorting": null,
+              "gdb_edges": "Telco_Edges"
+            }
+          },
           "height": 10,
           "min_wdith": 12,
           "widget_id": "182287d8"
