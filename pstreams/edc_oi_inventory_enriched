@@ -1,13 +1,14 @@
 {
-  "name": "edc_oi_inventory_enriched",
+  "name": "dummy_sweol_enriched",
   "datastore_type": "OS",
   "read_only": false,
   "attrs": {
     "unique_keys": [
-      "unique_key"
-    ],
-    "retention_days": 60
+      "product_id",
+      "sw_version",
+      "sw_os_type"
+    ]
   },
   "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-1dd418ee-edc_oi_inventory_enriched"
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-912c6fcb-dummy_sweol_enriched"
 }
