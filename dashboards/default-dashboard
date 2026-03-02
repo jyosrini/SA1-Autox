@@ -1,41 +1,35 @@
 {
-  "name": "default-dashboard",
-  "label": "Home",
-  "description": "Default Landing Dashboard",
+  "name": "portal-account-api-access-page",
+  "label": "API Access Key",
+  "description": "API Access Key Page",
   "enabled": true,
   "dashboard_type": "dashboard",
   "dashboard_folder": "System",
-  "dashboard_filters": {
-    "time_filter": false
-  },
+  "dashboard_style": "auto",
   "dashboard_sections": [
     {
-      "title": "Home",
+      "title": "API Access Key",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Home",
+          "title": "",
           "widget_type": "portal_html",
-          "widget_template": "common/welcome-screen",
-          "height": 12,
-          "min_wdith": 12,
-          "widget_id": "89bf181c"
+          "widget_template": "saas/my_account/AccessToken",
+          "widget_id": "9e5ca937"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Home",
+      "title": "API Access Key",
       "show_filter": false,
       "widgets": [
         {
-          "title": "Home",
+          "title": "",
           "widget_type": "portal_html",
-          "widget_template": "common/welcome-screen",
-          "height": 12,
-          "min_wdith": 12,
-          "widget_id": "89bf181c"
+          "widget_template": "saas/my_account/AccessToken",
+          "widget_id": "9e5ca937"
         }
       ]
     }
