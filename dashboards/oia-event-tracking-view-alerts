@@ -1,497 +1,506 @@
 {
-  "name": "rda-mgmt-page-tenant-nonsystem-dashboards",
-  "label": "Dashboards",
-  "description": "User Dashboard Management Page",
-  "enabled": false,
-  "dashboard_type": "dashboard",
-  "dashboard_folder": "System",
-  "stream": "rda_dashboards_meta",
+  "name": "oia-event-tracking-view-alerts",
+  "label": "Events-View-Alerts",
+  "description": "OIA Event Tracking View Alerts",
+  "version": "23.1.2",
+  "enabled": true,
+  "stream": "oia-events-stream",
+  "dashboard_style": "auto",
+  "status_poller": {},
+  "dashboard_type": "template",
+  "template_variables": {
+    "SOURCE_EVENT_ID": {
+      "default": null,
+      "contextId": "se_id",
+      "type": "stack"
+    }
+  },
   "dashboard_filters": {
-    "time_filter": true,
-    "extra_filter": "( dashboard_folder not in 'System')",
-    "group_filters": [
+    "show_default_time_filter": false,
+    "additional_datetime_column_filters": [
       {
-        "stream": "rda_dashboards_meta",
-        "title": "Folder",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "dashboard_folder"
-        ],
-        "ts_column": "saved_time",
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
+        "id": "e_createdat",
+        "label": "Created At"
       },
       {
-        "stream": "rda_dashboards_meta",
-        "title": "Type",
-        "duration_hours": 87600,
-        "limit": 200,
-        "group_by": [
-          "dashboard_type"
-        ],
-        "ts_column": "saved_time",
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
+        "id": "e_updatedat",
+        "label": "Updated At"
       }
     ],
     "columns_filter": [
       {
-        "id": "saved_time",
-        "label": "Saved Time",
-        "type": "DATETIME"
-      },
-      {
-        "id": "name",
-        "label": "Name",
-        "type": "TEXT"
-      },
-      {
-        "id": "label",
-        "label": "Label",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_folder",
-        "label": "Folder",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_type",
-        "label": "Dashboard Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "_RDA_Id",
-        "label": "_RDA_ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "count_",
-        "label": "Count_",
-        "type": "DOUBLE"
-      },
-      {
-        "id": "description",
-        "label": "Description",
-        "type": "TEXT"
-      },
-      {
-        "id": "reltime",
-        "label": "RelTime",
-        "type": "DATETIME"
-      },
-      {
-        "id": "enabled",
-        "label": "Enabled",
-        "type": "BOOLEAN"
-      },
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
+        "id": "e_createdat",
+        "label": "Created At",
         "type": "DATETIME"
       }
-    ]
+    ],
+    "time_filter": false,
+    "default_time_filter_non_removable": true
   },
   "dashboard_sections": [
     {
-      "title": "Dashboards",
+      "title": "Events",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Folders",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
+          "title": "Event",
+          "widget_type": "summary",
+          "stream": "oia-source-events-stream",
+          "extra_filter": "se_id is '{{SOURCE_EVENT_ID}}'",
+          "ts_column": "se_updatedat",
+          "timebased": false,
           "min_width": 6,
           "height": 4,
           "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_folder"
-          ],
-          "type": "int",
-          "widget_id": "bf50e7c9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Type",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_type"
-          ],
-          "type": "int",
-          "widget_id": "cad3aabd"
-        },
-        {
-          "title": "Dashboards",
-          "widget_type": "tabular",
-          "stream": "rda_dashboards_meta",
-          "duration_hours": 87600,
-          "timebased": true,
+          "paginated": true,
+          "resizableColumns": false,
+          "refreshRequired": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "name",
-            "dashboard_folder",
-            "dashboard_type",
-            "label",
-            "description"
+            "se_sourcesystemname",
+            "se_status",
+            "se_message",
+            "se_projectid",
+            "se_id"
           ],
-          "ts_column": "saved_time",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
+          "max_rows": 50,
           "columns": {
-            "name": {
-              "title": "Name",
-              "key": true,
-              "type": "TEXT"
-            },
-            "dashboard_folder": {
-              "title": "Dashboard Folder",
-              "type": "TEXT"
-            },
-            "type": {
-              "title": "Type",
-              "type": "FIXED_VALUE",
-              "value": "Dashboard",
+            "se_id": {
+              "title": "Source Event ID",
               "visible": false,
-              "sortable": false
-            },
-            "dashboard_type": {
-              "title": "Dashboard Type",
-              "type": "TEXT"
-            },
-            "label": {
-              "title": "Label",
               "key": true,
-              "type": "TEXT"
+              "defaultWidth": 150
             },
-            "description": {
-              "title": "description"
+            "se_projectid": {
+              "title": "project Id",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             },
-            "saved_time": {
-              "title": "Saved Time",
-              "type": "DATETIME"
+            "se_sourcereceivedat": {
+              "title": "Received At",
+              "type": "DATETIME",
+              "defaultWidth": 150
             },
-            "tags": {
-              "title": "Tags",
-              "type": "TEXT"
+            "se_sourcesystemname": {
+              "title": "Source",
+              "defaultWidth": 150
             },
-            "timestamp": {
-              "title": "When",
-              "type": "HUMANIZE_TIME_DELTA",
-              "source-column": "saved_time",
-              "sortable": false
+            "se_status": {
+              "title": "Status",
+              "defaultWidth": 150
             },
-            "menu_folder": {
-              "title": "Menu Folder",
-              "type": "TEXT",
-              "hidden": false,
-              "key": true
+            "se_numberofevents": {
+              "title": "No of Events",
+              "defaultWidth": 150
+            },
+            "se_message": {
+              "title": "Message",
+              "defaultWidth": 270
+            },
+            "se_createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "se_updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "defaultWidth": 180
             }
           },
-          "custom_columns": [
-            {
-              "id": "enabled",
-              "label": "Enabled",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
+          "actions": [],
+          "widget_id": "94a3fc11"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Alerts by Status",
+          "stream": "oia-events-stream",
+          "extra_filter": "e_sourceeventid is '{{SOURCE_EVENT_ID}}'",
+          "ts_column": "e_updatedat",
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "column": "e_id",
+          "agg": "value_count",
+          "group_by": [
+            "e_status"
+          ],
+          "type": "str",
+          "widget_id": "cb0706e6"
+        },
+        {
+          "title": "Alerts",
+          "widget_type": "tabular",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "timebased": false,
+          "min_width": 12,
+          "height": 8,
+          "max_width": 12,
+          "paginated": true,
+          "resizableColumns": false,
+          "refreshRequired": true,
+          "remote_searchable": true,
+          "extra_filter": "e_sourceeventid is '{{SOURCE_EVENT_ID}}'",
+          "remote_searchable_cols": [
+            "e_label",
+            "e_severity",
+            "e_status",
+            "e_eventstate",
+            "e_message"
+          ],
+          "max_rows": 50,
+          "columns": {
+            "e_label": {
+              "title": "Label",
+              "formatter": "truncate",
+              "defaultWidth": 270
             },
-            {
-              "id": "id",
-              "label": "ID",
-              "expr": "'user-dashboard-' + name",
+            "e_severity_color": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "e_severity",
+              "color-map": {
+                "SEVERE": "#B71C1C",
+                "CRITICAL": "#E53935",
+                "MAJOR": "#F57C00",
+                "MINOR": "#FFA726",
+                "WARNING": "#FFD54F",
+                "NOTIFICATION": "#4DD0E1",
+                "INFORMATION": "#03A9F4"
+              }
+            },
+            "e_severity": {
+              "title": "Severity",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.e_severity_color }}'}}' > {{'{{ row.e_severity }}'}} </span>",
+              "defaultWidth": 150
+            },
+            "e_status": {
+              "title": "Status",
+              "defaultWidth": 150
+            },
+            "e_eventstate": {
+              "title": "Processing State",
+              "defaultWidth": 150
+            },
+            "e_message": {
+              "title": "Comments",
+              "defaultWidth": 270
+            },
+            "e_createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "e_updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "e_id": {
+              "title": "Event Id",
               "visible": false,
               "key": true,
-              "sortable": false
+              "defaultWidth": 150
             },
-            {
-              "id": "url",
-              "label": "URL",
-              "expr": "'/workspace/dashboard/user-dashboard-' + name",
+            "e_projectid": {
+              "title": "project Id",
               "visible": false,
-              "sortable": false
+              "key": true,
+              "defaultWidth": 150
             },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled else ['#9E9E9E']",
-              "hidden": true,
+            "e_sourceeventid": {
+              "title": "Source Event ID",
               "visible": false,
-              "sortable": false
+              "key": true,
+              "defaultWidth": 150
             },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
+            "e_eventkey": {
+              "title": "Alert Key",
               "visible": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
+              "key": true,
+              "defaultWidth": 150
+            },
+            "e_processedeventid": {
+              "title": "Alert ID",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             }
-          ],
+          },
           "actions": [
             {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard",
-              "displayLabelColumnId": "id",
-              "drillDownLinkField": "name",
-              "identifier": "user.dashboard.view",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "title": "View YAML",
+              "title": "View Alert Trail",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+              "permission": "oia:event-tracking:view",
+              "identifier": "ingestion-tracker:cfx.view.alert.trail",
+              "drillDownLinkField": "label",
+              "drillDownContext": "id",
+              "displayLabelColumnId": "label",
+              "contextParamList": {
+                "contextParams": [
                   {
-                    "formId": "rda.saas.userdashboard.view.yaml"
+                    "paramKey": "e_processedeventid",
+                    "paramId": "processedeventid"
                   }
                 ]
-              }
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "title": "View JSON",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-json",
+              },
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "ingestion-tracker",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.json"
+                    "form_id": "com.cfx.form.view.alert.trail",
+                    "context": {}
                   }
                 ]
               }
             }
           ],
-          "widget_id": "c466cddc"
+          "widget_id": "2d17f8a1"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Dashboards",
+      "title": "Events",
       "show_filter": true,
+      "projects": [
+        "ACME"
+      ],
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Folders",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
+          "title": "Event",
+          "widget_type": "summary",
+          "stream": "oia-source-events-stream",
+          "extra_filter": "se_id is '{{SOURCE_EVENT_ID}}'",
+          "ts_column": "se_updatedat",
+          "timebased": false,
           "min_width": 6,
           "height": 4,
           "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_folder"
-          ],
-          "type": "int",
-          "widget_id": "bf50e7c9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Type",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_type"
-          ],
-          "type": "int",
-          "widget_id": "cad3aabd"
-        },
-        {
-          "title": "Dashboards",
-          "widget_type": "tabular",
-          "stream": "rda_dashboards_meta",
-          "duration_hours": 87600,
-          "timebased": true,
+          "paginated": true,
+          "resizableColumns": false,
+          "refreshRequired": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "name",
-            "dashboard_folder",
-            "dashboard_type",
-            "label",
-            "description"
+            "se_sourcesystemname",
+            "se_status",
+            "se_message",
+            "se_projectid",
+            "se_id"
           ],
-          "ts_column": "saved_time",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
+          "max_rows": 50,
           "columns": {
-            "name": {
-              "title": "Name",
-              "key": true,
-              "type": "TEXT"
-            },
-            "dashboard_folder": {
-              "title": "Dashboard Folder",
-              "type": "TEXT"
-            },
-            "type": {
-              "title": "Type",
-              "type": "FIXED_VALUE",
-              "value": "Dashboard",
+            "se_id": {
+              "title": "Source Event ID",
               "visible": false,
-              "sortable": false
-            },
-            "dashboard_type": {
-              "title": "Dashboard Type",
-              "type": "TEXT"
-            },
-            "label": {
-              "title": "Label",
               "key": true,
-              "type": "TEXT"
+              "defaultWidth": 150
             },
-            "description": {
-              "title": "description"
+            "se_projectid": {
+              "title": "project Id",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             },
-            "saved_time": {
-              "title": "Saved Time",
-              "type": "DATETIME"
+            "se_sourcereceivedat": {
+              "title": "Received At",
+              "type": "DATETIME",
+              "defaultWidth": 150
             },
-            "tags": {
-              "title": "Tags",
-              "type": "TEXT"
+            "se_sourcesystemname": {
+              "title": "Source",
+              "defaultWidth": 150
             },
-            "timestamp": {
-              "title": "When",
-              "type": "HUMANIZE_TIME_DELTA",
-              "source-column": "saved_time",
-              "sortable": false
+            "se_status": {
+              "title": "Status",
+              "defaultWidth": 150
             },
-            "menu_folder": {
-              "title": "Menu Folder",
-              "type": "TEXT",
-              "hidden": false,
-              "key": true
+            "se_numberofevents": {
+              "title": "No of Events",
+              "defaultWidth": 150
+            },
+            "se_message": {
+              "title": "Message",
+              "defaultWidth": 270
+            },
+            "se_createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "se_updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "defaultWidth": 180
             }
           },
-          "custom_columns": [
-            {
-              "id": "enabled",
-              "label": "Enabled",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
+          "actions": [],
+          "widget_id": "94a3fc11"
+        },
+        {
+          "widget_type": "pie_chart",
+          "title": "Alerts by Status",
+          "stream": "oia-events-stream",
+          "extra_filter": "e_sourceeventid is '{{SOURCE_EVENT_ID}}'",
+          "ts_column": "e_updatedat",
+          "min_width": 6,
+          "height": 4,
+          "max_width": 6,
+          "column": "e_id",
+          "agg": "value_count",
+          "group_by": [
+            "e_status"
+          ],
+          "type": "str",
+          "widget_id": "cb0706e6"
+        },
+        {
+          "title": "Alerts",
+          "widget_type": "tabular",
+          "stream": "oia-events-stream",
+          "ts_column": "e_updatedat",
+          "timebased": false,
+          "min_width": 12,
+          "height": 8,
+          "max_width": 12,
+          "paginated": true,
+          "resizableColumns": false,
+          "refreshRequired": true,
+          "remote_searchable": true,
+          "extra_filter": "e_sourceeventid is '{{SOURCE_EVENT_ID}}'",
+          "remote_searchable_cols": [
+            "e_label",
+            "e_severity",
+            "e_status",
+            "e_eventstate",
+            "e_message"
+          ],
+          "max_rows": 50,
+          "columns": {
+            "e_label": {
+              "title": "Label",
+              "formatter": "truncate",
+              "defaultWidth": 270
             },
-            {
-              "id": "id",
-              "label": "ID",
-              "expr": "'user-dashboard-' + name",
+            "e_severity_color": {
+              "title": "Sev_2",
+              "type": "COLOR-MAP",
+              "source-column": "e_severity",
+              "color-map": {
+                "SEVERE": "#B71C1C",
+                "CRITICAL": "#E53935",
+                "MAJOR": "#F57C00",
+                "MINOR": "#FFA726",
+                "WARNING": "#FFD54F",
+                "NOTIFICATION": "#4DD0E1",
+                "INFORMATION": "#03A9F4"
+              }
+            },
+            "e_severity": {
+              "title": "Severity",
+              "htmlTemplateForRow": "<span class='badge' style='background-color: {{'{{ row.e_severity_color }}'}}' > {{'{{ row.e_severity }}'}} </span>",
+              "defaultWidth": 150
+            },
+            "e_status": {
+              "title": "Status",
+              "defaultWidth": 150
+            },
+            "e_eventstate": {
+              "title": "Processing State",
+              "defaultWidth": 150
+            },
+            "e_message": {
+              "title": "Comments",
+              "defaultWidth": 270
+            },
+            "e_createdat": {
+              "title": "Created At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "e_updatedat": {
+              "title": "Updated At",
+              "type": "DATETIME",
+              "defaultWidth": 180
+            },
+            "e_id": {
+              "title": "Event Id",
               "visible": false,
               "key": true,
-              "sortable": false
+              "defaultWidth": 150
             },
-            {
-              "id": "url",
-              "label": "URL",
-              "expr": "'/workspace/dashboard/user-dashboard-' + name",
+            "e_projectid": {
+              "title": "project Id",
               "visible": false,
-              "sortable": false
+              "key": true,
+              "defaultWidth": 150
             },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled else ['#9E9E9E']",
-              "hidden": true,
+            "e_sourceeventid": {
+              "title": "Source Event ID",
               "visible": false,
-              "sortable": false
+              "key": true,
+              "defaultWidth": 150
             },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
+            "e_eventkey": {
+              "title": "Alert Key",
               "visible": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
+              "key": true,
+              "defaultWidth": 150
+            },
+            "e_processedeventid": {
+              "title": "Alert ID",
+              "visible": false,
+              "key": true,
+              "defaultWidth": 150
             }
-          ],
+          },
           "actions": [
             {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard",
-              "displayLabelColumnId": "id",
-              "drillDownLinkField": "name",
-              "identifier": "user.dashboard.view",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "title": "View YAML",
+              "title": "View Alert Trail",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-yaml",
-              "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
-                "stringified-params": true,
-                "parse-output": false,
-                "params": [
+              "permission": "oia:event-tracking:view",
+              "identifier": "ingestion-tracker:cfx.view.alert.trail",
+              "drillDownLinkField": "label",
+              "drillDownContext": "id",
+              "displayLabelColumnId": "label",
+              "contextParamList": {
+                "contextParams": [
                   {
-                    "formId": "rda.saas.userdashboard.view.yaml"
+                    "paramKey": "e_processedeventid",
+                    "paramId": "processedeventid"
                   }
                 ]
-              }
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "title": "View JSON",
-              "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-json",
+              },
               "api-endpoint": {
-                "service-name": "saas-reports",
-                "methodName": "getForm",
+                "service-name": "ingestion-tracker",
+                "namespace": "io.cfx.dimensions.app",
+                "methodName": "invokeAppApi:getFormById",
                 "stringified-params": true,
+                "useReportContext": true,
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.json"
+                    "form_id": "com.cfx.form.view.alert.trail",
+                    "context": {}
                   }
                 ]
               }
             }
           ],
-          "widget_id": "c466cddc"
+          "widget_id": "2d17f8a1"
         }
       ]
     }
