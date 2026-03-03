@@ -1,46 +1,82 @@
 {
-  "name": "URL_Link_Template_1",
-  "label": "Holder_1",
-  "description": "URL to Smart License",
-  "version": "2023-12-13_1",
-  "enabled": true,
-  "dashboard_style": "auto",
-  "dashboard_folder": "Default",
+  "name": "l2-l3-metric-analysis",
+  "description": "L2/L3 Metric Analysis",
+  "label": "Metric Analysis - L2/L3 User",
+  "enabled": false,
+  "dashboard_type": "dashboard",
+  "template_variables": null,
   "dashboard_filters": {
     "time_filter": true,
-    "columns_filter": [],
-    "group_filters": []
+    "columns_filter": [
+      {
+        "id": "metric_name",
+        "label": "Metric Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "source_tool",
+        "label": "Source",
+        "type": "TEXT"
+      },
+      {
+        "id": "node_type",
+        "label": "Node Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "node_label",
+        "label": "Node Label",
+        "type": "TEXT"
+      },
+      {
+        "id": "layer",
+        "label": "Layer",
+        "type": "TEXT"
+      },
+      {
+        "id": "stack_name",
+        "label": "Stack Name",
+        "type": "TEXT"
+      }
+    ],
+    "default_time_filter_labels": [
+      "Last 24 hours"
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Holder",
+      "title": "Metric Analysis",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Pending</a></h1></div>",
-          "min_width": 12,
-          "height": 1,
+          "title": "Summary of All Metrics for Full Stack",
+          "widget_type": "metric_analysis",
           "max_width": 12,
-          "widget_id": "4f1da16e"
+          "min_width": 12,
+          "height": 16,
+          "stream": "rda_synthetic_metrics",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "widget_id": "f00bc459"
         }
       ]
     }
   ],
-  "dashboard_type": "Dashboard",
-  "dashboard_pages": [],
   "pstream_dashboards": [
     {
-      "title": "Holder",
+      "title": "Metric Analysis",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h1><a style='text-decoration:none;color:#0066ff;' target='_blank'>Pending</a></h1></div>",
-          "min_width": 12,
-          "height": 1,
+          "title": "Summary of All Metrics for Full Stack",
+          "widget_type": "metric_analysis",
           "max_width": 12,
-          "widget_id": "4f1da16e"
+          "min_width": 12,
+          "height": 16,
+          "stream": "rda_synthetic_metrics",
+          "ts_column": "timestamp",
+          "duration_hours": 24,
+          "widget_id": "f00bc459"
         }
       ]
     }
