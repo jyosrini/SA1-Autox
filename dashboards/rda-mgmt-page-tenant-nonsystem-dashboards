@@ -1,48 +1,30 @@
 {
-  "name": "rda-mgmt-page-tenant-nonsystem-dashboards",
-  "label": "Dashboards",
-  "description": "User Dashboard Management Page",
-  "enabled": false,
+  "name": "rda-mgmt-page-store-objects",
+  "label": "Object Store",
+  "description": "Objects Management Page",
+  "enabled": true,
   "dashboard_type": "dashboard",
+  "dashboard_style": "auto",
+  "stream": "rda_objects_meta",
   "dashboard_folder": "System",
-  "stream": "rda_dashboards_meta",
   "dashboard_filters": {
     "time_filter": true,
-    "extra_filter": "( dashboard_folder not in 'System')",
-    "group_filters": [
+    "additional_datetime_column_filters": [
       {
-        "stream": "rda_dashboards_meta",
-        "title": "Folder",
-        "duration_hours": 87600,
-        "limit": 200,
-        "extra_filter": null,
-        "group_by": [
-          "dashboard_folder"
-        ],
-        "ts_column": "saved_time",
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "rda_dashboards_meta",
-        "title": "Type",
-        "duration_hours": 87600,
-        "limit": 200,
-        "group_by": [
-          "dashboard_type"
-        ],
-        "ts_column": "saved_time",
-        "agg": "value_count",
-        "column": "count_",
-        "type": "int"
+        "id": "saved_time",
+        "label": "Saved Time"
       }
     ],
     "columns_filter": [
       {
         "id": "saved_time",
-        "label": "Saved Time",
+        "label": "Dataset Saved",
         "type": "DATETIME"
+      },
+      {
+        "id": "folder",
+        "label": "Folder",
+        "type": "TEXT"
       },
       {
         "id": "name",
@@ -50,29 +32,19 @@
         "type": "TEXT"
       },
       {
-        "id": "label",
-        "label": "Label",
+        "id": "file_type",
+        "label": "File Type",
         "type": "TEXT"
       },
       {
-        "id": "dashboard_folder",
-        "label": "Folder",
-        "type": "TEXT"
-      },
-      {
-        "id": "dashboard_type",
-        "label": "Dashboard Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "_RDA_Id",
-        "label": "_RDA_ID",
-        "type": "TEXT"
-      },
-      {
-        "id": "count_",
-        "label": "Count_",
+        "id": "file_size",
+        "label": "Raw Size",
         "type": "DOUBLE"
+      },
+      {
+        "id": "humansized_file_size",
+        "label": "Size",
+        "type": "TEXT"
       },
       {
         "id": "description",
@@ -80,186 +52,83 @@
         "type": "TEXT"
       },
       {
-        "id": "reltime",
-        "label": "RelTime",
-        "type": "DATETIME"
-      },
-      {
-        "id": "enabled",
-        "label": "Enabled",
-        "type": "BOOLEAN"
-      },
-      {
-        "id": "timestamp",
-        "label": "Timestamp",
-        "type": "DATETIME"
+        "id": "retention_days",
+        "label": "Retention Days",
+        "type": "DOUBLE"
       }
     ]
   },
   "dashboard_sections": [
     {
-      "title": "Dashboards",
+      "title": "Object Store",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Folders",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_folder"
-          ],
-          "type": "int",
-          "widget_id": "bf50e7c9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Type",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_type"
-          ],
-          "type": "int",
-          "widget_id": "cad3aabd"
-        },
-        {
-          "title": "Dashboards",
+          "title": "Object store",
+          "extra_filter": "folder is not null",
           "widget_type": "tabular",
-          "stream": "rda_dashboards_meta",
-          "duration_hours": 87600,
-          "timebased": true,
+          "stream": "rda_objects_meta",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
             "name",
-            "dashboard_folder",
-            "dashboard_type",
-            "label",
+            "folder",
+            "file_type",
+            "humansized_file_size",
             "description"
           ],
-          "ts_column": "saved_time",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
+          "duration_hours": 87600,
           "columns": {
             "name": {
               "title": "Name",
-              "key": true,
-              "type": "TEXT"
+              "key": true
             },
-            "dashboard_folder": {
-              "title": "Dashboard Folder",
-              "type": "TEXT"
-            },
-            "type": {
-              "title": "Type",
-              "type": "FIXED_VALUE",
-              "value": "Dashboard",
-              "visible": false,
-              "sortable": false
-            },
-            "dashboard_type": {
-              "title": "Dashboard Type",
-              "type": "TEXT"
-            },
-            "label": {
-              "title": "Label",
-              "key": true,
-              "type": "TEXT"
+            "folder": {
+              "title": "Folder",
+              "key": true
             },
             "description": {
-              "title": "description"
+              "title": "Description"
             },
             "saved_time": {
               "title": "Saved Time",
               "type": "DATETIME"
             },
-            "tags": {
-              "title": "Tags",
-              "type": "TEXT"
+            "file_type": {
+              "title": "File Type",
+              "key": true
             },
-            "timestamp": {
-              "title": "When",
-              "type": "HUMANIZE_TIME_DELTA",
-              "source-column": "saved_time",
-              "sortable": false
+            "file_size": {
+              "title": "Raw Size"
             },
-            "menu_folder": {
-              "title": "Menu Folder",
-              "type": "TEXT",
-              "hidden": false,
+            "humansized_file_size": {
+              "title": "Size"
+            },
+            "data_path": {
+              "title": "File Path",
+              "key": true,
+              "visible": false
+            },
+            "retention_days": {
+              "title": "Retention Days",
               "key": true
             }
           },
-          "custom_columns": [
+          "sorting": [
             {
-              "id": "enabled",
-              "label": "Enabled",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
-            },
-            {
-              "id": "id",
-              "label": "ID",
-              "expr": "'user-dashboard-' + name",
-              "visible": false,
-              "key": true,
-              "sortable": false
-            },
-            {
-              "id": "url",
-              "label": "URL",
-              "expr": "'/workspace/dashboard/user-dashboard-' + name",
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled else ['#9E9E9E']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
-              "visible": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
+              "saved_time": "desc"
             }
           ],
           "actions": [
             {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard",
-              "displayLabelColumnId": "id",
-              "drillDownLinkField": "name",
-              "identifier": "user.dashboard.view",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "title": "View YAML",
+              "permission": "rda:object:upload",
+              "title": "Upload",
+              "icon": "mdi mdi-plus",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-yaml",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:add-object",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -267,17 +136,17 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.yaml"
+                    "formId": "rda.saas.object.add"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:user_dashboard:view",
-              "title": "View JSON",
+              "permission": "rda:object:download",
+              "title": "Download",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-json",
+              "identifier": "saas-service-action:download-object",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -285,181 +154,124 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.json"
+                    "formId": "rda.saas.object.download"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:object:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:delete-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.object.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:object:update_retention",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:update-retention-days",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.object.update_retention"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "c466cddc"
+          "widget_id": "01dc3a55"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Dashboards",
+      "title": "Object Store",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Folders",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_folder"
-          ],
-          "type": "int",
-          "widget_id": "bf50e7c9"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Dashboards by Type",
-          "stream": "rda_dashboards_meta",
-          "ts_column": "saved_time",
-          "duration_hours": 87600,
-          "min_width": 6,
-          "height": 4,
-          "max_width": 6,
-          "limit": 25,
-          "column": "count_",
-          "agg": "value_count",
-          "group_by": [
-            "dashboard_type"
-          ],
-          "type": "int",
-          "widget_id": "cad3aabd"
-        },
-        {
-          "title": "Dashboards",
+          "title": "Object store",
+          "extra_filter": "folder is not null",
           "widget_type": "tabular",
-          "stream": "rda_dashboards_meta",
-          "duration_hours": 87600,
-          "timebased": true,
+          "stream": "rda_objects_meta",
+          "height": 10,
+          "min_wdith": 12,
+          "paginated": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
             "name",
-            "dashboard_folder",
-            "dashboard_type",
-            "label",
+            "folder",
+            "file_type",
+            "humansized_file_size",
             "description"
           ],
-          "ts_column": "saved_time",
-          "paginated": true,
-          "height": 10,
-          "min_wdith": 12,
+          "duration_hours": 87600,
           "columns": {
             "name": {
               "title": "Name",
-              "key": true,
-              "type": "TEXT"
+              "key": true
             },
-            "dashboard_folder": {
-              "title": "Dashboard Folder",
-              "type": "TEXT"
-            },
-            "type": {
-              "title": "Type",
-              "type": "FIXED_VALUE",
-              "value": "Dashboard",
-              "visible": false,
-              "sortable": false
-            },
-            "dashboard_type": {
-              "title": "Dashboard Type",
-              "type": "TEXT"
-            },
-            "label": {
-              "title": "Label",
-              "key": true,
-              "type": "TEXT"
+            "folder": {
+              "title": "Folder",
+              "key": true
             },
             "description": {
-              "title": "description"
+              "title": "Description"
             },
             "saved_time": {
               "title": "Saved Time",
               "type": "DATETIME"
             },
-            "tags": {
-              "title": "Tags",
-              "type": "TEXT"
+            "file_type": {
+              "title": "File Type",
+              "key": true
             },
-            "timestamp": {
-              "title": "When",
-              "type": "HUMANIZE_TIME_DELTA",
-              "source-column": "saved_time",
-              "sortable": false
+            "file_size": {
+              "title": "Raw Size"
             },
-            "menu_folder": {
-              "title": "Menu Folder",
-              "type": "TEXT",
-              "hidden": false,
+            "humansized_file_size": {
+              "title": "Size"
+            },
+            "data_path": {
+              "title": "File Path",
+              "key": true,
+              "visible": false
+            },
+            "retention_days": {
+              "title": "Retention Days",
               "key": true
             }
           },
-          "custom_columns": [
+          "sorting": [
             {
-              "id": "enabled",
-              "label": "Enabled",
-              "htmlTemplateForRow": "<span class='badge' style='background-color: {{ row.enableColor }}' > {{ row.enabled }} </span>"
-            },
-            {
-              "id": "id",
-              "label": "ID",
-              "expr": "'user-dashboard-' + name",
-              "visible": false,
-              "key": true,
-              "sortable": false
-            },
-            {
-              "id": "url",
-              "label": "URL",
-              "expr": "'/workspace/dashboard/user-dashboard-' + name",
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "enableColor",
-              "label": "Enable Color",
-              "expr": "['#4CAF50'] if enabled else ['#9E9E9E']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "rowStyleClass",
-              "hidden": true,
-              "visible": false,
-              "expr": "'bg-fading-blue' if time_now_as_ms() - isoformat_to_ms(saved_time) <= 120000 else None",
-              "sortable": false
+              "saved_time": "desc"
             }
           ],
           "actions": [
             {
-              "permission": "rda:user_dashboard:view",
-              "appName": "user-dashboard",
-              "displayLabelColumnId": "id",
-              "drillDownLinkField": "name",
-              "identifier": "user.dashboard.view",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "Dashboard",
-              "type": "GO_TO_APP_STATE"
-            },
-            {
-              "permission": "rda:user_dashboard:view",
-              "title": "View YAML",
+              "permission": "rda:object:upload",
+              "title": "Upload",
+              "icon": "mdi mdi-plus",
               "type": "POPUP_FORM",
-              "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-yaml",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:add-object",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -467,17 +279,17 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.yaml"
+                    "formId": "rda.saas.object.add"
                   }
                 ]
               }
             },
             {
-              "permission": "rda:user_dashboard:view",
-              "title": "View JSON",
+              "permission": "rda:object:download",
+              "title": "Download",
               "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "identifier": "saas-service-action:userdashboard-view-json",
+              "identifier": "saas-service-action:download-object",
               "api-endpoint": {
                 "service-name": "saas-reports",
                 "methodName": "getForm",
@@ -485,13 +297,49 @@
                 "parse-output": false,
                 "params": [
                   {
-                    "formId": "rda.saas.userdashboard.view.json"
+                    "formId": "rda.saas.object.download"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:object:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:delete-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.object.delete"
+                  }
+                ]
+              }
+            },
+            {
+              "permission": "rda:object:update_retention",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:update-retention-days",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.object.update_retention"
                   }
                 ]
               }
             }
           ],
-          "widget_id": "c466cddc"
+          "widget_id": "01dc3a55"
         }
       ]
     }

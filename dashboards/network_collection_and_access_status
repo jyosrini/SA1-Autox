@@ -1,605 +1,345 @@
 {
-  "name": "network_collection_and_access_status",
-  "label": "Network Collection status",
-  "description": "Network collection and access verification status",
-  "dashboard_folder": "NetworkDevicePack",
-  "version": "1.0.3",
-  "enabled": false,
-  "live_edit": true,
-  "dashboard_type": "template",
-  "template_variables": {
-    "CUST_ID": {
-      "contextId": "customerId"
-    },
-    "PROJ_ID": {
-      "contextId": "projectId"
-    },
-    "CUST_TAG": {
-      "contextId": "customerTag"
-    }
+  "name": "rda-mgmt-page-store-objects",
+  "label": "Object Store",
+  "description": "Objects Management Page",
+  "enabled": true,
+  "dashboard_type": "dashboard",
+  "dashboard_style": "auto",
+  "stream": "rda_objects_meta",
+  "dashboard_folder": "System",
+  "dashboard_filters": {
+    "time_filter": true,
+    "additional_datetime_column_filters": [
+      {
+        "id": "saved_time",
+        "label": "Saved Time"
+      }
+    ],
+    "columns_filter": [
+      {
+        "id": "saved_time",
+        "label": "Dataset Saved",
+        "type": "DATETIME"
+      },
+      {
+        "id": "folder",
+        "label": "Folder",
+        "type": "TEXT"
+      },
+      {
+        "id": "name",
+        "label": "Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "file_type",
+        "label": "File Type",
+        "type": "TEXT"
+      },
+      {
+        "id": "file_size",
+        "label": "Raw Size",
+        "type": "DOUBLE"
+      },
+      {
+        "id": "humansized_file_size",
+        "label": "Size",
+        "type": "TEXT"
+      },
+      {
+        "id": "description",
+        "label": "Description",
+        "type": "TEXT"
+      },
+      {
+        "id": "retention_days",
+        "label": "Retention Days",
+        "type": "DOUBLE"
+      }
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Access Verification Status",
+      "title": "Object Store",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Access Check by Status",
-          "stream": "network_access_verification",
-          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
-          "ts_column": "timestamp",
-          "column": "_id",
-          "min_width": 6,
-          "height": 4,
-          "agg": "value_count",
-          "group_by": [
-            "auth_state"
-          ],
-          "style": {
-            "color-map": {
-              "Success": [
-                "#008000",
-                "#ffffff"
-              ],
-              "Failed": [
-                "#FF0000",
-                "#ffffff"
-              ]
-            }
-          },
-          "type": "str",
-          "widget_id": "66dc2d8e"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Access Check by Protocol",
-          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
-          "stream": "network_access_verification",
-          "ts_column": "timestamp",
-          "column": "_id",
-          "agg": "value_count",
-          "min_width": 6,
-          "height": 4,
-          "group_by": [
-            "protocol"
-          ],
-          "type": "str",
-          "widget_id": "a07b4356"
-        },
-        {
-          "title": "Access Status",
+          "title": "Object store",
+          "extra_filter": "folder is not null",
           "widget_type": "tabular",
-          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
-          "stream": "network_access_verification",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "min_width": 12,
-          "height": 6,
-          "max_width": 12,
-          "sorting": [
-            {
-              "auth_state": "desc"
-            }
-          ],
+          "stream": "rda_objects_meta",
+          "height": 10,
+          "min_wdith": 12,
           "paginated": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "ip_address",
-            "protocol",
-            "used_cred",
-            "auth_state"
+            "name",
+            "folder",
+            "file_type",
+            "humansized_file_size",
+            "description"
           ],
-          "max_rows": 50,
+          "duration_hours": 87600,
           "columns": {
-            "ip_address": {
-              "title": "IP Address",
-              "defaultWidth": 150,
+            "name": {
+              "title": "Name",
               "key": true
             },
-            "protocol": {
-              "title": "Protocol",
-              "defaultWidth": 150
+            "folder": {
+              "title": "Folder",
+              "key": true
             },
-            "used_cred": {
-              "title": "Credential Name",
-              "defaultWidth": 200
+            "description": {
+              "title": "Description"
             },
-            "reason": {
-              "title": "Failure Reason",
-              "defaultWidth": 200
-            },
-            "auth_state": {
-              "title": "Authentication State",
-              "defaultWidth": 150,
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.auth_state_color}}' > {{ row.auth_state }} </span>{% endraw %}"
-            },
-            "auth_state_color": {
-              "type": "COLOR-MAP",
-              "source-column": "auth_state",
-              "color-map": {
-                "Success": "#008000",
-                "Failed": "#FF0000",
-                "success": "#008000",
-                "failed": "#FF0000"
-              }
-            },
-            "timestamp": {
-              "title": "Verification Time",
-              "type": "DATETIME",
-              "visible": true
-            }
-          },
-          "widget_id": "4c2cfdd7"
-        }
-      ]
-    },
-    {
-      "title": "Discovery Status",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Discovery Runs",
-          "widget_type": "tabular",
-          "duration_hours": 1080,
-          "stream": "asset_inventory_collection_status_stream",
-          "extra_filter0": "customer_tag contains '{{CUST_TAG}}' or customer_tag is empty",
-          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname contains 'job') and type_ is 'overall_status' and total is not empty and pending is 0",
-          "height": 4,
-          "max_width": 12,
-          "min_width": 12,
-          "columns": {
-            "collection_timestamp": {
-              "title": "Discovery End time",
+            "saved_time": {
+              "title": "Saved Time",
               "type": "DATETIME"
             },
-            "total": "Total Devices",
-            "success": {
-              "title": "Total Successful",
-              "htmlTemplateForRow0": "<{%raw%}span class='badge' style='background-color: {{ row.response_colors}}' > {{ row.success}} </span>{%endraw%}"
+            "file_type": {
+              "title": "File Type",
+              "key": true
             },
-            "failed": {
-              "title": "Total Failed",
-              "htmlTemplateForRow0": "{%raw%}<span class='badge' style='background-color: {{ row.response_colorf}}' > {{ row.failed}} </span>{%endraw%}"
+            "file_size": {
+              "title": "Raw Size"
             },
-            "jobname": {
-              "title": "Jobname",
-              "type": "TEXT",
-              "hidden": true
+            "humansized_file_size": {
+              "title": "Size"
             },
-            "jobid": {
-              "title": "job id",
-              "type": "TEXT",
-              "hidden": true
+            "data_path": {
+              "title": "File Path",
+              "key": true,
+              "visible": false
             },
-            "duplicates": {
-              "title": "Duplicates(Serial Number)",
-              "type": "TEXT",
-              "hidden": false
+            "retention_days": {
+              "title": "Retention Days",
+              "key": true
             }
           },
-          "custom_columns": [
+          "sorting": [
             {
-              "id": "response_colors",
-              "label": "Enable Color",
-              "expr": "['#b3b3b3'] if success == 0 else ['#4CAF50']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "response_colorf",
-              "label": "Enable Color",
-              "expr": "['#b3b3b3'] if failed == 0 else ['#BB0000']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "status",
-              "label": "Status",
-              "expr": "'Success' if failed == 0 else 'Failed'",
-              "hidden": false,
-              "visible": true,
-              "sortable": false
+              "saved_time": "desc"
             }
           ],
           "actions": [
             {
-              "permission": "aia:page:view",
-              "drillDownLinkField": "success",
-              "identifier": "success",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Success",
-              "contextParamList": {
-                "contextParams": [
+              "permission": "rda:object:upload",
+              "title": "Upload",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:add-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "paramKey": "jobid",
-                    "paramId": "jobid"
+                    "formId": "rda.saas.object.add"
                   }
                 ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "IS_NOT_NULL",
-                    "fieldId": "success"
-                  }
-                ]
-              },
-              "type": "GO_TO_APP_STATE",
-              "appName": "user-dashboard/customer_discovery_runs_details_success"
+              }
             },
             {
-              "permission": "aia:page:view",
-              "drillDownLinkField": "duplicates",
-              "identifier": "duplicates",
+              "permission": "rda:object:download",
+              "title": "Download",
+              "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Duplicates",
-              "contextParamList": {
-                "contextParams": [
+              "identifier": "saas-service-action:download-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "paramKey": "jobid",
-                    "paramId": "jobid"
+                    "formId": "rda.saas.object.download"
                   }
                 ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "IS_NOT_NULL",
-                    "fieldId": "duplicates"
-                  }
-                ]
-              },
-              "type": "GO_TO_APP_STATE",
-              "appName": "user-dashboard/customer_discovery_runs_details_duplicates"
+              }
             },
             {
-              "appName": "user-dashboard/customer_discovery_runs_details_failed",
-              "permission": "aia:page:view",
-              "drillDownContext": "failed",
-              "drillDownLinkField": "failed",
-              "identifier": "failed",
+              "permission": "rda:object:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Failed",
-              "contextParamList": {
-                "contextParams": [
+              "identifier": "saas-service-action:delete-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "paramKey": "jobid",
-                    "paramId": "jobid"
+                    "formId": "rda.saas.object.delete"
                   }
                 ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "IS_NOT_NULL",
-                    "fieldId": "failed"
-                  }
-                ]
-              },
-              "type": "GO_TO_APP_STATE"
+              }
             },
             {
-              "appName": "user-dashboard/logs",
-              "permission": "aia:page:view",
-              "identifier": "failed",
-              "drillDownLinkField": "total",
-              "contextParamList": {
-                "contextParams": [
+              "permission": "rda:object:update_retention",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:update-retention-days",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "paramKey": "jobid",
-                    "paramId": "jobid"
+                    "formId": "rda.saas.object.update_retention"
                   }
                 ]
-              },
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Logs",
-              "type": "GO_TO_APP_STATE"
+              }
             }
           ],
-          "widget_id": "b2c8d81c"
+          "widget_id": "01dc3a55"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Access Verification Status",
+      "title": "Object Store",
       "show_filter": true,
       "widgets": [
         {
-          "widget_type": "pie_chart",
-          "title": "Access Check by Status",
-          "stream": "network_access_verification",
-          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
-          "ts_column": "timestamp",
-          "column": "_id",
-          "min_width": 6,
-          "height": 4,
-          "agg": "value_count",
-          "group_by": [
-            "auth_state"
-          ],
-          "style": {
-            "color-map": {
-              "Success": [
-                "#008000",
-                "#ffffff"
-              ],
-              "Failed": [
-                "#FF0000",
-                "#ffffff"
-              ]
-            }
-          },
-          "type": "str",
-          "widget_id": "66dc2d8e"
-        },
-        {
-          "widget_type": "pie_chart",
-          "title": "Access Check by Protocol",
-          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
-          "stream": "network_access_verification",
-          "ts_column": "timestamp",
-          "column": "_id",
-          "agg": "value_count",
-          "min_width": 6,
-          "height": 4,
-          "group_by": [
-            "protocol"
-          ],
-          "type": "str",
-          "widget_id": "a07b4356"
-        },
-        {
-          "title": "Access Status",
+          "title": "Object store",
+          "extra_filter": "folder is not null",
           "widget_type": "tabular",
-          "extra_filter": "customer_tag is '{{CUST_TAG}}' or customer_tag is empty",
-          "stream": "network_access_verification",
-          "duration_hours": 1080,
-          "showRowSummary": true,
-          "min_width": 12,
-          "height": 6,
-          "max_width": 12,
-          "sorting": [
-            {
-              "auth_state": "desc"
-            }
-          ],
+          "stream": "rda_objects_meta",
+          "height": 10,
+          "min_wdith": 12,
           "paginated": true,
           "remote_searchable": true,
           "remote_searchable_cols": [
-            "ip_address",
-            "protocol",
-            "used_cred",
-            "auth_state"
+            "name",
+            "folder",
+            "file_type",
+            "humansized_file_size",
+            "description"
           ],
-          "max_rows": 50,
+          "duration_hours": 87600,
           "columns": {
-            "ip_address": {
-              "title": "IP Address",
-              "defaultWidth": 150,
+            "name": {
+              "title": "Name",
               "key": true
             },
-            "protocol": {
-              "title": "Protocol",
-              "defaultWidth": 150
+            "folder": {
+              "title": "Folder",
+              "key": true
             },
-            "used_cred": {
-              "title": "Credential Name",
-              "defaultWidth": 200
+            "description": {
+              "title": "Description"
             },
-            "reason": {
-              "title": "Failure Reason",
-              "defaultWidth": 200
-            },
-            "auth_state": {
-              "title": "Authentication State",
-              "defaultWidth": 150,
-              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.auth_state_color}}' > {{ row.auth_state }} </span>{% endraw %}"
-            },
-            "auth_state_color": {
-              "type": "COLOR-MAP",
-              "source-column": "auth_state",
-              "color-map": {
-                "Success": "#008000",
-                "Failed": "#FF0000",
-                "success": "#008000",
-                "failed": "#FF0000"
-              }
-            },
-            "timestamp": {
-              "title": "Verification Time",
-              "type": "DATETIME",
-              "visible": true
-            }
-          },
-          "widget_id": "4c2cfdd7"
-        }
-      ]
-    },
-    {
-      "title": "Discovery Status",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Discovery Runs",
-          "widget_type": "tabular",
-          "duration_hours": 1080,
-          "stream": "asset_inventory_collection_status_stream",
-          "extra_filter0": "customer_tag contains '{{CUST_TAG}}' or customer_tag is empty",
-          "extra_filter": "(jobname contains '{{CUST_TAG}}' or jobname contains 'job') and type_ is 'overall_status' and total is not empty and pending is 0",
-          "height": 4,
-          "max_width": 12,
-          "min_width": 12,
-          "columns": {
-            "collection_timestamp": {
-              "title": "Discovery End time",
+            "saved_time": {
+              "title": "Saved Time",
               "type": "DATETIME"
             },
-            "total": "Total Devices",
-            "success": {
-              "title": "Total Successful",
-              "htmlTemplateForRow0": "<{%raw%}span class='badge' style='background-color: {{ row.response_colors}}' > {{ row.success}} </span>{%endraw%}"
+            "file_type": {
+              "title": "File Type",
+              "key": true
             },
-            "failed": {
-              "title": "Total Failed",
-              "htmlTemplateForRow0": "{%raw%}<span class='badge' style='background-color: {{ row.response_colorf}}' > {{ row.failed}} </span>{%endraw%}"
+            "file_size": {
+              "title": "Raw Size"
             },
-            "jobname": {
-              "title": "Jobname",
-              "type": "TEXT",
-              "hidden": true
+            "humansized_file_size": {
+              "title": "Size"
             },
-            "jobid": {
-              "title": "job id",
-              "type": "TEXT",
-              "hidden": true
+            "data_path": {
+              "title": "File Path",
+              "key": true,
+              "visible": false
             },
-            "duplicates": {
-              "title": "Duplicates(Serial Number)",
-              "type": "TEXT",
-              "hidden": false
+            "retention_days": {
+              "title": "Retention Days",
+              "key": true
             }
           },
-          "custom_columns": [
+          "sorting": [
             {
-              "id": "response_colors",
-              "label": "Enable Color",
-              "expr": "['#b3b3b3'] if success == 0 else ['#4CAF50']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "response_colorf",
-              "label": "Enable Color",
-              "expr": "['#b3b3b3'] if failed == 0 else ['#BB0000']",
-              "hidden": true,
-              "visible": false,
-              "sortable": false
-            },
-            {
-              "id": "status",
-              "label": "Status",
-              "expr": "'Success' if failed == 0 else 'Failed'",
-              "hidden": false,
-              "visible": true,
-              "sortable": false
+              "saved_time": "desc"
             }
           ],
           "actions": [
             {
-              "permission": "aia:page:view",
-              "drillDownLinkField": "success",
-              "identifier": "success",
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Success",
-              "contextParamList": {
-                "contextParams": [
+              "permission": "rda:object:upload",
+              "title": "Upload",
+              "icon": "mdi mdi-plus",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:add-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "paramKey": "jobid",
-                    "paramId": "jobid"
+                    "formId": "rda.saas.object.add"
                   }
                 ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "IS_NOT_NULL",
-                    "fieldId": "success"
-                  }
-                ]
-              },
-              "type": "GO_TO_APP_STATE",
-              "appName": "user-dashboard/customer_discovery_runs_details_success"
+              }
             },
             {
-              "permission": "aia:page:view",
-              "drillDownLinkField": "duplicates",
-              "identifier": "duplicates",
+              "permission": "rda:object:download",
+              "title": "Download",
+              "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Duplicates",
-              "contextParamList": {
-                "contextParams": [
+              "identifier": "saas-service-action:download-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "paramKey": "jobid",
-                    "paramId": "jobid"
+                    "formId": "rda.saas.object.download"
                   }
                 ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "IS_NOT_NULL",
-                    "fieldId": "duplicates"
-                  }
-                ]
-              },
-              "type": "GO_TO_APP_STATE",
-              "appName": "user-dashboard/customer_discovery_runs_details_duplicates"
+              }
             },
             {
-              "appName": "user-dashboard/customer_discovery_runs_details_failed",
-              "permission": "aia:page:view",
-              "drillDownContext": "failed",
-              "drillDownLinkField": "failed",
-              "identifier": "failed",
+              "permission": "rda:object:delete",
+              "title": "Delete",
+              "type": "POPUP_FORM",
               "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Failed",
-              "contextParamList": {
-                "contextParams": [
+              "identifier": "saas-service-action:delete-object",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "paramKey": "jobid",
-                    "paramId": "jobid"
+                    "formId": "rda.saas.object.delete"
                   }
                 ]
-              },
-              "actionCondition": {
-                "actionControl": "SHOW_IF",
-                "conditionalField": [
-                  {
-                    "conditionType": "IS_NOT_NULL",
-                    "fieldId": "failed"
-                  }
-                ]
-              },
-              "type": "GO_TO_APP_STATE"
+              }
             },
             {
-              "appName": "user-dashboard/logs",
-              "permission": "aia:page:view",
-              "identifier": "failed",
-              "drillDownLinkField": "total",
-              "contextParamList": {
-                "contextParams": [
+              "permission": "rda:object:update_retention",
+              "title": "Update",
+              "type": "POPUP_FORM",
+              "selectionType": "SINGLE",
+              "identifier": "saas-service-action:update-retention-days",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
                   {
-                    "paramKey": "jobid",
-                    "paramId": "jobid"
+                    "formId": "rda.saas.object.update_retention"
                   }
                 ]
-              },
-              "selectionType": "SINGLE",
-              "stateName": "app.featureapp",
-              "title": "View Logs",
-              "type": "GO_TO_APP_STATE"
+              }
             }
           ],
-          "widget_id": "b2c8d81c"
+          "widget_id": "01dc3a55"
         }
       ]
     }
