@@ -1,52 +1,147 @@
 {
-  "name": "rda-packs-view-detail",
-  "label": "View Pack Details",
-  "context_label_id": "view_detail_page_label",
-  "description": "View Pack details",
+  "name": "niki-preview-template",
+  "label": "Preview template",
+  "description": "Preview template",
+  "context_label_id": "deviceName",
+  "dashboard_folder": "Default",
+  "version": "2024-04-03_02",
   "enabled": false,
-  "dashboard_folder": "System",
-  "dashboard_style": "auto",
+  "debug": true,
+  "live_edit": true,
   "dashboard_type": "template",
   "template_variables": {
-    "PACK_NAME": {
-      "contextId": "sluggified_name"
-    },
-    "PACK_VERSION": {
-      "contextId": "sluggified_verion"
+    "deviceName": {
+      "contextId": "deviceName"
     }
   },
-  "computedContext": {
-    "sluggified_verion": {
-      "expr": "sluggify(pack_version)",
-      "defaultValue": "None"
-    },
-    "sluggified_name": {
-      "expr": "sluggify(pack_name)",
-      "defaultValue": "None"
-    }
+  "dashboard_filters": {
+    "columns_filter": [],
+    "group_filters": []
   },
   "dashboard_sections": [
     {
-      "title": "Pack Details",
+      "title": "Summary",
+      "show_filter": true,
       "widgets": [
         {
-          "widget_type": "markdown",
-          "folder": "{{PACK_NAME}}/{{PACK_VERSION}}",
-          "objectName": "description_{{PACK_NAME}}_{{PACK_VERSION}}",
-          "widget_id": "efcf2a8a"
+          "title": "Product",
+          "widget_type": "summary",
+          "duration_hours": 1080,
+          "paginated": false,
+          "max_rows": 1,
+          "limit": 1,
+          "max_width": 12,
+          "height": 5,
+          "min_width": 12,
+          "stream": "sample_json",
+          "ts_column": "timestamp",
+          "extra_filter": "deviceName is {{ deviceName }} ",
+          "columns": {
+            "deviceName": {
+              "title": "Devicename",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            },
+            "info": {
+              "title": "Info",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            },
+            "detail": {
+              "title": "Detail",
+              "type": "TEXT",
+              "hidden": true,
+              "key": true
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME",
+              "visible": true
+            }
+          },
+          "widget_id": "a69be2eb"
+        },
+        {
+          "widget_type": "codeblock",
+          "title": "Code Block",
+          "stream": "sample_json",
+          "virtual_scrolling": true,
+          "extra_filter": "deviceName is {{ deviceName }} and detail is not None GET detail ",
+          "columns": {
+            "detail": {
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            }
+          },
+          "lang": "json",
+          "widget_id": "72f885d9"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Pack Details",
+      "title": "Summary",
+      "show_filter": true,
       "widgets": [
         {
-          "widget_type": "markdown",
-          "folder": "{{PACK_NAME}}/{{PACK_VERSION}}",
-          "objectName": "description_{{PACK_NAME}}_{{PACK_VERSION}}",
-          "widget_id": "efcf2a8a"
+          "title": "Product",
+          "widget_type": "summary",
+          "duration_hours": 1080,
+          "paginated": false,
+          "max_rows": 1,
+          "limit": 1,
+          "max_width": 12,
+          "height": 5,
+          "min_width": 12,
+          "stream": "sample_json",
+          "ts_column": "timestamp",
+          "extra_filter": "deviceName is {{ deviceName }} ",
+          "columns": {
+            "deviceName": {
+              "title": "Devicename",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            },
+            "info": {
+              "title": "Info",
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            },
+            "detail": {
+              "title": "Detail",
+              "type": "TEXT",
+              "hidden": true,
+              "key": true
+            },
+            "timestamp": {
+              "title": "Timestamp",
+              "type": "DATETIME",
+              "visible": true
+            }
+          },
+          "widget_id": "a69be2eb"
+        },
+        {
+          "widget_type": "codeblock",
+          "title": "Code Block",
+          "stream": "sample_json",
+          "virtual_scrolling": true,
+          "extra_filter": "deviceName is {{ deviceName }} and detail is not None GET detail ",
+          "columns": {
+            "detail": {
+              "type": "TEXT",
+              "hidden": false,
+              "key": true
+            }
+          },
+          "lang": "json",
+          "widget_id": "72f885d9"
         }
       ]
     }
