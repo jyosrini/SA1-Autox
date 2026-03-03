@@ -1,30 +1,43 @@
 {
-  "name": "rda-tenant-integrations-app",
-  "label": "RDA Integrations",
-  "description": "Robotic Data Automation Integrations",
-  "dashboard_folder": "System",
-  "version": "22.11.10.1",
+  "name": "oia-incidents-analytics-app",
+  "label": "OIA Incidents",
+  "description": "Open Search Based OIA Incidents and Tracking Analytics",
+  "version": "23.1.2",
   "enabled": true,
+  "status_poller": {},
   "dashboard_filters": {
-    "time_filter": false,
-    "columns_filter": []
+    "time_filter": true,
+    "default_time_filter_labels": [
+      "Last 24 hours"
+    ],
+    "columns_filter": [],
+    "group_filters": []
   },
   "dashboard_sections": [
     {
-      "title": "Example"
+      "title": "new dashboard"
     }
   ],
   "dashboard_type": "app",
+  "dashboard_groups": {
+    "incidents": {
+      "icon": "incident.svg",
+      "label": "Incidents",
+      "pageName": "Incidents"
+    }
+  },
   "dashboard_pages": [
     {
-      "name": "rda-mgmt-page-tenant-credentials",
-      "label": "Credentials",
-      "icon": "credentials.svg"
+      "name": "oia-incidents-os-template",
+      "label": "Incidents",
+      "icon": "incident.svg",
+      "group": "incidents"
     }
   ],
+  "dashboard_folder": "Default",
   "pstream_dashboards": [
     {
-      "title": "Example"
+      "title": "new dashboard"
     }
   ]
 }
