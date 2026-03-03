@@ -1,14 +1,13 @@
 {
-  "name": "rda-pstream-app",
-  "label": "Stream: {{PSTREAM_NAME}}",
+  "name": "rda-graph-app",
+  "label": "Graph: {{GRAPH_NAME}}",
   "is_template": true,
-  "description": "Persistent Stream App",
-  "dashboard_folder": "System",
-  "version": "23.7.26.1",
+  "description": "Graph App",
+  "version": "24.7.24.1",
   "enabled": true,
   "template_variables": {
-    "PSTREAM_NAME": {
-      "contextId": "pstream_name"
+    "GRAPH_NAME": {
+      "contextId": "graph_name"
     }
   },
   "dashboard_filters": {
@@ -23,25 +22,19 @@
   "dashboard_type": "app",
   "dashboard_pages": [
     {
-      "name": "rda-pstream-data-preview-template",
-      "label": "Data Preview",
-      "icon": "Analytics.svg"
+      "name": "rda-graph-nodes-data-preview-template",
+      "label": "Nodes",
+      "icon": "enrichment.svg"
     },
     {
-      "name": "rda-pstream-stats-template",
-      "label": "Stats",
-      "icon": "datasource.svg"
+      "name": "rda-graph-edges-data-preview-template",
+      "label": "Edges",
+      "icon": "microserviceTrace.svg"
     },
     {
-      "name": "rda-pstream-metadata-template",
-      "label": "Metadata",
-      "icon": "stack.svg"
-    },
-    {
-      "name": "rda-pstream-ism-details-template",
-      "label": "ISM Details",
-      "icon": "contract.svg",
-      "context_filter": "ism is 'yes'"
+      "name": "rda-graph-aql-editor-template",
+      "label": "AQL",
+      "icon": "collaboration.svg"
     }
   ],
   "pstream_dashboards": [

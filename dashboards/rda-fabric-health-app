@@ -1,19 +1,10 @@
 {
-  "name": "rdaf_system_health_trends",
-  "label": "RDAF System Health Trends",
-  "description": "RDAF System Health Trends",
-  "version": "1.0.1",
+  "name": "rda-fabric-health-app",
+  "label": "Fabric Health",
+  "description": "Fabric Health Administration",
+  "version": "22.9.9.1",
   "enabled": true,
-  "status_poller": {},
-  "dashboard_type": "app",
-  "is_template": true,
-  "custom_context": {
-    "rda-dashboard-live-edit": true
-  },
   "computedContext": {
-    "RDAF_NAME": {
-      "expr": "'rdaf-prod'"
-    },
     "NOW": {
       "expr": "now().replace(hour = 0, minute = 0, second = 0, microsecond = 0).isoformat()"
     },
@@ -33,37 +24,77 @@
       "expr": "now().strftime('%B %d, %Y')"
     }
   },
+  "dashboard_filters": {
+    "time_filter": false,
+    "columns_filter": []
+  },
+  "dashboard_sections": [
+    {
+      "title": "Example"
+    }
+  ],
+  "dashboard_type": "app",
+  "dashboard_folder": "System",
   "dashboard_pages": [
     {
-      "name": "host_os_performance_metrics",
-      "label": "Host OS Metrics",
+      "name": "rda-health-workers",
+      "label": "Workers",
+      "icon": "Analytics.svg"
+    },
+    {
+      "name": "rda-health-agents",
+      "label": "Agents",
+      "icon": "datasource.svg"
+    },
+    {
+      "name": "rda-health-microservices",
+      "label": "Microservices",
+      "icon": "gateway.svg"
+    },
+    {
+      "name": "rda-microservice-traces_page_Traces",
+      "label": "Traces",
       "icon": "pipeline.svg"
     },
     {
-      "name": "alert_trend_snap",
-      "label": "Alert Trend",
-      "icon": "alert.svg"
+      "name": "rda-operations-page-jobs",
+      "label": "Jobs",
+      "icon": "templates.svg"
     },
     {
-      "name": "alert_analysis",
-      "label": "Alert Analysis",
-      "icon": "alertGroups.svg"
+      "name": "rda-operations-page-trends",
+      "label": "Trends",
+      "icon": "stack.svg"
     },
     {
-      "name": "pipeline_failure_trends",
+      "name": "fabric-usage",
+      "label": "Fabric Usage",
+      "icon": "experiment.svg"
+    },
+    {
+      "name": "pipeline_failure_trend",
       "label": "Pipeline Failure Trend",
-      "icon": "trace.svg"
+      "icon": "bots.svg"
     },
     {
-      "name": "artifact_change_trends",
-      "label": "Artifact Changes Trend",
-      "icon": "changes.svg"
+      "name": "stream_error_trend",
+      "label": "Stream Error Trend",
+      "icon": "library.svg"
     },
     {
-      "name": "user_activity_trends",
+      "name": "user_activity_trend",
       "label": "User Activity",
       "icon": "customer.svg"
+    },
+    {
+      "name": "artifact_change_trend",
+      "label": "Artifact Change Trend",
+      "icon": "file.svg"
     }
   ],
-  "dashboard_folder": "RDAF_Health_Trends"
+  "pstream_dashboards": [
+    {
+      "title": "Example"
+    }
+  ]
 }
