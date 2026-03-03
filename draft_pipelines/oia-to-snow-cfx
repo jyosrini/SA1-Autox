@@ -1,47 +1,43 @@
+@dm:empty
+ --> @dm:addrow name='edc_sec_adv_data_raw' and limit=0
+ --> #dm:query-persistent-stream
+ --> @dm:save name='sec-adv-raw-data'
+ --> @dm:save name='temp-sec-adv-details'
+ --> @c:new-block
+ --> @dm:recall name='uploaded_data'
+ ## --> @dm:addrow name='edc_cust_pid_sw' and limit=0
 
- ## oia-to-snow-cfx
+ ## --> #dm:query-persistent-stream
 
- ## All debugging is captured on oia-to-snow-debug-stream
+ --> @dm:eval sw_os_type="('IOS XR' if sw_os_type=='IOS-XR' else sw_os_type)"
+ --> @dm:add-missing-columns columns='source' and value='security_advisory'
+ --> @dm:eval contract_number='str(contract_number)'
+ ## --> @dm:head n=1
 
- ## 
+ --> @dm:save name='temp-sa-data'
+ --> @c:new-block
+ --> @dm:recall name='temp-sa-data'
+ --> @dm:groupby columns='customer'
+ ## --> @dm:to_type columns = 'contract_number' &
 
- ## A work around is to mention all child and dependent pipelines here.
-@c:new-block
- --> @dm:empty
- --> @dm:skip-block-if-shape row_count = 0 & column_count = 0
- --> @exec:run-pipeline name="oia-to-snow-cfx-processor" & ignore_failures="no"
- --> @exec:run-pipeline name="oia-incident-status-tracker-stream" & ignore_failures="no"
- ## Read from Stream
+ ## type  = 'int'
 
- --> @c:bookmark-loop bookmark = 'oia-to-snow-cfx-bkmrk' & initial_value = '-1 minute'
- --> @dm:empty
- --> @dm:addrow name="oia-incidents-delta-stream" & max_rows="1000"
- --> @dm:sleep seconds=5
- ## Query records from Stream
+ --> @dm:save name='temp-unique-cust-name'
+ ## Queries data for the customer from edc_oi_enriched_stream
 
- ## Change-Here: Pulse to what ever you want
+ ## --> @c:data-loop dataset='temp-unique-cust-name' and columns='customer'
 
- --> #dm:query-persistent-stream timestamp is after '${bookmark}' & (i_source contains 'SNMP_TRAP_Notifications' or i_source contains 'Syslog_udp_Notifications' or i_source contains 'Alert Group') & i_state != 'Closed' & i_state != 'Cancelled'
- --> @dm:skip-block-if-shape row_count = 0
- ## Change-Here: Temp workaround. Flow is NOT gracefully coming back from post exec:run-pipeline
+ ## --> @dm:empty
 
- --> @dm:save_bookmark name = 'oia-to-snow-cfx-bkmrk' & value_column = 'timestamp' & value_type = 'timestamp' & value_func = 'max'
- --> @dm:save name="temp-qresults"
- ## Debug
+ ## --> @dm:addrow name='edc_oi_inventory_enriched' and limit=0
 
- --> @dm:map to="step" & func="fixed" & value="temp-query-stream-results-${bookmark}"
- --> @rn:write-stream compression="auto" & name="oia-to-snow-debug-stream"
- ## Record The Step
+ ## --> #dm:query-persistent-stream customer_name=='$customer'
 
- --> @dm:eval pipeline="'oia-to-snow-cfx'" & step="'query-persistent-stream'" & stage="'bookmark ${bookmark}'" & status_comments="'Incident:' + incident_id + ',State:' + i_state + ',Delta:' + str(delta)" & status="'INFO'"
- --> @exec:run-pipeline name="oia-incident-status-tracker-stream" & ignore_failures="yes"
- ## Set the Tracing Context
+ ## --> @dm:save name='hw-eol-details' and append='yes'
 
- --> @dm:set-tracing-context-from-input columns = "project_id,incident_id"
- --> @dm:save name="temp-query-result-cfx"
- --> @exec:run-pipeline name="oia-to-snow-cfx-processor" & ignore_failures="no"
- ## Save bookmark - only after finishing up processing all the records
+ ## --> @dm:save name='test1-hw-eol-details' and append='yes'
 
- --> @dm:recall name="temp-qresults"
- --> @dm:save_bookmark name = 'oia-to-snow-cfx-bkmrk' & value_column = 'timestamp' & value_type = 'timestamp' & value_func = 'max'
- --> @dm:empty
+ --> @c:new-block
+ --> @dm:recall name='temp-sec-adv-details'
+ --> @dm:enrich dict='hw-eol-details' and src_key_cols='product_name,contract_number,customer' and dict_key_cols='product_name,contract_number,customer_name' and enrich_cols='gu_name,savm_sales_level_4_name,coverage,covered_line_status,business_entity,business_sub_entity,bk_end_of_life_request_num,bk_eol_bulletin_product_typ_cd,hwEOL_endOfNewServiceAttachmentDate,hwEOL_endOfRoutineFailureAnalysisDate,hwEOL_endOfSoftwareMaintenanceReleasesDate,hwEOL_endOfServiceContractRenewalDate,hwEOL_endOfLifeAnnouncementDate,eol_product_name,item_type,hwEOL_endOfSaleDate,hwEOL_lastDayOfSupportDate,product_description,product_family,product_family_description,product_type,product_list_price,portfolio_desc,usage_code,combination_count,execution_status,execution_reason,attempt_count,timestamp,total_product_list_price,unique_key,hw_status,hw_expiring_qtr,hw_expiring_year,sw_status,sw_expiring_qtr,sw_expiring_year,last_updated_time'  and how_type='inner' and dedup_dict='no' and replace_values='yes'
+ --> @dm:save name='final-sa-hw-enrich-3'
