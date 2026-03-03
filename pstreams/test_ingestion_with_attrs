@@ -1,12 +1,4 @@
-{
-  "name": "test_ingestion_with_attrs",
-  "datastore_type": "OS",
-  "read_only": false,
-  "attrs": {
-    "unique_keys": [
-      "unique_key"
-    ]
-  },
-  "status": "Running",
-  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-a3a04c61-test_ingestion_with_attrs"
-}
+@dm:empty
+ --> @dm:addrow folder="nikijosh@cisco.com/e30a7c2249004035a6ad4719b7db65a6/"
+ --> @dm:object-list folder="folder"
+ --> @dm:save name="path"
