@@ -1,20 +1,13 @@
-folder: OI
-name: edc_mobility_rma_data
-description: test pipeline
-data_path: pipelines/data/edc_mobility_rma_data/2026_02_13_1/data.json
-usecase: Uses RMA data to enrich inventory
-category: ''
-sources:
-  rn:
-    name: rn
-    type: rn
-artifacts:
-- artifact_type: dataset
-  artifact_name: att_mobility_rma
-  access: read
-- artifact_type: rda-network-stream
-  artifact_name: edc_customer_inventory
-  access: write
-version: '2026_02_13_1'
-file_type: json
-checksum: ba2b7212
+{
+  "name": "oia-ingestion-backlog",
+  "datastore_type": "OS",
+  "read_only": false,
+  "attrs": {
+    "case_insensitive": true,
+    "unique_keys": [
+      "id"
+    ]
+  },
+  "status": "Running",
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-cc8ca83d-oia-ingestion-backlog"
+}
