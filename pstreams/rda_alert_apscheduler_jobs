@@ -1,11 +1,20 @@
-{
-  "name": "rda_alert_apscheduler_jobs",
-  "datastore_type": "SQL",
-  "read_only": true,
-  "attrs": {
-    "system_defined": "yes"
-  },
-  "status": "Read Only",
-  "database_name": "bea456ce553246dd8f34a2383a70787f_rda",
-  "table_name": "alert_apscheduler_view_jobs"
-}
+folder: OI
+name: edc_mobility_rma_data
+description: test pipeline
+data_path: pipelines/data/edc_mobility_rma_data/2026_02_13_1/data.json
+usecase: Uses RMA data to enrich inventory
+category: ''
+sources:
+  rn:
+    name: rn
+    type: rn
+artifacts:
+- artifact_type: dataset
+  artifact_name: att_mobility_rma
+  access: read
+- artifact_type: rda-network-stream
+  artifact_name: edc_customer_inventory
+  access: write
+version: '2026_02_13_1'
+file_type: json
+checksum: ba2b7212
