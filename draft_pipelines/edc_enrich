@@ -1,10 +1,9 @@
-
- ## Original version to run by itself after data has collected from snowflake: edc_oi_get_grouped
 @dm:empty
  --> @dm:addrow name="edc_oi_inventory_grouped" and limit=0 and groupby="customer_name" and aggs="value_count:count_"
  --> #dm:query-persistent-stream
- --> @dm:save name='temp-unique-cust-name'
- --> @c:data-loop columns='customer_name' and dataset='temp-unique-cust-name'
+ --> *dm:filter customer_name =="CSpire"
+ --> @dm:save name='temp-unique-gu-name'
+ --> @c:data-loop columns='customer_name' and dataset='temp-unique-gu-name'
  --> @dm:empty
  --> @dm:addrow name='edc_oi_inventory_grouped' and limit=0
  --> #dm:query-persistent-stream customer_name in '$customer_name'
@@ -166,27 +165,3 @@ hwEOL_lastDayOfSupportDate = 'last_date_of_support'
  --> @dm:eval last_updated_time="last_updated_time.split('.')[0]"
  --> @dm:save name='temp-hw-sw-eol-details-$loop_index'
  --> @rn:write-stream name='edc_oi_inventory_enriched' and direct_to_opensearch="yes"
- ## Enriching software data
-
- ## declaring thrid level child pipelines
-
- --> @c:new-block
- --> @dm:empty
- --> @exec:define-function name="define_child_pipelines"
- --> @exec:run-pipeline name ="edc_generate_token" & ignore_failures = "no"
- --> @exec:run-pipeline name ="edc_sw_get_data" & ignore_failures = "no"
- --> @exec:run-pipeline name ="edc_sweol_enrich" & ignore_failures = "no"
- --> @exec:run-pipeline name ="edc_processing_sw_data" & ignore_failures = "no"
- --> @exec:end-function
- --> @c:new-block
- --> @dm:empty
- --> @dm:addrow name='edc_sw_raw_data' and limit=0
- --> #dm:query-persistent-stream
- --> @dm:save name='temp-enriched-sweol-values'
- ## calling the enrich pipeline and processing software columns
-
- --> @c:new-block
- --> @dm:recall name='temp-enriched-sweol-values'
- --> @exec:run-pipeline name='edc_sweol_enrich' and ignore_failures = "no"
- --> @c:new-block
- --> @exec:run-pipeline name='edc_sa_run_scan' and ignore_failures = "no"
