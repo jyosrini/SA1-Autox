@@ -1,11 +1,11 @@
 {
-  "name": "edc-att-sweol",
-  "label": "SW EOL",
-  "description": "SW EOL Summary dashboard",
-  "version": "2026-02-18",
-  "stream": "edc_customer_inventory",
+  "name": "oi-pa-sw-eol1",
+  "label": "Product Alerts - SW EOL",
+  "description": "BCS Product Alerts SW EOL Summary dashboard",
+  "version": "2023-22-24",
+  "stream": "edc_sweol_data",
   "enabled": false,
-  "dashboard_folder": "OI-C",
+  "dashboard_folder": "OI",
   "dashboard_style": "tabbed",
   "dashboard_type": "dashboard",
   "live_edit": true,
@@ -15,7 +15,7 @@
     "default_time_filter_labels": [
       "Last 2 months"
     ],
-    "extra_filter": "(sw_status not in \"No EOL\") and sw_status is not 'Not Available' and customer_name ='ATT' and coverage = 'Covered' and project_name = 'ATT-Mobility' ",
+    "extra_filter1": "(sw_status not in \"No EOL\") and sw_status is not 'Not Available' and contract_number is not null and combination_count_sum is not null",
     "columns_filter": [
       {
         "id": "end_of_new_svc_attachment_dt",
@@ -178,42 +178,38 @@
         "type": "TEXT"
       },
       {
-        "id": "sw_version",
-        "label": "SW Version",
+        "id": "unique_key",
+        "label": "Unique Key",
         "type": "TEXT"
       },
       {
-        "id": "serial_number",
-        "label": "SERIAL NUMBER",
-        "type": "TEXT"
+        "id": "attempt_count",
+        "label": "Attempt Count",
+        "type": "DOUBLE"
       },
       {
-        "id": "sw_os_type",
-        "label": "OS Type",
-        "type": "TEXT"
-      },
-      {
-        "id": "match_inv",
-        "label": "Overlay",
-        "type": "TEXT"
+        "id": "combination_count_sum",
+        "label": "Combination Count",
+        "type": "DOUBLE"
       }
     ],
     "group_filters": [
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "Customer Name",
+        "extra_filter": null,
         "group_by": [
-          "customer_name"
+          "customer"
         ],
         "ts_column": "timestamp",
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "Contract",
         "group_by": [
           "contract_number"
@@ -222,24 +218,11 @@
         "duration_hours": 1080,
         "limit": 1000,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
-        "title": "Contract Name",
-        "group_by": [
-          "contract_name"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 1000,
-        "agg": "sum",
-        "column": "count_",
-        "type": "str"
-      },
-      {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "Porfolio",
         "group_by": [
           "portfolio_desc"
@@ -248,13 +231,13 @@
         "duration_hours": 1080,
         "limit": 1000,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "Equipment Type",
-        "extra_filter0": null,
+        "extra_filter": null,
         "group_by": [
           "item_type"
         ],
@@ -262,13 +245,13 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "Product Name",
-        "extra_filter0": null,
+        "extra_filter": null,
         "group_by": [
           "product_name"
         ],
@@ -276,13 +259,13 @@
         "duration_hours": 1080,
         "limit": 700,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "Product Family",
-        "extra_filter0": null,
+        "extra_filter": null,
         "group_by": [
           "product_family"
         ],
@@ -290,13 +273,13 @@
         "duration_hours": 1080,
         "limit": 700,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "SW Version",
-        "extra_filter0": null,
+        "extra_filter": null,
         "group_by": [
           "sw_version"
         ],
@@ -304,13 +287,13 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "SW OS Type",
-        "extra_filter0": null,
+        "extra_filter": null,
         "group_by": [
           "sw_os_type"
         ],
@@ -318,13 +301,13 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "SW Bulletin Number",
-        "extra_filter0": null,
+        "extra_filter": null,
         "group_by": [
           "swEOL_bulletinNumber"
         ],
@@ -332,13 +315,13 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "SW EOL Status",
-        "extra_filter0": null,
+        "extra_filter": null,
         "group_by": [
           "sw_status"
         ],
@@ -346,13 +329,13 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       },
       {
-        "stream": "edc_customer_inventory",
+        "stream": "edc_sweol_data",
         "title": "SW Expiry Year",
-        "extra_filter0": null,
+        "extra_filter": null,
         "group_by": [
           "sw_expiring_year"
         ],
@@ -360,20 +343,7 @@
         "duration_hours": 1080,
         "limit": 200,
         "agg": "sum",
-        "column": "count_",
-        "type": "int"
-      },
-      {
-        "stream": "edc_customer_inventory",
-        "title": "Overlay",
-        "group_by": [
-          "match_inv"
-        ],
-        "ts_column": "timestamp",
-        "duration_hours": 1080,
-        "limit": 10,
-        "agg": "sum",
-        "column": "count_",
+        "column": "combination_count_sum",
         "type": "int"
       }
     ]
@@ -385,7 +355,7 @@
       "widgets": [
         {
           "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> AT&T SW EOX (for Covered devices) </a></h2></div>",
+          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> Software EOL Report </a></h2></div>",
           "min_width": 12,
           "height": 0.3,
           "max_width": 12,
@@ -395,7 +365,7 @@
           "title": "Assets EOL Status",
           "widget_type": "pie_chart",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'swEOL'",
           "min_width": 4,
@@ -427,7 +397,7 @@
               "No EOL": "#00BB00"
             }
           },
-          "column": "count_",
+          "column": "combination_count_sum",
           "agg": "sum",
           "widget_id": "9f02a8ef"
         },
@@ -435,7 +405,7 @@
           "title": "Assets SW EOL Status",
           "widget_type": "counter",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "ts_column": "timestamp",
           "extra_filter1": "(source in 'swEOL')",
           "min_width": 6,
@@ -466,7 +436,7 @@
               "No EOL": "#00BB00"
             }
           },
-          "column": "count_",
+          "column": "combination_count_sum",
           "agg": "sum",
           "widget_id": "cfe65713"
         },
@@ -483,7 +453,7 @@
           "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center>",
           "segments": [
             {
-              "stream": "edc_customer_inventory",
+              "stream": "edc_sweol_data",
               "variable": "latest_end_time",
               "ts_column": "timestamp",
               "extra_filter1": "(source in 'last_updated')",
@@ -499,7 +469,7 @@
           "widget_type": "multi_bar_chart",
           "title": "SW Status by Product Family",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "extra_filter1": "source in 'swEOL'",
           "extra_filter2": "(sw_status not in \"No EOL\")",
           "ts_column": "timestamp",
@@ -521,7 +491,7 @@
             }
           },
           "agg": "sum",
-          "column": "count_",
+          "column": "combination_count_sum",
           "chartProperties": {
             "legendLocation": "bottom",
             "orientation": "horizontal",
@@ -537,20 +507,24 @@
           "max_width": 6,
           "height": 6,
           "min_width": 6,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "duration_hours": 1080,
           "ts_column": "timestamp",
+          "extra_filter1": "source in 'swEOL'",
           "extra_filter": "(sw_status not in \"No EOL\")",
           "sorting": [
             {
               "sw_status": "asc"
             },
             {
+              "combination_count_sum": "desc"
+            },
+            {
               "customer": "asc"
             }
           ],
           "columns": {
-            "product_id": "Product ID",
+            "product_name": "Product Name",
             "product_family": {
               "title": "Product Family",
               "type": "TEXT",
@@ -562,15 +536,9 @@
               "htmlTemplateForRow": "<a href=\"{{row.swEOL_bulletinUrl}}\" target='_blank'>{{row.softwareEndOfLifeId}}</a>",
               "visible": false
             },
-            "customer_name": {
+            "customer": {
               "title": "Customer Name",
-              "type": "TEXT",
-              "visible": false
-            },
-            "sw_version": {
-              "title": "SW Version",
-              "type": "TEXT",
-              "visible": true
+              "type": "TEXT"
             },
             "sw_status": {
               "title": "SW Status",
@@ -602,14 +570,13 @@
           "pivot": {
             "pivot_type": "advanced",
             "group_by": [
-              "customer_name",
-              "product_id",
-              "sw_version",
+              "customer",
+              "product_name",
               "sw_status"
             ],
             "series": [
               {
-                "column": "count_",
+                "column": "combination_count_sum",
                 "agg": "sum",
                 "type": "int",
                 "label": "Total Count"
@@ -635,7 +602,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by QTR and Year",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "extra_filter": "sw_expiring_qtr is not null and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -644,7 +611,7 @@
           "group_by": [
             "sw_expiring_qtr"
           ],
-          "column": "count_",
+          "column": "combination_count_sum",
           "agg": "sum",
           "style": {
             "color-map": {
@@ -668,7 +635,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by Year",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "extra_filter": "sw_expiring_qtr  is not null and sw_expiring_qtr  does not contain '199' and  sw_expiring_qtr  does not contain '200' and sw_expiring_qtr  does not contain '201' and sw_expiring_qtr  does not contain '2020' and sw_expiring_qtr  does not contain '2021'  and sw_expiring_qtr  does not contain '2022' and sw_expiring_qtr  does not contain '2023' and sw_expiring_qtr  does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -677,7 +644,7 @@
           "group_by": [
             "sw_expiring_year"
           ],
-          "column": "count_",
+          "column": "combination_count_sum",
           "agg": "sum",
           "chartProperties": {
             "legendLocation": "right",
@@ -693,21 +660,21 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
+          "extra_filter1": "source in 'swEOL'",
           "extra_filter": "(sw_status not in \"No EOL\")",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "columns": {
+            "combination_count_sum": {
+              "title": "Total Count",
+              "type": "TEXT",
+              "visible": true
+            },
             "product_name": {
               "title": "Product Name",
               "type": "TEXT",
               "visible": true
-            },
-            "serial_number": "Serial Number",
-            "match_inv": {
-              "title": "Overlay",
-              "type": "TEXT",
-              "visible": false
             },
             "product_family": "Product Family",
             "contract_number": "Contract Number",
@@ -892,38 +859,6 @@
             }
           ],
           "widget_id": "8f50b030"
-        },
-        {
-          "widget_type": "multi_bar_chart",
-          "context_filter": "show_pid_grp is 'yes'",
-          "title": "Devices by SW Recommendation",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "height": 6,
-          "max_width": 4,
-          "group_by": [
-            "sw_release_compliance",
-            "product_family"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "style": {
-            "color-map": {
-              "No": "#BB0000",
-              "Unknnown": "#F6C309",
-              "Yes": "#00BB00",
-              "NA": "#2A5FF6"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "47e1d88b"
         }
       ]
     },
@@ -937,9 +872,10 @@
           "max_width": 12,
           "height": 6,
           "min_width": 12,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "duration_hours": 1080,
           "ts_column": "timestamp",
+          "extra_filter1": "source in 'swEOL'",
           "extra_filter": "(sw_status not in \"No EOL\")",
           "sorting1": [
             {
@@ -948,7 +884,12 @@
           ],
           "remote_searchable": true,
           "columns": {
-            "customer_name": {
+            "combination_count_sum": {
+              "title": "Total Count",
+              "type": "DOUBLE",
+              "visible": true
+            },
+            "customer": {
               "title": "Customer Name",
               "type": "TEXT",
               "visible": true
@@ -1137,7 +1078,7 @@
       "widgets": [
         {
           "widget_type": "label",
-          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> AT&T SW EOX (for Covered devices) </a></h2></div>",
+          "label": "<div style='text-align:center;width:100%;'><h2><a style='text-decoration:none;color:#0066ff;' target='_blank'> Software EOL Report </a></h2></div>",
           "min_width": 12,
           "height": 0.3,
           "max_width": 12,
@@ -1147,7 +1088,7 @@
           "title": "Assets EOL Status",
           "widget_type": "pie_chart",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "ts_column": "timestamp",
           "extra_filter1": "source in 'swEOL'",
           "min_width": 4,
@@ -1179,7 +1120,7 @@
               "No EOL": "#00BB00"
             }
           },
-          "column": "count_",
+          "column": "combination_count_sum",
           "agg": "sum",
           "widget_id": "9f02a8ef"
         },
@@ -1187,7 +1128,7 @@
           "title": "Assets SW EOL Status",
           "widget_type": "counter",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "ts_column": "timestamp",
           "extra_filter1": "(source in 'swEOL')",
           "min_width": 6,
@@ -1218,7 +1159,7 @@
               "No EOL": "#00BB00"
             }
           },
-          "column": "count_",
+          "column": "combination_count_sum",
           "agg": "sum",
           "widget_id": "cfe65713"
         },
@@ -1235,7 +1176,7 @@
           "label": "{% set prime_latest_data = {} %}\r\n{% for latest in latest_end_time | sort(attribute='label', reverse=True) %}\r\n  {% set last_updated_time = latest.get(\"label\") %}\r\n  {% set _ = prime_latest_data.update({ \"latest\": last_updated_time }) or \"\" %}\r\n{% endfor %}\r\n\r\n<br><br> <center><h4> Last Collected at </h4></center><br><center><h3>{{prime_latest_data.get(\"latest\")}} (UTC) </h3></center>",
           "segments": [
             {
-              "stream": "edc_customer_inventory",
+              "stream": "edc_sweol_data",
               "variable": "latest_end_time",
               "ts_column": "timestamp",
               "extra_filter1": "(source in 'last_updated')",
@@ -1251,7 +1192,7 @@
           "widget_type": "multi_bar_chart",
           "title": "SW Status by Product Family",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "extra_filter1": "source in 'swEOL'",
           "extra_filter2": "(sw_status not in \"No EOL\")",
           "ts_column": "timestamp",
@@ -1273,7 +1214,7 @@
             }
           },
           "agg": "sum",
-          "column": "count_",
+          "column": "combination_count_sum",
           "chartProperties": {
             "legendLocation": "bottom",
             "orientation": "horizontal",
@@ -1289,20 +1230,24 @@
           "max_width": 6,
           "height": 6,
           "min_width": 6,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "duration_hours": 1080,
           "ts_column": "timestamp",
+          "extra_filter1": "source in 'swEOL'",
           "extra_filter": "(sw_status not in \"No EOL\")",
           "sorting": [
             {
               "sw_status": "asc"
             },
             {
+              "combination_count_sum": "desc"
+            },
+            {
               "customer": "asc"
             }
           ],
           "columns": {
-            "product_id": "Product ID",
+            "product_name": "Product Name",
             "product_family": {
               "title": "Product Family",
               "type": "TEXT",
@@ -1314,15 +1259,9 @@
               "htmlTemplateForRow": "<a href=\"{{row.swEOL_bulletinUrl}}\" target='_blank'>{{row.softwareEndOfLifeId}}</a>",
               "visible": false
             },
-            "customer_name": {
+            "customer": {
               "title": "Customer Name",
-              "type": "TEXT",
-              "visible": false
-            },
-            "sw_version": {
-              "title": "SW Version",
-              "type": "TEXT",
-              "visible": true
+              "type": "TEXT"
             },
             "sw_status": {
               "title": "SW Status",
@@ -1354,14 +1293,13 @@
           "pivot": {
             "pivot_type": "advanced",
             "group_by": [
-              "customer_name",
-              "product_id",
-              "sw_version",
+              "customer",
+              "product_name",
               "sw_status"
             ],
             "series": [
               {
-                "column": "count_",
+                "column": "combination_count_sum",
                 "agg": "sum",
                 "type": "int",
                 "label": "Total Count"
@@ -1387,7 +1325,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by QTR and Year",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "extra_filter": "sw_expiring_qtr is not null and sw_expiring_qtr does not contain '199' and sw_expiring_qtr does not contain '200' and sw_expiring_qtr does not contain '201' and sw_expiring_qtr does not contain '2020' and sw_expiring_qtr does not contain '2021' and sw_expiring_qtr does not contain '2022' and sw_expiring_qtr does not contain '2023' and sw_expiring_qtr does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -1396,7 +1334,7 @@
           "group_by": [
             "sw_expiring_qtr"
           ],
-          "column": "count_",
+          "column": "combination_count_sum",
           "agg": "sum",
           "style": {
             "color-map": {
@@ -1420,7 +1358,7 @@
           "widget_type": "bar_chart",
           "title": "SW Expiry by Year",
           "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "extra_filter": "sw_expiring_qtr  is not null and sw_expiring_qtr  does not contain '199' and  sw_expiring_qtr  does not contain '200' and sw_expiring_qtr  does not contain '201' and sw_expiring_qtr  does not contain '2020' and sw_expiring_qtr  does not contain '2021'  and sw_expiring_qtr  does not contain '2022' and sw_expiring_qtr  does not contain '2023' and sw_expiring_qtr  does not contain '2024'",
           "ts_column": "timestamp",
           "min_width": 6,
@@ -1429,7 +1367,7 @@
           "group_by": [
             "sw_expiring_year"
           ],
-          "column": "count_",
+          "column": "combination_count_sum",
           "agg": "sum",
           "chartProperties": {
             "legendLocation": "right",
@@ -1445,21 +1383,21 @@
           "max_width": 12,
           "height": 8,
           "min_width": 12,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
+          "extra_filter1": "source in 'swEOL'",
           "extra_filter": "(sw_status not in \"No EOL\")",
           "duration_hours": 1080,
           "ts_column": "timestamp",
           "columns": {
+            "combination_count_sum": {
+              "title": "Total Count",
+              "type": "TEXT",
+              "visible": true
+            },
             "product_name": {
               "title": "Product Name",
               "type": "TEXT",
               "visible": true
-            },
-            "serial_number": "Serial Number",
-            "match_inv": {
-              "title": "Overlay",
-              "type": "TEXT",
-              "visible": false
             },
             "product_family": "Product Family",
             "contract_number": "Contract Number",
@@ -1644,38 +1582,6 @@
             }
           ],
           "widget_id": "8f50b030"
-        },
-        {
-          "widget_type": "multi_bar_chart",
-          "context_filter": "show_pid_grp is 'yes'",
-          "title": "Devices by SW Recommendation",
-          "duration_hours": 1080,
-          "stream": "edc_customer_inventory",
-          "ts_column": "timestamp",
-          "min_width": 4,
-          "height": 6,
-          "max_width": 4,
-          "group_by": [
-            "sw_release_compliance",
-            "product_family"
-          ],
-          "column": "count_",
-          "agg": "sum",
-          "style": {
-            "color-map": {
-              "No": "#BB0000",
-              "Unknnown": "#F6C309",
-              "Yes": "#00BB00",
-              "NA": "#2A5FF6"
-            }
-          },
-          "chartProperties": {
-            "legendLocation": "right",
-            "stacked": true,
-            "xAxisLabel": "QTR & Year",
-            "yAxisLabel": "Count"
-          },
-          "widget_id": "47e1d88b"
         }
       ]
     },
@@ -1689,9 +1595,10 @@
           "max_width": 12,
           "height": 6,
           "min_width": 12,
-          "stream": "edc_customer_inventory",
+          "stream": "edc_sweol_data",
           "duration_hours": 1080,
           "ts_column": "timestamp",
+          "extra_filter1": "source in 'swEOL'",
           "extra_filter": "(sw_status not in \"No EOL\")",
           "sorting1": [
             {
@@ -1700,7 +1607,12 @@
           ],
           "remote_searchable": true,
           "columns": {
-            "customer_name": {
+            "combination_count_sum": {
+              "title": "Total Count",
+              "type": "DOUBLE",
+              "visible": true
+            },
+            "customer": {
               "title": "Customer Name",
               "type": "TEXT",
               "visible": true
