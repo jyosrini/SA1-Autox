@@ -1,236 +1,514 @@
 {
-  "name": "incident-details-topology",
-  "label": "Dynamic Incident Topology",
-  "description": "Dynamic Incident Topology",
-  "dashboard_style": "auto",
-  "dashboard_type": "template",
-  "version": "22.10.7.1",
+  "name": "customer_access_status",
+  "description": "Customer Access Status",
+  "label": "Failed Devices",
   "enabled": false,
-  "exportable": false,
+  "dashboard_type": "template",
+  "dashboard_folder": "NetworkDevicePack",
+  "version": "24.9.6.3",
   "template_variables": {
-    "ROOM_ID": {
-      "default": "",
-      "contextId": "project_id"
+    "CUST_ID": {
+      "contextId": "customerId"
     },
-    "INCIDENT_ID": {
-      "default": "",
-      "contextId": "incident_id"
+    "PROJ_ID": {
+      "contextId": "projectId"
     },
-    "A_INCIDENT_ID": {
-      "default": "",
-      "contextId": "a_incident_id"
-    },
-    "STACK_NAME": {
-      "default": "",
-      "contextId": "attrs_stack_name"
-    },
-    "MY_TEMPLATE": {
-      "default": "<details><summary><b>{{row.a_alert_type}}</b></summary><div class='v-data-table v-data-table--dense theme--light'><div class='v-data-table__wrapper'><table style='width: 300px;'><tbody><tr><td>Source</td><td>{{row.a_source_systemname}}</td></tr><tr><td>Message</td><td>{{row.a_message}}</td></tr><tr><td>Assett IP</td><td>{{row.a_asset_ip_address}}</td></tr><tr><td>Alert Status</td><td>{{row.a_status}}</td></tr></tbody></table></div></div></details>",
-      "contextId": "MY_TEMPLATE"
+    "CUST_TAG": {
+      "contextId": "customerTag"
     }
   },
   "dashboard_filters": {
-    "time_filter": false,
-    "columns_filter": []
+    "time_filter": true,
+    "default_time_filter_labels": [
+      "Last 1 month"
+    ],
+    "extra_filter0": "(source not in ['failed_devices']) ",
+    "group_filters": [
+      {
+        "stream": "network_access_verification",
+        "title": "Protocol",
+        "group_by": [
+          "protocol"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "_id",
+        "type": "str"
+      },
+      {
+        "stream": "network_access_verification",
+        "title": "Credential Name",
+        "group_by": [
+          "used_cred"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "_id",
+        "type": "str"
+      },
+      {
+        "stream": "network_access_verification",
+        "title": "Authentication State",
+        "group_by": [
+          "auth_state"
+        ],
+        "ts_column": "timestamp",
+        "agg": "value_count",
+        "column": "_id",
+        "type": "str"
+      }
+    ],
+    "columns_filter": [
+      {
+        "id": "protocol",
+        "label": "Protocol",
+        "type": "TEXT"
+      },
+      {
+        "id": "ip_address",
+        "label": "IP Address",
+        "type": "TEXT"
+      },
+      {
+        "id": "used_cred",
+        "label": "Credential Name",
+        "type": "TEXT"
+      },
+      {
+        "id": "comment",
+        "label": "Information",
+        "type": "TEXT"
+      },
+      {
+        "id": "timestamp",
+        "label": "Last Access Check Time",
+        "type": "DATETIME"
+      },
+      {
+        "id": "auth_state",
+        "label": "Authentication State",
+        "type": "TEXT"
+      }
+    ]
   },
   "dashboard_sections": [
     {
-      "title": "Topology",
-      "show_filter": false,
+      "title": "Success",
+      "show_filter": true,
       "widgets": [
         {
-          "widget_type": "topology",
-          "title": "Topology",
-          "register_search_endpoints": true,
-          "impact_action_details": {
-            "impact_distance": 5,
-            "impact_conditional_field": "alert_count"
-          },
-          "chartProperties": {
-            "hasToolbar": true,
-            "shortToolbar": true,
-            "userZoomingEnabled": false
-          },
-          "stack_type": "OIA",
-          "auto_group": false,
-          "oia_details": {
-            "oia_stream": "oia-incidents-stream",
-            "query": "timestamp later than -12 months",
-            "oia_id_attribute": "incident_id",
-            "node_id_attribute": "attrs_node_id",
-            "stack_name_attribute": "attrs_stack_name",
-            "stack_type": "OIA",
-            "stack": "{{STACK_NAME}}",
-            "alert_source": {
-              "stream": "oia-alerts-stream",
-              "group_by": [
-                "a_en_node_id",
-                "a_severity",
-                "a_status"
+          "widget_type": "pie_chart",
+          "title": "Access Check by Status",
+          "stream": "network_access_verification",
+          "extra_filter": "(customer_tag contains '{{CUST_TAG}}' or customer_tag is empty)",
+          "ts_column": "timestamp",
+          "column": "_id",
+          "min_width": 6,
+          "height": 4,
+          "agg": "value_count",
+          "group_by": [
+            "auth_state"
+          ],
+          "style": {
+            "color-map": {
+              "Success": [
+                "#008000",
+                "#ffffff"
               ],
-              "incident_id_attr": "a_incident_id",
-              "context_incident_id_attr": "incidentid",
-              "extra_filter": "a_source_systemname is not 'Alert Group' ",
-              "ts_column": "timestamp",
-              "duration_hours": 9000,
-              "agg": "value_count",
-              "column": "count_",
-              "type": "int"
+              "Failed": [
+                "#FF0000",
+                "#ffffff"
+              ]
             }
           },
-          "max_width": 12,
-          "min_width": 7,
-          "height": 12,
-          "widget_id": "0ff73e14"
+          "type": "str",
+          "widget_id": "66dc2d8e"
         },
         {
-          "title": "Alerts",
+          "widget_type": "pie_chart",
+          "title": "Access Check by Protocol",
+          "stream": "network_access_verification",
+          "extra_filter": "customer_tag contains '{{CUST_TAG}}' or customer_tag is empty",
+          "ts_column": "timestamp",
+          "column": "_id",
+          "agg": "value_count",
+          "min_width": 6,
+          "height": 4,
+          "group_by": [
+            "protocol"
+          ],
+          "type": "str",
+          "widget_id": "a07b4356"
+        },
+        {
+          "title": "Access Status",
           "widget_type": "tabular",
+          "stream": "network_access_verification",
+          "extra_filter": "customer_tag contains '{{CUST_TAG}}' or customer_tag is empty",
+          "duration_hours": 1080,
+          "showRowSummary": false,
+          "min_width": 12,
+          "height": 6,
           "max_width": 12,
-          "height": 12,
-          "min_width": 5,
           "sorting": [
             {
-              "a_raised_ts": "desc"
+              "auth_state": "desc"
             }
           ],
-          "stream": "oia-alerts-stream",
-          "extra_filter": "((a_incident_id is '{{INCIDENT_ID}}') or (a_incident_id is '{{A_INCIDENT_ID}}')) and a_source_systemname is not 'Alert Group' ",
-          "query": "*",
-          "duration_hours": 2160,
+          "paginated": true,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "ip_address",
+            "protocol",
+            "used_cred",
+            "auth_state"
+          ],
+          "max_rows": 50,
           "columns": {
-            "a_alert_type": {
-              "title": "Alert Type",
-              "type": "GROUPED",
-              "group": {
-                "a_source_systemname": "Source",
-                "a_message": "Message",
-                "a_asset_ip_address": "Asset IP Address",
-                "a_status": "Status",
-                "a_asset_name": "Asset Name"
-              },
-              "color-column": "state_color"
+            "ip_address": {
+              "title": "IP Address",
+              "defaultWidth": 150,
+              "key": true
             },
-            "state_color": {
+            "protocol": {
+              "title": "Protocol",
+              "defaultWidth": 150
+            },
+            "used_cred": {
+              "title": "Credential Name",
+              "defaultWidth": 200
+            },
+            "reason": {
+              "title": "Reason",
+              "defaultWidth": 200
+            },
+            "auth_state": {
+              "title": "Authentication State",
+              "defaultWidth": 150,
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.auth_state_color}}' > {{ row.auth_state }} </span>{% endraw %}"
+            },
+            "auth_state_color": {
               "type": "COLOR-MAP",
-              "source-column": "a_status",
+              "source-column": "auth_state",
               "color-map": {
-                "ACTIVE": "#dd0000",
-                "CLEAR": "#00dd00",
-                "CLEARED": "#00dd00"
+                "Success": "#008000",
+                "Failed": "#FF0000",
+                "success": "#008000",
+                "failed": "#FF0000"
               }
             },
-            "a_raised_ts": {
-              "title": "Raised At",
-              "type": "DATETIME"
-            },
-            "a_severity": "Severity"
+            "timestamp": {
+              "title": "Last Access Check Time",
+              "type": "DATETIME",
+              "visible": true
+            }
           },
-          "severity_columns": [
-            "a_severity"
+          "actions": [
+            {
+              "permission": "rda:github:view",
+              "title": "Access Verification",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "identifier": "Submit",
+                          "actionLabel": "Run"
+                        }
+                      ]
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Do you want to Run the Access Check?",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "label": "Do you want to Run the Access Check?",
+                          "hidden": false,
+                          "fieldId": "note"
+                        },
+                        {
+                          "help": "Select network devices for which you want to run discovery",
+                          "dataType": "string",
+                          "required": true,
+                          "editable": true,
+                          "label": "Network Devices",
+                          "hidden": false,
+                          "fieldId": "Others",
+                          "controlType": "SELECTOR_TABLE",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "column-key",
+                              "value": "device_ip"
+                            },
+                            {
+                              "attribute": "selection",
+                              "value": "MULTIPLE"
+                            }
+                          ],
+                          "widget": {
+                            "title": "Device Details",
+                            "timebased": false,
+                            "max_width": 12,
+                            "height": 8,
+                            "min_width": 12,
+                            "extra_filter": "customer_tag contains '{{CUST_TAG}}' or customer_tag is empty",
+                            "stream": "discovery",
+                            "ts_column": "timestamp",
+                            "sorting": [],
+                            "columns": {
+                              "device_ip": {
+                                "title": "IP Address",
+                                "key": true
+                              },
+                              "discovery_scope": {
+                                "title": "discovery Scope",
+                                "key": true,
+                                "visible": false
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "RUN_PIPELINE",
+                        "pipelineName": "access_verification_main_pipeline",
+                        "isSync": false,
+                        "workerGroup": "{{CUST_TAG}}.*"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
           ],
-          "widget_id": "dc7103e1"
+          "widget_id": "4c2cfdd7"
         }
       ]
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Topology",
-      "show_filter": false,
+      "title": "Success",
+      "show_filter": true,
       "widgets": [
         {
-          "widget_type": "topology",
-          "title": "Topology",
-          "register_search_endpoints": true,
-          "impact_action_details": {
-            "impact_distance": 5,
-            "impact_conditional_field": "alert_count"
-          },
-          "chartProperties": {
-            "hasToolbar": true,
-            "shortToolbar": true,
-            "userZoomingEnabled": false
-          },
-          "stack_type": "OIA",
-          "auto_group": false,
-          "oia_details": {
-            "oia_stream": "oia-incidents-stream",
-            "query": "timestamp later than -12 months",
-            "oia_id_attribute": "incident_id",
-            "node_id_attribute": "attrs_node_id",
-            "stack_name_attribute": "attrs_stack_name",
-            "stack_type": "OIA",
-            "stack": "{{STACK_NAME}}",
-            "alert_source": {
-              "stream": "oia-alerts-stream",
-              "group_by": [
-                "a_en_node_id",
-                "a_severity",
-                "a_status"
+          "widget_type": "pie_chart",
+          "title": "Access Check by Status",
+          "stream": "network_access_verification",
+          "extra_filter": "(customer_tag contains '{{CUST_TAG}}' or customer_tag is empty)",
+          "ts_column": "timestamp",
+          "column": "_id",
+          "min_width": 6,
+          "height": 4,
+          "agg": "value_count",
+          "group_by": [
+            "auth_state"
+          ],
+          "style": {
+            "color-map": {
+              "Success": [
+                "#008000",
+                "#ffffff"
               ],
-              "incident_id_attr": "a_incident_id",
-              "context_incident_id_attr": "incidentid",
-              "extra_filter": "a_source_systemname is not 'Alert Group' ",
-              "ts_column": "timestamp",
-              "duration_hours": 9000,
-              "agg": "value_count",
-              "column": "count_",
-              "type": "int"
+              "Failed": [
+                "#FF0000",
+                "#ffffff"
+              ]
             }
           },
-          "max_width": 12,
-          "min_width": 7,
-          "height": 12,
-          "widget_id": "0ff73e14"
+          "type": "str",
+          "widget_id": "66dc2d8e"
         },
         {
-          "title": "Alerts",
+          "widget_type": "pie_chart",
+          "title": "Access Check by Protocol",
+          "stream": "network_access_verification",
+          "extra_filter": "customer_tag contains '{{CUST_TAG}}' or customer_tag is empty",
+          "ts_column": "timestamp",
+          "column": "_id",
+          "agg": "value_count",
+          "min_width": 6,
+          "height": 4,
+          "group_by": [
+            "protocol"
+          ],
+          "type": "str",
+          "widget_id": "a07b4356"
+        },
+        {
+          "title": "Access Status",
           "widget_type": "tabular",
+          "stream": "network_access_verification",
+          "extra_filter": "customer_tag contains '{{CUST_TAG}}' or customer_tag is empty",
+          "duration_hours": 1080,
+          "showRowSummary": false,
+          "min_width": 12,
+          "height": 6,
           "max_width": 12,
-          "height": 12,
-          "min_width": 5,
           "sorting": [
             {
-              "a_raised_ts": "desc"
+              "auth_state": "desc"
             }
           ],
-          "stream": "oia-alerts-stream",
-          "extra_filter": "((a_incident_id is '{{INCIDENT_ID}}') or (a_incident_id is '{{A_INCIDENT_ID}}')) and a_source_systemname is not 'Alert Group' ",
-          "query": "*",
-          "duration_hours": 2160,
+          "paginated": true,
+          "remote_searchable": true,
+          "remote_searchable_cols": [
+            "ip_address",
+            "protocol",
+            "used_cred",
+            "auth_state"
+          ],
+          "max_rows": 50,
           "columns": {
-            "a_alert_type": {
-              "title": "Alert Type",
-              "type": "GROUPED",
-              "group": {
-                "a_source_systemname": "Source",
-                "a_message": "Message",
-                "a_asset_ip_address": "Asset IP Address",
-                "a_status": "Status",
-                "a_asset_name": "Asset Name"
-              },
-              "color-column": "state_color"
+            "ip_address": {
+              "title": "IP Address",
+              "defaultWidth": 150,
+              "key": true
             },
-            "state_color": {
+            "protocol": {
+              "title": "Protocol",
+              "defaultWidth": 150
+            },
+            "used_cred": {
+              "title": "Credential Name",
+              "defaultWidth": 200
+            },
+            "reason": {
+              "title": "Reason",
+              "defaultWidth": 200
+            },
+            "auth_state": {
+              "title": "Authentication State",
+              "defaultWidth": 150,
+              "htmlTemplateForRow": "{% raw %}<span class='badge' style='background-color: {{ row.auth_state_color}}' > {{ row.auth_state }} </span>{% endraw %}"
+            },
+            "auth_state_color": {
               "type": "COLOR-MAP",
-              "source-column": "a_status",
+              "source-column": "auth_state",
               "color-map": {
-                "ACTIVE": "#dd0000",
-                "CLEAR": "#00dd00",
-                "CLEARED": "#00dd00"
+                "Success": "#008000",
+                "Failed": "#FF0000",
+                "success": "#008000",
+                "failed": "#FF0000"
               }
             },
-            "a_raised_ts": {
-              "title": "Raised At",
-              "type": "DATETIME"
-            },
-            "a_severity": "Severity"
+            "timestamp": {
+              "title": "Last Access Check Time",
+              "type": "DATETIME",
+              "visible": true
+            }
           },
-          "severity_columns": [
-            "a_severity"
+          "actions": [
+            {
+              "permission": "rda:github:view",
+              "title": "Access Verification",
+              "type": "POPUP_FORM",
+              "selectionType": "NONE",
+              "identifier": "saas-service-action:userdashboard-add-yaml",
+              "api-endpoint": {
+                "service-name": "saas-reports",
+                "methodName": "getForm",
+                "stringified-params": true,
+                "parse-output": false,
+                "params": [
+                  {
+                    "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "identifier": "Submit",
+                          "actionLabel": "Run"
+                        }
+                      ]
+                    },
+                    "formDefinition": {
+                      "id": "rda.saas.dynamic.form",
+                      "refreshRequired": true,
+                      "formFieldList": [
+                        {
+                          "help": "Do you want to Run the Access Check?",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "label": "Do you want to Run the Access Check?",
+                          "hidden": false,
+                          "fieldId": "note"
+                        },
+                        {
+                          "help": "Select network devices for which you want to run discovery",
+                          "dataType": "string",
+                          "required": true,
+                          "editable": true,
+                          "label": "Network Devices",
+                          "hidden": false,
+                          "fieldId": "Others",
+                          "controlType": "SELECTOR_TABLE",
+                          "controlPropertyList": [
+                            {
+                              "attribute": "column-key",
+                              "value": "device_ip"
+                            },
+                            {
+                              "attribute": "selection",
+                              "value": "MULTIPLE"
+                            }
+                          ],
+                          "widget": {
+                            "title": "Device Details",
+                            "timebased": false,
+                            "max_width": 12,
+                            "height": 8,
+                            "min_width": 12,
+                            "extra_filter": "customer_tag contains '{{CUST_TAG}}' or customer_tag is empty",
+                            "stream": "discovery",
+                            "ts_column": "timestamp",
+                            "sorting": [],
+                            "columns": {
+                              "device_ip": {
+                                "title": "IP Address",
+                                "key": true
+                              },
+                              "discovery_scope": {
+                                "title": "discovery Scope",
+                                "key": true,
+                                "visible": false
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "actions": [
+                      {
+                        "type": "RUN_PIPELINE",
+                        "pipelineName": "access_verification_main_pipeline",
+                        "isSync": false,
+                        "workerGroup": "{{CUST_TAG}}.*"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
           ],
-          "widget_id": "dc7103e1"
+          "widget_id": "4c2cfdd7"
         }
       ]
     }
