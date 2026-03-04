@@ -1,16 +1,11 @@
-
- ## Get row input
-@c:new-block
- --> @dm:empty
- --> @exec:get-input
- ## --> @dm:selectcolumns include='device_hostname|device_identifier|device_controller_id'
-
- --> @dm:save name='temp-form-data'
- --> @c:data-loop columns="customer_name" and dataset="temp-form-data"
- --> @dm:empty
- --> @dm:addrow name = "edc_oi_inventory_grouped" & conflicts = "proceed" & timeout = 1200
- --> #dm:pstream-delete-data-by-query customer_name=="$customer_name"
- --> @c:data-loop columns="customer_name" and dataset="temp-form-data"
- --> @dm:empty
- --> @dm:addrow name = "edc_oi_inventory_enriched" & conflicts = "proceed" & timeout = 1200
- --> #dm:pstream-delete-data-by-query customer_name=="$customer_name"
+{
+  "name": "aots_ticket_notifications",
+  "datastore_type": "OS",
+  "read_only": false,
+  "attrs": {
+    "case_insensitive": true,
+    "retention_days": 7
+  },
+  "status": "Running",
+  "index_name": "bea456ce553246dd8f34a2383a70787f-stream-0fb3848e-aots_ticket_notifications"
+}
