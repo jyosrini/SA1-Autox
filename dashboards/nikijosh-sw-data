@@ -1,11 +1,11 @@
 {
-  "name": "edc-cust-pid-sw",
+  "name": "nikijosh-sw-data",
   "label": "SW Data",
   "description": "Upload SW Data",
-  "version": "2025-04-11-4",
+  "version": "2025-04-11-5",
   "stream": "edc_cust_pid_sw",
   "enabled": false,
-  "dashboard_folder": "OI",
+  "dashboard_folder": "Default",
   "dashboard_style": "auto",
   "live_edit": true,
   "dashboard_type": "dashboard",
@@ -163,7 +163,7 @@
       "show_filter": true,
       "widgets": [
         {
-          "title": "Unique Product IDs (for COVERED Produc Type: ROUTER, SWITCH , FUNCSYSTM, MULTIPROD)",
+          "title": "Unique Product IDs (for Product Type: ROUTER, SWITCH , FUNCSYSTM, MULTIPROD)",
           "context_filter1": "show_pid_grp is 'yes'",
           "widget_type": "tabular",
           "max_width": 12,
@@ -181,7 +181,7 @@
               "key": true
             },
             "product_name": {
-              "title": "Product_Name",
+              "title": "Product Name",
               "type": "TEXT",
               "visible": true,
               "key": true
@@ -229,7 +229,7 @@
           "actions": [
             {
               "permission": "rda:github:view",
-              "title": "Add",
+              "title": "Add Data",
               "type": "POPUP_FORM",
               "selectionType": "NONE",
               "identifier": "saas-service-action:userdashboard-add-yaml",
@@ -241,10 +241,105 @@
                 "params": [
                   {
                     "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "identifier": "Submit",
+                          "actionLabel": "Submit"
+                        }
+                      ]
+                    },
+                    "submitRequired": true,
                     "formDefinition": {
                       "id": "rda.saas.dynamic.form",
                       "refreshRequired": true,
+                      "submitRequired": true,
                       "formFieldList": [
+                        {
+                          "fieldId": "Option",
+                          "label": "Option for data population",
+                          "help": "Option for data population",
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "required": true,
+                          "lovValues": [
+                            {
+                              "identifier": "option_1",
+                              "displayName": "Cisco inv with SW version"
+                            },
+                            {
+                              "identifier": "option_2",
+                              "displayName": "Network inv with SW version"
+                            }
+                          ],
+                          "controlType": "RADIO_BUTTON",
+                          "fieldControlPropertyList": [
+                            {
+                              "fieldId": "proj_name",
+                              "controlActions": [
+                                "ShowField"
+                              ],
+                              "condition": {
+                                "selectionValue": "option_2"
+                              }
+                            },
+                            {
+                              "fieldId": "customer_name",
+                              "controlActions": [
+                                "ShowField"
+                              ],
+                              "condition": {
+                                "selectionValue": "option_2"
+                              }
+                            },
+                            {
+                              "fieldId": "contract",
+                              "controlActions": [
+                                "ShowField"
+                              ],
+                              "condition": {
+                                "selectionValue": "option_2"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Project Name",
+                          "help": "Name of the Project",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "hidden": false,
+                          "fieldId": "proj_name"
+                        },
+                        {
+                          "help": "Customer Name",
+                          "dataType": "string",
+                          "controlType": "COMBO_BOX",
+                          "required": true,
+                          "editable": true,
+                          "label": "Customer name",
+                          "hidden": false,
+                          "fieldId": "customer_name",
+                          "lovSourceType": "pstream",
+                          "lovSourceParams": {
+                            "name": "edc_oi_inventory_enriched",
+                            "valueColumn": "customer_name",
+                            "labelColumn": "customer_name"
+                          }
+                        },
+                        {
+                          "label": "Contract",
+                          "help": "Contract",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "hidden": false,
+                          "fieldId": "contract"
+                        },
                         {
                           "help": "Choose file to upload",
                           "dataType": "string",
@@ -254,13 +349,22 @@
                           "controlType": "FILE_UPLOAD",
                           "hidden": false,
                           "fieldId": "fileUpload"
+                        },
+                        {
+                          "label": "NOTE: File upload must contain the following column headers: SW_OS_Type, SW_Version",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "hidden": false,
+                          "fieldId": "file_upload_label"
                         }
                       ]
                     },
                     "actions": [
                       {
                         "type": "RUN_PIPELINE",
-                        "pipelineName": "edc_oi_call_product_alerts",
+                        "pipelineName": "add_data",
                         "isSync": false
                       }
                     ]
@@ -351,7 +455,7 @@
                     "actions": [
                       {
                         "type": "RUN_PIPELINE",
-                        "pipelineName": "test-input-data",
+                        "pipelineName": "",
                         "isSync": true
                       }
                     ]
@@ -372,7 +476,7 @@
       "show_filter": true,
       "widgets": [
         {
-          "title": "Unique Product IDs (for COVERED Produc Type: ROUTER, SWITCH , FUNCSYSTM, MULTIPROD)",
+          "title": "Unique Product IDs (for Product Type: ROUTER, SWITCH , FUNCSYSTM, MULTIPROD)",
           "context_filter1": "show_pid_grp is 'yes'",
           "widget_type": "tabular",
           "max_width": 12,
@@ -390,7 +494,7 @@
               "key": true
             },
             "product_name": {
-              "title": "Product_Name",
+              "title": "Product Name",
               "type": "TEXT",
               "visible": true,
               "key": true
@@ -438,7 +542,7 @@
           "actions": [
             {
               "permission": "rda:github:view",
-              "title": "Add",
+              "title": "Add Data",
               "type": "POPUP_FORM",
               "selectionType": "NONE",
               "identifier": "saas-service-action:userdashboard-add-yaml",
@@ -450,10 +554,105 @@
                 "params": [
                   {
                     "formId": "rda.saas.dynamic.form",
+                    "formActionList": {
+                      "formActions": [
+                        {
+                          "identifier": "Submit",
+                          "actionLabel": "Submit"
+                        }
+                      ]
+                    },
+                    "submitRequired": true,
                     "formDefinition": {
                       "id": "rda.saas.dynamic.form",
                       "refreshRequired": true,
+                      "submitRequired": true,
                       "formFieldList": [
+                        {
+                          "fieldId": "Option",
+                          "label": "Option for data population",
+                          "help": "Option for data population",
+                          "dataType": "string",
+                          "hidden": false,
+                          "editable": true,
+                          "required": true,
+                          "lovValues": [
+                            {
+                              "identifier": "option_1",
+                              "displayName": "Cisco inv with SW version"
+                            },
+                            {
+                              "identifier": "option_2",
+                              "displayName": "Network inv with SW version"
+                            }
+                          ],
+                          "controlType": "RADIO_BUTTON",
+                          "fieldControlPropertyList": [
+                            {
+                              "fieldId": "proj_name",
+                              "controlActions": [
+                                "ShowField"
+                              ],
+                              "condition": {
+                                "selectionValue": "option_2"
+                              }
+                            },
+                            {
+                              "fieldId": "customer_name",
+                              "controlActions": [
+                                "ShowField"
+                              ],
+                              "condition": {
+                                "selectionValue": "option_2"
+                              }
+                            },
+                            {
+                              "fieldId": "contract",
+                              "controlActions": [
+                                "ShowField"
+                              ],
+                              "condition": {
+                                "selectionValue": "option_2"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "label": "Project Name",
+                          "help": "Name of the Project",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "hidden": false,
+                          "fieldId": "proj_name"
+                        },
+                        {
+                          "help": "Customer Name",
+                          "dataType": "string",
+                          "controlType": "COMBO_BOX",
+                          "required": true,
+                          "editable": true,
+                          "label": "Customer name",
+                          "hidden": false,
+                          "fieldId": "customer_name",
+                          "lovSourceType": "pstream",
+                          "lovSourceParams": {
+                            "name": "edc_oi_inventory_enriched",
+                            "valueColumn": "customer_name",
+                            "labelColumn": "customer_name"
+                          }
+                        },
+                        {
+                          "label": "Contract",
+                          "help": "Contract",
+                          "dataType": "string",
+                          "controlType": "TEXT_FIELD",
+                          "required": true,
+                          "editable": true,
+                          "hidden": false,
+                          "fieldId": "contract"
+                        },
                         {
                           "help": "Choose file to upload",
                           "dataType": "string",
@@ -463,13 +662,22 @@
                           "controlType": "FILE_UPLOAD",
                           "hidden": false,
                           "fieldId": "fileUpload"
+                        },
+                        {
+                          "label": "NOTE: File upload must contain the following column headers: SW_OS_Type, SW_Version",
+                          "dataType": "string",
+                          "controlType": "LABEL",
+                          "required": false,
+                          "editable": false,
+                          "hidden": false,
+                          "fieldId": "file_upload_label"
                         }
                       ]
                     },
                     "actions": [
                       {
                         "type": "RUN_PIPELINE",
-                        "pipelineName": "edc_oi_call_product_alerts",
+                        "pipelineName": "add_data",
                         "isSync": false
                       }
                     ]
@@ -560,7 +768,7 @@
                     "actions": [
                       {
                         "type": "RUN_PIPELINE",
-                        "pipelineName": "test-input-data",
+                        "pipelineName": "",
                         "isSync": true
                       }
                     ]
