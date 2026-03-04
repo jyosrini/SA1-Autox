@@ -1,141 +1,53 @@
 {
-  "name": "correlation-suppression-policies-configuration",
-  "description": "Correlation And Suppression Policies Configuration",
-  "label": "Correlation And Suppression Policies Configuration",
-  "enabled": false,
-  "dashboard_type": "template",
-  "dashboard_folder": "System",
-  "version": "25.2.7.1",
+  "name": "alert_device_app",
+  "label": "Device View",
+  "description": "Device View",
+  "dashboard_folder": "NetworkDevicePack",
+  "context_label_id": "a_asset_name",
+  "version": "24.1.14.2",
+  "debug": true,
+  "enabled": true,
   "dashboard_filters": {
-    "time_filter": false
-  },
-  "template_variables": {
-    "PROJECT_ID": {
-      "contextId": "project_id"
-    }
+    "time_filter": true,
+    "columns_filter": []
   },
   "dashboard_sections": [
     {
-      "title": "Correlation Policies",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Correlation Policies",
-          "widget_type": "tabular",
-          "min_width": 12,
-          "height": 10,
-          "refreshRequired": false,
-          "timebased": false,
-          "api-endpoint": {
-            "service-name": "alert-processor",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getGroupPolicies",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "context": {
-                  "projectId": "{{PROJECT_ID}}"
-                }
-              }
-            ]
-          },
-          "widget_id": "correlation_policies"
-        }
-      ]
+      "title": "Device View"
+    }
+  ],
+  "dashboard_type": "app",
+  "context_enrichment": {
+    "stream": "network_device_inventory",
+    "enrich_columns": [
+      "device_hostname",
+      "parent_sn"
+    ],
+    "query_template": "device_ip = '$a_asset_ip_address'",
+    "defaultValues": {}
+  },
+  "dashboard_groups": {
+    "from_to": {
+      "icon": "alert.svg",
+      "label": "Alerts"
     },
+    "topo": {
+      "icon": "topology.svg",
+      "label": "Topology"
+    }
+  },
+  "dashboard_pages": [
     {
-      "title": "Suppression Policies",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Suppression Policies",
-          "widget_type": "tabular",
-          "min_width": 12,
-          "height": 10,
-          "refreshRequired": false,
-          "timebased": false,
-          "api-endpoint": {
-            "service-name": "alert-processor",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getSuppressionPolicies",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "context": {
-                  "projectId": "{{PROJECT_ID}}"
-                }
-              }
-            ]
-          },
-          "widget_id": "suppression_policies"
-        }
-      ]
+      "name": "topology_geomap_dashboard",
+      "label": "Topology",
+      "group": "topo",
+      "icon": "insights.svg",
+      "context_filter0": "node_type is 'edge'"
     }
   ],
   "pstream_dashboards": [
     {
-      "title": "Correlation Policies",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Correlation Policies",
-          "widget_type": "tabular",
-          "min_width": 12,
-          "height": 10,
-          "refreshRequired": false,
-          "timebased": false,
-          "api-endpoint": {
-            "service-name": "alert-processor",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getGroupPolicies",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "context": {
-                  "projectId": "{{PROJECT_ID}}"
-                }
-              }
-            ]
-          },
-          "widget_id": "correlation_policies"
-        }
-      ]
-    },
-    {
-      "title": "Suppression Policies",
-      "show_filter": true,
-      "widgets": [
-        {
-          "title": "Suppression Policies",
-          "widget_type": "tabular",
-          "min_width": 12,
-          "height": 10,
-          "refreshRequired": false,
-          "timebased": false,
-          "api-endpoint": {
-            "service-name": "alert-processor",
-            "namespace": "io.cfx.dimensions.app",
-            "version": "*",
-            "methodName": "invokeAppApi:getSuppressionPolicies",
-            "stringified-params": true,
-            "parse-output": false,
-            "params": [
-              {
-                "context": {
-                  "projectId": "{{PROJECT_ID}}"
-                }
-              }
-            ]
-          },
-          "widget_id": "suppression_policies"
-        }
-      ]
+      "title": "Device View"
     }
   ]
 }
