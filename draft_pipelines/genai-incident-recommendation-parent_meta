@@ -1,11 +1,6 @@
-folder: Default
-name: genai-incident-recommendation-parent
-description: ''
-data_path: draft-pipelines/data/genai-incident-recommendation-parent/2025_02_21_1/data.json
-usecase: ''
-category: null
-sources: []
-artifacts: []
-version: '2025_02_21_1'
-file_type: json
-checksum: c63fd5ba
+
+ ## @files:loadfile filename="alert.json"
+@rn:read-stream name="enrichment-input-alerts" & group="grp-alertenrichment"
+ ## Run enrichment pipeline
+
+ --> @exec:run-pipeline-multi-proc name="alert-dataset-enrichment" and num_procs="0"
